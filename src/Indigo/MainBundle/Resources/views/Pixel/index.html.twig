@@ -38,23 +38,23 @@ Use search to find needed section.
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 
 	<!-- Open Sans font from Google CDN -->
-	<link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&amp;subset=latin" rel="stylesheet" type="text/css">
+	<link href=" {{ asset('bundles/indigomain/css/google.css') }}" rel="stylesheet" type="text/css">
 
 	<!-- Pixel Admin's stylesheets -->
 	{% stylesheets  filter='cssrewrite'
-	    '@IndigoUserBundle/Resources/public/css/css.css'
-	'@IndigoUserBundle/Resources/public/css/bootstrap.min.css'
-	'@IndigoUserBundle/Resources/public/css/pixel-admin.min.css'
-	'@IndigoUserBundle/Resources/public/css/widgets.min.css'
-	'@IndigoUserBundle/Resources/public/css/rtl.min.css'
-	'@IndigoUserBundle/Resources/public/css/themes.min.css'
+	    '@IndigoMainBundle/Resources/public/css/css.css'
+	'@IndigoMainBundle/Resources/public/css/bootstrap.min.css'
+	'@IndigoMainBundle/Resources/public/css/pixel-admin.min.css'
+	'@IndigoMainBundle/Resources/public/css/widgets.min.css'
+	'@IndigoMainBundle/Resources/public/css/rtl.min.css'
+	'@IndigoMainBundle/Resources/public/css/themes.min.css'
 	%}
 	<link rel="stylesheet" href="{{ asset_url }}" />
 	{% endstylesheets %}
 
 
 	<!--[if lt IE 9]>
-		<script src="assets/javascripts/ie.min.js"></script>
+		<script src="/bundles/indigomain/js/ie.min.js"></script>
 	<![endif]-->
 </head>
 
@@ -75,7 +75,7 @@ Use search to find needed section.
 <body class="theme-default main-menu-animated">
 
 <script>var init = [];</script>
-<!-- Demo script --> <script src="assets/demo/demo.js"></script> <!-- / Demo script -->
+<!-- Demo script --> <script src="{{ asset('bundles/indigomain/js/demo.js') }}"></script> <!-- / Demo script -->
 
 <div id="main-wrapper">
 
@@ -94,7 +94,7 @@ Use search to find needed section.
 
 				<!-- Logo -->
 				<a href="index.html" class="navbar-brand">
-					<div><img alt="Pixel Admin" src="assets/images/pixel-admin/main-navbar-logo.png"></div>
+					<div><img alt="Pixel Admin" src="{{  asset('bundles/indigomain/images/pixel-admin/main-navbar-logo.png') }}"></div>
 					PixelAdmin
 				</a>
 
@@ -215,7 +215,7 @@ Use search to find needed section.
 									<div class="messages-list" id="main-navbar-messages">
 
 										<div class="message">
-											<img src="assets/demo/avatars/2.jpg" alt="" class="message-avatar">
+											<img src="{{ asset('bundles/indigomain/images/demo/avatars/2.jpg') }}" alt="" class="message-avatar">
 											<a href="#" class="message-subject">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</a>
 											<div class="message-description">
 												from <a href="#">Robert Jang</a>
@@ -225,7 +225,7 @@ Use search to find needed section.
 										</div> <!-- / .message -->
 
 										<div class="message">
-											<img src="assets/demo/avatars/3.jpg" alt="" class="message-avatar">
+											<img src="{{ asset('bundles/indigomain/images/demo/avatars/3.jpg') }}" alt="" class="message-avatar">
 											<a href="#" class="message-subject">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</a>
 											<div class="message-description">
 												from <a href="#">Michelle Bortz</a>
@@ -235,7 +235,7 @@ Use search to find needed section.
 										</div> <!-- / .message -->
 
 										<div class="message">
-											<img src="assets/demo/avatars/4.jpg" alt="" class="message-avatar">
+											<img src="{{ asset('bundles/indigomain/images/demo/avatars/4.jpg') }}" alt="" class="message-avatar">
 											<a href="#" class="message-subject">Lorem ipsum dolor sit amet.</a>
 											<div class="message-description">
 												from <a href="#">Timothy Owens</a>
@@ -245,7 +245,7 @@ Use search to find needed section.
 										</div> <!-- / .message -->
 
 										<div class="message">
-											<img src="assets/demo/avatars/5.jpg" alt="" class="message-avatar">
+											<img src="{{ asset('bundles/indigomain/images/demo/avatars/5.jpg') }}" alt="" class="message-avatar">
 											<a href="#" class="message-subject">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</a>
 											<div class="message-description">
 												from <a href="#">Denise Steiner</a>
@@ -255,7 +255,7 @@ Use search to find needed section.
 										</div> <!-- / .message -->
 
 										<div class="message">
-											<img src="assets/demo/avatars/2.jpg" alt="" class="message-avatar">
+											<img src="{{ asset('bundles/indigomain/images/demo/avatars/2.jpg') }}" alt="" class="message-avatar">
 											<a href="#" class="message-subject">Lorem ipsum dolor sit amet.</a>
 											<div class="message-description">
 												from <a href="#">Robert Jang</a>
@@ -265,7 +265,7 @@ Use search to find needed section.
 										</div> <!-- / .message -->
 
 										<div class="message">
-											<img src="assets/demo/avatars/2.jpg" alt="" class="message-avatar">
+											<img src="{{ asset('bundles/indigomain/images/demo/avatars/2.jpg') }}" alt="" class="message-avatar">
 											<a href="#" class="message-subject">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</a>
 											<div class="message-description">
 												from <a href="#">Robert Jang</a>
@@ -275,7 +275,7 @@ Use search to find needed section.
 										</div> <!-- / .message -->
 
 										<div class="message">
-											<img src="assets/demo/avatars/3.jpg" alt="" class="message-avatar">
+											<img src="{{ asset('bundles/indigomain/images/demo/avatars/3.jpg') }}" alt="" class="message-avatar">
 											<a href="#" class="message-subject">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</a>
 											<div class="message-description">
 												from <a href="#">Michelle Bortz</a>
@@ -285,7 +285,7 @@ Use search to find needed section.
 										</div> <!-- / .message -->
 
 										<div class="message">
-											<img src="assets/demo/avatars/4.jpg" alt="" class="message-avatar">
+											<img src="{{ asset('bundles/indigomain/images/demo/avatars/4.jpg') }}" alt="" class="message-avatar">
 											<a href="#" class="message-subject">Lorem ipsum dolor sit amet.</a>
 											<div class="message-description">
 												from <a href="#">Timothy Owens</a>
@@ -295,7 +295,7 @@ Use search to find needed section.
 										</div> <!-- / .message -->
 
 										<div class="message">
-											<img src="assets/demo/avatars/5.jpg" alt="" class="message-avatar">
+											<img src="{{ asset('bundles/indigomain/images/demo/avatars/5.jpg') }}" alt="" class="message-avatar">
 											<a href="#" class="message-subject">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</a>
 											<div class="message-description">
 												from <a href="#">Denise Steiner</a>
@@ -305,7 +305,7 @@ Use search to find needed section.
 										</div> <!-- / .message -->
 
 										<div class="message">
-											<img src="assets/demo/avatars/2.jpg" alt="" class="message-avatar">
+											<img src="{{ asset('bundles/indigomain/images/demo/avatars/2.jpg') }}" alt="" class="message-avatar">
 											<a href="#" class="message-subject">Lorem ipsum dolor sit amet.</a>
 											<div class="message-description">
 												from <a href="#">Robert Jang</a>
@@ -328,7 +328,7 @@ Use search to find needed section.
 
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle user-menu" data-toggle="dropdown">
-									<img src="assets/demo/avatars/1.jpg" alt="">
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/1.jpg') }}" alt="">
 									<span>John Doe</span>
 								</a>
 								<ul class="dropdown-menu">
@@ -376,12 +376,12 @@ Use search to find needed section.
 			<div class="menu-content top" id="menu-content-demo">
 				<!-- Menu custom content demo
 					 CSS:        styles/pixel-admin-less/demo.less or styles/pixel-admin-scss/_demo.scss
-					 Javascript: html/assets/demo/demo.js
+					 Javascript: html/{{ asset('bundles/indigomain/js/demo.js') }}
 				 -->
 				<div>
 					<div class="text-bg"><span class="text-slim">Welcome,</span> <span class="text-semibold">John</span></div>
 
-					<img src="assets/demo/avatars/1.jpg" alt="" class="">
+					<img src="{{ asset('bundles/indigomain/images/demo/avatars/1.jpg') }}" alt="" class="">
 					<div class="btn-group">
 						<a href="#" class="btn btn-xs btn-primary btn-outline dark"><i class="fa fa-envelope"></i></a>
 						<a href="#" class="btn btn-xs btn-primary btn-outline dark"><i class="fa fa-user"></i></a>
@@ -1110,7 +1110,7 @@ Use search to find needed section.
 							<!-- Panel padding, without vertical padding -->
 							<div class="panel-padding no-padding-vr">
 								<div class="comment">
-									<img src="assets/demo/avatars/5.jpg" alt="" class="comment-avatar">
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/5.jpg') }}" alt="" class="comment-avatar">
 									<div class="comment-body">
 										<div class="comment-by">
 											<a href="#" title="">Denise Steiner</a> commented on <a href="#" title="">Article Name</a>
@@ -1127,7 +1127,7 @@ Use search to find needed section.
 								</div> <!-- / .comment -->
 
 								<div class="comment">
-									<img src="assets/demo/avatars/3.jpg" alt="" class="comment-avatar">
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/3.jpg') }}" alt="" class="comment-avatar">
 									<div class="comment-body">
 										<div class="comment-by">
 											<a href="#" title="">Michelle Bortz</a> commented on <a href="#" title="">Article Name</a>
@@ -1144,7 +1144,7 @@ Use search to find needed section.
 								</div> <!-- / .comment -->
 
 								<div class="comment">
-									<img src="assets/demo/avatars/2.jpg" alt="" class="comment-avatar">
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/2.jpg') }}" alt="" class="comment-avatar">
 									<div class="comment-body">
 										<div class="comment-by">
 											<a href="#" title="">Robert Jang</a> commented on <a href="#" title="">Article Name</a>
@@ -1161,7 +1161,7 @@ Use search to find needed section.
 								</div> <!-- / .comment -->
 
 								<div class="comment">
-									<img src="assets/demo/avatars/4.jpg" alt="" class="comment-avatar">
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/4.jpg') }}" alt="" class="comment-avatar">
 									<div class="comment-body">
 										<div class="comment-by">
 											<a href="#" title="">Timothy Owens</a> commented on <a href="#" title="">Article Name</a>
@@ -1178,7 +1178,7 @@ Use search to find needed section.
 								</div> <!-- / .comment -->
 
 								<div class="comment">
-									<img src="assets/demo/avatars/5.jpg" alt="" class="comment-avatar">
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/5.jpg') }}" alt="" class="comment-avatar">
 									<div class="comment-body">
 										<div class="comment-by">
 											<a href="#" title="">Denise Steiner</a> commented on <a href="#" title="">Article Name</a>
@@ -1195,7 +1195,7 @@ Use search to find needed section.
 								</div> <!-- / .comment -->
 
 								<div class="comment">
-									<img src="assets/demo/avatars/3.jpg" alt="" class="comment-avatar">
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/3.jpg') }}" alt="" class="comment-avatar">
 									<div class="comment-body">
 										<div class="comment-by">
 											<a href="#" title="">Michelle Bortz</a> commented on <a href="#" title="">Article Name</a>
@@ -1212,7 +1212,7 @@ Use search to find needed section.
 								</div> <!-- / .comment -->
 
 								<div class="comment">
-									<img src="assets/demo/avatars/2.jpg" alt="" class="comment-avatar">
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/2.jpg') }}" alt="" class="comment-avatar">
 									<div class="comment-body">
 										<div class="comment-by">
 											<a href="#" title="">Robert Jang</a> commented on <a href="#" title="">Article Name</a>
@@ -1229,7 +1229,7 @@ Use search to find needed section.
 								</div> <!-- / .comment -->
 
 								<div class="comment">
-									<img src="assets/demo/avatars/4.jpg" alt="" class="comment-avatar">
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/4.jpg') }}" alt="" class="comment-avatar">
 									<div class="comment-body">
 										<div class="comment-by">
 											<a href="#" title="">Timothy Owens</a> commented on <a href="#" title="">Article Name</a>
@@ -1246,7 +1246,7 @@ Use search to find needed section.
 								</div> <!-- / .comment -->
 
 								<div class="comment">
-									<img src="assets/demo/avatars/2.jpg" alt="" class="comment-avatar">
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/2.jpg') }}" alt="" class="comment-avatar">
 									<div class="comment-body">
 										<div class="comment-by">
 											<a href="#" title="">Robert Jang</a> commented on <a href="#" title="">Article Name</a>
@@ -1263,7 +1263,7 @@ Use search to find needed section.
 								</div> <!-- / .comment -->
 
 								<div class="comment">
-									<img src="assets/demo/avatars/4.jpg" alt="" class="comment-avatar">
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/4.jpg') }}" alt="" class="comment-avatar">
 									<div class="comment-body">
 										<div class="comment-by">
 											<a href="#" title="">Timothy Owens</a> commented on <a href="#" title="">Article Name</a>
@@ -1287,7 +1287,7 @@ Use search to find needed section.
 						<div class="widget-threads panel-body tab-pane no-padding fade" id="dashboard-recent-threads">
 							<div class="panel-padding no-padding-vr">
 								<div class="thread">
-									<img src="assets/demo/avatars/2.jpg" alt="" class="thread-avatar">
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/2.jpg') }}" alt="" class="thread-avatar">
 									<div class="thread-body">
 										<span class="thread-time">14h</span>
 										<a href="#" class="thread-title">Lorem ipsum dolor sit amet</a>
@@ -1296,7 +1296,7 @@ Use search to find needed section.
 								</div> <!-- / .thread -->
 
 								<div class="thread">
-									<img src="assets/demo/avatars/3.jpg" alt="" class="thread-avatar">
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/3.jpg') }}" alt="" class="thread-avatar">
 									<div class="thread-body">
 										<span class="thread-time">14h</span>
 										<a href="#" class="thread-title">Lorem ipsum dolor sit amet</a>
@@ -1305,7 +1305,7 @@ Use search to find needed section.
 								</div> <!-- / .thread -->
 
 								<div class="thread">
-									<img src="assets/demo/avatars/4.jpg" alt="" class="thread-avatar">
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/4.jpg') }}" alt="" class="thread-avatar">
 									<div class="thread-body">
 										<span class="thread-time">14h</span>
 										<a href="#" class="thread-title">Lorem ipsum dolor sit amet</a>
@@ -1314,7 +1314,7 @@ Use search to find needed section.
 								</div> <!-- / .thread -->
 
 								<div class="thread">
-									<img src="assets/demo/avatars/5.jpg" alt="" class="thread-avatar">
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/5.jpg') }}" alt="" class="thread-avatar">
 									<div class="thread-body">
 										<span class="thread-time">14h</span>
 										<a href="#" class="thread-title">Lorem ipsum dolor sit amet</a>
@@ -1323,7 +1323,7 @@ Use search to find needed section.
 								</div> <!-- / .thread -->
 
 								<div class="thread">
-									<img src="assets/demo/avatars/2.jpg" alt="" class="thread-avatar">
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/2.jpg') }}" alt="" class="thread-avatar">
 									<div class="thread-body">
 										<span class="thread-time">14h</span>
 										<a href="#" class="thread-title">Lorem ipsum dolor sit amet</a>
@@ -1332,7 +1332,7 @@ Use search to find needed section.
 								</div> <!-- / .thread -->
 
 								<div class="thread">
-									<img src="assets/demo/avatars/2.jpg" alt="" class="thread-avatar">
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/2.jpg') }}" alt="" class="thread-avatar">
 									<div class="thread-body">
 										<span class="thread-time">14h</span>
 										<a href="#" class="thread-title">Lorem ipsum dolor sit amet</a>
@@ -1341,7 +1341,7 @@ Use search to find needed section.
 								</div> <!-- / .thread -->
 
 								<div class="thread">
-									<img src="assets/demo/avatars/3.jpg" alt="" class="thread-avatar">
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/3.jpg') }}" alt="" class="thread-avatar">
 									<div class="thread-body">
 										<span class="thread-time">14h</span>
 										<a href="#" class="thread-title">Lorem ipsum dolor sit amet</a>
@@ -1350,7 +1350,7 @@ Use search to find needed section.
 								</div> <!-- / .thread -->
 
 								<div class="thread">
-									<img src="assets/demo/avatars/4.jpg" alt="" class="thread-avatar">
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/4.jpg') }}" alt="" class="thread-avatar">
 									<div class="thread-body">
 										<span class="thread-time">14h</span>
 										<a href="#" class="thread-title">Lorem ipsum dolor sit amet</a>
@@ -1359,7 +1359,7 @@ Use search to find needed section.
 								</div> <!-- / .thread -->
 
 								<div class="thread">
-									<img src="assets/demo/avatars/5.jpg" alt="" class="thread-avatar">
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/5.jpg') }}" alt="" class="thread-avatar">
 									<div class="thread-body">
 										<span class="thread-time">14h</span>
 										<a href="#" class="thread-title">Lorem ipsum dolor sit amet</a>
@@ -1368,7 +1368,7 @@ Use search to find needed section.
 								</div> <!-- / .thread -->
 
 								<div class="thread">
-									<img src="assets/demo/avatars/2.jpg" alt="" class="thread-avatar">
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/2.jpg') }}" alt="" class="thread-avatar">
 									<div class="thread-body">
 										<span class="thread-time">14h</span>
 										<a href="#" class="thread-title">Lorem ipsum dolor sit amet</a>
@@ -1376,7 +1376,7 @@ Use search to find needed section.
 									</div> <!-- / .thread-body -->
 								</div> <!-- / .thread -->
 								<div class="thread">
-									<img src="assets/demo/avatars/2.jpg" alt="" class="thread-avatar">
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/2.jpg') }}" alt="" class="thread-avatar">
 									<div class="thread-body">
 										<span class="thread-time">14h</span>
 										<a href="#" class="thread-title">Lorem ipsum dolor sit amet</a>
@@ -1385,7 +1385,7 @@ Use search to find needed section.
 								</div> <!-- / .thread -->
 
 								<div class="thread">
-									<img src="assets/demo/avatars/3.jpg" alt="" class="thread-avatar">
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/3.jpg') }}" alt="" class="thread-avatar">
 									<div class="thread-body">
 										<span class="thread-time">14h</span>
 										<a href="#" class="thread-title">Lorem ipsum dolor sit amet</a>
@@ -1394,7 +1394,7 @@ Use search to find needed section.
 								</div> <!-- / .thread -->
 
 								<div class="thread">
-									<img src="assets/demo/avatars/4.jpg" alt="" class="thread-avatar">
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/4.jpg') }}" alt="" class="thread-avatar">
 									<div class="thread-body">
 										<span class="thread-time">14h</span>
 										<a href="#" class="thread-title">Lorem ipsum dolor sit amet</a>
@@ -1403,7 +1403,7 @@ Use search to find needed section.
 								</div> <!-- / .thread -->
 
 								<div class="thread">
-									<img src="assets/demo/avatars/5.jpg" alt="" class="thread-avatar">
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/5.jpg') }}" alt="" class="thread-avatar">
 									<div class="thread-body">
 										<span class="thread-time">14h</span>
 										<a href="#" class="thread-title">Lorem ipsum dolor sit amet</a>
@@ -1412,7 +1412,7 @@ Use search to find needed section.
 								</div> <!-- / .thread -->
 
 								<div class="thread">
-									<img src="assets/demo/avatars/2.jpg" alt="" class="thread-avatar">
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/2.jpg') }}" alt="" class="thread-avatar">
 									<div class="thread-body">
 										<span class="thread-time">14h</span>
 										<a href="#" class="thread-title">Lorem ipsum dolor sit amet</a>
@@ -1464,7 +1464,7 @@ Use search to find needed section.
 							<tr>
 								<td>1</td>
 								<td>
-									<img src="assets/demo/avatars/2.jpg" alt="" style="width:26px;height:26px;" class="rounded">&nbsp;&nbsp;<a href="#" title="">@rjang</a>
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/2.jpg') }}" alt="" style="width:26px;height:26px;" class="rounded">&nbsp;&nbsp;<a href="#" title="">@rjang</a>
 								</td>
 								<td>Robert Jang</td>
 								<td>rjang@example.com</td>
@@ -1473,7 +1473,7 @@ Use search to find needed section.
 							<tr>
 								<td>2</td>
 								<td>
-									<img src="assets/demo/avatars/3.jpg" alt="" style="width:26px;height:26px;" class="rounded">&nbsp;&nbsp;<a href="#" title="">@mbortz</a>
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/3.jpg') }}" alt="" style="width:26px;height:26px;" class="rounded">&nbsp;&nbsp;<a href="#" title="">@mbortz</a>
 								</td>
 								<td>Michelle Bortz</td>
 								<td>mbortz@example.com</td>
@@ -1482,7 +1482,7 @@ Use search to find needed section.
 							<tr>
 								<td>3</td>
 								<td>
-									<img src="assets/demo/avatars/4.jpg" alt="" style="width:26px;height:26px;" class="rounded">&nbsp;&nbsp;<a href="#" title="">@towens</a>
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/4.jpg') }}" alt="" style="width:26px;height:26px;" class="rounded">&nbsp;&nbsp;<a href="#" title="">@towens</a>
 								</td>
 								<td>Timothy Owens</td>
 								<td>towens@example.com</td>
@@ -1491,7 +1491,7 @@ Use search to find needed section.
 							<tr>
 								<td>4</td>
 								<td>
-									<img src="assets/demo/avatars/5.jpg" alt="" style="width:26px;height:26px;" class="rounded">&nbsp;&nbsp;<a href="#" title="">@dsteiner</a>
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/5.jpg') }}" alt="" style="width:26px;height:26px;" class="rounded">&nbsp;&nbsp;<a href="#" title="">@dsteiner</a>
 								</td>
 								<td>Denise Steiner</td>
 								<td>dsteiner@example.com</td>
@@ -1500,7 +1500,7 @@ Use search to find needed section.
 							<tr>
 								<td>5</td>
 								<td>
-									<img src="assets/demo/avatars/2.jpg" alt="" style="width:26px;height:26px;" class="rounded">&nbsp;&nbsp;<a href="#" title="">@rjang</a>
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/2.jpg') }}" alt="" style="width:26px;height:26px;" class="rounded">&nbsp;&nbsp;<a href="#" title="">@rjang</a>
 								</td>
 								<td>Robert Jang</td>
 								<td>rjang@example.com</td>
@@ -1509,7 +1509,7 @@ Use search to find needed section.
 							<tr>
 								<td>6</td>
 								<td>
-									<img src="assets/demo/avatars/3.jpg" alt="" style="width:26px;height:26px;" class="rounded">&nbsp;&nbsp;<a href="#" title="">@mbortz</a>
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/3.jpg') }}" alt="" style="width:26px;height:26px;" class="rounded">&nbsp;&nbsp;<a href="#" title="">@mbortz</a>
 								</td>
 								<td>Michelle Bortz</td>
 								<td>mbortz@example.com</td>
@@ -1518,7 +1518,7 @@ Use search to find needed section.
 							<tr>
 								<td>7</td>
 								<td>
-									<img src="assets/demo/avatars/4.jpg" alt="" style="width:26px;height:26px;" class="rounded">&nbsp;&nbsp;<a href="#" title="">@towens</a>
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/4.jpg') }}" alt="" style="width:26px;height:26px;" class="rounded">&nbsp;&nbsp;<a href="#" title="">@towens</a>
 								</td>
 								<td>Timothy Owens</td>
 								<td>towens@example.com</td>
@@ -1660,8 +1660,8 @@ Use search to find needed section.
 
 
 <!-- Pixel Admin's javascripts -->
-<script src="assets/javascripts/bootstrap.min.js"></script>
-<script src="assets/javascripts/pixel-admin.min.js"></script>
+<script src="{{ asset('bundles/indigomain/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('bundles/indigomain/js/pixel-admin.min.js') }}"></script>
 
 <script type="text/javascript">
 	init.push(function () {

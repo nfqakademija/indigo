@@ -251,17 +251,17 @@ Use search to find needed section.
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 
 	<!-- Open Sans font from Google CDN -->
-	<link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&amp;subset=latin" rel="stylesheet" type="text/css">
+	<link href="{{ asset('bundles/indigomain/css/google.css') }}" rel="stylesheet" type="text/css">
 
 	<!-- Pixel Admin's stylesheets -->
-	<link href="assets/stylesheets/bootstrap.min.css" rel="stylesheet" type="text/css">
-	<link href="assets/stylesheets/pixel-admin.min.css" rel="stylesheet" type="text/css">
-	<link href="assets/stylesheets/widgets.min.css" rel="stylesheet" type="text/css">
-	<link href="assets/stylesheets/rtl.min.css" rel="stylesheet" type="text/css">
-	<link href="assets/stylesheets/themes.min.css" rel="stylesheet" type="text/css">
+	<link href="{{ asset('bundles/indigomain/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+	<link href="{{ asset('bundles/indigomain/css/pixel-admin.min.css') }}" rel="stylesheet" type="text/css">
+	<link href="{{ asset('bundles/indigomain/css/widgets.min.css') }}" rel="stylesheet" type="text/css">
+	<link href="{{ asset('bundles/indigomain/css/rtl.min.css') }}" rel="stylesheet" type="text/css">
+	<link href="{{ asset('bundles/indigomain/css/themes.min.css') }}" rel="stylesheet" type="text/css">
 
 	<!--[if lt IE 9]>
-		<script src="assets/javascripts/ie.min.js"></script>
+		<script src="{{ asset('bundles/indigomain/js/ie.min.js') }}"></script>
 	<![endif]-->
 
 	<style>
@@ -344,9 +344,9 @@ Use search to find needed section.
 	* 'main-menu-animated' - Animate main menu
 -->
 <body class="theme-default main-menu-animated">
-
+OPA {{  name }} OPA
 <script>var init = [];</script>
-<!-- Demo script --> <script src="assets/demo/demo.js"></script> <!-- / Demo script -->
+<!-- Demo script --> <script src="{{ asset('bundles/indigomain/js/demo.js') }}"></script> <!-- / Demo script -->
 
 <div id="main-wrapper">
 
@@ -365,7 +365,7 @@ Use search to find needed section.
 
 				<!-- Logo -->
 				<a href="index.html" class="navbar-brand">
-					<div><img alt="Pixel Admin" src="assets/images/pixel-admin/main-navbar-logo.png"></div>
+					<div><img alt="Pixel Admin" src="{{  asset('bundles/indigomain/images/pixel-admin/main-navbar-logo.png') }}"></div>
 					PixelAdmin
 				</a>
 
@@ -486,7 +486,7 @@ Use search to find needed section.
 									<div class="messages-list" id="main-navbar-messages">
 
 										<div class="message">
-											<img src="assets/demo/avatars/2.jpg" alt="" class="message-avatar">
+											<img src="{{ asset('bundles/indigomain/images/demo/avatars/2.jpg') }}" alt="" class="message-avatar">
 											<a href="#" class="message-subject">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</a>
 											<div class="message-description">
 												from <a href="#">Robert Jang</a>
@@ -496,7 +496,7 @@ Use search to find needed section.
 										</div> <!-- / .message -->
 
 										<div class="message">
-											<img src="assets/demo/avatars/3.jpg" alt="" class="message-avatar">
+											<img src="{{ asset('bundles/indigomain/images/demo/avatars/3.jpg') }}" alt="" class="message-avatar">
 											<a href="#" class="message-subject">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</a>
 											<div class="message-description">
 												from <a href="#">Michelle Bortz</a>
@@ -506,7 +506,7 @@ Use search to find needed section.
 										</div> <!-- / .message -->
 
 										<div class="message">
-											<img src="assets/demo/avatars/4.jpg" alt="" class="message-avatar">
+											<img src="{{ asset('bundles/indigomain/images/demo/avatars/4.jpg') }}" alt="" class="message-avatar">
 											<a href="#" class="message-subject">Lorem ipsum dolor sit amet.</a>
 											<div class="message-description">
 												from <a href="#">Timothy Owens</a>
@@ -516,7 +516,7 @@ Use search to find needed section.
 										</div> <!-- / .message -->
 
 										<div class="message">
-											<img src="assets/demo/avatars/5.jpg" alt="" class="message-avatar">
+											<img src="{{ asset('bundles/indigomain/images/demo/avatars/5.jpg') }}" alt="" class="message-avatar">
 											<a href="#" class="message-subject">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</a>
 											<div class="message-description">
 												from <a href="#">Denise Steiner</a>
@@ -526,7 +526,7 @@ Use search to find needed section.
 										</div> <!-- / .message -->
 
 										<div class="message">
-											<img src="assets/demo/avatars/2.jpg" alt="" class="message-avatar">
+											<img src="{{ asset('bundles/indigomain/images/demo/avatars/2.jpg') }}" alt="" class="message-avatar">
 											<a href="#" class="message-subject">Lorem ipsum dolor sit amet.</a>
 											<div class="message-description">
 												from <a href="#">Robert Jang</a>
@@ -536,7 +536,7 @@ Use search to find needed section.
 										</div> <!-- / .message -->
 
 										<div class="message">
-											<img src="assets/demo/avatars/2.jpg" alt="" class="message-avatar">
+											<img src="{{ asset('bundles/indigomain/images/demo/avatars/2.jpg') }}" alt="" class="message-avatar">
 											<a href="#" class="message-subject">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</a>
 											<div class="message-description">
 												from <a href="#">Robert Jang</a>
@@ -546,7 +546,7 @@ Use search to find needed section.
 										</div> <!-- / .message -->
 
 										<div class="message">
-											<img src="assets/demo/avatars/3.jpg" alt="" class="message-avatar">
+											<img src="{{ asset('bundles/indigomain/images/demo/avatars/3.jpg') }}" alt="" class="message-avatar">
 											<a href="#" class="message-subject">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</a>
 											<div class="message-description">
 												from <a href="#">Michelle Bortz</a>
@@ -556,7 +556,7 @@ Use search to find needed section.
 										</div> <!-- / .message -->
 
 										<div class="message">
-											<img src="assets/demo/avatars/4.jpg" alt="" class="message-avatar">
+											<img src="{{ asset('bundles/indigomain/images/demo/avatars/4.jpg') }}" alt="" class="message-avatar">
 											<a href="#" class="message-subject">Lorem ipsum dolor sit amet.</a>
 											<div class="message-description">
 												from <a href="#">Timothy Owens</a>
@@ -566,7 +566,7 @@ Use search to find needed section.
 										</div> <!-- / .message -->
 
 										<div class="message">
-											<img src="assets/demo/avatars/5.jpg" alt="" class="message-avatar">
+											<img src="{{ asset('bundles/indigomain/images/demo/avatars/5.jpg') }}" alt="" class="message-avatar">
 											<a href="#" class="message-subject">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</a>
 											<div class="message-description">
 												from <a href="#">Denise Steiner</a>
@@ -576,7 +576,7 @@ Use search to find needed section.
 										</div> <!-- / .message -->
 
 										<div class="message">
-											<img src="assets/demo/avatars/2.jpg" alt="" class="message-avatar">
+											<img src="{{ asset('bundles/indigomain/images/demo/avatars/2.jpg') }}" alt="" class="message-avatar">
 											<a href="#" class="message-subject">Lorem ipsum dolor sit amet.</a>
 											<div class="message-description">
 												from <a href="#">Robert Jang</a>
@@ -599,7 +599,7 @@ Use search to find needed section.
 
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle user-menu" data-toggle="dropdown">
-									<img src="assets/demo/avatars/1.jpg">
+									<img src="{{ asset('bundles/indigomain/images/demo/avatars/1.jpg') }}">
 									<span>John Doe</span>
 								</a>
 								<ul class="dropdown-menu">
@@ -647,12 +647,12 @@ Use search to find needed section.
 			<div class="menu-content top" id="menu-content-demo">
 				<!-- Menu custom content demo
 					 CSS:        styles/pixel-admin-less/demo.less or styles/pixel-admin-scss/_demo.scss
-					 Javascript: html/assets/demo/demo.js
+					 Javascript: html/{{ asset('bundles/indigomain/js/demo.js') }}
 				 -->
 				<div>
 					<div class="text-bg"><span class="text-slim">Welcome,</span> <span class="text-semibold">John</span></div>
 
-					<img src="assets/demo/avatars/1.jpg" alt="" class="">
+					<img src="{{ asset('bundles/indigomain/images/demo/avatars/1.jpg') }}" alt="" class="">
 					<div class="btn-group">
 						<a href="#" class="btn btn-xs btn-primary btn-outline dark"><i class="fa fa-envelope"></i></a>
 						<a href="#" class="btn btn-xs btn-primary btn-outline dark"><i class="fa fa-user"></i></a>
@@ -10162,15 +10162,15 @@ Use search to find needed section.
 
 
 <!-- Pixel Admin's javascripts -->
-<script src="assets/javascripts/bootstrap.min.js"></script>
-<script src="assets/javascripts/pixel-admin.min.js"></script>
+<script src="{{ asset('bundles/indigomain/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('bundles/indigomain/js/pixel-admin.min.js') }}"></script>
 
 <!-- jQuery UI extras (includes datepicker and tooltips) -->
 <!-- <script src="assets/javascripts/jquery-ui-extras.min.js"></script> -->
 
 <!-- Used for X-Editable demo only. You can remove this lines -->
-	<script src="assets/javascripts/jquery.mockjax.js"></script>
-	<script src="assets/javascripts/demo-mock.js"></script>
+	<script src="{{ asset('bundles/indigomain/js/jquery.mockjax.js') }} "></script>
+	<script src="{{ asset('bundles/indigomain/js/demo-mock.js') }}"></script>
 <!---->
 
 <script type="text/javascript">
