@@ -10,11 +10,10 @@ class DefaultController extends Controller
 {
     /**
      * @Route("/")
-     * @Template()
+     * @Template("IndigoUserBundle:Pixel:index.html.twig")
      */
     public function indexAction($name="laima")
     {
-        //return array('name' => $name);
-        return $this->render('UserBundle:Pixel:index.html.twig');
+        return array('name' => $name);
     }
 }

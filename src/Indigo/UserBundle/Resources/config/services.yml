@@ -1,0 +1,3 @@
+services:
+    #indigo_foo_service:
+        #class: Indigo\UserBundle\Services\FooService

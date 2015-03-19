@@ -4,6 +4,6 @@ namespace Indigo\UserBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class UserBundle extends Bundle
+class IndigoUserBundle extends Bundle
 {
 }
