@@ -9,8 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/")
-     * @Template("IndigoUserBundle:Pixel:index.html.twig")
+     * @Route("/profile")
+     * @Template()
      */
     public function indexAction($name="laima")
     {
