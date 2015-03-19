@@ -1,8 +1,4 @@
-user:
-    resource: "@UserBundle/Controller/"
+indigo_user:
+    resource: "@IndigoUserBundle/Controller/"
     type:     annotation
     prefix:   /
-
-app:
-    resource: "@AppBundle/Controller/"
-    type:     annotation
