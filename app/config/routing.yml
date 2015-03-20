@@ -1,3 +1,8 @@
+indigo_locations_reg:
+    resource: "@IndigoLocationsRegBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 indigo_contest:
     resource: "@IndigoContestBundle/Controller/"
     type:     annotation
