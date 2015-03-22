@@ -1,0 +1,12 @@
+{% form_theme _form 'bootstrap_3_layout.html.twig' %}
+
+<table>
+{% for location in locations %}
+    <tr>
+        <td>{{ location.id }}</td>
+        <td>{{ location.title }}</td>
+    </tr>
+{% endfor %}
+</table>
+<hr />
+{{ form(_form) }}

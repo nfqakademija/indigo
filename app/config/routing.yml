@@ -3,6 +3,11 @@ indigo_contest:
     type:     annotation
     prefix:   /
 
+indigo_locations_reg:
+    resource: "@IndigoLocationsRegBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation

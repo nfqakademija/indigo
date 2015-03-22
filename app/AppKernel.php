@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppBundle\AppBundle(),
             new Indigo\ContestBundle\IndigoContestBundle(),
+            new Indigo\LocationsRegBundle\IndigoLocationsRegBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
