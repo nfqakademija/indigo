@@ -1,8 +1,5 @@
-indigo_main:
-    resource: "@IndigoMainBundle/Resources/config/routing.yml"
-    prefix:   /
-
 indigo_user:
     resource: "@IndigoUserBundle/Controller/"
     type:     annotation
-    prefix:   /profile
+    prefix:   /
+
