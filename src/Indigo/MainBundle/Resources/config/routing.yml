@@ -1,7 +1,4 @@
-indigo_main_homepage:
+indigo_main_anypage:
     path:     /{name}
-    defaults: { _controller: IndigoMainBundle:Default:index }
+    defaults: { _controller: IndigoMainBundle:Default:index, name: index.html }
 
-indigo_main_homepage:
-    path:     /
-    defaults: { _controller: IndigoMainBundle:Default:index }

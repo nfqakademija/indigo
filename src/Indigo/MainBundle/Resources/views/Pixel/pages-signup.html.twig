@@ -16,7 +16,7 @@
 	<!-- Pixel Admin's stylesheets -->
 	<link href="{{ asset('bundles/indigomain/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
 	<link href="{{ asset('bundles/indigomain/css/pixel-admin.min.css') }}" rel="stylesheet" type="text/css">
-	<link href="assets/stylesheets/pages.min.css" rel="stylesheet" type="text/css">
+	<link href="{{ asset('bundles/indigomain/css/pages.min.css') }}" rel="stylesheet" type="text/css">
 	<link href="{{ asset('bundles/indigomain/css/rtl.min.css') }}" rel="stylesheet" type="text/css">
 	<link href="{{ asset('bundles/indigomain/css/themes.min.css') }}" rel="stylesheet" type="text/css">
 
@@ -67,9 +67,9 @@
 	var init = [];
 	init.push(function () {
 		var $div = $('<div id="signup-demo" class="hidden-xs"><div>PAGE BACKGROUND</div></div>'),
-		    bgs  = [ 'assets/demo/signin-bg-1.jpg', 'assets/demo/signin-bg-2.jpg', 'assets/demo/signin-bg-3.jpg',
-		    		 'assets/demo/signin-bg-4.jpg', 'assets/demo/signin-bg-5.jpg', 'assets/demo/signin-bg-6.jpg',
-					 'assets/demo/signin-bg-7.jpg', 'assets/demo/signin-bg-8.jpg', 'assets/demo/signin-bg-9.jpg' ];
+		    bgs  = [ '{{ asset('bundles/indigomain/images/demo/signin-bg-1.jpg') }}', '{{ asset('bundles/indigomain/images/demo/signin-bg-2.jpg') }}', '{{ asset('bundles/indigomain/images/demo/signin-bg-3.jpg') }}',
+		    		 '{{ asset('bundles/indigomain/images/demo/signin-bg-4.jpg') }}', '{{ asset('bundles/indigomain/images/demo/signin-bg-5.jpg') }}', '{{ asset('bundles/indigomain/images/demo/signin-bg-6.jpg') }}',
+					 '{{ asset('bundles/indigomain/images/demo/signin-bg-7.jpg') }}', '{{ asset('bundles/indigomain/images/demo/signin-bg-8.jpg') }}', '{{ asset('bundles/indigomain/images/demo/signin-bg-9.jpg') }}' ];
 		for (var i=0, l=bgs.length; i < l; i++) $div.append($('<img src="' + bgs[i] + '">'));
 		$div.find('img').click(function () {
 			var img = new Image();
@@ -89,7 +89,7 @@
 		<!-- Background overlay -->
 		<div class="overlay"></div>
 		<!-- Replace this with your bg image -->
-		<img src="assets/demo/signin-bg-1.jpg" alt="">
+		<img src="{{ asset('bundles/indigomain/images/demo/signin-bg-1.jpg') }}" alt="">
 	</div>
 	<!-- / Page background -->
 
@@ -98,7 +98,7 @@
 		<!-- Header -->
 		<div class="signup-header">
 			<a href="index.html" class="logo">
-				<img src="assets/demo/logo-big.png" alt="" style="margin-top: -5px;">&nbsp;
+				<img src="{{ asset('bundles/indigomain/images/demo/logo-big.png') }}" alt="" style="margin-top: -5px;">&nbsp;
 				PixelAdmin
 			</a> <!-- / .logo -->
 			<div class="slogan">

@@ -1,35 +1,9 @@
-<!DOCTYPE html>
-<!--[if IE 8]>         <html class="ie8"> <![endif]-->
-<!--[if IE 9]>         <html class="ie9 gt-ie8"> <![endif]-->
-<!--[if gt IE 9]><!--> <html class="gt-ie8 gt-ie9 not-ie"> <!--<![endif]-->
+{% extends 'IndigoMainBundle:Pixel:base.html.twig' %}
 
-<!-- Mirrored from infinite-woodland-5276.herokuapp.com/pages-signin.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 15 Mar 2015 14:52:55 GMT -->
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<title>Sign In - PixelAdmin</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-
-	<!-- Open Sans font from Google CDN -->
-	<link href="{{ asset('bundles/indigomain/css/google.css') }}" rel="stylesheet" type="text/css">
-
-	<!-- Pixel Admin's stylesheets -->
-	<link href="{{ asset('bundles/indigomain/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
-	<link href="{{ asset('bundles/indigomain/css/pixel-admin.min.css') }}" rel="stylesheet" type="text/css">
-	<link href="{{ asset('bundles/indigomain/css/pages.min.css') }}" rel="stylesheet" type="text/css">
-	<link href="{{ asset('bundles/indigomain/css/rtl.min.css') }}" rel="stylesheet" type="text/css">
-	<link href="{{ asset('bundles/indigomain/css/themes.min.css') }}" rel="stylesheet" type="text/css">
-
-	<!--[if lt IE 9]>
-		<script src="{{ asset('bundles/indigomain/js/ie.min.js') }}"></script>
-	<![endif]-->
-
-
-<!-- $DEMO =========================================================================================
-
-	Remove this section on production
--->
-	<style>
+{% block title %}Prisijunk!{% endblock %}
+{% block stylesheets  %}
+	{{ parent() }}
+	<styles>
 		#signin-demo {
 			position: fixed;
 			right: 0;
@@ -47,22 +21,11 @@
 			font-weight: 600;
 			padding-bottom: 6px;
 		}
-	</style>
-<!-- / $DEMO -->
+	</styles>
+{% endblock %}
+{% block body_class %}class="theme-default page-signin"{% endblock %}
 
-</head>
-
-
-<!-- 1. $BODY ======================================================================================
-	
-	Body
-
-	Classes:
-	* 'theme-{THEME NAME}'
-	* 'right-to-left'     - Sets text direction to right-to-left
--->
-<body class="theme-default page-signin">
-
+{% block body %}
 <script>
 	var init = [];
 	init.push(function () {
@@ -118,28 +81,39 @@
 		<div class="signin-form">
 
 			<!-- Form -->
-			<form action="http://infinite-woodland-5276.herokuapp.com/index.html" id="signin-form_id">
+			<form action="/signin" id="signin-form_id" method="post">
+
 				<div class="signin-text">
 					<span>Sign In to your account</span>
 				</div> <!-- / .signin-text -->
 
 				<div class="form-group w-icon">
-					<input type="text" name="signin_username" id="username_id" class="form-control input-lg" placeholder="Username or email">
+					{{ form_widget(form.email, {'attr': {'class': 'form-control input-lg', 'id': 'email_id',placeholder: 'Your email'} }) }}
 					<span class="fa fa-user signin-form-icon"></span>
-				</div> <!-- / Username -->
+					{{  form_errors(form.email) }}
+
+				</div> <!-- / email -->
 
 				<div class="form-group w-icon">
-					<input type="password" name="signin_password" id="password_id" class="form-control input-lg" placeholder="Password">
+					{{ form_widget(form.password, {'attr': {'class': 'form-control input-lg', 'id': 'password_id',placeholder: 'Password'} }) }}
 					<span class="fa fa-lock signin-form-icon"></span>
+					{{  form_errors(form.password) }}
 				</div> <!-- / Password -->
 
+				{%  if error_message|length >0  %}
+				<div class="form-group w-icon">
+					<div class="alert alert-danger"><strong>{{ error_message }}</strong></div>
+				</div>
+				{% endif %}
+
 				<div class="form-actions">
-					<input type="submit" value="SIGN IN" class="signin-btn bg-primary">
+					{{ form_widget(form.signin, {'attr': {'class': 'signin-btn bg-primary'} }) }}
 					<a href="#" class="forgot-password" id="forgot-password-link">Forgot your password?</a>
 				</div> <!-- / .form-actions -->
+
+				{{ form_row (form._token) }}
 			</form>
 			<!-- / Form -->
-
 			<!-- "Sign In with" block -->
 			<div class="signin-with">
 				<!-- Facebook -->
@@ -167,6 +141,8 @@
 						<input type="submit" value="SEND PASSWORD RESET LINK" class="signin-btn bg-primary">
 					</div> <!-- / .form-actions -->
 				</form>
+
+
 				<!-- / Form -->
 			</div>
 			<!-- / Password reset form -->
@@ -178,7 +154,6 @@
 	<div class="not-a-member">
 		Not a member? <a href="pages-signup.html">Sign up now</a>
 	</div>
-
 <!-- Get jQuery from Google CDN -->
 <!--[if !IE]> -->
 	<script type="text/javascript"> window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js">'+"<"+"/script>"); </script>
@@ -222,11 +197,11 @@
 	});
 
 	// Setup Sign In form validation
-	init.push(function () {
+/*	init.push(function () {
 		$("#signin-form_id").validate({ focusInvalid: true, errorPlacement: function () {} });
 		
-		// Validate username
-		$("#username_id").rules("add", {
+		// Validate email
+		$("#email_id").rules("add", {
 			required: true,
 			minlength: 3
 		});
@@ -237,7 +212,7 @@
 			minlength: 6
 		});
 	});
-
+*/
 	// Setup Password Reset form validation
 	init.push(function () {
 		$("#password-reset-form_id").validate({ focusInvalid: true, errorPlacement: function () {} });
@@ -251,8 +226,4 @@
 
 	window.PixelAdmin.start(init);
 </script>
-
-</body>
-
-<!-- Mirrored from infinite-woodland-5276.herokuapp.com/pages-signin.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 15 Mar 2015 14:54:28 GMT -->
-</html>
+{% endblock %}
