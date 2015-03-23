@@ -2,8 +2,11 @@
 
 namespace Indigo\UserBundle\Entity;
 
+
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
  * User
@@ -22,23 +25,24 @@ class User extends MessageDigestPasswordEncoder
     private $id;
 
     /**
-     * @var isActive
+     * @var integer
      *
      * @ORM\Column(name="active", options={"default" : 1})
      */
     private $isActive;
 
     /**
-     * @var username
+     * @var string
      *
      * @ORM\Column(type="string", length=35, unique=true)
      */
     private $username;
 
     /**
-     * @var email
+     * @var string
      *
      * @ORM\Column(type="string", length=60, unique=true)
+     * @Assert\Email(groups={"Default", "Profile"}, checkMX="true", message="user.error.username_must_be_email")
      */
     private $email;
 
@@ -46,6 +50,7 @@ class User extends MessageDigestPasswordEncoder
      * @var string
      *
      * @ORM\Column(length=32)
+     * @Assert\Length(groups={"Default", "Profile"}, min=4, minMessage="user.error.password_to_short")
      */
     private $password;
 
@@ -81,7 +86,7 @@ class User extends MessageDigestPasswordEncoder
     {
         $this->isActive = true;
         $this->salt = md5(uniqid(null, true));
-        $this->registrationDate = new \DateTime();
+        $this->registrationDate = new \DateTime('now');
     }
 
     /**
@@ -232,5 +237,10 @@ class User extends MessageDigestPasswordEncoder
     public function getPicture()
     {
         return $this->picture;
+    }
+
+
+    public function cryptPassword() {
+        $this->password = md5($this->password);
     }
 }

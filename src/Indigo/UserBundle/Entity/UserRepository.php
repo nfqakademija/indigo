@@ -35,4 +35,22 @@ class UserRepository extends EntityRepository
 
         return $query->getArrayResult();
     }
+
+
+    /**
+     * @return array
+     */
+    public function userExists($email)
+    {
+        $qb = $this->_em->createQueryBuilder();
+
+        $qb
+            ->select('u.id')
+            ->from('IndigoUserBundle:User','u')
+            ->where("u.email= :email")
+            ->setParameter('email', $email );
+        $query = $qb->getQuery();
+
+        return $query->getArrayResult();
+    }
 }
