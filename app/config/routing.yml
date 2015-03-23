@@ -1,3 +1,8 @@
+testing:
+    resource: "@TestingBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 indigo_user:
     resource: "@IndigoUserBundle/Controller/"
     type:     annotation

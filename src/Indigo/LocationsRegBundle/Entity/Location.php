@@ -60,6 +60,7 @@ class Location
      */
     private $address;
 
+
     public function __construct()
     {
         $this->active = self::STATE_INACTIVE;
