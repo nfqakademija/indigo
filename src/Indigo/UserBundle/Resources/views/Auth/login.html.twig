@@ -2,9 +2,9 @@
 
 {% block title %}Prisijunk!{% endblock %}
 
-{% block body_class %}class="theme-default page-signin"{% endblock %}
+{% block body_class %}theme-default page-signin{% endblock %}
 
-{% block body %}
+{% block content %}
 	<!-- Page background -->
 	<div id="page-signin-bg">
 		<!-- Background overlay -->
@@ -39,22 +39,21 @@
 		<div class="signin-form">
 
 			<!-- Form -->
-			<form action="{{ path('user_signin') }}" id="signin-form_id" method="post">
-
+			{{ form_start(form) }}
 				<div class="signin-text">
 					<span>Sign In to your account</span>
 				</div> <!-- / .signin-text -->
 
 				<div class="form-group w-icon">
-					{{ form_widget(form.email, {'attr': {'class': 'form-control input-lg', 'id': 'email_id', placeholder: 'Your email'} }) }}
+					{{ form_widget(form.username, {'attr': {'class': 'form-control input-lg'} }) }}
 					<span class="fa fa-user signin-form-icon"></span>
-					{{  form_errors(form.email) }}
+					{{  form_errors(form.username) }}
 
 				</div> <!-- / email -->
 
 				<div class="form-group w-icon">
 
-					{{ form_widget(form.password, {'attr': {'class': 'form-control input-lg', 'id': 'password_id', placeholder: 'Password'} }) }}
+					{{ form_widget(form.password, {'attr': {'class': 'form-control input-lg', placeholder: 'Password'} }) }}
 					<span class="fa fa-lock signin-form-icon"></span>
 					{{  form_errors(form.password) }}
 				</div> <!-- / Password -->
@@ -70,8 +69,7 @@
 					<a href="#" class="forgot-password" id="forgot-password-link">Forgot your password?</a>
 				</div> <!-- / .form-actions -->
 
-				{{ form_row (form._token) }}
-			</form>
+				{{ form_end(form) }}
 			<!-- / Form -->
 			<!-- "Sign In with" block -->
 			<div class="signin-with">

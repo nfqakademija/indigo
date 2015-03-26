@@ -22,8 +22,21 @@
     <link href="{{ asset('bundles/indigomain/css/themes.min.css') }}" rel="stylesheet" type="text/css">
     {% endblock %}
 </head>
-<body {% block body_class %}{% endblock %}>
-{% block body %}{% endblock %}
+<body class="{% block body_class %}{% endblock %}">
+
+<script>var init = [];</script>
+
+<div id="main-wrapper">
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        {% include "IndigoMainBundle:Pixel:navigation.html.twig" %}
+        {% include "IndigoMainBundle:Pixel:menu.html.twig" %}
+    {% endif %}
+
+    <div id="content-wrapper">
+        {% block content %}{% endblock %}
+    </div> <!-- / #content-wrapper -->
+    <div id="main-menu-bg"></div>
+</div> <!-- / #main-wrapper -->
 {% block javascripts %}
     <!--[if lt IE 9]>
     <script src="{{ asset('bundles/indigomain/js/ie.min.js') }}"></script>
