@@ -32,12 +32,14 @@ twig:
         # resources: ['bootstrap_3_horizontal_layout.html.twig']
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    cache:              false
 
 # Assetic Configuration
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:        [ ]
+    bundles:
+        - IndigoMainBundle
     #java: /usr/bin/java
     filters:
         cssrewrite: ~

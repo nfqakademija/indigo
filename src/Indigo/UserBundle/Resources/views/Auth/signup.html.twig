@@ -1,0 +1,138 @@
+{% extends 'IndigoMainBundle:Pixel:base.html.twig' %}
+
+{% block title %}Prisijunk!{% endblock %}
+
+{% block body_class %}class="theme-default page-signup"{% endblock %}
+
+{% block body %}
+	<!-- Page background -->
+	<div id="page-signup-bg">
+		<!-- Background overlay -->
+		<div class="overlay"></div>
+		<!-- Replace this with your bg image -->
+		<img src="{{ asset('bundles/indigomain/images/demo/signin-bg-1.jpg') }}" alt="">
+	</div>
+	<!-- / Page background -->
+
+	<!-- Container -->
+	<div class="signup-container">
+		<!-- Header -->
+		<div class="signup-header">
+			<a href="index.html" class="logo">
+				<img src="{{ asset('bundles/indigomain/images/demo/logo-big.png') }}" alt="" style="margin-top: -5px;">&nbsp;
+				PixelAdmin
+			</a> <!-- / .logo -->
+			<div class="slogan">
+				Simple. Flexible. Powerful.
+			</div> <!-- / .slogan -->
+		</div>
+		<!-- / Header -->
+
+		<!-- Form -->
+		<div class="signup-form">
+			<form action="{{ path('user_signup') }}"  method="post" id="signup-form_id">
+				
+				<div class="signup-text">
+					<span>Create an account</span>
+				</div>
+
+				<div class="form-group w-icon">
+					{{ form_widget(form.email, {'attr': {'class': 'form-control input-lg', 'id': 'email_id', placeholder: 'Your email'} }) }}
+					<span class="fa fa-envelope signup-form-icon"></span>
+					{{  form_errors(form.email) }}
+				</div>
+
+				<div class="form-group w-icon">
+					{{ form_widget(form.password, {'attr': {'class': 'form-control input-lg', 'id': 'password_id', placeholder: 'Password'} }) }}
+					<span class="fa fa-lock signup-form-icon"></span>
+					{{  form_errors(form.password) }}
+				</div>
+
+{#
+				<div class="form-group" style="margin-top: 20px;margin-bottom: 20px;">
+					<label class="checkbox-inline">
+						<input type="checkbox" name="signup_confirm" class="px" id="confirm_id">
+						<span class="lbl">I agree with the <a href="#" target="_blank">Terms and Conditions</a></span>
+					</label>
+				</div>
+#}
+				{%  if error_message|length >0  %}
+					<div class="form-group w-icon">
+						<div class="alert alert-danger"><strong>{{ error_message }}</strong></div>
+					</div>
+				{% endif %}
+				<div class="form-actions">
+					{{ form_widget(form.signup, {'attr': {'class': 'signup-btn bg-primary'} }) }}
+				</div>
+				{{ form_row (form._token) }}
+			</form>
+			<!-- / Form -->
+
+			<!-- "Sign In with" block -->
+			<div class="signup-with">
+				<!-- Facebook -->
+				<a href="index.html" class="signup-with-btn" style="background:#4f6faa;background:rgba(79, 111, 170, .8);">Sign Up with <span>Facebook</span></a>
+			</div>
+			<!-- / "Sign In with" block -->
+		</div>
+		<!-- Right side -->
+	</div>
+
+		<div class="have-account">
+		Already have an account? <a href="{{ path('user_signin') }}">Sign In</a>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{  parent() }}
+<script type="text/javascript">
+	var init = [];
+	init.push(function () {
+		var $ph  = $('#page-signup-bg'),
+		    $img = $ph.find('> img');
+
+		$(window).on('resize', function () {
+			$img.attr('style', '');
+			if ($img.height() < $ph.height()) {
+				$img.css({
+					height: '100%',
+					width: 'auto'
+				});
+			}
+		});
+
+		$("#signup-form_id").validate({ focusInvalid: true, errorPlacement: function () {} });
+
+		// Validate name
+		$("#name_id").rules("add", {
+			required: true,
+			minlength: 1
+		});
+
+		// Validate email
+		$("#email_id").rules("add", {
+			required: true,
+			email: true
+		});
+		
+		// Validate username
+		$("#username_id").rules("add", {
+			required: true,
+			minlength: 3
+		});
+
+		// Validate password
+		$("#password_id").rules("add", {
+			required: true,
+			minlength: 6
+		});
+
+		// Validate confirm checkbox
+		$("#confirm_id").rules("add", {
+			required: true
+		});
+	});
+
+	window.PixelAdmin.start(init);
+</script>
+{%  endblock %}

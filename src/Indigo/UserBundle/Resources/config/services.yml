@@ -1,0 +1,17 @@
+services:
+    #indigo_foo_service:
+        #class: Indigo\UserBundle\Services\FooService
+
+    indigo_user.repository:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
+        arguments:
+            - Indigo\UserBundle\Entity\User
+
+    indigo_role.repository:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
+        arguments:
+            - Indigo\UserBundle\Entity\Role
