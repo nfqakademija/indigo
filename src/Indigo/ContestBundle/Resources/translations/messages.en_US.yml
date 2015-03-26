@@ -1,0 +1,8 @@
+create_contest.form.contest_creation: Contest creation
+create_contest.form.contest_title: Contest title
+create_contest.form.contest_privacy: Contest privacy (only with invitation)
+create_contest.form.contest_type: Contest type
+create_contest.form.contest_type.team: Team contest
+create_contest.form.contest_type.single: Single player contest
+create_contest.form.table_name: Table name
+create_contest.form.submit: Create contest

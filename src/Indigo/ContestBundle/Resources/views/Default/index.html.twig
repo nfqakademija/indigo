@@ -1,5 +1,25 @@
-{% extends "::base.html.twig" %}
+{% form_theme contest_form 'bootstrap_3_layout.html.twig' %}
 
-{% block body %}
-Hello world!
-{% endblock %}
+{{ 'create_contest.form.contest_creation'|trans }}
+
+    <div style="border:1px solid black; padding:15px; width:400px;">
+        {{ 'create_contest.form.contest_creation'|trans|upper }}
+        <hr/>
+        <div style="width:400px;">
+        {{ form_start(contest_form) }}
+            <div style="height:110px;">
+                <div style="float:left; width:100px; display:inline-block;">
+                    <img src="{{ asset('bundles/indigocontest/uploaded_images/contest/%s'|format(image_name)) }}" width="100px" height="100px"/>
+                </div>
+                <div style="float:right; width:300px; display:inline-block;">
+                    <div style="height:70px;">{{ form_row(contest_form.contest_title) }}</div>
+                    {{ form_widget(contest_form.image) }}
+                    {{ form_widget(contest_form.contest_privacy) }}
+
+                    {{ form_widget(contest_form.contest_type) }}
+
+                </div>
+            </div>
+        {{ form_end(contest_form) }}
+        </div>
+    </div>
