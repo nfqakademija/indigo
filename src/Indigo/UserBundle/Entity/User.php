@@ -5,15 +5,22 @@ namespace Indigo\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+//use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * User
  * @ORM\Table(name="users")
+ * @UniqueEntity(fields={"username"})
+ * @UniqueEntity(fields={"email"})
  * @ORM\Entity(repositoryClass="Indigo\UserBundle\Entity\UserRepository")
  */
-class User extends MessageDigestPasswordEncoder
+class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface, \Serializable
 {
     /**
      * @var integer
@@ -32,9 +39,14 @@ class User extends MessageDigestPasswordEncoder
     private $isActive;
 
     /**
+     * @ORM\Column(name="locked", type="boolean", options={"default":0})
+     */
+    private $isLocked;
+
+    /**
      * @var string
      *
-     * @ORM\Column(type="string", length=35, unique=true)
+     * @ORM\Column(type="string", length=25, unique=true)
      */
     private $username;
 
@@ -49,44 +61,77 @@ class User extends MessageDigestPasswordEncoder
     /**
      * @var string
      *
-     * @ORM\Column(length=32)
+     * @ORM\Column(length=64)
      * @Assert\Length(groups={"Default", "Profile"}, min=4, minMessage="user.error.password_to_short")
      */
     private $password;
 
     /**
-     * @var salt
      *
-     * @ORM\Column(type="string", length=40)
+     * @ORM\Column(type="string", length=64)
      */
     private $salt;
 
     /**
-     * @var picture
+     * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
+     * @ORM\JoinTable(name="user_role")
+     */
+
+    private $roles;
+    /**
      *
      * @ORM\Column(name="picture", type="string", length=255, nullable=true)
      */
     private $picture;
 
-     //*
-     //* @var UserProfile
-     //*
-     //* @ORM\OneToOne(targetEntity="UserProfile", mappedBy="user", cascade={"persist", "remove"})
-     //*
-     //* @Assert\Valid()
-     //*
-    //private $profile;
 
     /**
      * @ORM\Column(name="registration_date", type="datetime")
      */
     private $registrationDate;
 
+
+
     public function __construct()
     {
         $this->isActive = true;
+        $this->isLocked = false;
         $this->salt = md5(uniqid(null, true));
+        $this->roles = new ArrayCollection();
         $this->registrationDate = new \DateTime('now');
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function isAccountNonExpired()
+    {
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAccountNonLocked()
+    {
+        return !$this->getIsLocked();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCredentialsNonExpired()
+    {
+        return true;
+    }
+
+    /**
+     *
+     */
+    public function isEnabled()
+    {
+        return $this->getIsActive();
     }
 
     /**
@@ -98,6 +143,7 @@ class User extends MessageDigestPasswordEncoder
     {
         return $this->id;
     }
+
 
     /**
      * Set isActive
@@ -122,11 +168,27 @@ class User extends MessageDigestPasswordEncoder
         return $this->isActive;
     }
 
+    public function setIsLocked($isLocked)
+    {
+        $this->isLocked = $isLocked;
+
+        return $this;
+    }
+
+    /**
+     * Get isLocked
+     *
+     * @return boolean
+     */
+    public function getIsLocked()
+    {
+        return $this->isLocked;
+    }
+
     /**
      * Set username
      *
      * @param string $username
-     * @return SignIn
      */
     public function setUsername($username)
     {
@@ -136,7 +198,7 @@ class User extends MessageDigestPasswordEncoder
     }
 
     /**
-     * Get username
+     * Returns the username used to authenticate the user.
      *
      * @return string 
      */
@@ -149,7 +211,6 @@ class User extends MessageDigestPasswordEncoder
      * Set email
      *
      * @param string $email
-     * @return SignIn
      */
     public function setEmail($email)
     {
@@ -172,7 +233,6 @@ class User extends MessageDigestPasswordEncoder
      * Set password
      *
      * @param string $password
-     * @return SignIn
      */
     public function setPassword($password)
     {
@@ -182,7 +242,8 @@ class User extends MessageDigestPasswordEncoder
     }
 
     /**
-     * Get password
+     * Returns the password used to authenticate the user.
+     * This should be the encoded password. On authentication, a plain-text password will be salted, encoded, and then compared to this value.
      *
      * @return string 
      */
@@ -240,7 +301,187 @@ class User extends MessageDigestPasswordEncoder
     }
 
 
+    /**
+     *
+     */
     public function cryptPassword() {
         $this->password = md5($this->password);
+    }
+
+
+    /**
+     * (PHP 5 &gt;= 5.1.0)<br/>
+     * String representation of object
+     * @link http://php.net/manual/en/serializable.serialize.php
+     * @return string the string representation of the object or null
+     */
+    public function serialize()
+    {
+        return serialize(
+            array(
+                $this->id
+            )
+        );
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.1.0)<br/>
+     * Constructs the object
+     * @link http://php.net/manual/en/serializable.unserialize.php
+     * @param string $serialized <p>
+     * The string representation of the object.
+     * </p>
+     * @return void
+     */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id
+            ) = unserialize($serialized);
+    }
+
+    /**
+
+     */
+    public function getRoles()
+    {
+        return array('ROLE_USER');
+        //return $this->roles->toArray();
+    }
+
+    /**
+     * @param $roles
+     */
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRolesText()
+    {
+        $rolesText = '';
+        $roles = $this->getRoles();
+        if (is_array($roles)) {
+            foreach ($roles as $role) {
+                $rolesText .= $role->getName() . ', ';
+            }
+        }
+
+        $rolesText = trim($rolesText, ', ');
+
+        return $rolesText;
+    }
+
+     /**
+     * Removes sensitive data from the user.
+     *
+     * This is important if, at any given point, sensitive information like
+     * the plain-text password is stored on this object.
+     */
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+    /**
+     * Set role
+     *
+     * @param string $role
+     * @return User
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
+
+    /**
+     * Check is user has administrative roles
+     *
+     * @return bool
+     */
+    public function hasAdministrationRole()
+    {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq('role', 'ROLE_ADMIN'))
+            ->orWhere(Criteria::expr()->eq('role', 'ROLE_SUPER_ADMIN'))
+            ->orWhere(Criteria::expr()->eq('role', 'ROLE_MODERATOR'));
+
+        return count($this->roles->matching($criteria)) > 0;
+    }
+
+    /**
+     * Check if user is moderator
+     *
+     * @return bool
+     */
+    public function isModerator()
+    {
+        $criteria = Criteria::create()->where(Criteria::expr()->eq('role', 'ROLE_MODERATOR'));
+
+        return count($this->roles->matching($criteria)) > 0;
+    }
+
+    /**
+     * Check if user is admin
+     *
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        $criteria = Criteria::create()->where(Criteria::expr()->eq('role', 'ROLE_ADMIN'));
+
+        return count($this->roles->matching($criteria)) > 0;
+    }
+
+    /**
+     * Add roles
+     *
+     * @param \Indigo\UserBundle\Entity\Role $roles
+     * @return User
+     */
+    public function addRole(\Indigo\UserBundle\Entity\Role $roles)
+    {
+        $this->roles[] = $roles;
+
+        return $this;
+    }
+
+    /**
+     * Remove roles
+     *
+     * @param \Indigo\UserBundle\Entity\Role $roles
+     */
+    public function removeRole(\Indigo\UserBundle\Entity\Role $roles)
+    {
+        $this->roles->removeElement($roles);
+    }
+
+
+    /**
+     * Set registrationDate
+     *
+     * @param \DateTime $registrationDate
+     * @return User
+     */
+    public function setRegistrationDate($registrationDate)
+    {
+        $this->registrationDate = $registrationDate;
+
+        return $this;
+    }
+
+    /**
+     * Get registrationDate
+     *
+     * @return \DateTime 
+     */
+    public function getRegistrationDate()
+    {
+        return $this->registrationDate;
     }
 }

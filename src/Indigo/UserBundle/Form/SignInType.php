@@ -17,7 +17,11 @@ class SignInType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email','text')
+            ->add('username','text', [
+                'attr' => [
+                    'placeholder' => 'Your blabla',
+                ]
+            ])
             ->add('password','password')
             ->add(
                 'signin',
@@ -35,8 +39,7 @@ class SignInType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Indigo\UserBundle\Entity\User',
-                'validation_groups' => ['Default', 'Profile'],
+                'data_class' => null,
             )
         );
     }
@@ -46,6 +49,6 @@ class SignInType extends AbstractType
      */
     public function getName()
     {
-        return 'indigo_userbundle_signin';
+        return 'indigo_user_login';
     }
 }

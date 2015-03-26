@@ -3,3 +3,7 @@ indigo_user:
     type:     annotation
     prefix:   /
 
+indigo_main:
+    resource: "@IndigoMainBundle/Controller/"
+    type:     annotation
+    prefix:   /
