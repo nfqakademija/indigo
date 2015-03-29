@@ -1,5 +1,6 @@
 create_contest.form.contest_creation: Turnyro kūrimas
 create_contest.form.contest_title: Turnyro pavadinimas
+create_contest.form.contest_logo: Turnyro logotipas
 create_contest.form.contest_privacy: Turnyro privatumas (tik su kvietimais)
 create_contest.form.contest_type: Turnyro tipas
 create_contest.form.contest_type.team: Komandinis turnyras

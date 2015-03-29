@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * Order
  *
  * @ORM\Table(name="contests")
- * @ORM\Entity(repositoryClass="Indigo\ContestBundle\Controller\DefaultController\")
  */
 class Data {
 
@@ -97,7 +96,7 @@ class Data {
     }
 
     public function getUploadDir(){
-        return __DIR__.'/../../../../web/bundles/indigocontest/uploaded_images/contest/';
+        return __DIR__.'/../../../../web/uploaded_images/contest/';
     }
 
     /**

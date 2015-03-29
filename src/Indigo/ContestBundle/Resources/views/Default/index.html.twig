@@ -1,25 +1,26 @@
+{% extends "IndigoMainBundle:Pixel:pages-create-contest.html.twig" %}
 {% form_theme contest_form 'bootstrap_3_layout.html.twig' %}
 
-{{ 'create_contest.form.contest_creation'|trans }}
+{% block title %}{{ 'create_contest.form.contest_creation'|trans }}{% endblock%}
 
-    <div style="border:1px solid black; padding:15px; width:400px;">
-        {{ 'create_contest.form.contest_creation'|trans|upper }}
-        <hr/>
-        <div style="width:400px;">
-        {{ form_start(contest_form) }}
-            <div style="height:110px;">
-                <div style="float:left; width:100px; display:inline-block;">
-                    <img src="{{ asset('bundles/indigocontest/uploaded_images/contest/%s'|format(image_name)) }}" width="100px" height="100px"/>
-                </div>
-                <div style="float:right; width:300px; display:inline-block;">
-                    <div style="height:70px;">{{ form_row(contest_form.contest_title) }}</div>
-                    {{ form_widget(contest_form.image) }}
-                    {{ form_widget(contest_form.contest_privacy) }}
 
-                    {{ form_widget(contest_form.contest_type) }}
+{% block contest_top %}
+    {{ 'create_contest.form.contest_creation'|trans|capitalize }}
+{% endblock %}
 
-                </div>
-            </div>
-        {{ form_end(contest_form) }}
-        </div>
-    </div>
+{% block contest_left %}
+    {{ asset('uploaded_images/contest/%s'|format(image_name)) }}
+{% endblock %}
+
+{% block contest_right %}
+    {{ form_start(contest_form) }}
+    {{ form_row(contest_form.contest_title) }}
+    {{ form_row(contest_form.image) }}
+{% endblock %}
+
+{% block contest_bottom %}
+    {{ form_widget(contest_form.contest_privacy) }}
+    {{ form_row(contest_form.contest_type) }}
+    {{ form_row(contest_form.table_name) }}
+    {{ form_end(contest_form) }}
+{% endblock %}
