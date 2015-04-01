@@ -11,10 +11,13 @@ namespace Indigo\ContestBundle\Entity;
 use Doctrine\ORM\EntityRepository;
 
 class DataRepository extends EntityRepository{
-    public function getLastContest()
-    {
+
+    /**
+     * @return array
+     */
+    public function getLastContest(){
         $repository = $this->getDoctrine()
-            ->getRepository('ContestBundle:Data');
+            ->getRepository('IndigoContestBundle:Data');
 
         $return = $repository->findAll();
 

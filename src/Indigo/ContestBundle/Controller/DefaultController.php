@@ -7,7 +7,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -20,7 +19,7 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $return_data = $this->render('IndigoContestBundle:Default:successful.html.twig', ['formData' => '']);
+        $return_data = $this->render('IndigoContestBundle:Default:successful.html.twig', ['formData' => $this->get('indigo_data.repository')]);
         return $return_data;
     }
 

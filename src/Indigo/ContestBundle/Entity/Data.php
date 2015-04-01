@@ -49,7 +49,7 @@ class Data {
     /**
      * @var string
      *
-     * @ORM\Column(name="image_path", type="string", length=255, nullable=false)
+     * @ORM\Column(name="image_path", type="string", length=255, nullable=true)
      */
     public $path_for_image;
 
