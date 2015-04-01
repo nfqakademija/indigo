@@ -1,0 +1,12 @@
+{% extends "IndigoMainBundle:Pixel:pages-create-contest.html.twig" %}
+
+{% block title %}{{ 'create_contest.form.contest_creation'|trans }}{% endblock%}
+
+{% block contest_top %}
+    {{ 'create_contest.form.contest_creation'|trans|capitalize }}
+{% endblock %}
+
+{% block contest_right %}
+    {{ dump(formData) }}
+    {{ formData }}
+{% endblock %}

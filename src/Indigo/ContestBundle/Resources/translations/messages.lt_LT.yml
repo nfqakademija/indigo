@@ -1,3 +1,4 @@
+#Contest creation form
 create_contest.form.contest_creation: Turnyro kūrimas
 create_contest.form.contest_title: Turnyro pavadinimas
 create_contest.form.contest_logo: Turnyro logotipas
@@ -7,3 +8,10 @@ create_contest.form.contest_type.team: Komandinis turnyras
 create_contest.form.contest_type.single: Pavienis turnyras
 create_contest.form.table_name: Stalo pavadinimas
 create_contest.form.submit: Kurti turnyrą
+
+#Contest creation form - errors
+#create_contest.error.mimeTypes: Blogas failo formatas. Prašome įkelti JPG, JPEG, PNG or GIF failus
+
+#Successful creation form
+
+

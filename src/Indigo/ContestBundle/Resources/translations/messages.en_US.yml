@@ -1,3 +1,4 @@
+#Contest creation form
 create_contest.form.contest_creation: Contest creation
 create_contest.form.contest_title: Contest title
 create_contest.form.contest_logo: Contest logo
@@ -7,3 +8,9 @@ create_contest.form.contest_type.team: Team contest
 create_contest.form.contest_type.single: Single player contest
 create_contest.form.table_name: Table name
 create_contest.form.submit: Create contest
+
+#Contest creation form - errors
+#create_contest.error.mimeTypes: Blogas failo formatas. Prašome įkelti JPG, JPEG, PNG or GIF failus
+
+#Successful creation form
+
