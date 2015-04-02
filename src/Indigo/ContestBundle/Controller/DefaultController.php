@@ -19,16 +19,16 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $return_data = $this->render('IndigoContestBundle:Default:successful.html.twig', ['formData' => $this->get('indigo_data.repository')]);
+        $return_data = $this->render('IndigoContestBundle:Default:successful.html.twig', ['formData' => $this->get('indigo_data.repository')->getLastContest()]);
         return $return_data;
     }
 
     /**
-     * @Route("/create_contest/{_locale}", name="new", defaults={"_locale" = "lt_LT"}, requirements={"_locale" = "en_US|lt_LT"})
+     * @Route("/create_contest/{_locale}", name="form", defaults={"_locale" = "lt_LT"}, requirements={"_locale" = "en_US|lt_LT"})
      * @Method({"GET", "POST"})
      * @Template()
      */
-    public function newAction(Request $request){
+    public function formAction(Request $request){
         $data = new Data();
 
         $form = $this->createFormBuilder($data)
@@ -49,6 +49,10 @@ class DefaultController extends Controller
 
         if($form->isValid()){
             $this->dbQuery($data, $form->getData());
+            $this->addFlash(
+                'success',
+                $this->st('create_contest.success.created')
+            );
             return new RedirectResponse($this->generateUrl('success'));
         }
 
@@ -76,20 +80,3 @@ class DefaultController extends Controller
         $em->flush($formData);
     }
 }
-
-//su indexAction gaunu duomenis, formą spausdinu index twig, noriu redirectint po submit į newAction ir spausdint gautus duomenis successful twig'e
-
-//na ne taip kalbejom. As sakiau jog tavo forma reikia iskelti is indexAction i newAction. Tada newAction on submit
-// daryt redirecta i indexACtion kur bus jau tas tavo naujai sukurtas irasas. Niekur dabar nedaro, to preview lango, nes jis kaip papildomas clickas gaunas, nebent koks confirmas reikalaingas, tadaga jo  o cia paprastai new -> success -> redirect index -> list
-// tai čia maždaug gaunas, kad tik indexAction gali tuos duomenis gaut ? taip sarasa visu contestu tik index rodo. supratau, tai gal net ir nereikia pagalbos. o žiūrėk idėja gera ? du twig template'us naudot ? ar kažkokį patarimą turi ?
-
-
-//kiekvienas actions turi turet savo twig template atskira, nebent isimtis galetu but editAction'as (kuri tau irgi reikia padaryt), kuris
-// pernaudoti newACtion template. Bet velgi, reiktu daryt atskira edit.html.twig, kuriame daryt {%extends new.html.twig %}
-
-//Is viso ka tau reik padaryt sitam tai yra 4 actionai, indexAction, newAction, editAction ir deleteAction
-
-//edit ir delete action'ai specifiniai ? kaip ir index ? nu tai faktas, delete istrina, edit editina, index - listas, new - naujas itemas
-//yra toks dalykas kaip Single Responsibility, tai metoda reikai stegntis taip daryt kad jis butu atsakingas uz viena dalyka, arba uz kuo maziau dalyku
-
-// einu i meeta susirasysim uz 10-15 min

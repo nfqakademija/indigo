@@ -1,1 +1,9 @@
+services:
 
+#repositories
+    indigo_data.repository:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
+        arguments:
+            - Indigo\ContestBundle\Entity\Data

@@ -12,14 +12,14 @@
 {% endblock %}
 
 {% block contest_right %}
-        {{ form_start(contest_form) }}
-        {{ form_row(contest_form.contest_title) }}
-        {{ form_row(contest_form.image) }}
+    {{ form_start(contest_form) }}
+    {{ form_row(contest_form.contest_title) }}
+    {{ form_row(contest_form.image) }}
 {% endblock %}
 
 {% block contest_bottom %}
-        {{ form_widget(contest_form.contest_privacy) }}
-        {{ form_row(contest_form.contest_type) }}
-        {{ form_row(contest_form.table_name) }}
-        {{ form_end(contest_form) }}
+    {{ form_widget(contest_form.contest_privacy) }}
+    {{ form_row(contest_form.contest_type) }}
+    {{ form_row(contest_form.table_name) }}
+    {{ form_end(contest_form) }}
 {% endblock %}

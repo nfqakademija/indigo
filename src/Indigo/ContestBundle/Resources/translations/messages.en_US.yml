@@ -11,6 +11,15 @@ create_contest.form.submit: Create contest
 
 #Contest creation form - errors
 #create_contest.error.mimeTypes: Blogas failo formatas. Prašome įkelti JPG, JPEG, PNG or GIF failus
+create_contest.error.no_contest: There are no contests created.
 
 #Successful creation form
+create_contest.success.contest: Contest
+create_contest.success.privacy.yes: private
+create_contest.success.privacy.no: public
+create_contest.success.created: Contest created successfully!
+
+#Global
+yes: Yes
+no: No
 

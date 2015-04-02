@@ -11,7 +11,15 @@ create_contest.form.submit: Kurti turnyrą
 
 #Contest creation form - errors
 #create_contest.error.mimeTypes: Blogas failo formatas. Prašome įkelti JPG, JPEG, PNG or GIF failus
+create_contest.error.no_contest: Šiuo metu nėra sukurtų varžybų
 
 #Successful creation form
+create_contest.success.contest: Turnyras
+create_contest.success.privacy.yes: privatus
+create_contest.success.privacy.no: viešas
+create_contest.success.created: Turnyras sukurtas sėkmingai!
 
+#Global
+yes: Taip
+no: Ne
 

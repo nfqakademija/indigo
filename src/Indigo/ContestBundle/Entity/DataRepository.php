@@ -16,11 +16,14 @@ class DataRepository extends EntityRepository{
      * @return array
      */
     public function getLastContest(){
-        $repository = $this->getDoctrine()
-            ->getRepository('IndigoContestBundle:Data');
+        $builder= $this->_em->createQueryBuilder();
 
-        $return = $repository->findAll();
+        $builder->select('c')
+                ->from('IndigoContestBundle:Data', 'c')
+                ->orderBy('c.id', 'DESC');
 
-        return $return->getResult();
+        $return = $builder->getQuery();
+
+        return $return->setMaxResults(1)->getResult();
     }
 }

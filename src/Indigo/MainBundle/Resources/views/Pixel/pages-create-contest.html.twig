@@ -36,13 +36,15 @@
                     </div>
                         <div class="row">
                             <div class="col-xs-3 col-lg-2">
-                                <img src="{% block contest_left %}{% endblock %}" class="img-responsive" alt="*" title="{{ 'create_contest.form.contest_logo'|trans }}"/>
+                                <img src="{% block contest_left %}{% endblock %}" class="img-responsive" alt="" title="{{ 'create_contest.form.contest_logo'|trans }}"/>
                             </div>
                             <div class="col-xs-9 col-lg-10">
                                 {% block contest_right %}{% endblock %}
                             </div>
                         </div>
-                    <div>{% block contest_bottom %}{% endblock %}</div>
+                    <div>
+                        {% block contest_bottom %}{% endblock %}
+                    </div>
                 </div> <!-- / #content-wrapper -->
             </div>
             <div id="main-menu-bg"></div>
