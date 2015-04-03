@@ -1,36 +1,30 @@
 {% extends 'IndigoMainBundle:Pixel:base.html.twig' %}
 
-{% block title %}Prisijunk!{% endblock %}
+{% block title %}user.title.register{% endblock %}
 
-{% block body_class %}class="theme-default page-signup"{% endblock %}
+{% block body_class %}theme-default page-signup{% endblock %}
 
-{% block body %}
-	<!-- Page background -->
+{% block content %}
 	<div id="page-signup-bg">
-		<!-- Background overlay -->
 		<div class="overlay"></div>
-		<!-- Replace this with your bg image -->
 		<img src="{{ asset('bundles/indigomain/images/demo/signin-bg-1.jpg') }}" alt="">
 	</div>
-	<!-- / Page background -->
 
-	<!-- Container -->
 	<div class="signup-container">
 		<!-- Header -->
 		<div class="signup-header">
 			<a href="index.html" class="logo">
 				<img src="{{ asset('bundles/indigomain/images/demo/logo-big.png') }}" alt="" style="margin-top: -5px;">&nbsp;
 				PixelAdmin
-			</a> <!-- / .logo -->
+			</a>
 			<div class="slogan">
 				Simple. Flexible. Powerful.
-			</div> <!-- / .slogan -->
+			</div>
 		</div>
-		<!-- / Header -->
 
-		<!-- Form -->
+
 		<div class="signup-form">
-			<form action="{{ path('user_signup') }}"  method="post" id="signup-form_id">
+			<form action="{{ path('register_action') }}"  method="post" id="signup-form_id">
 				
 				<div class="signup-text">
 					<span>Create an account</span>
@@ -39,23 +33,32 @@
 				<div class="form-group w-icon">
 					{{ form_widget(form.email, {'attr': {'class': 'form-control input-lg', 'id': 'email_id', placeholder: 'Your email'} }) }}
 					<span class="fa fa-envelope signup-form-icon"></span>
-					{{  form_errors(form.email) }}
+
 				</div>
 
 				<div class="form-group w-icon">
 					{{ form_widget(form.password, {'attr': {'class': 'form-control input-lg', 'id': 'password_id', placeholder: 'Password'} }) }}
 					<span class="fa fa-lock signup-form-icon"></span>
-					{{  form_errors(form.password) }}
 				</div>
 
-{#
-				<div class="form-group" style="margin-top: 20px;margin-bottom: 20px;">
-					<label class="checkbox-inline">
-						<input type="checkbox" name="signup_confirm" class="px" id="confirm_id">
-						<span class="lbl">I agree with the <a href="#" target="_blank">Terms and Conditions</a></span>
-					</label>
-				</div>
-#}
+
+
+				{%  if (form_errors(form.password)|length>0) or (form_errors(form.email)|length>0) or (error_message|length > 0) %}
+					<div class="alert alert-danger"><strong>
+							{{ form_errors(form.email) }}
+							{{ form_errors(form.password) }}
+							{{ error_message }}
+						</strong></div>
+				{% endif %}
+
+				{#
+                                <div class="form-group" style="margin-top: 20px;margin-bottom: 20px;">
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" name="signup_confirm" class="px" id="confirm_id">
+                                        <span class="lbl">I agree with the <a href="#" target="_blank">Terms and Conditions</a></span>
+                                    </label>
+                                </div>
+                #}
 				{%  if error_message|length >0  %}
 					<div class="form-group w-icon">
 						<div class="alert alert-danger"><strong>{{ error_message }}</strong></div>
@@ -79,7 +82,7 @@
 	</div>
 
 		<div class="have-account">
-		Already have an account? <a href="{{ path('user_signin') }}">Sign In</a>
+		Already have an account? <a href="{{ path('login_action') }}">Sign In</a>
 	</div>
 {% endblock %}
 

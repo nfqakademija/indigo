@@ -1,0 +1,20 @@
+mail.sender_domain: indigo.dev
+mail.from: info@sender_domain
+mail.subject: laiškas nuo sender_domain;
+mail.footer_plain:    ----------
+                sender_domain komanda
+
+user.title.change_password: Pasikeiskite slaptažodį
+user.title.login: Prisijunkite
+user.title.register: Registruotis
+
+user.form.enter_username_or_email: Jūsų prisijungimo vardas ar e-pašto adresas
+user.form.password_recovery.success: Sėkmingai pasikeitėte slaptažodį
+user.form.title.change_password: Change your password
+user.form.change_password: user.form.change_password
+user.form.repeat_password: Repeat Password
+user.form.password: Password
+
+user.form.register.submit:Registruotis
+user.error.password_mismatch: ]The password fields must match.
+user.error.password_recovery.invalid_hash: Šios nuorodos galiojimo laikas baigėsi

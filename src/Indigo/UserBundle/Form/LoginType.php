@@ -5,9 +5,11 @@ namespace Indigo\UserBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Translation;
 
-
-class SignUpType extends AbstractType
+class LoginType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -16,14 +18,21 @@ class SignUpType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username', 'text', ['mapped' => false])
-            ->add('email', 'text')
-            ->add('password','password')
+            ->add('username','text', [
+                'attr' => [
+                    'placeholder' => 'user.form.enter_username_or_email',
+                ]
+            ])
+            ->add('password','password',[
+                'attr' => [
+                    'placeholder' => 'user.form.enter_password',
+                ]
+            ])
             ->add(
-                'signup',
+                'signin',
                 'submit',
                 [
-                    'label' => 'user.signup'
+                    'label' => 'user.form.login'
                 ]
             );
     }
@@ -35,8 +44,7 @@ class SignUpType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Indigo\UserBundle\Entity\User',
-                'validation_groups' => ['Default', 'Profile'],
+                'data_class' => null,
             )
         );
     }
@@ -46,6 +54,6 @@ class SignUpType extends AbstractType
      */
     public function getName()
     {
-        return 'indigo_userbundle_up';
+        return 'indigo_user_login';
     }
 }
