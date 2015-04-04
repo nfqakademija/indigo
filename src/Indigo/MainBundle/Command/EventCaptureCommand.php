@@ -1,21 +1,18 @@
 <?php
 
-namespace Indigo\API\Command;
+namespace Indigo\MainBundle\Command;
 
-
-use Symfony\Component\Console\Command\Command as BaseCommand;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Indigo\API\Manager\Manager;
 
-class EventCapture extends BaseCommand
+class EventCaptureCommand extends ContainerAwareCommand
 {
 
-    const API_URL = 'http://wonderwall.ox.nfq.lt/kickertable/api/v1/events';
-    const API_USERNAME = 'nfq';
-    const API_PASSWORD = 'labas';
+
 
     /**
      *
@@ -45,13 +42,18 @@ class EventCapture extends BaseCommand
             }
         }
 
-        $manager = new Manager(self::API_URL, [
-            'auth' => [self::API_USERNAME, self::API_PASSWORD],
-            'query' => $query
-            ]
-        );
-        $el = $manager->getEvents();
-        var_dump($el);
-        return true;
+        $logger = $this->getContainer()->get('logger');
+        $manager = $this->getContainer()->get('indigo_main.connection_manager');
+
+        try {
+            $eventList = $manager->getEvents($query);
+
+            var_dump($eventList);
+
+
+        } catch (\Exception $e) {
+            $logger->addError('failed api response: '. $e->getMessage());
+            exit(1);
+        }
     }
 }

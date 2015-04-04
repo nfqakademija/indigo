@@ -2,9 +2,8 @@
 
 namespace Indigo\API\Repository;
 
-class EventList extends \ArrayIterator{
-
-
+class EventList extends \ArrayIterator
+{
 
     /**
      * @return Event
