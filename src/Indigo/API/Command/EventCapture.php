@@ -54,7 +54,4 @@ class EventCapture extends BaseCommand
         var_dump($el);
         return true;
     }
-
-
-
 }
