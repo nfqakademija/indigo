@@ -6,6 +6,7 @@ use GuzzleHttp;
 use Indigo\ApiBundle\Event\ApiEvent;
 use Indigo\ApiBundle\Event\ApiEvents;
 use Indigo\ApiBundle\Factory\EventFactory;
+use MyProject\Proxies\__CG__\stdClass;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -71,20 +72,29 @@ class Manager
 
             if ($response->getStatusCode() == 200) {
                 if (stripos($response->getHeader('content-type'), 'json') !== false) {
-                    $data = json_decode($response->getBody(), true);
+                    $data = json_decode($response->getBody());
+                    //var_dump($data);
 
-                    if ($data['status'] != 'ok') {
+                    if ($data->status != 'ok') {
                         throw new \Exception('invalid api response');
                     }
                     //TODO: susirikiuoti atbuline tvarka
                     //TODO: tableshake'o eventa issisaugoti
 
                     $eventList = new TableEventList();
-                    foreach ($data['records'] as $d) {
+                    foreach ($data->records as $d) {
+
+                        if (strlen($d->data) > 2) {
+                            $d->data = json_decode($d->data);
+                        } else {
+                            $d->data = new \stdClass();
+                        }
                         $event = EventFactory::factory($d);
 
                         $eventList->append($event);
                     }
+                    //TODO: or not TODO  - sortint ? :)
+                    $eventList->uasort(array($this, 'orderByTs'));
 
                     $successEvent = new ApiEvent();
                     $successEvent->setData($eventList);
@@ -95,8 +105,11 @@ class Manager
                 }
             }
         } catch (\Exception $e) {
-            $failureEvent = new ApiEvent();
-            $this->ed->dispatch(ApiEvents::API_FAILED_EVENT, $failureEvent);
+            print $e->getMessage();
+            /*
+             * $failureEvent = new ApiEvent();
+                $this->ed->dispatch(ApiEvents::API_FAILED_EVENT, $failureEvent);
+            */
 
         }
 
@@ -128,5 +141,16 @@ class Manager
 
         unset($options['table_api_url']);
         $this->options = $options;
+    }
+
+    /**
+     * @param \stdClass
+     * @return int
+     */
+    public function orderByTs ($a, $b) {
+        if  ($a->getTimeWithUsec() ==  $b->getTimeWithUsec()) {
+            return 0;
+        }
+        return ($a->getTimeWithUsec() > $b->getTimeWithUsec()) ? 1 : -1;
     }
 }

@@ -6,7 +6,7 @@ use Symfony\Bridge\Doctrine;
 use Doctrine\ORM\EntityManager;
 use Indigo\ApiBundle\Event\ApiEvent;
 use Indigo\ApiBundle\Entity\Param;
-use Indigo\ApiBundle\Service\Manager;
+use Indigo\ApiBundle\Service\Manager\Manager;
 
 class ApiSuccessListener
 {
@@ -29,17 +29,26 @@ class ApiSuccessListener
      */
     public function onSuccess(ApiEvent $event)
     {
-        if ($event->getData()->count()) {
-            $event->getData()->seek(0);
+
+        if ($count = $event->getData()->count()) {
+            $event->getData()->seek($count - 1);
             $lastTableEvent = $event->getData()->current();
 
-            $paramLastRecordId = $this->em->getRepository('IndigoApiBundle:Param')->findOneBy([ 'param' => Manager::LAST_RECORD_ID]);
-            $paramLastRecordTs = $this->em->getRepository('IndigoApiBundle:Param')->findOneBy([ 'param' => Manager::LAST_RECORD_TS]);
-            $paramLastRecordCount = $this->em->getRepository('IndigoApiBundle:Param')->findOneBy([ 'param' => Manager::LAST_RECORDS_COUNT]);
+            if (! $paramLastRecordId = $this->em->getRepository('IndigoApiBundle:Param')->findOneBy([ 'param' => Manager::LAST_RECORD_ID])) {
+            $paramLastRecordId = new Param();
+            }
+
+            if (! $paramLastRecordTs = $this->em->getRepository('IndigoApiBundle:Param')->findOneBy([ 'param' => Manager::LAST_RECORD_TS])) {
+                $paramLastRecordTs = new Param();
+            }
+
+            if (! $paramLastRecordCount = $this->em->getRepository('IndigoApiBundle:Param')->findOneBy([ 'param' => Manager::LAST_RECORDS_COUNT])) {
+                $paramLastRecordCount = new Param();
+            }
 
             $paramLastRecordId->setParamAndValue(Manager::LAST_RECORD_ID, $lastTableEvent->getId());
             $paramLastRecordTs->setParamAndValue(Manager::LAST_RECORD_TS, $lastTableEvent->getTimeSec());
-            $paramLastRecordCount->setParamAndValue(Manager::LAST_RECORDS_COUNT, $event->getData()->count());
+            $paramLastRecordCount->setParamAndValue(Manager::LAST_RECORDS_COUNT, $count);
 
             $this->em->persist($paramLastRecordId);
             $this->em->persist($paramLastRecordTs);

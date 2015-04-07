@@ -32,14 +32,14 @@ abstract class TableEvent {
 
 
 
-    public function __construct($data)
+    public function __construct(\stdClass $data)
     {
 
-        $this->setId($data['id']);
-        $this->setTimeSec($data['timeSec']);
-        $this->setUsec($data['usec']);
-        $this->setType($data['type']);
-        $this->setData(json_decode($data['data'], true));
+        $this->setId($data->id);
+        $this->setTimeSec($data->timeSec);
+        $this->setUsec($data->usec);
+        $this->setType($data->type);
+        $this->setData($data->data);
     }
 
     /**
@@ -55,7 +55,7 @@ abstract class TableEvent {
      */
     public function setTableId($table_id)
     {
-        $this->table_id = $table_id;
+        $this->table_id = (int)$table_id;
     }
     /**
      * @return string
@@ -86,7 +86,7 @@ abstract class TableEvent {
      */
     public function setTimeSec($timeSec)
     {
-        $this->timeSec = $timeSec;
+        $this->timeSec = (int)$timeSec;
     }
 
     /**
@@ -102,7 +102,11 @@ abstract class TableEvent {
      */
     public function setUsec($usec)
     {
-        $this->usec = $usec;
+        $this->usec = (int)$usec;
+    }
+
+    public function getTimeWithUsec() {
+        return sprintf('%u.%u', $this->getTimeSec(), $this->getUsec());
     }
 
     /**
@@ -123,7 +127,7 @@ abstract class TableEvent {
      */
     public function setId($id)
     {
-        $this->id = $id;
+        $this->id = (int)$id;
     }
 
     /**
@@ -137,7 +141,7 @@ abstract class TableEvent {
     /**
      * @param \stdClass $data
      */
-    public function setData(array $data)
+    public function setData(\stdClass $data)
     {
         $this->data = $data;
     }

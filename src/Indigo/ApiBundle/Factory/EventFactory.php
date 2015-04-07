@@ -14,7 +14,7 @@ class EventFactory
 {
     public static function factory($data)
     {
-        switch($data['type']) {
+        switch($data->type) {
 
             case 'CardSwipe':
 

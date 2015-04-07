@@ -72,11 +72,11 @@ class CardSwipeEvent extends TableEvent implements TableEventInterface
     /**
      * @param array $data
      */
-    public function setData(array $data)
+    public function setData(\stdClass $data)
     {
-        $this->setTeam($data['team']);
-        $this->setPlayer($data['player']);
-        $this->setCardId($data['card_id']);
+        $this->setTeam($data->team);
+        $this->setPlayer($data->player);
+        $this->setCardId($data->card_id);
     }
 
     /*

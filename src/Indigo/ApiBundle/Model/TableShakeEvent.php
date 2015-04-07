@@ -10,7 +10,7 @@ class TableShakeEvent extends TableEvent implements TableEventInterface
      * @param array $data
      * @return boolean
      */
-    public function setData(array $data) {
+    public function setData(\stdClass $data) {
       return true;
     }
 

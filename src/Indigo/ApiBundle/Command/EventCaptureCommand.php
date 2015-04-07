@@ -54,12 +54,12 @@ class EventCaptureCommand extends ContainerAwareCommand
         }
 
         $logger = $this->getContainer()->get('logger');
-        $manager = $this->getContainer()->get('indigo_main.api.connection_manager');
+        $manager = $this->getContainer()->get('indigo_api.connection_manager');
 
         try {
-            $eventList = $manager->getEvents($query);
+            $ApiEventList = $manager->getEvents($query);
 
-
+            $this->getContainer()->get('indigo_api.');
             /*
              * $eventManager->analyze($eventList);
              */

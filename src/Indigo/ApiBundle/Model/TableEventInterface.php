@@ -9,5 +9,5 @@ interface TableEventInterface {
      * @param array $data
      * @return boolean
      */
-    public function setData(array $data);
+    public function setData(\stdClass $data);
 }
