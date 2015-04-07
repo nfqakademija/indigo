@@ -1,15 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: poweruser
- * Date: 4/4/2015
- * Time: 3:03 PM
- */
 
-namespace Indigo\MainBundle\Event;
+namespace Indigo\ApiBundle\Event;
 
 final class ApiEvents
 {
+    const API_ITEM_EVENT = 'indigo_api.item';
+
     const API_SUCCESS_EVENT = 'indigo_api.success';
 
     const API_FAILED_EVENT = 'indigo_api.failed';

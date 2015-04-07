@@ -1,16 +1,22 @@
 <?php
-namespace Indigo\MainBundle\API;
+namespace Indigo\ApiBundle\Service\Manager;
 
-use Indigo\API\Repository\EventList;
+use Indigo\ApiBundle\Repository\TableEventList;
 use GuzzleHttp;
-use GuzzleHttp\Exception\ClientException;
-use Indigo\MainBundle\Event\ApiEvent;
-use Indigo\MainBundle\Event\ApiEvents;
+use Indigo\ApiBundle\Event\ApiEvent;
+use Indigo\ApiBundle\Event\ApiEvents;
+use Indigo\ApiBundle\Factory\EventFactory;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
+
 class Manager
 {
+    const LAST_RECORD_TS = 'api.last_record_ts';
+    const LAST_RECORD_ID = 'api.last_record_id';
+    const LAST_RECORDS_COUNT = 'api.last_record_count';
+
+
     /**
      * @var string
      */
@@ -61,8 +67,6 @@ class Manager
                 'auth' => $this->options['auth'],
             ];
 
-
-
             $response = $this->getClient()->get($this->url, $query);
 
             if ($response->getStatusCode() == 200) {
@@ -72,22 +76,22 @@ class Manager
                     if ($data['status'] != 'ok') {
                         throw new \Exception('invalid api response');
                     }
+                    //TODO: susirikiuoti atbuline tvarka
+                    //TODO: tableshake'o eventa issisaugoti
 
-                    $successEvent = new ApiEvent();
-                    $successEvent->setData($data['records']);
-
-                    $this->ed->dispatch(ApiEvents::API_SUCCESS_EVENT, $successEvent);
-
-
-
-
-                    $eventList = new EventList();
+                    $eventList = new TableEventList();
                     foreach ($data['records'] as $d) {
                         $event = EventFactory::factory($d);
+
                         $eventList->append($event);
                     }
 
-                    return $eventList;
+                    $successEvent = new ApiEvent();
+                    $successEvent->setData($eventList);
+
+                    $this->ed->dispatch(ApiEvents::API_SUCCESS_EVENT, $successEvent);
+
+                   return $eventList;
                 }
             }
         } catch (\Exception $e) {
