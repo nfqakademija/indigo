@@ -1,17 +1,6 @@
-parameters:
-    indigo_main.connection_manager.class: Indigo\MainBundle\API\Manager
-
-services:
-    indigo_main.connection_manager:
-        class: %indigo_main.connection_manager.class%
-        arguments: ["@event_dispatcher"]
-        calls:
-            - [setOptions, ["%api_config%"]]
-
-    indigo_main.listener.api_success_listener:
-        class: Indigo\MainBundle\EventListener\ApiSuccessListener
-        tags:
-            - { name: kernel.event_listener, event: indigo_api.success, method: onSuccess }
+#    indigo_main.api.event_logic_manager:
+#        class: %indigo_main.api.event_logic_manager.class%
+#        arguments: ["@doctrine.orm.entity_manager"]
 
 #    indigo_main.example:
 #        class: Indigo\MainBundle\Example

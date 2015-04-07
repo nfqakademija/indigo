@@ -1,3 +1,7 @@
+indigo_api:
+    resource: "@IndigoApiBundle/Resources/config/routing.yml"
+    prefix:   /
+
 indigo_user:
     resource: "@IndigoUserBundle/Controller/"
     type:     annotation
