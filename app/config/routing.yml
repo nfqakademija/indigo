@@ -1,12 +1,19 @@
-indigo_api:
-    resource: "@IndigoApiBundle/Resources/config/routing.yml"
-    prefix:   /
-
 indigo_user:
     resource: "@IndigoUserBundle/Controller/"
     type:     annotation
     prefix:   /
+
 indigo_main:
     resource: "@IndigoMainBundle/Controller/"
     type:     annotation
-    prefix:   /dashboard
+    prefix:   /
+
+indigo_contest:
+    resource: "@IndigoContestBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+indigo_locations_reg:
+    resource: "@IndigoLocationsRegBundle/Controller/"
+    type:     annotation
+    prefix:   /

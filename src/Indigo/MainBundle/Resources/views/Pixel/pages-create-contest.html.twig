@@ -26,18 +26,32 @@
 
 <script>var init = [];</script>
 
-<div id="main-wrapper">
-    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-        {% include "IndigoMainBundle:Pixel:navigation.html.twig" %}
-        {% include "IndigoMainBundle:Pixel:menu.html.twig" %}
-    {% endif %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3" style="background-color: #F7F7F9; margin-top:60px; border: 1px solid #E1E1E8;">
+            <div class="row" style="padding:10px 15px;">
+                <div>
+                    <div class="row">
+                        <div class="col-xs-12"><h4><strong>{% block contest_top %}{% endblock %}</strong></h4></div>
+                    </div>
+                        <div class="row">
+                            <div class="col-xs-3 col-lg-2">
+                                <img src="{% block contest_left %}{% endblock %}" class="img-responsive" alt="" title="{{ 'create_contest.form.contest_logo'|trans }}"/>
+                            </div>
+                            <div class="col-xs-9 col-lg-10">
+                                {% block contest_right %}{% endblock %}
+                            </div>
+                        </div>
+                    <div>
+                        {% block contest_bottom %}{% endblock %}
+                    </div>
+                </div> <!-- / #content-wrapper -->
+            </div>
+            <div id="main-menu-bg"></div>
+        </div>
+    </div> <!-- / #main-wrapper -->
+</div>
 
-    <div id="content-wrapper">
-        {% block content %}{% endblock %}
-        <img src="{% block contest_logo %}{% endblock %}" width="100px" height="100px"/>
-    </div> <!-- / #content-wrapper -->
-    <div id="main-menu-bg"></div>
-</div> <!-- / #main-wrapper -->
 {% block javascripts %}
     <!--[if lt IE 9]>
     <script src="{{ asset('bundles/indigomain/js/ie.min.js') }}"></script>
