@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new Indigo\MainBundle\IndigoMainBundle(),
             new Indigo\UserBundle\IndigoUserBundle(),
             new Indigo\ApiBundle\IndigoApiBundle(),
+            new Indigo\GameBundle\IndigoGameBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

@@ -1,3 +1,7 @@
+indigo_game:
+    resource: "@IndigoGameBundle/Resources/config/routing.yml"
+    prefix:   /
+
 indigo_api:
     resource: "@IndigoApiBundle/Resources/config/routing.yml"
     prefix:   /
