@@ -1,0 +1,3 @@
+indigo_api_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: IndigoApiBundle:Default:index }

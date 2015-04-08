@@ -12,11 +12,11 @@ class EventCaptureCommand extends ContainerAwareCommand
 {
 
 
-
     /**
      *
      */
-    protected function configure() {
+    protected function configure()
+    {
 
         $this->setName('event:dump')
             ->setDescription('Dumps events from table API')
@@ -31,17 +31,18 @@ class EventCaptureCommand extends ContainerAwareCommand
      * @param OutputInterface $output
      * @return
      */
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
 
 
-        $query = ['rows' => $input->getArgument ('rows')];
+        $query = ['rows' => $input->getArgument('rows')];
         if ($input->getArgument('from-id') == 'last') {
 
             $em = $this->getContainer()->get('doctrine.orm.entity_manager');
             $repo = $em->getRepository('IndigoApiBundle:Param');
             $lastEventParam = $repo->findOneBy(['param' => Manager::LAST_RECORD_ID]);
             if ($lastEventParam !== null) {
-                $query['from-id']  = $lastEventParam->getValue();
+                $query['from-id'] = $lastEventParam->getValue();
             } else {
                 $query['from-id'] = 1;
             }
@@ -57,19 +58,24 @@ class EventCaptureCommand extends ContainerAwareCommand
         $manager = $this->getContainer()->get('indigo_api.connection_manager');
 
         try {
-            $ApiEventList = $manager->getEvents($query);
+            $isDevEnv = ($this->getContainer()->getParameter('kernel.environment') == 'dev');
 
-            $this->getContainer()->get('indigo_api.');
-            /*
-             * $eventManager->analyze($eventList);
-             */
+            $eventList = $manager->getEvents(
+                1,
+                $query,
+                $isDevEnv
+            );
 
-            //print_r ($eventList);
-            print ("got it. do the job\n");
-
+            if ($eventList) {
+                $eventLogicManager = $this->getContainer()->get('indigo_api.event_logic_manager');
+                $eventLogicManager->analyzeEventFlow($eventList);
+            } else {
+                $logger->addInfo('No events from API');
+            }
         } catch (\Exception $e) {
-            $logger->addError('failed api response: '. $e->getMessage());
+            $logger->addError('Failed API response: ' . $e->getMessage());
             exit(1);
         }
+
     }
 }

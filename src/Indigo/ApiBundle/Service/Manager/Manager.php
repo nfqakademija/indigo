@@ -1,12 +1,13 @@
 <?php
 namespace Indigo\ApiBundle\Service\Manager;
 
+use Indigo\ApiBundle\Model\TableShakeModel;
 use Indigo\ApiBundle\Repository\TableEventList;
 use GuzzleHttp;
 use Indigo\ApiBundle\Event\ApiEvent;
 use Indigo\ApiBundle\Event\ApiEvents;
 use Indigo\ApiBundle\Factory\EventFactory;
-use MyProject\Proxies\__CG__\stdClass;
+
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -22,6 +23,11 @@ class Manager
      * @var string
      */
     private $url;
+
+    /**
+     * @var array
+     */
+    private $tables;
 
     /**
      * @var array
@@ -54,66 +60,70 @@ class Manager
         if (!$this->client) {
             $this->client = new GuzzleHttp\Client();
         }
+
         return $this->client;
     }
 
     /**
      * @return EventList|Event[]
      */
-    public function getEvents(array $query)
+    public function getEvents($tableId, array $query, $tryTestOnFailure = false)
     {
         try {
+            $table = $this->getTable($tableId);
+
             $query = [
                 'query' => $query,
-                'auth' => $this->options['auth'],
+                'auth' => $table['auth'],
+                'timeout' => 5
             ];
 
-            $response = $this->getClient()->get($this->url, $query);
+            $response = $this->getClient()->get($table['table_api_url'], $query);
 
             if ($response->getStatusCode() == 200) {
                 if (stripos($response->getHeader('content-type'), 'json') !== false) {
                     $data = json_decode($response->getBody());
-                    //var_dump($data);
+                    if ($data->status == 'ok') {
 
-                    if ($data->status != 'ok') {
-                        throw new \Exception('invalid api response');
+
+                        $eventList = $this->parseResponseData($data);
+
+                        //TODO: or not TODO  - sortint ? :)
+                        //$eventList->uasort(array($this, 'orderByTs'));
+
+                        $successEvent = new ApiEvent();
+                        $successEvent->setData($eventList);
+
+                        $this->ed->dispatch(ApiEvents::API_SUCCESS_EVENT, $successEvent);
+
+                        return $eventList;
                     }
-                    //TODO: susirikiuoti atbuline tvarka
-                    //TODO: tableshake'o eventa issisaugoti
-
-                    $eventList = new TableEventList();
-                    foreach ($data->records as $d) {
-
-                        if (strlen($d->data) > 2) {
-                            $d->data = json_decode($d->data);
-                        } else {
-                            $d->data = new \stdClass();
-                        }
-                        $event = EventFactory::factory($d);
-
-                        $eventList->append($event);
-                    }
-                    //TODO: or not TODO  - sortint ? :)
-                    $eventList->uasort(array($this, 'orderByTs'));
-
-                    $successEvent = new ApiEvent();
-                    $successEvent->setData($eventList);
-
-                    $this->ed->dispatch(ApiEvents::API_SUCCESS_EVENT, $successEvent);
-
-                   return $eventList;
                 }
             }
-        } catch (\Exception $e) {
-            print $e->getMessage();
-            /*
-             * $failureEvent = new ApiEvent();
-                $this->ed->dispatch(ApiEvents::API_FAILED_EVENT, $failureEvent);
-            */
+            throw new \Exception('API seems went down...');
 
+        } catch (GuzzleHttp\Exception\ConnectException $e) {
+            if ($tryTestOnFailure) {
+                $events = $this->getDemoData();;
+
+                return $this->parseResponseData($events);
+            }
         }
 
         return false;
+    }
+
+    /**
+     * @param $tableId
+     * @return mixed
+     */
+    private function getTable($tableId)
+    {
+        if (isset($this->tables[$tableId])) {
+            return  $this->tables[$tableId];
+        }
+
+        throw new \InvalidArgumentException('missing table');
     }
 
     /**
@@ -137,10 +147,7 @@ class Manager
      */
     public function setOptions($options)
     {
-        $this->url = $options['table_api_url'];
-
-        unset($options['table_api_url']);
-        $this->options = $options;
+        $this->tables = $options['tables'];
     }
 
     /**
@@ -152,5 +159,49 @@ class Manager
             return 0;
         }
         return ($a->getTimeWithUsec() > $b->getTimeWithUsec()) ? 1 : -1;
+    }
+
+    /**
+     * @param \stdClass $data
+     * @return TableEventList
+     */
+    private function parseResponseData(\stdClass $data)
+    {
+        $TableShakeModel = null;
+        $eventList = new TableEventList();
+
+        foreach ($data->records as $d) {
+
+            if (strlen($d->data) > 2) {
+                $d->data = json_decode($d->data);
+            } else {
+                $d->data = new \stdClass();
+            }
+
+            $event = EventFactory::factory($d);
+            if ($event instanceof TableShakeModel) {
+
+                $TableShakeModel = $event;
+                continue;
+            }
+
+            $eventList->append($event);
+        }
+
+        if ($TableShakeModel !== null) {
+
+            $eventList->append($TableShakeModel);
+
+            return $eventList;
+        }
+
+        return $eventList;
+    }
+
+    /**
+     * @return string
+     */
+    private function getDemoData() {
+      return  json_decode('{"status":"ok","records":[{"id":"96511","timeSec":"1425543550","usec":"93454","type":"TableShake","data":"[]"},{"id":"96512","timeSec":"1425543551","usec":"169652","type":"AutoGoal","data":"{\u0022team\u0022:1}"},{"id":"96513","timeSec":"1425543551","usec":"527308","type":"AutoGoal","data":"{\u0022team\u0022:0}"},{"id":"96514","timeSec":"1425543560","usec":"484757","type":"AutoGoal","data":"{\u0022team\u0022:1}"},{"id":"96515","timeSec":"1425543560","usec":"485733","type":"CardSwipe","data":"{\u0022team\u0022:0,\u0022player\u0022:1,\u0022card_id\u0022:8469951}"},{"id":"96516","timeSec":"1425543568","usec":"400106","type":"AutoGoal","data":"{\u0022team\u0022:1}"},{"id":"96517","timeSec":"1425543568","usec":"401041","type":"CardSwipe","data":"{\u0022team\u0022:0,\u0022player\u0022:1,\u0022card_id\u0022:8469934}"},{"id":"96518","timeSec":"1425543574","usec":"856993","type":"AutoGoal","data":"{\u0022team\u0022:1}"},{"id":"96519","timeSec":"1425543574","usec":"857931","type":"CardSwipe","data":"{\u0022team\u0022:1,\u0022player\u0022:0,\u0022card_id\u0022:8469934}"},{"id":"96520","timeSec":"1425543581","usec":"794230","type":"AutoGoal","data":"{\u0022team\u0022:1}"},{"id":"96521","timeSec":"1425543581","usec":"795173","type":"CardSwipe","data":"{\u0022team\u0022:0,\u0022player\u0022:0,\u0022card_id\u0022:8469951}"},{"id":"96523","timeSec":"1425543570","usec":"134255","type":"TableShake","data":"[]"},{"id":"96525","timeSec":"1425543570","usec":"138302","type":"AutoGoal","data":"{\u0022team\u0022:1}"},{"id":"96527","timeSec":"1425543572","usec":"7159","type":"TableShake","data":"[]"},{"id":"96529","timeSec":"1425543574","usec":"863239","type":"TableShake","data":"[]"},{"id":"96531","timeSec":"1425543574","usec":"874316","type":"AutoGoal","data":"{\u0022team\u0022:1}"},{"id":"96533","timeSec":"1425543576","usec":"226701","type":"TableShake","data":"[]"},{"id":"96535","timeSec":"1425543578","usec":"67659","type":"TableShake","data":"[]"},{"id":"96537","timeSec":"1425543578","usec":"67835","type":"AutoGoal","data":"{\u0022team\u0022:1}"},{"id":"96539","timeSec":"1425543901","usec":"685291","type":"TableShake","data":"[]"},{"id":"96540","timeSec":"1425543901","usec":"685465","type":"AutoGoal","data":"{\u0022team\u0022:1}"},{"id":"96541","timeSec":"1425543903","usec":"78746","type":"TableShake","data":"[]"},{"id":"96542","timeSec":"1425543907","usec":"302682","type":"AutoGoal","data":"{\u0022team\u0022:1}"},{"id":"96543","timeSec":"1425543907","usec":"303637","type":"CardSwipe","data":"{\u0022team\u0022:0,\u0022player\u0022:1,\u0022card_id\u0022:8469934}"},{"id":"96544","timeSec":"1425543914","usec":"309757","type":"AutoGoal","data":"{\u0022team\u0022:1}"}]}');
     }
 }
