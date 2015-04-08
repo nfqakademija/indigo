@@ -54,7 +54,9 @@
 {% endblock %}
 
 {% block contest_bottom %}
-    <div class="alert alert-danger">
-        <strong>{{ 'create_contest.error.no_contest'|trans }}</strong>
-    </div>
+    {% if not formData %}
+        <div class="alert alert-danger">
+            <strong>{{ 'create_contest.error.no_contest'|trans }}</strong>
+        </div>
+    {% endif %}
 {% endblock %}

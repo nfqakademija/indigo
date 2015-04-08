@@ -29,7 +29,7 @@ class Data {
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    public $id;
 
     /**
      * @var int
@@ -261,6 +261,10 @@ class Data {
      */
     public function setContestEndDate($contest_end_date){
         $this->contest_end_date = $contest_end_date;
+    }
+
+    public function setId($id){
+        $this->id = $id;
     }
 
 
