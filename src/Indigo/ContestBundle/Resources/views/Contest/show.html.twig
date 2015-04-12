@@ -1,0 +1,64 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Contest</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Userid</th>
+                <td>{{ entity.userId }}</td>
+            </tr>
+            <tr>
+                <th>Contesttitle</th>
+                <td>{{ entity.contestTitle }}</td>
+            </tr>
+            <tr>
+                <th>Pathforimage</th>
+                <td>{{ entity.pathForImage }}</td>
+            </tr>
+            <tr>
+                <th>Tablename</th>
+                <td>{{ entity.tableName }}</td>
+            </tr>
+            <tr>
+                <th>Contestprivacy</th>
+                <td>{{ entity.contestPrivacy }}</td>
+            </tr>
+            <tr>
+                <th>Contesttype</th>
+                <td>{{ entity.contestType }}</td>
+            </tr>
+            <tr>
+                <th>Contestcreationdate</th>
+                <td>{{ entity.contestCreationDate|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Conteststartingdate</th>
+                <td>{{ entity.contestStartingDate|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Contestenddate</th>
+                <td>{{ entity.contestEndDate|date('Y-m-d H:i:s') }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('contest') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('contest_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}
