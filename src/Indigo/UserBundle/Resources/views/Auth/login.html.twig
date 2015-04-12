@@ -1,61 +1,49 @@
 {% extends 'IndigoMainBundle:Pixel:base.html.twig' %}
 
-{% block title %}Prisijunk!{% endblock %}
+{% block title %}user.title.login{% endblock %}
 
 {% block body_class %}theme-default page-signin{% endblock %}
 
 {% block body %}
 	<!-- Page background -->
 	<div id="page-signin-bg">
-		<!-- Background overlay -->
 		<div class="overlay"></div>
-		<!-- Replace this with your bg image -->
 		<img src="{{ asset('bundles/indigomain/images/demo/signin-bg-1.jpg') }}" alt="">
 	</div>
-	<!-- / Page background -->
-
-	<!-- Container -->
 	<div class="signin-container">
-
-		<!-- Left side -->
 		<div class="signin-info">
 			<a href="index.html" class="logo">
 				<img src="{{ asset('bundles/indigomain/images/demo/logo-big.png') }}" alt="" style="margin-top: -5px;">&nbsp;
 				PixelAdmin
-			</a> <!-- / .logo -->
+			</a>
 			<div class="slogan">
 				Simple. Flexible. Powerful.
-			</div> <!-- / .slogan -->
+			</div>
 			<ul>
 				<li><i class="fa fa-sitemap signin-icon"></i> Flexible modular structure</li>
 				<li><i class="fa fa-file-text-o signin-icon"></i> LESS &amp; SCSS source files</li>
 				<li><i class="fa fa-outdent signin-icon"></i> RTL direction support</li>
 				<li><i class="fa fa-heart signin-icon"></i> Crafted with love</li>
-			</ul> <!-- / Info list -->
+			</ul>
 		</div>
-		<!-- / Left side -->
-
-		<!-- Right side -->
 		<div class="signin-form">
-
-			<!-- Form -->
-			{{ form_start(form) }}
+			{{ form_start(form_login) }}
 				<div class="signin-text">
 					<span>Sign In to your account</span>
-				</div> <!-- / .signin-text -->
+				</div>
 
 				<div class="form-group w-icon">
-					{{ form_widget(form.username, {'attr': {'class': 'form-control input-lg'} }) }}
+					{{ form_widget(form_login.username, {'attr': {'class': 'form-control input-lg'} }) }}
 					<span class="fa fa-user signin-form-icon"></span>
-					{{  form_errors(form.username) }}
+					{{  form_errors(form_login.username) }}
 
 				</div> <!-- / email -->
 
 				<div class="form-group w-icon">
 
-					{{ form_widget(form.password, {'attr': {'class': 'form-control input-lg', placeholder: 'Password'} }) }}
+					{{ form_widget(form_login.password, {'attr': {'class': 'form-control input-lg'} }) }}
 					<span class="fa fa-lock signin-form-icon"></span>
-					{{  form_errors(form.password) }}
+					{{  form_errors(form_login.password) }}
 				</div> <!-- / Password -->
 
 				{%  if error_message|length >0  %}
@@ -64,12 +52,30 @@
 				</div>
 				{% endif %}
 
+
+					<div class="form-group w-icon">
+					{% for flashMessage in app.session.flashbag.get('notice') %}
+						<div class="note note-danger">
+							{{ flashMessage }}
+						</div>
+					{% endfor %}
+					</div>
+
+					<div class="form-group w-icon">
+						{% for flashMessage in app.session.flashbag.get('success') %}
+							<div class="note note-success">
+								{{ flashMessage }}
+							</div>
+						{% endfor %}
+					</div>
+
+
 				<div class="form-actions">
-					{{ form_widget(form.signin, {'attr': {'class': 'signin-btn bg-primary'} }) }}
+					{{ form_widget(form_login.signin, {'attr': {'class': 'signin-btn bg-primary'} }) }}
 					<a href="#" class="forgot-password" id="forgot-password-link">Forgot your password?</a>
 				</div> <!-- / .form-actions -->
 
-				{{ form_end(form) }}
+				{{ form_end(form_login) }}
 			<!-- / Form -->
 			<!-- "Sign In with" block -->
 			<div class="signin-with">
@@ -86,21 +92,18 @@
 						<div class="close">&times;</div>
 					</div> <!-- / .signin-text -->
 				</div> <!-- / .header -->
-				
+
 				<!-- Form -->
-				<form action="/index.html" id="password-reset-form_id">
-					<div class="form-group w-icon">
-						<input type="text" name="password_reset_email" id="p_email_id" class="form-control input-lg" placeholder="Enter your email">
-						<span class="fa fa-envelope signin-form-icon"></span>
-					</div> <!-- / Email -->
-
-					<div class="form-actions">
-						<input type="submit" value="SEND PASSWORD RESET LINK" class="signin-btn bg-primary">
-					</div> <!-- / .form-actions -->
-				</form>
-
-
-				<!-- / Form -->
+				{{ form_start(form_remind_password) }}
+				<div class="form-group w-icon">
+					{{ form_widget(form_remind_password.email, {'attr' : { 'class': 'form-control input-lg'}}) }}
+					<span class="fa fa-envelope signin-form-icon"></span>
+					{{  form_errors(form_remind_password.email) }}
+				</div>
+				<div class="form-actions">
+					{{ form_widget(form_remind_password.remind, { 'attr': { 'class': 'signin-btn bg-primary'}}) }}
+				</div>
+				{{ form_end(form_remind_password) }}
 			</div>
 			<!-- / Password reset form -->
 		</div>
@@ -109,7 +112,7 @@
 	<!-- / Container -->
 
 	<div class="not-a-member">
-		Not a member? <a href="{{ path('user_signup') }}">Sign up now</a>
+		Not a member? <a href="{{ path('register_action') }}">Sign up now</a>
 	</div>
 {% endblock %}
 
@@ -149,7 +152,7 @@
 	// Setup Sign In form validation
 /*	init.push(function () {
 		$("#signin-form_id").validate({ focusInvalid: true, errorPlacement: function () {} });
-		
+
 		// Validate email
 		$("#email_id").rules("add", {
 			required: true,
@@ -165,7 +168,7 @@
 	// Setup Password Reset form validation
 	init.push(function () {
 		$("#password-reset-form_id").validate({ focusInvalid: true, errorPlacement: function () {} });
-		
+
 		// Validate email
 		$("#p_email_id").rules("add", {
 			required: true,

@@ -8,7 +8,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
-//use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
@@ -76,8 +75,14 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
      * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
      * @ORM\JoinTable(name="user_role")
      */
-
     private $roles;
+
+
+    /**
+    * @ORM\OneToOne(targetEntity="ResetPassword", mappedBy="user")
+    */
+    private $reset_password_hash;
+
     /**
      *
      * @ORM\Column(name="picture", type="string", length=255, nullable=true)

@@ -4,6 +4,7 @@ imports:
     - { resource: services.yml }
 
 framework:
+    #default_locale: lt
     #esi:             ~
     translator:      { fallbacks: ["%locale%"] }
     secret:          "%secret%"
@@ -71,6 +72,7 @@ doctrine:
 
 # Swiftmailer Configuration
 swiftmailer:
+    delivery_address: info@indigo.dev
     transport: "%mailer_transport%"
     host:      "%mailer_host%"
     username:  "%mailer_user%"
