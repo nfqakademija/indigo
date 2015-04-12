@@ -2,7 +2,7 @@
 
 namespace Indigo\ContestBundle\Controller;
 
-use Indigo\ContestBundle\Entity\Data;
+use Indigo\ContestBundle\Entity\Contest;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -29,7 +29,7 @@ class DefaultController extends Controller
      * @Template()
      */
     public function formAction(Request $request){
-        $data = new Data();
+        $data = new Contest();
 
         $form = $this->createFormBuilder($data)
             ->setMethod("POST")
@@ -57,7 +57,7 @@ class DefaultController extends Controller
         }
 
 
-        $image = $request->isMethod("POST") && ($data->path_for_image != "contest-logo.jpg" && $data->path_for_image != null) ? $data->path_for_image : "contest-logo.jpg";
+        $image = $request->isMethod("POST") && ($data->pathForImage != "contest-logo.jpg" && $data->pathForImage != null) ? $data->pathForImage : "contest-logo.jpg";
 
         $return_data = $this->render('IndigoContestBundle:Default:index.html.twig',
             array('contest_form' => $form->createView(), 'image_name' => $image)

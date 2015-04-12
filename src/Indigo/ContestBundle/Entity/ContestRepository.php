@@ -10,7 +10,7 @@ namespace Indigo\ContestBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 
-class DataRepository extends EntityRepository{
+class ContestRepository extends EntityRepository{
 
     /**
      * @return array
@@ -19,7 +19,7 @@ class DataRepository extends EntityRepository{
         $builder= $this->_em->createQueryBuilder();
 
         $builder->select('c')
-                ->from('IndigoContestBundle:Data', 'c')
+                ->from('IndigoContestBundle:Contest', 'c')
                 ->orderBy('c.id', 'DESC');
 
         $return = $builder->getQuery();
