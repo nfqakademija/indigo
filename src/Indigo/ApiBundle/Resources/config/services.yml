@@ -1,9 +1,10 @@
 parameters:
-    indigo_api.connection_manager.class: Indigo\ApiBundle\Service\Manager\Manager
-    indigo_api.event_logic_manager.class: Indigo\ApiBundle\Service\Manager\EventLogicManager
+    indigo_api.connection_manager.class: Indigo\ApiBundle\Service\Manager\ApiManager
     indigo_api.success_event_listener.class: Indigo\ApiBundle\EventListener\ApiSuccessListener
+    indigo_table.event_flow_logic_manager.class: Indigo\ApiBundle\Service\Manager\EventFlowLogicManager
 
-    indigo_logic.new_table_event_listener.class: Indigo\ApiBundle\EventListener\GameListener
+    indigo_table.new_event_listener.class: Indigo\ApiBundle\EventListener\AllTableEventsListener
+
 
 services:
     indigo_api.connection_manager:
@@ -12,19 +13,22 @@ services:
         calls:
             - [setOptions, ["%api_config%"]]
 
+    indigo_table.event_flow_logic_manager:
+        class: %indigo_table.event_flow_logic_manager.class%
+        arguments: ["@event_dispatcher"]
+
+
     indigo_api.listener.api_success_listener:
         class: %indigo_api.success_event_listener.class%
         arguments: ["@doctrine.orm.entity_manager"]
         tags:
             - { name: kernel.event_listener, event: indigo_api.success, method: onResponseSuccess }
 
-    indigo_api.event_logic_manager:
-        class: %indigo_api.event_logic_manager.class%
-        arguments: ["@event_dispatcher"]
-
-
-    indigo_logic.listener.event_new_listener:
-        class: %indigo_logic.new_table_event_listener.class%
-        arguments: ["@doctrine.orm.entity_manager"]
+    indigo_table.new_event_listener:
+        class: %indigo_table.new_event_listener.class%
+        arguments: ["@doctrine.orm.entity_manager", "@event_dispatcher"]
         tags:
-            - {name: kernel.event_listener, event: indigo_logic.new_table_event, method: onNewEvent }
+            - { name: kernel.event_listener, event: indigo_table.new_event, method: onNewEvent }
+
+
+

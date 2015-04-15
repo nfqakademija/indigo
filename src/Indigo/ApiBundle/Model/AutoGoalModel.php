@@ -30,7 +30,7 @@ class AutoGoalModel extends TableActionModel implements TableActionInterface
     }
 
     /**
-     * @param array $data
+     * @param \stdClass $data
      */
     public function setData(\stdClass $data)
     {

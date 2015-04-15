@@ -3,10 +3,10 @@
 namespace Indigo\ApiBundle\Service\Manager;
 
 
-use Indigo\ApiBundle\Event\LogicEvent;
+use Indigo\ApiBundle\Event\TableEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class EventLogicManager
+class EventFlowLogicManager
 {
     /**
      * @var EventDispatcher
@@ -28,9 +28,10 @@ class EventLogicManager
         if  ($eventList->valid()) {
 
             foreach ($eventList as $tableEventModel) {
-                $tableEvent = new LogicEvent();
+                $tableEvent = new TableEvent();
                 $tableEvent->setTableEventModel($tableEventModel);
-                $this->ed->dispatch('indigo_logic.new_table_event',  $tableEvent);
+                //var_dump($tableEventModel);
+                $this->ed->dispatch('indigo_table.new_event',  $tableEvent);
             }
         }
     }

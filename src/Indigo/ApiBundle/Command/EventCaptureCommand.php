@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Indigo\ApiBundle\Service\Manager\Manager;
+use Indigo\ApiBundle\Service\Manager\ApiManager;
 
 class EventCaptureCommand extends ContainerAwareCommand
 {
@@ -29,27 +29,31 @@ class EventCaptureCommand extends ContainerAwareCommand
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-
         $query = ['rows' => $input->getArgument('rows')];
         if ($input->getArgument('from-id') == 'last') {
 
+            $tableKey = 1;
             $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-            $repo = $em->getRepository('IndigoApiBundle:Param');
-            $lastEventParam = $repo->findOneBy(['param' => Manager::LAST_RECORD_ID]);
-            if ($lastEventParam !== null) {
-                $query['from-id'] = $lastEventParam->getValue();
+            $er = $em->getRepository('IndigoGameBundle:TableStatus');
+            $tableStatus = $er->findOneByTableId($tableKey);
+
+            if ($tableStatus !== null) {
+
+                $query['from-id'] = $tableStatus->getLastApiRecordId();
             } else {
+
                 $query['from-id'] = 1;
             }
         }
         if ($val = $input->getArgument('from-ts')) {
+
             $query['from-ts'] = $val;
             if ($val = $input->getArgument('tills-ts')) {
+
                 $query['till-ts'] = $val;
             }
         }
@@ -61,19 +65,22 @@ class EventCaptureCommand extends ContainerAwareCommand
             $isDevEnv = ($this->getContainer()->getParameter('kernel.environment') == 'dev');
 
             $eventList = $manager->getEvents(
-                1,
+                $tableKey,
                 $query,
                 $isDevEnv
             );
 
             if ($eventList) {
-                $eventLogicManager = $this->getContainer()->get('indigo_api.event_logic_manager');
+
+                $eventLogicManager = $this->getContainer()->get('indigo_table.event_flow_logic_manager');
                 $eventLogicManager->analyzeEventFlow($eventList);
             } else {
+
                 $logger->addInfo('No events from API');
             }
         } catch (\Exception $e) {
-            $logger->addError('Failed API response: ' . $e->getMessage());
+
+            $logger->addError(sprintf('Failed API response: %s, in: %s:%u ', $e->getMessage(),$e->getFile(), $e->getLine()));
             exit(1);
         }
 
