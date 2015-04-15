@@ -13,4 +13,5 @@ use Doctrine\ORM\EntityRepository;
 class GameRepository extends EntityRepository
 {
 
+
 }
