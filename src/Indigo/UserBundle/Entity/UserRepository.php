@@ -18,6 +18,28 @@ use Doctrine\ORM\NoResultException;
 class UserRepository extends EntityRepository implements UserProviderInterface
 {
 
+/*    public function getPlayerWithTeamsByCardId($cardId)
+    {
+        $playerEntity = null;
+
+        try {
+            $qb = $this->_em->createQueryBuilder();
+            $qb
+                ->select('u, partial t.{id}')
+                ->from('IndigoUserBundle:User', 'u')
+                ->join('y u.teams', 't')
+                ->andWhere('u.cardId = :cid')
+                ->setParameter('cid', $cardId);
+
+            $playerEntity = $qb->getQuery()->getSingleResult();
+        } catch (NoResultException $ex) {
+
+            return false;
+        }
+
+        return $playerEntity;
+    }*/
+
     public function loadUserByUsername($username)
     {
         $q = $this

@@ -17,8 +17,11 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Indigo\MainBundle\IndigoMainBundle(),
-            new Indigo\UserBundle\IndigoUserBundle(),
+            new Indigo\ContestBundle\IndigoContestBundle(),
+            new Indigo\LocationsRegBundle\IndigoLocationsRegBundle(),
+            new Indigo\ApiBundle\IndigoApiBundle(),
             new Indigo\GameBundle\IndigoGameBundle(),
+            new Indigo\UserBundle\IndigoUserBundle(),
             new Indigo\UIBundle\IndigoUIBundle(),
         );
 

@@ -2,11 +2,10 @@
 
 namespace Indigo\ApiBundle\Model;
 
-
-interface TableEventInterface {
+interface TableActionInterface {
 
     /**
-     * @param array $data
+     * @param \stdClass $data
      * @return boolean
      */
     public function setData(\stdClass $data);

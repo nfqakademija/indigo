@@ -1,4 +1,15 @@
+parameters:
+    indigo_game.game_finish_listener.class: Indigo\GameBundle\EventListener\GameFinishListener
+
 services:
+    indigo_game.game_finish_listener:
+      class: %indigo_game.game_finish_listener.class%
+      tags:
+          - { name: kernel.event_listener, event: indigo_game.finish, method: onGameFinish }
+          - { name: kernel.event_listener, event: indigo_game.finish_on_score, method: onGameFinishMaxScoreReached }
+#          - { name: kernel.event_listener, event: indigo_game.calculate_ratings, method: onRatingsCalculate }
 #   indigo_game.example:
 #        class: Indigo\GameBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]
+
+

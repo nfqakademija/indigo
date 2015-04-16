@@ -3,12 +3,9 @@
 
 namespace Indigo\ApiBundle\Factory;
 
-
-
-use Indigo\ApiBundle\Model\AutoGoalEvent;
-use Indigo\ApiBundle\Model\CardSwipeEvent;
-use Indigo\ApiBundle\Model\TableShakeEvent;
-
+use Indigo\ApiBundle\Model\AutoGoalModel;
+use Indigo\ApiBundle\Model\CardSwipeModel;
+use Indigo\ApiBundle\Model\TableShakeModel;
 
 class EventFactory
 {
@@ -18,13 +15,13 @@ class EventFactory
 
             case 'CardSwipe':
 
-                return new CardSwipeEvent($data);
+                return new CardSwipeModel($data);
             case 'TableShake':
                     
-                return new TableShakeEvent($data);
+                return new TableShakeModel($data);
             case 'AutoGoal':
 
-                return new AutoGoalEvent($data);
+                return new AutoGoalModel($data);
             default:
                 //TODO: alert - unknown table event
         }

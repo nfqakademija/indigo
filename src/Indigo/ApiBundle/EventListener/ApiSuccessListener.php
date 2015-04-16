@@ -2,11 +2,13 @@
 
 namespace Indigo\ApiBundle\EventListener;
 
+use Indigo\GameBundle\Entity\Game;
 use Symfony\Bridge\Doctrine;
 use Doctrine\ORM\EntityManager;
 use Indigo\ApiBundle\Event\ApiEvent;
 use Indigo\ApiBundle\Entity\Param;
-use Indigo\ApiBundle\Service\Manager\Manager;
+use Indigo\ApiBundle\Service\Manager\ApiManager;
+use Indigo\GameBundle\Entity\TableStatus;
 
 class ApiSuccessListener
 {
@@ -27,35 +29,35 @@ class ApiSuccessListener
     /**
      * @param ApiEvent $event
      */
-    public function onSuccess(ApiEvent $event)
+    public function onResponseSuccess(ApiEvent $event)
     {
-
+        //TODO: iskelti i tablestatus lenta
         if ($count = $event->getData()->count()) {
+
             $event->getData()->seek($count - 1);
             $lastTableEvent = $event->getData()->current();
 
-            if (! $paramLastRecordId = $this->em->getRepository('IndigoApiBundle:Param')->findOneBy([ 'param' => Manager::LAST_RECORD_ID])) {
-            $paramLastRecordId = new Param();
+            $tableStatusEntity = $this->em
+                ->getRepository('IndigoGameBundle:TableStatus')
+                ->findOneByTableId($lastTableEvent->getTableId());
+
+            if (!$tableStatusEntity) {
+
+                $game = new Game();
+                $tableStatusEntity = new TableStatus();
+                $tableStatusEntity->setTableId($lastTableEvent->getTableId());
+                $tableStatusEntity->setGames($game);
             }
 
-            if (! $paramLastRecordTs = $this->em->getRepository('IndigoApiBundle:Param')->findOneBy([ 'param' => Manager::LAST_RECORD_TS])) {
-                $paramLastRecordTs = new Param();
-            }
-
-            if (! $paramLastRecordCount = $this->em->getRepository('IndigoApiBundle:Param')->findOneBy([ 'param' => Manager::LAST_RECORDS_COUNT])) {
-                $paramLastRecordCount = new Param();
-            }
-
-            $paramLastRecordId->setParamAndValue(Manager::LAST_RECORD_ID, $lastTableEvent->getId());
-            $paramLastRecordTs->setParamAndValue(Manager::LAST_RECORD_TS, $lastTableEvent->getTimeSec());
-            $paramLastRecordCount->setParamAndValue(Manager::LAST_RECORDS_COUNT, $count);
-
-            $this->em->persist($paramLastRecordId);
-            $this->em->persist($paramLastRecordTs);
-            $this->em->persist($paramLastRecordCount);
+            //$tableStatusEntity->setLastApiRecordId($lastTableEvent->getId());
+            $tableStatusEntity->setLastApiRecordId(616);
+            $tableStatusEntity->setLastApiRecordTs($lastTableEvent->getTimeSec());
+            $this->em->persist($tableStatusEntity);
             $this->em->flush();
+            printf("last API event id:%u\n", $lastTableEvent->getId());
         } else {
-            //TODO: jei 0 eventu?
+            //TODO: jei 0 eventu - we have most fresh info ?
+
         }
     }
 }
