@@ -2,7 +2,8 @@
 
 namespace Indigo\ApiBundle\Model;
 
-abstract class TableEvent {
+
+abstract class TableActionModel {
 
     /**
      * @var int

@@ -77,11 +77,11 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
      */
     private $roles;
 
-//
-//    /**
-//    * @ORM\OneToOne(targetEntity="ResetPassword", mappedBy="user")
-//    */
-//    private $reset_password_hash;
+
+    /**
+    * @ORM\OneToOne(targetEntity="ResetPassword", mappedBy="user")
+    */
+    private $reset_password_hash;
 
     /**
      *
@@ -95,7 +95,55 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
      */
     private $registrationDate;
 
+    /**
+     * @ORM\Column(name="card_id")
+     */
+    private $cardId;
 
+    /**
+     * @var ArrayCollection(<PlayerTeamRelation>)
+     * @ORM\OneToMany(targetEntity="Indigo\GameBundle\Entity\PlayerTeamRelation", mappedBy="player", cascade={"all"})
+     */
+    private $teams;
+
+    public function __toString()
+    {
+        return (string)$this->getId();
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getTeams()
+    {
+        return $this->teams;
+    }
+
+    /**
+     * @param $teams
+     * @return $this
+     */
+    public function setTeams($teams)
+    {
+        $this->teams = $teams;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCardId()
+    {
+        return $this->cardId;
+    }
+
+    /**
+     * @param mixed $cardId
+     */
+    public function setCardId($cardId)
+    {
+        $this->cardId = $cardId;
+    }
 
     public function __construct()
     {
@@ -104,6 +152,7 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
         $this->salt = md5(uniqid(null, true));
         $this->roles = new ArrayCollection();
         $this->registrationDate = new \DateTime('now');
+        $this->teams = new ArrayCollection();
     }
 
 
@@ -170,7 +219,7 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
      */
     public function getIsActive()
     {
-        return $this->isActive;
+        return (bool)$this->isActive;
     }
 
     public function setIsLocked($isLocked)

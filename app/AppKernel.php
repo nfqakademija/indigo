@@ -20,11 +20,12 @@ class AppKernel extends Kernel
             new Indigo\MainBundle\IndigoMainBundle(),
             new Indigo\ContestBundle\IndigoContestBundle(),
             new Indigo\LocationsRegBundle\IndigoLocationsRegBundle(),
+            new Indigo\ApiBundle\IndigoApiBundle(),
+            new Indigo\GameBundle\IndigoGameBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
-            //$bundles[] = new Acme\DemoBundle\AcmeDemoBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();

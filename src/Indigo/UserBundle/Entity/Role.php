@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Role
  *
- * @ORM\Table(name="role")
+ * @ORM\Table(name="roles")
  * @ORM\Entity(repositoryClass="Indigo\UserBundle\Entity\RoleRepository")
  */
 class Role  implements RoleInterface

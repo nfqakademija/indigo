@@ -4,7 +4,7 @@
 namespace Indigo\ApiBundle\Model;
 
 
-class CardSwipeEvent extends TableEvent implements TableEventInterface
+class CardSwipeModel extends TableActionModel implements TableActionInterface
 {
     /**
      * @var int
