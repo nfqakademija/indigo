@@ -221,22 +221,12 @@ class Game
     /**
      * Set gametimeId
      *
-<<<<<<< HEAD
-     * @param \Indigo\GameBundle\Entity\GameTime $gametimeId
-     * @return Game
-     */
-    public function setGametimeId(\Indigo\GameBundle\Entity\GameTime $gametimeId)
-    {
-        $this->gametimeId = $gametimeId;
-=======
      * @param \Indigo\GameBundle\Entity\GameTime $gameTime
      * @return Game
      */
     public function setGameTime(\Indigo\GameBundle\Entity\GameTime $gameTime)
     {
         $this->gameTime = $gameTime;
->>>>>>> api_test
-
         return $this;
     }
 

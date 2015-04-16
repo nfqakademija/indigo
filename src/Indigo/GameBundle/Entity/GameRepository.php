@@ -12,9 +12,4 @@ use Doctrine\ORM\EntityRepository;
  */
 class GameRepository extends EntityRepository
 {
-
-<<<<<<< HEAD
-=======
-
->>>>>>> api_test
 }
