@@ -13,14 +13,6 @@ indigo_ui_table_status:
         requirements:
                 _method: POST|GET
 
-
-indigo_ui_score:
-        path:     /live/score/
-        defaults: { _controller: IndigoUIBundle:Live:score }
-        requirements:
-                _method: POST|GET
-
-
 indigo_ui_player1:
         path:     /live/player1/
         defaults: { _controller: IndigoUIBundle:Live:player1 }

@@ -119,8 +119,10 @@ body{
     width: 100%;
     height: auto;
     border-radius: 50%;
-
     background: url("../images/empty-thumbnail.png") no-repeat center;
+    border: solid white 4px;
+
+    box-shadow: 0 0 5px #000000;
 }
 
 .field .bg {
@@ -154,10 +156,16 @@ body{
     }
 }
 
-@media screen  and (min-width: 801px){
+@media screen  and (min-width: 1200px){
     .field .bg{
         max-width: 1000px;
         margin: 0 auto;
+    }
+
+    .field .player
+    {
+        width: 100px;
+        height: 100px;
     }
 }
 
