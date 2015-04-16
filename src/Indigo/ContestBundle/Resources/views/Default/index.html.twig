@@ -1,0 +1,25 @@
+{% extends "IndigoMainBundle:Pixel:pages-create-contest.html.twig" %}
+{% form_theme contest_form 'bootstrap_3_layout.html.twig' %}
+
+{% block title %}{{ 'create_contest.form.contest_creation'|trans }}{% endblock%}
+
+{% block contest_top %}
+    {{ 'create_contest.form.contest_creation'|trans|capitalize }}
+{% endblock %}
+
+{% block contest_left %}
+    {{ asset('uploaded_images/contest/%s'|format(image_name)) }}
+{% endblock %}
+
+{% block contest_right %}
+    {{ form_start(contest_form) }}
+    {{ form_row(contest_form.contest_title) }}
+    {{ form_row(contest_form.image) }}
+{% endblock %}
+
+{% block contest_bottom %}
+    {{ form_widget(contest_form.contest_privacy) }}
+    {{ form_row(contest_form.contest_type) }}
+    {{ form_row(contest_form.table_name) }}
+    {{ form_end(contest_form) }}
+{% endblock %}

@@ -302,3 +302,5 @@ class AuthController extends Controller
         return md5($key . uniqid() . time());
     }
 }
+
+

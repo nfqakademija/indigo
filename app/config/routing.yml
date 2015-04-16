@@ -1,8 +1,12 @@
+indigo_ui:
+    resource: "@IndigoUIBundle/Resources/config/routing.yml"
+    prefix:   /
+
+indigo_game:
+    resource: "@IndigoGameBundle/Resources/config/routing.yml"
+    prefix:   /
+
 indigo_user:
     resource: "@IndigoUserBundle/Controller/"
     type:     annotation
     prefix:   /
-indigo_main:
-    resource: "@IndigoMainBundle/Controller/"
-    type:     annotation
-    prefix:   /dashboard
