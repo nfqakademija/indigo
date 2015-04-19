@@ -14,6 +14,7 @@ use Indigo\ContestBundle\Form\ContestType;
  * Contest controller.
  *
  * @Route("/contest")
+ *
  */
 class ContestController extends Controller
 {
@@ -23,13 +24,15 @@ class ContestController extends Controller
      *
      * @Route("/", name="contest")
      * @Method("GET")
-     * @Template()
+     * @Template("IndigoContestBundle:Contest:index.html.twig")
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('IndigoContestBundle:Contest')->findAll();
+
+        $this->setImageUrlGlobal("");
 
         return array(
             'entities' => $entities,
@@ -50,15 +53,18 @@ class ContestController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $entity->uploadImage();
             $em->persist($entity);
             $em->flush();
 
             return $this->redirect($this->generateUrl('contest_show', array('id' => $entity->getId())));
         }
 
+        $this->setImageUrlGlobal("");
+
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form'   => $form->createView()
         );
     }
 
@@ -76,7 +82,13 @@ class ContestController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit',
+            array(
+                'label' => 'create_contest.form.submit_create',
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
+            ));
 
         return $form;
     }
@@ -84,7 +96,7 @@ class ContestController extends Controller
     /**
      * Displays a form to create a new Contest entity.
      *
-     * @Route("/new", name="contest_new")
+     * @Route("/new/", name="contest_new")
      * @Method("GET")
      * @Template()
      */
@@ -92,6 +104,8 @@ class ContestController extends Controller
     {
         $entity = new Contest();
         $form   = $this->createCreateForm($entity);
+
+        $this->setImageUrlGlobal($entity->getPathForImage());
 
         return array(
             'entity' => $entity,
@@ -118,6 +132,8 @@ class ContestController extends Controller
 
         $deleteForm = $this->createDeleteForm($id);
 
+        $this->setImageUrlGlobal($entity->getPathForImage());
+
         return array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
@@ -127,7 +143,7 @@ class ContestController extends Controller
     /**
      * Displays a form to edit an existing Contest entity.
      *
-     * @Route("/{id}/edit", name="contest_edit")
+     * @Route("/edit/{id}/", name="contest_edit")
      * @Method("GET")
      * @Template()
      */
@@ -144,6 +160,8 @@ class ContestController extends Controller
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
 
+        $this->setImageUrlGlobal($entity->getPathForImage());
+
         return array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
@@ -152,12 +170,12 @@ class ContestController extends Controller
     }
 
     /**
-    * Creates a form to edit a Contest entity.
-    *
-    * @param Contest $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to edit a Contest entity.
+     *
+     * @param Contest $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createEditForm(Contest $entity)
     {
         $form = $this->createForm(new ContestType(), $entity, array(
@@ -165,14 +183,18 @@ class ContestController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
-
+        $form->add('submit', 'submit', [
+            'label' => 'update',
+            'attr' => [
+                'class' => 'btn btn-success'
+            ]
+        ]);
         return $form;
     }
     /**
      * Edits an existing Contest entity.
      *
-     * @Route("/{id}", name="contest_update")
+     * @Route("/{id}/", name="contest_update")
      * @Method("PUT")
      * @Template("IndigoContestBundle:Contest:edit.html.twig")
      */
@@ -191,6 +213,7 @@ class ContestController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+            $entity->uploadImage();
             $em->flush();
 
             return $this->redirect($this->generateUrl('contest_edit', array('id' => $id)));
@@ -205,7 +228,7 @@ class ContestController extends Controller
     /**
      * Deletes a Contest entity.
      *
-     * @Route("/{id}", name="contest_delete")
+     * @Route("/{id}/", name="contest_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -240,8 +263,16 @@ class ContestController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('contest_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
-        ;
+            ->add('submit', 'submit', [
+                'label' => 'delete',
+                'attr' => [
+                    'class' => 'btn btn-danger'
+                ]])
+            ->getForm();
+    }
+
+    private function setImageUrlGlobal($url){
+        $imageName = $url ? $url : "contest-logo.jpg";
+        $this->get('twig')->addGlobal('imagePath', $imageName);
     }
 }

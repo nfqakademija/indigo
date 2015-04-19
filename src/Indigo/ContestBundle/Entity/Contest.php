@@ -31,7 +31,7 @@ class Contest
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    public $id;
+    protected $id;
 
     /**
      * @var User $user
@@ -52,9 +52,9 @@ class Contest
     /**
      * @var string
      *
-     * @ORM\Column(name="image_path", type="string", length=255, nullable=false)
+     * @ORM\Column(name="image_path", type="string", length=255, nullable=true)
      */
-    public $pathForImage;
+    protected $pathForImage;
 
     /**
      * @Assert\File(maxSize="2M", mimeTypes={"image/jpg", "image/jpeg", "image/gif", "image/png"})
@@ -95,7 +95,7 @@ class Contest
     /**
      * @var \Datetime
      *
-     * @ORM\Column(name="contest_creation_date", type="datetime", nullable=false)
+     * @ORM\Column(name="contest_creation_date", type="datetime", nullable=true)
      */
     private $contestCreationDate;
 
@@ -130,11 +130,43 @@ class Contest
     }
 
     /**
+     * @param int $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
      * @return string
      */
     public function getContestTitle()
     {
         return $this->contestTitle;
+    }
+
+    /**
+     * @return string
+     */
+    public function setContestTitle($contestTitle)
+    {
+        return $this->contestTitle = $contestTitle;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPathForImage()
+    {
+        return $this->pathForImage;
+    }
+
+    /**
+     * @param string $pathForImage
+     */
+    public function setPathForImage($pathForImage)
+    {
+        $this->pathForImage = $pathForImage;
     }
 
     /**
@@ -221,21 +253,6 @@ class Contest
         $this->user = $user;
     }
 
-    /**
-     * @return string
-     */
-    public function getPathForImage()
-    {
-        return $this->pathForImage;
-    }
-
-    /**
-     * @param string $pathForImage
-     */
-    public function setPathForImage($pathForImage)
-    {
-        $this->pathForImage = $pathForImage;
-    }
 
     /**
      * @return string
@@ -270,15 +287,15 @@ class Contest
     }
 
     /**
-     * @return int
+     * @return boolean
      */
-    public function getContestType()
+    public function isContestType()
     {
         return $this->contestType;
     }
 
     /**
-     * @param int $contestType
+     * @param boolean $contestType
      */
     public function setContestType($contestType)
     {
@@ -332,6 +349,5 @@ class Contest
     {
         $this->contestEndDate = $contestEndDate;
     }
-
 
 }

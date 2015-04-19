@@ -14,7 +14,15 @@ parameters:
     mailer_user:       ~
     mailer_password:   ~
 
-    locale:            en
+    locale:            lt
 
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
+    api_config:
+        tables:
+            1:
+                table_id: 1
+                table_api_url: http://wonderwall.ox.nfq.lt/kickertable/api/v1/events
+                auth:
+                    - nfq
+                    - labas

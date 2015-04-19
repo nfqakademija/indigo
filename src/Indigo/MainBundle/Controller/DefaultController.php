@@ -7,19 +7,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class DefaultController extends Controller
 {
-    /**
-     * @Route("/", name="user_dashboard")
-     */
-    public function dashboardAction()
-    {
-        return $this->render('IndigoMainBundle:Pixel:index.html.twig', []);
-    }
+//    /**
+//     * @Route("/", name="user_dashboard")
+//     */
+//    public function dashboardAction()
+//    {
+//        return $this->render('IndigoMainBundle:Pixel:index.html.twig', []);
+//    }
 
-/*    public function indexAction($name)
+    /**
+     * @Route("/{name}", name="user_dashboard")
+     */
+    public function indexAction($name)
     {
         if (!$name) {
             $name='index.html';
         }
         return $this->render(sprintf('IndigoMainBundle:Pixel:%s.twig', $name), array("name" => $name));
-    }*/
+    }
 }

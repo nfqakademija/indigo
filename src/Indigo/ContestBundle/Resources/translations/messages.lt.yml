@@ -1,0 +1,39 @@
+#Contest creation form
+create_contest.form.user: Vartotojas
+create_contest.form.contest_creation: Turnyro kūrimas
+create_contest.form.contest_title: Pavadinimas
+create_contest.form.contest_logo: Logotipas
+create_contest.form.contest_privacy: Privatus turnyras (tik su kvietimais)
+create_contest.form.contest_type: Tipas
+create_contest.form.contest_type.team: Komandinis turnyras
+create_contest.form.contest_type.single: Pavienis turnyras
+create_contest.form.table_name: Stalas
+create_contest.form.contest_starting_date: Startavimo data
+create_contest.form.contest_end_date: Pabaigos data
+create_contest.form.submit_create: Kurti turnyrą
+
+#Contest creation form - errors
+create_contest.error.no_contest: Šiuo metu nėra sukurtų turnyrų
+
+#Successful creation form
+create_contest.success.privacy.yes: privatus
+create_contest.success.privacy.no: viešas
+create_contest.success.created: Turnyras sukurtas sėkmingai!
+
+#Global
+yes: Taip
+no: Ne
+contest: Turnyras
+delete: Trinti
+edit: Redaguoti
+back_to_the_list: Grįžti į sąrašą
+update: Atnaujinti
+create_new_contest: Sukurti naujas varžybas
+creator: Kūrėjas
+actions: Veiksmai
+contest_privacy: Privatumas
+contest_list: Turnyrų sąrašas
+show: Rodyti
+period: Laikotarpis
+to: Iki
+contest_edit: Turnyro redagavimas

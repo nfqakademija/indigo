@@ -1,16 +1,35 @@
 {% extends 'IndigoMainBundle:Pixel:base.html.twig' %}
 
 {% block body -%}
-    <h1>Contest edit</h1>
+    <h1>{{ 'contest_edit'|trans }}</h1>
 
-    {{ form(edit_form) }}
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('contest') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+    {{ form_start(edit_form) }}
+    {{ form_row(edit_form.user) }}
+    {{ form_row(edit_form.contestTitle) }}
+    {{ form_row(edit_form.image) }}
+    {{ form_row(edit_form.tableName) }}
+    {{ form_row(edit_form.contestType) }}
+    <div class="form-group">
+        <label class="col-sm-2 control-label required">{{ 'period'|trans }}</label>
+        <div class="col-sm-10">
+            <div class="input-daterange input-group date" id="datepicker">
+                {{ form_widget(edit_form.contestStartingDate) }}
+                <span class="input-group-addon">{{ 'to'|trans|lower }}</span>
+                {{ form_widget(edit_form.contestEndDate) }}
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label required">{{ 'create_contest.form.contest_privacy'|trans }}</label>
+        <div class="col-sm-10">
+            {{ form_widget(edit_form.contestPrivacy, {'data' : edit_form.contestPrivacy, 'attr' : {'data-on-text' : 'yes'|trans, 'data-off-text' : 'no'|trans}}) }}
+        </div>
+    </div>
+    {{ form_end(edit_form) }}
+    {{ form(delete_form) }}
+    <a href="{{ path('contest', { 'id': entity.id }) }}" title="{{ 'show'|trans }}" class="pull-right">
+        <button type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> {{ 'back_to_the_list'|trans }}
+        </button>
+    </a>
 {% endblock %}

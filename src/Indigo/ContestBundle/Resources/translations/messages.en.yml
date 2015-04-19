@@ -1,0 +1,39 @@
+#Contest creation form
+create_contest.form.user: User
+create_contest.form.contest_creation: Contest creation
+create_contest.form.contest_title: Title
+create_contest.form.contest_logo: Logo
+create_contest.form.contest_privacy: Privacy contest (only with invitation)
+create_contest.form.contest_type: Type
+create_contest.form.contest_type.team: Team contest
+create_contest.form.contest_type.single: Single player contest
+create_contest.form.table_name: Table
+create_contest.form.contest_starting_date: Starting date
+create_contest.form.contest_end_date: End date
+create_contest.form.submit_create: Create contest
+
+#Contest creation form - errors
+create_contest.error.no_contest: There are no contests created.
+
+#Successful creation form
+create_contest.success.privacy.yes: private
+create_contest.success.privacy.no: public
+create_contest.success.created: Contest created successfully!
+
+#Global
+yes: Yes
+no: No
+contest: Contest
+delete: Delete
+edit: Edit
+back_to_the_list: Back to the list
+update: Update
+create_new_contest: Create a new entry
+creator: Creator
+actions: Actions
+contest_privacy: Contest privacy
+contest_list: Contest list
+show: Show
+period: Period
+to: To
+contest_edit: Contest edit

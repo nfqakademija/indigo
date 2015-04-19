@@ -1,3 +1,9 @@
+#services:
+#    indigo_contest.twig.twig_extension:
+#        class: Indigo\ContestBundle\Twig\AppExtension
+#        tags:
+#            - { name: twig.extension }
+
 services:
 
 #repositories

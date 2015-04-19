@@ -1,15 +1,34 @@
-{% extends '::base.html.twig' %}
+{% extends 'IndigoMainBundle:Pixel:base.html.twig' %}
 
 {% block body -%}
-    <h1>Contest creation</h1>
-
-    {{ form(form) }}
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('contest') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
+    <h1>{{ 'create_contest.form.contest_creation'|trans }}</h1>
+    {{ form_start(form) }}
+    {{ form_row(form.user) }}
+    {{ form_row(form.contestTitle) }}
+    {{ form_row(form.image) }}
+    {{ form_row(form.tableName) }}
+    {{ form_row(form.contestType) }}
+    <div class="form-group">
+        <label class="col-sm-2 control-label required">{{ 'period'|trans }}</label>
+        <div class="col-sm-10">
+            <div class="input-daterange input-group date" id="datepicker">
+                {{ form_widget(form.contestStartingDate) }}
+                <span class="input-group-addon">{{ 'to'|trans|lower }}</span>
+                {{ form_widget(form.contestEndDate) }}
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label required">{{ 'create_contest.form.contest_privacy'|trans }}</label>
+        <div class="col-sm-10">
+            {{ form_widget(form.contestPrivacy, {'data' : 1, 'attr' : {'data-on-text' : 'yes'|trans, 'data-off-text' : 'no'|trans}}) }}
+        </div>
+    </div>
+    {{ form_end(form) }}
+    <a href="{{ path('contest', { 'id': entity.id }) }}" class="pull-right" title="{{ 'show'|trans }}">
+        <button type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> {{ 'back_to_the_list'|trans }}
+        </button>
+    </a>
 {% endblock %}
+
