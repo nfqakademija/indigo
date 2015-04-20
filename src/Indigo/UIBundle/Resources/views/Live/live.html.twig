@@ -9,46 +9,20 @@
 
     $(document).ready(function()
     {
-
-
         setInterval(function () {
 
-
             var status = $.get( "/live/status", function(data) {
-                $("#ajax-table-status").html(data);
+                var json = $.parseJSON(data);
+                $("#ajax-table-status").html(json.status);
+                $("#scoreA").html(json.score.teamA);
+                $("#scoreB").html(json.score.teamB);
+                $("#player1-img").attr("src", json.players[0].imageUrl + "?" + new Date().getTime());
+                $("#player2-img").attr("src", json.players[1].imageUrl + "?" + new Date().getTime());
+                $("#player3-img").attr("src", json.players[2].imageUrl + "?" + new Date().getTime());
+                $("#player4-img").attr("src", json.players[3].imageUrl + "?" + new Date().getTime());
             });
 
-            var score = $.get( "/live/score", function(data) {
-                var json = $.parseJSON(data);
-                $("#scoreA").html(json.teamA);
-                $("#scoreB").html(json.teamB);
-            })
-
-            var p1 = $.get( "/live/player1", function(data) {
-                var json = $.parseJSON(data);
-                $("#player1-img").html("<img src='" + json.imageUrl + "?" + new Date().getTime() + "'/>");
-            });
-
-            var p2 = $.get( "/live/player2", function(data) {
-                var json = $.parseJSON(data);
-                $("#player2-img").html("<img src='" + json.imageUrl + "?" + new Date().getTime() + "'/>");
-            });
-
-            var p3 = $.get( "/live/player3", function(data) {
-                var json = $.parseJSON(data);
-                $("#player3-img").html("<img src='" + json.imageUrl + "?" + new Date().getTime() + "'/>");
-            });
-
-        var p4 = $.get( "/live/player4", function(data) {
-            var json = $.parseJSON(data);
-            $("#player4-img").html("<img src='" + json.imageUrl + "?" + new Date().getTime() + "'/>");
-        });
-
-
-
-
-
-        },1000);
+        },5000);
 
     });
 
@@ -89,37 +63,29 @@
 
                         <div id="player1" class="player left-top">
                             {% if player1 != null %}
-                            <div id="player1-img">
-                                <img src="{{ player1.imageUrl }}"/>
-                            </div>
+                                <img id="player1-img" src="{{ player1.imageUrl }}"/>
                             {% endif %}
                             {#<p> {{ player1.name }} </p>#}
                         </div>
 
                         <div class="player left-bottom">
                             {% if player2 != null %}
-                                <div id="player2-img">
-                                    <img src="{{ player2.imageUrl }}"/>
-                                </div>
-                            {% endif %}
+                               <img id="player2-img" src="{{ player2.imageUrl }}"/>
+                                {% endif %}
                             {#<p> {{ player1.name }} </p>#}
                         </div>
 
 
                     <div class="player right-top">
                         {% if player3 != null %}
-                            <div id="player3-img">
-                                <img src="{{ player3.imageUrl }}"/>
-                            </div>
+                                <img id="player3-img" src="{{ player3.imageUrl }}"/>
                         {% endif %}
                         {#<p> {{ player1.name }} </p>#}
                     </div>
 
                     <div class="player right-bottom">
                         {% if player4 != null %}
-                            <div id="player4-img">
-                                <img src="{{ player4.imageUrl }}"/>
-                            </div>
+                            <img id="player4-img" src="{{ player4.imageUrl }}"/>
                         {% endif %}
                         {#<p> {{ player1.name }} </p>#}
                     </div>

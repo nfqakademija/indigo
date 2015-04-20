@@ -2,8 +2,10 @@
 
 namespace Indigo\UIBundle\Controller;
 
+use Indigo\UIBundle\Models\ScoreModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class LiveController extends Controller
@@ -78,46 +80,19 @@ class LiveController extends Controller
 
     public function statusAction()
     {
-        // Service required
-        return new Response("Stalas užimtas");
+        // Service required !!!
+
+        $json = '{
+            "status" : "Stalas laisvas",
+            "score" : {"teamA" : 6, "teamB" : 7} ,
+            "players" : [
+                {"name" : "Dalia", "imageUrl" : "/bundles/indigoui/images/dalia.png"},
+                {"name" : "Tadas", "imageUrl" : "/bundles/indigoui/images/tadas_surgailis.png"},
+                {"name" : "Billas", "imageUrl" : "/bundles/indigoui/images/bilas.png"},
+                {"name" : "Clintonas", "imageUrl" : "/bundles/indigoui/images/clinton.png"}
+                ]
+            }';
+
+        return new JsonResponse($json);
     }
-
-    public function scoreAction()
-    {
-        // Service required
-        $score = '{ "teamA" : 6, "teamB" : 9 }';
-        return new Response($score);
-    }
-
-    public function player1Action()
-    {
-        // Service required
-        $info = '{ "name" : "Jonas", "imageUrl" : "/bundles/indigoui/images/tadas_surgailis.png" }';
-        return new Response($info);
-    }
-
-    public function player2Action()
-    {
-        // Service required
-        $info = '{ "name" : "Petras", "imageUrl" : "/bundles/indigoui/images/tadas_surgailis.png" }';
-        return new Response($info);
-    }
-
-    public function player3Action()
-    {
-        // Service required
-        $info = '{ "name" : "Jonas", "imageUrl" : "/bundles/indigoui/images/tadas_surgailis.png" }';
-        return new Response($info);
-    }
-
-    public function player4Action()
-    {
-        // Service required
-        $info = '{ "name" : "Jonas", "imageUrl" : "/bundles/indigoui/images/tadas_surgailis.png" }';
-        return new Response($info);
-    }
-
-
-
-
 }

@@ -58,69 +58,59 @@ body{
     border-radius: 2px;
 }
 
+.field
+{
+    position: relative;
+}
+
 .field .player
 {
-    width: 80px;
-    height: 80px;
+    width: 120px;
+    height: 160px;
 
+    background-image: url(../images/player_bg.png);
+    background-position: bottom;
     overflow: hidden;
     color: white;
-
-    background-color: rgba(0, 0, 0, 0.4);
-    border-radius: 50%;
 }
 
 .left-top
 {
     position: absolute;
-    top: 15%;
-    left: 28%;
+    top: -15%;
+    left: 25%;
 }
 
 .left-bottom
 {
     position: absolute;
-    bottom: 25%;
+    bottom: 45%;
     left: 35%;
-}
-
-.left-middle
-{
-    position: absolute;
-    top: 40%;
-    left: 20%;
-}
-
-.right-middle
-{
-    position: absolute;
-    top: 40%;
-    right: 20%;
 }
 
 .right-top
 {
     position: absolute;
-    top: 15%;
-    right: 28%;
+    top: -15%;
+    right: 25%;
 }
 
 .right-bottom
 {
     position: absolute;
-    bottom: 25%;
+    bottom: 45%;
     right: 35%;
 }
-
-
 
 .field .player img
 {
     width: 100%;
     height: auto;
     border-radius: 50%;
-
     background: url("../images/empty-thumbnail.png") no-repeat center;
+    border: solid white 4px;
+
+    box-shadow: 0 0 2px #000000;
 }
 
 .field .bg {
@@ -137,11 +127,11 @@ body{
     .field .player
     {
         width: 60px;
-        height: 60px;
+        height: 80px;
     }
 
 }
-@media screen  and (min-width: 601px) and (max-width: 800px){
+@media screen  and (min-width: 601px) and (max-width: 799px){
     .field .bg{
         max-width: 600px;
         margin: 0 auto;
@@ -149,12 +139,12 @@ body{
 
     .field .player
     {
-        /*width: 80px;*/
-        /*height: 80px;*/
+        width: 80px;
+        height: 106px;
     }
 }
 
-@media screen  and (min-width: 801px){
+@media screen  and (min-width: 1000px){
     .field .bg{
         max-width: 1000px;
         margin: 0 auto;

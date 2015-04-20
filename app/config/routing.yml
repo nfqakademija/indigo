@@ -14,7 +14,7 @@ indigo_user:
     resource: "@IndigoUserBundle/Controller/"
     type:     annotation
     prefix:   /
-
+    
 indigo_main:
     resource: "@IndigoMainBundle/Controller/"
     type:     annotation
