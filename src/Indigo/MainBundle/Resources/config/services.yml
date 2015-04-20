@@ -1,4 +1,7 @@
-services:
+#    indigo_main.api.event_logic_manager:
+#        class: %indigo_main.api.event_logic_manager.class%
+#        arguments: ["@doctrine.orm.entity_manager"]
+
 #    indigo_main.example:
 #        class: Indigo\MainBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]
