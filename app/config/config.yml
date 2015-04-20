@@ -39,9 +39,13 @@ twig:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
+<<<<<<< HEAD
     bundles:
         - IndigoMainBundle
         - IndigoUIBundle
+=======
+    bundles:        [ ]
+>>>>>>> origin/clear
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
