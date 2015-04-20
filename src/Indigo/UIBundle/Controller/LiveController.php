@@ -3,10 +3,13 @@
 namespace Indigo\UIBundle\Controller;
 
 use Indigo\UIBundle\Models\ScoreModel;
+use Indigo\UIBundle\Services\IndigoService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+
+
 
 class LiveController extends Controller
 {
@@ -77,22 +80,11 @@ class LiveController extends Controller
         ];
     }
 
-
     public function statusAction()
     {
-        // Service required !!!
-
-        $json = '{
-            "status" : "Stalas laisvas",
-            "score" : {"teamA" : 6, "teamB" : 7} ,
-            "players" : [
-                {"name" : "Dalia", "imageUrl" : "/bundles/indigoui/images/dalia.png"},
-                {"name" : "Tadas", "imageUrl" : "/bundles/indigoui/images/tadas_surgailis.png"},
-                {"name" : "Billas", "imageUrl" : "/bundles/indigoui/images/bilas.png"},
-                {"name" : "Clintonas", "imageUrl" : "/bundles/indigoui/images/clinton.png"}
-                ]
-            }';
-
+        $is = new IndigoService();
+        $model = $is->getTableStatus(0);
+        $json = json_encode( $model->jsonSerialize() );
         return new JsonResponse($json);
     }
 }

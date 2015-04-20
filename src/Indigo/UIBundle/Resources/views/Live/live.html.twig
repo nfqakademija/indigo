@@ -12,14 +12,25 @@
         setInterval(function () {
 
             var status = $.get( "/live/status", function(data) {
+
                 var json = $.parseJSON(data);
-                $("#ajax-table-status").html(json.status);
-                $("#scoreA").html(json.score.teamA);
-                $("#scoreB").html(json.score.teamB);
-                $("#player1-img").attr("src", json.players[0].imageUrl + "?" + new Date().getTime());
-                $("#player2-img").attr("src", json.players[1].imageUrl + "?" + new Date().getTime());
-                $("#player3-img").attr("src", json.players[2].imageUrl + "?" + new Date().getTime());
-                $("#player4-img").attr("src", json.players[3].imageUrl + "?" + new Date().getTime());
+
+                if(json.isBusy)
+                {
+                    $("#ajax-table-status").html("Stalas UŽIMTAS!");
+                }
+                else
+                {
+                    $("#ajax-table-status").html("Stalas LAISVAS!");
+                }
+
+                $("#contest-title").html(json.contest.title);
+                $("#scoreA").html(json.teamA.goals);
+                $("#scoreB").html(json.teamB.goals);
+                $("#player1-img").attr("src", json.teamA.player1.imageUrl + "?" + new Date().getTime());
+                $("#player2-img").attr("src", json.teamA.player2.imageUrl + "?" + new Date().getTime());
+                $("#player3-img").attr("src", json.teamB.player1.imageUrl + "?" + new Date().getTime());
+                $("#player4-img").attr("src", json.teamB.player2.imageUrl + "?" + new Date().getTime());
             });
 
         },5000);
@@ -39,8 +50,7 @@
 
 
                 <div class="title">
-                    <h1> Here goes the content title </h1>
-                    <h4> Liko 24d 15 val.</h4>
+                    <h1 id="contest-title"> Here goes the content title </h1>
                 </div>
 
 
