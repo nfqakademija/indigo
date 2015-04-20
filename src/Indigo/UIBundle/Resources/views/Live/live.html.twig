@@ -50,7 +50,7 @@
 
 
                 <div class="title">
-                    <h1 id="contest-title"> Here goes the content title </h1>
+                    <h1 id="contest-title"> {{ contest.title}} </h1>
                 </div>
 
 
@@ -61,10 +61,10 @@
                 </div>
 
                 <div id="scoreA"  class="score" >
-                    {{ score.teamA }}
+                    {{ teamA.goals }}
                 </div>
                 <div id="scoreB" class="score" >
-                    {{ score.teamB }}
+                    {{ teamB.goals }}
                 </div>
 
                 <div class="field">
@@ -72,30 +72,30 @@
                     <img class="bg" src="{{ asset('bundles/indigoui/images/field2.png') }}"/>
 
                         <div id="player1" class="player left-top">
-                            {% if player1 != null %}
-                                <img id="player1-img" src="{{ player1.imageUrl }}"/>
+                            {% if teamA.player1 != null %}
+                                <img id="player1-img" src="{{ teamA.player1.imageUrl }}"/>
                             {% endif %}
                             {#<p> {{ player1.name }} </p>#}
                         </div>
 
                         <div class="player left-bottom">
-                            {% if player2 != null %}
-                               <img id="player2-img" src="{{ player2.imageUrl }}"/>
+                            {% if teamA.player2 != null %}
+                               <img id="player2-img" src="{{ teamA.player2.imageUrl }}"/>
                                 {% endif %}
                             {#<p> {{ player1.name }} </p>#}
                         </div>
 
 
                     <div class="player right-top">
-                        {% if player3 != null %}
-                                <img id="player3-img" src="{{ player3.imageUrl }}"/>
+                        {% if teamB.player1 != null %}
+                                <img id="player3-img" src="{{ teamB.player1.imageUrl }}"/>
                         {% endif %}
                         {#<p> {{ player1.name }} </p>#}
                     </div>
 
                     <div class="player right-bottom">
-                        {% if player4 != null %}
-                            <img id="player4-img" src="{{ player4.imageUrl }}"/>
+                        {% if teamB.player2 != null %}
+                            <img id="player4-img" src="{{ teamB.player2.imageUrl }}"/>
                         {% endif %}
                         {#<p> {{ player1.name }} </p>#}
                     </div>
@@ -111,74 +111,76 @@
         <div class="col-md-2">  </div>
         <div class="col-md-8 center">
 
-         <div class="reservation-item {% if reservations[0].isReserved %} booked {% endif %}">
-            <div class="res-title">
-                {% if reservations[0].isReserved == true %}
-                    Stalas rezervuotas
-                {% else %}
-                    Stalas laisvas
-                {% endif %}
-                            </div>
 
-                            <div class="res-time"> {{ reservations[0].timeFrom}} - {{ reservations[0].timeTo }} </div>
 
-                            {% if reservations[0].isReserved == false %}
-                    <button class="res-button"> Rezervuoti </button>
-                {% endif %}
-        </div>
+         {#<div class="reservation-item {% if reservations[0].isReserved %} booked {% endif %}">#}
+            {#<div class="res-title">#}
+                {#{% if reservations[0].isReserved == true %}#}
+                    {#Stalas rezervuotas#}
+                {#{% else %}#}
+                    {#Stalas laisvas#}
+                {#{% endif %}#}
+                            {#</div>#}
 
-        <div class="reservation-item {% if reservations[1].isReserved %} booked {% endif %}">
+                            {#<div class="res-time"> {{ reservations[0].timeFrom}} - {{ reservations[0].timeTo }} </div>#}
 
-            <div class="res-title">
-                {% if reservations[1].isReserved == true %}
-                    Stalas rezervuotas
-                {% else %}
-                    Stalas laisvas
-                {% endif %}
-            </div>
+                            {#{% if reservations[0].isReserved == false %}#}
+                    {#<button class="res-button"> Rezervuoti </button>#}
+                {#{% endif %}#}
+        {#</div>#}
 
-            <div class="res-time"> {{ reservations[1].timeFrom}} - {{ reservations[1].timeTo }} </div>
+        {#<div class="reservation-item {% if reservations[1].isReserved %} booked {% endif %}">#}
 
-            {% if reservations[1].isReserved == false %}
-                <button class="res-button"> Rezervuoti </button>
-            {% endif %}
+            {#<div class="res-title">#}
+                {#{% if reservations[1].isReserved == true %}#}
+                    {#Stalas rezervuotas#}
+                {#{% else %}#}
+                    {#Stalas laisvas#}
+                {#{% endif %}#}
+            {#</div>#}
 
-        </div>
+            {#<div class="res-time"> {{ reservations[1].timeFrom}} - {{ reservations[1].timeTo }} </div>#}
 
-        <div class="reservation-item {% if reservations[2].isReserved  %} booked {% endif %}">
-            <div class="res-title">
-                {% if reservations[2].isReserved == true %}
-                    Stalas rezervuotas
-                {% else %}
-                    Stalas laisvas
-                {% endif %}
-                            </div>
+            {#{% if reservations[1].isReserved == false %}#}
+                {#<button class="res-button"> Rezervuoti </button>#}
+            {#{% endif %}#}
 
-                            <div class="res-time"> {{ reservations[2].timeFrom}} - {{ reservations[2].timeTo }} </div>
+        {#</div>#}
 
-                            {% if reservations[2].isReserved == false %}
-                    <button class="res-button"> Rezervuoti </button>
-                {% endif %}
-        </div>
+        {#<div class="reservation-item {% if reservations[2].isReserved  %} booked {% endif %}">#}
+            {#<div class="res-title">#}
+                {#{% if reservations[2].isReserved == true %}#}
+                    {#Stalas rezervuotas#}
+                {#{% else %}#}
+                    {#Stalas laisvas#}
+                {#{% endif %}#}
+                            {#</div>#}
 
-        <div class="reservation-item {% if reservations[3].isReserved %} booked {% endif %}">
-            <div class="res-title">
-                {% if reservations[3].isReserved == true %}
-                    Stalas rezervuotas
-                {% else %}
-                    Stalas laisvas
-                {% endif %}
-                            </div>
+                            {#<div class="res-time"> {{ reservations[2].timeFrom}} - {{ reservations[2].timeTo }} </div>#}
 
-                            <div class="res-time"> {{ reservations[3].timeFrom}} - {{ reservations[3].timeTo }} </div>
+                            {#{% if reservations[2].isReserved == false %}#}
+                    {#<button class="res-button"> Rezervuoti </button>#}
+                {#{% endif %}#}
+        {#</div>#}
 
-                            {% if reservations[3].isReserved == false %}
-                    <button class="res-button"> Rezervuoti </button>
-                {% endif %}
-        </div>
+        {#<div class="reservation-item {% if reservations[3].isReserved %} booked {% endif %}">#}
+            {#<div class="res-title">#}
+                {#{% if reservations[3].isReserved == true %}#}
+                    {#Stalas rezervuotas#}
+                {#{% else %}#}
+                    {#Stalas laisvas#}
+                {#{% endif %}#}
+                            {#</div>#}
 
-         </div>
-        <div class="col-md-2">  </div>
+                            {#<div class="res-time"> {{ reservations[3].timeFrom}} - {{ reservations[3].timeTo }} </div>#}
+
+                            {#{% if reservations[3].isReserved == false %}#}
+                    {#<button class="res-button"> Rezervuoti </button>#}
+                {#{% endif %}#}
+        {#</div>#}
+
+         {#</div>#}
+        {#<div class="col-md-2">  </div>#}
 
 
 

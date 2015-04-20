@@ -1,15 +1,16 @@
 <?php
 
 namespace Indigo\UIBundle\Controller;
+use Indigo\UIBundle\Models\LiveViewModel;
+use Indigo\UIBundle\Models\ContestModel;
+use Indigo\UIBundle\Models\TeamModel;
+use Indigo\UIBundle\Models\PlayerModel;
 
-use Indigo\UIBundle\Models\ScoreModel;
 use Indigo\UIBundle\Services\IndigoService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-
-
 
 class LiveController extends Controller
 {
@@ -19,65 +20,9 @@ class LiveController extends Controller
      */
     public function liveAction()
     {
-        return [
-            "player1" => [
-                "name" => "Vardas1",
-                "imageUrl" => "/bundles/indigoui/images/anonymous .png"
-            ],
-
-            "player2" => [
-                "name" => "Vardas2",
-                "imageUrl" => "/bundles/indigoui/images/anonymous .png"
-            ],
-
-            "player3" => [
-                "name" => "Vardas3",
-                "imageUrl" => "/bundles/indigoui/images/anonymous .png"
-            ],
-
-            "player4" => [
-                "name" => "Vardas4",
-                "imageUrl" => "/bundles/indigoui/images/anonymous .png"
-            ],
-
-            "score" => [
-                "teamA" => "10",
-                "teamB" => "2"
-            ],
-
-
-            "reservations" => [
-                [
-                    "isReserved" => true,
-                    "name" => "Kestas",
-                    "timeFrom" => "12:45",
-                    "timeTo" => "13:00",
-                    "imageUrl" => "/bundles/indigoui/images/anonymous .png"
-                ],
-                [
-                    "isReserved" => false,
-                    "name" => "Jurgis",
-                    "timeFrom" => "13:00",
-                    "timeTo" => "13:15",
-                    "imageUrl" => "/bundles/indigoui/images/anonymous .png"
-                ],
-                [
-                    "isReserved" => false,
-                    "name" => "Jurgis",
-                    "timeFrom" => "13:00",
-                    "timeTo" => "13:15",
-                    "imageUrl" => "/bundles/indigoui/images/anonymous .png"
-                ],
-                [
-                    "isReserved" => true,
-                    "name" => "Jurgis",
-                    "timeFrom" => "13:00",
-                    "timeTo" => "13:15",
-                    "imageUrl" => "/bundles/indigoui/images/anonymous .png"
-                ],
-            ]
-
-        ];
+        $is = new IndigoService();
+        $model = $is->getTableStatus(0);
+        return $model->jsonSerialize();
     }
 
     public function statusAction()
