@@ -1,0 +1,221 @@
+{#{% extends "IndigoMainBundle:Pixel:base.html.twig" %}#}
+
+<link rel="stylesheet" href="{{ asset('bundles/indigomain/css/bootstrap.min.css') }}" />
+<link rel="stylesheet" href="{{ asset('bundles/indigoui/css/main.css') }}" />
+<srip src="{{ asset('bundles/indigomain/js/bootstrap.min.js') }}"></srip>
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+
+<script>
+
+    $(document).ready(function()
+    {
+
+
+        setInterval(function () {
+
+
+            var status = $.get( "/live/status", function(data) {
+                $("#ajax-table-status").html(data);
+            });
+
+            var score = $.get( "/live/score", function(data) {
+                var json = $.parseJSON(data);
+                $("#scoreA").html(json.teamA);
+                $("#scoreB").html(json.teamB);
+            })
+
+            var p1 = $.get( "/live/player1", function(data) {
+                var json = $.parseJSON(data);
+                $("#player1-img").html("<img src='" + json.imageUrl + "?" + new Date().getTime() + "'/>");
+            });
+
+            var p2 = $.get( "/live/player2", function(data) {
+                var json = $.parseJSON(data);
+                $("#player2-img").html("<img src='" + json.imageUrl + "?" + new Date().getTime() + "'/>");
+            });
+
+            var p3 = $.get( "/live/player3", function(data) {
+                var json = $.parseJSON(data);
+                $("#player3-img").html("<img src='" + json.imageUrl + "?" + new Date().getTime() + "'/>");
+            });
+
+        var p4 = $.get( "/live/player4", function(data) {
+            var json = $.parseJSON(data);
+            $("#player4-img").html("<img src='" + json.imageUrl + "?" + new Date().getTime() + "'/>");
+        });
+
+
+
+
+
+        },1000);
+
+    });
+
+</script>
+
+
+{% block content%}
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-md-2">  </div>
+            <div class="col-md-8 content">
+
+
+                <div class="title">
+                    <h1> Here goes the content title </h1>
+                    <h4> Liko 24d 15 val.</h4>
+                </div>
+
+
+                <div class="row " >
+                    <div class="col-xs-12">
+                       <span id="ajax-table-status" class="table-status"> Stalas užimtas </span>
+                    </div>
+                </div>
+
+                <div id="scoreA"  class="score" >
+                    {{ score.teamA }}
+                </div>
+                <div id="scoreB" class="score" >
+                    {{ score.teamB }}
+                </div>
+
+                <div class="field">
+
+                    <img class="bg" src="{{ asset('bundles/indigoui/images/field2.png') }}"/>
+
+                        <div id="player1" class="player left-top">
+                            {% if player1 != null %}
+                            <div id="player1-img">
+                                <img src="{{ player1.imageUrl }}"/>
+                            </div>
+                            {% endif %}
+                            {#<p> {{ player1.name }} </p>#}
+                        </div>
+
+                        <div class="player left-bottom">
+                            {% if player2 != null %}
+                                <div id="player2-img">
+                                    <img src="{{ player2.imageUrl }}"/>
+                                </div>
+                            {% endif %}
+                            {#<p> {{ player1.name }} </p>#}
+                        </div>
+
+
+                    <div class="player right-top">
+                        {% if player3 != null %}
+                            <div id="player3-img">
+                                <img src="{{ player3.imageUrl }}"/>
+                            </div>
+                        {% endif %}
+                        {#<p> {{ player1.name }} </p>#}
+                    </div>
+
+                    <div class="player right-bottom">
+                        {% if player4 != null %}
+                            <div id="player4-img">
+                                <img src="{{ player4.imageUrl }}"/>
+                            </div>
+                        {% endif %}
+                        {#<p> {{ player1.name }} </p>#}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+
+        <div class="col-md-2">  </div>
+        <div class="col-md-8 center">
+
+         <div class="reservation-item {% if reservations[0].isReserved %} booked {% endif %}">
+            <div class="res-title">
+                {% if reservations[0].isReserved == true %}
+                    Stalas rezervuotas
+                {% else %}
+                    Stalas laisvas
+                {% endif %}
+                            </div>
+
+                            <div class="res-time"> {{ reservations[0].timeFrom}} - {{ reservations[0].timeTo }} </div>
+
+                            {% if reservations[0].isReserved == false %}
+                    <button class="res-button"> Rezervuoti </button>
+                {% endif %}
+        </div>
+
+        <div class="reservation-item {% if reservations[1].isReserved %} booked {% endif %}">
+
+            <div class="res-title">
+                {% if reservations[1].isReserved == true %}
+                    Stalas rezervuotas
+                {% else %}
+                    Stalas laisvas
+                {% endif %}
+            </div>
+
+            <div class="res-time"> {{ reservations[1].timeFrom}} - {{ reservations[1].timeTo }} </div>
+
+            {% if reservations[1].isReserved == false %}
+                <button class="res-button"> Rezervuoti </button>
+            {% endif %}
+
+        </div>
+
+        <div class="reservation-item {% if reservations[2].isReserved  %} booked {% endif %}">
+            <div class="res-title">
+                {% if reservations[2].isReserved == true %}
+                    Stalas rezervuotas
+                {% else %}
+                    Stalas laisvas
+                {% endif %}
+                            </div>
+
+                            <div class="res-time"> {{ reservations[2].timeFrom}} - {{ reservations[2].timeTo }} </div>
+
+                            {% if reservations[2].isReserved == false %}
+                    <button class="res-button"> Rezervuoti </button>
+                {% endif %}
+        </div>
+
+        <div class="reservation-item {% if reservations[3].isReserved %} booked {% endif %}">
+            <div class="res-title">
+                {% if reservations[3].isReserved == true %}
+                    Stalas rezervuotas
+                {% else %}
+                    Stalas laisvas
+                {% endif %}
+                            </div>
+
+                            <div class="res-time"> {{ reservations[3].timeFrom}} - {{ reservations[3].timeTo }} </div>
+
+                            {% if reservations[3].isReserved == false %}
+                    <button class="res-button"> Rezervuoti </button>
+                {% endif %}
+        </div>
+
+         </div>
+        <div class="col-md-2">  </div>
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+{% endblock %}

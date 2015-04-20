@@ -3,8 +3,7 @@
 namespace Indigo\GameBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Indigo\GameBundle\Repository\GameStatusRepository;
-use Indigo\GameBundle\Repository\GameTypeRepository;
+
 
 
 /**
@@ -28,24 +27,18 @@ class Game
     /**
      * @var integer
      *
-     * @ORM\Column(name="table_status_id", type="integer")
+     * @ORM\Column(name="table_id", type="integer", options={"default"=0})
      */
-    private $tableStatusId;
+    private $tableId;
 
-    /**
-     * @var \Indigo\GameBundle\Entity\TableStatus
-     * @ORM\ManyToOne(targetEntity="Indigo\GameBundle\Entity\TableStatus", inversedBy="games", cascade={"all"})
-     * @ORM\JoinColumn(name="table_status_id", referencedColumnName="id")
-     */
-    private $tableStatus;
 
     /**
      * @var \Indigo\GameBundle\Entity\GameTime
      *
-     * @ORM\OneToOne(targetEntity="Indigo\GameBundle\Entity\GameTime", inversedBy="game")
-     * @ORM\JoinColumn(name="game_time_id", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="Indigo\GameBundle\Entity\GameTime", inversedBy="id")
+     * @ORM\JoinColumn(name="gametime", referencedColumnName="id")
      */
-    private $gameTime;
+    private $gametimeId;
 
     /**
      * @var \Indigo\UserBundle\Entity\User
@@ -143,19 +136,28 @@ class Game
      */
     private $finishedAt;
 
-
-
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="challenge_id", type="integer", options={"default"=0})
+     */
+    private $challengeId;
 
 
     public function __construct()
     {
         $this->setTeam0Id(0);
-        $this->setTeam0Score(0);
         $this->setTeam1Id(0);
-        $this->setTeam1Score(0);
 
+        $this->setMatchType('open');
+        $this->setStatus('waiting');
+
+        $this->setTableId(0);
         $this->setContestId(0);
         $this->setChallengeId(0);
+        //$this->setGametimeId(0);
+        $this->setTeam0Score(0);
+        $this->setTeam1Score(0);
     }
 
     /**
@@ -163,23 +165,15 @@ class Game
      */
     public function prePersist()
     {
-        if ($this->getStartedAt() === null) {
-            $this->setStartedAt(new \DateTime());
-        }
-
-        if ($this->getMatchType() === null) {
-            $this->setMatchType(GameTypeRepository::TYPE_GAME_OPEN);
-        }
-
-        if ($this->getStatus() === null) {
-            $this->setStatus(GameStatusRepository::STATUS_GAME_WAITING);
+        if ($this->startedAt === null) {
+            $this->startedAt = new \DateTime();
         }
     }
 
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -187,51 +181,37 @@ class Game
     }
 
     /**
-     * @param TableStatus $tableStatus
-     * @return $this
+     * Set tableId
+     *
+     * @param integer $tableId
+     * @return Game
      */
-    public function setTableStatus(TableStatus $tableStatus)
+    public function setTableId($tableId)
     {
-        $this->tableStatus = $tableStatus;
+        $this->tableId = $tableId;
 
         return $this;
     }
 
     /**
-     * @return TableStatus
+     * Get tableId
+     *
+     * @return integer 
      */
-    public function getTableStatus()
+    public function getTableId()
     {
-        return $this->tableStatus;
-    }
-
-    /**
-     * @return int
-     */
-    public function getTableStatusId()
-    {
-        return $this->tableStatusId;
-    }
-
-    /**
-     * @param $tableStatusId
-     * @return $this
-     */
-    public function setTableStatusId($tableStatusId)
-    {
-        $this->tableStatusId = $tableStatusId;
-        return $this;
+        return $this->tableId;
     }
 
     /**
      * Set gametimeId
      *
-     * @param \Indigo\GameBundle\Entity\GameTime $gameTime
+     * @param \Indigo\GameBundle\Entity\GameTime $gametimeId
      * @return Game
      */
-    public function setGameTime(\Indigo\GameBundle\Entity\GameTime $gameTime)
+    public function setGametimeId(\Indigo\GameBundle\Entity\GameTime $gametimeId)
     {
-        $this->gameTime = $gameTime;
+        $this->gametimeId = $gametimeId;
 
         return $this;
     }
@@ -241,9 +221,9 @@ class Game
      *
      * @return \Indigo\GameBundle\Entity\GameTime
      */
-    public function getGameTime()
+    public function getGametimeId()
     {
-        return $this->gameTime;
+        return $this->gametimeId;
     }
 
     /**
@@ -354,7 +334,7 @@ class Game
     /**
      * Get status
      *
-     * @return string
+     * @return string 
      */
     public function getStatus()
     {
@@ -377,7 +357,7 @@ class Game
     /**
      * Get team0Score
      *
-     * @return integer
+     * @return integer 
      */
     public function getTeam0Score()
     {
@@ -400,30 +380,11 @@ class Game
     /**
      * Get team1Score
      *
-     * @return integer
+     * @return integer 
      */
     public function getTeam1Score()
     {
         return $this->team1Score;
-    }
-
-    /**
-     * @param $teamPosition
-     * @param $teamId
-     * @return $this
-     */
-    public function setTeamId($teamPosition, $teamId)
-    {
-        if ($teamPosition) {
-
-            $this->setTeam1Id((int)$teamId);
-        }
-        else {
-
-            $this->setTeam0Id((int)$teamId);
-        }
-
-        return $this;
     }
 
     /**
@@ -442,7 +403,7 @@ class Game
     /**
      * Get team0Id
      *
-     * @return integer
+     * @return integer 
      */
     public function getTeam0Id()
     {
@@ -465,7 +426,7 @@ class Game
     /**
      * Get team1Id
      *
-     * @return integer
+     * @return integer 
      */
     public function getTeam1Id()
     {
@@ -488,33 +449,11 @@ class Game
     /**
      * Get matchType
      *
-     * @return string
+     * @return string 
      */
     public function getMatchType()
     {
         return $this->matchType;
-    }
-
-    /**
-     * @param $teamPosition
-     * @return $this
-     */
-    public function addTeamScore($teamPosition)
-    {
-        if ((int) $teamPosition) {
-            $this->setTeam1Score($this->getTeam1Score() + 1);
-        } else {
-            $this->setTeam0Score($this->getTeam0Score() + 1);
-        }
-        return $this;
-    }
-
-    public function getTeamScore($teamPosition)
-    {
-        if ((int) $teamPosition) {
-            return $this->getTeam1Score();
-        }
-        return $this->getTeam0Score();
     }
 
     /**
@@ -533,7 +472,7 @@ class Game
     /**
      * Get contestId
      *
-     * @return integer
+     * @return integer 
      */
     public function getContestId()
     {
@@ -556,7 +495,7 @@ class Game
     /**
      * Get startedAt
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getStartedAt()
     {
@@ -579,114 +518,33 @@ class Game
     /**
      * Get finishedAt
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getFinishedAt()
     {
         return $this->finishedAt;
     }
 
-
-    private function TeamAndPlayerMethod($teamPosition, $playerPosition, $action)
+    /**
+     * Set challengeId
+     *
+     * @param integer $challengeId
+     * @return Game
+     */
+    public function setChallengeId($challengeId)
     {
-        return sprintf('%sTeam%uPlayer%uId', $action, $teamPosition, $playerPosition);
+        $this->challengeId = $challengeId;
+
+        return $this;
     }
+
     /**
-     * @param $teamPosition
-     * @param $playerPosition
-     * @param $playerId
+     * Get challengeId
+     *
+     * @return integer 
      */
-    public function setPlayer($teamPosition, $playerPosition, $playerId)
+    public function getChallengeId()
     {
-        $method = $this->TeamAndPlayerMethod($teamPosition, $playerPosition, 'set');
-        $this->$method($playerId);
+        return $this->challengeId;
     }
-
-    /**
-     * @param $playerId
-     * @return bool
-     */
-    public function isPlayerInThisGame($playerId)
-    {
-        for ($teamPosition=0; $teamPosition <= 1; $teamPosition++) {
-
-            for ($playerPosition=0; $playerPosition <= 1; $playerPosition++) {
-
-                if ($user = $this->getPlayer($teamPosition, $playerPosition)) {
-
-                    if ($user->getId() == (int)$playerId) {
-
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * @param $player
-     */
-    public function setAllPlayers(\Indigo\UserBundle\Entity\User $player)
-    {
-        $this->setTeam0Player0Id($player);
-        $this->setTeam0Player1Id($player);
-        $this->setTeam1Player0Id($player);
-        $this->setTeam1Player1Id($player);
-    }
-
-    /**
-     * @param $teamPosition
-     * @return int
-     */
-    public function getPlayersCountInTeam($teamPosition)
-    {
-        $playersInTeam = 0;
-        for ($playerPosition=0; $playerPosition <= 1; $playerPosition++) {
-
-            $user = $this->getPlayer($teamPosition, $playerPosition);
-            if ($user && $user->getId() > 0 ) {
-
-                $playersInTeam++;
-            }
-        }
-
-        return $playersInTeam;
-    }
-
-    /**
-     * @param $teamPosition
-     * @param $playerPosition
-     * @return mixed
-     */
-    public function getPlayer($teamPosition, $playerPosition) {
-
-        $method = $this->TeamAndPlayerMethod((int) $teamPosition, (int) $playerPosition, 'get');
-
-        return $this->$method();
-    }
-
-    /**
-     * @return bool
-     */
-    public function isBothTeamReady() {
-        return (bool)(($this->getPlayersCountInTeam(0) + $this->getPlayersCountInTeam(1)) == 4);
-    }
-
-    /**
-     * @param $team
-     * @return int
-     */
-    public function getMemberCountInTeam ($team)
-    {
-        if ((int)$team == 0) {
-            return  ($this->getTeam0Player0Id() ? 1 : 0) +
-            ($this->getTeam0Player1Id() ? 1 : 0);
-        } else {
-            return  ($this->getTeam1Player0Id() ? 1 : 0) +
-            ($this->getTeam1Player1Id() ? 1 : 0);
-        }
-    }
-
 }

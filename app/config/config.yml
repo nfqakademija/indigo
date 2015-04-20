@@ -41,6 +41,7 @@ assetic:
     use_controller: false
     bundles:
         - IndigoMainBundle
+        - IndigoUIBundle
     #java: /usr/bin/java
     filters:
         cssrewrite: ~

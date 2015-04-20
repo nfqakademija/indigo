@@ -16,12 +16,13 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+            new Indigo\MainBundle\IndigoMainBundle(),
             new Indigo\UserBundle\IndigoUserBundle(),
+            new Indigo\GameBundle\IndigoGameBundle(),
+            new Indigo\UIBundle\IndigoUIBundle(),
+            new Indigo\ApiBundle\IndigoApiBundle(),
             new Indigo\ContestBundle\IndigoContestBundle(),
             new Indigo\LocationsRegBundle\IndigoLocationsRegBundle(),
-            new Indigo\MainBundle\IndigoMainBundle(),
-            new Indigo\ApiBundle\IndigoApiBundle(),
-            new Indigo\GameBundle\IndigoGameBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

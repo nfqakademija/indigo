@@ -2,15 +2,13 @@
 
 namespace Indigo\GameBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * TableStatus
  *
- * @ORM\Table(name="tables_status")
+ * @ORM\Table(name="table_status")
  * @ORM\Entity(repositoryClass="Indigo\GameBundle\Entity\TableStatusRepository")
- * @ORM\HasLifecycleCallbacks()
  */
 class TableStatus
 {
@@ -31,180 +29,21 @@ class TableStatus
     private $busy;
 
     /**
-     * @var ArrayCollection<Game>
-     * @ORM\OneToMany(targetEntity="Indigo\GameBundle\Entity\Game", mappedBy="tableStatus", cascade={"persist"})
-     * @ORM\JoinColumn(name="game_id", referencedColumnName="id")
-     */
-    private $games;
-
-    /**
      * @var integer
-     * @ORM\Column(name="table_id", unique=true)
+     *
+     * @ORM\Column(name="game_id", type="integer")
      */
-    private $tableId;
+    private $gameId;
 
-    /**
-     * @var integer
-     * @ORM\Column(name="last_swipe_ts")
-     */
-    private $lastSwipeTs;
-
-    /**
-     * @var integer
-     * @ORM\Column(name="last_api_record_id")
-     */
-    private $lastApiRecordId;
-
-    /**
-     * @var integer
-     * @ORM\Column(name="last_api_record_ts")
-     */
-    private $lastApiRecordTs;
-
-    /**
-     * @var integer
-     * @ORM\Column(name="last_swiped_card_id")
-     */
-    private $lastSwipedCardId;
-
-    /**
-     * @var integer
-     * @ORM\Column(name="last_tableshake_ts")
-     */
-    private $lastTableshakeTs;
-
-    public function __construct()
-    {
-        $this->games = new ArrayCollection();
-    }
-
-    /**
-     * @ORM\PrePersist()
-     */
-    public function prePersist()
-    {
-        if ($this->getBusy() === null) {
-            $this->setBusy(0);
-        }
-
-        if ($this->getLastSwipedCardId() === null) {
-            $this->setLastSwipedCardId(0);
-        }
-
-        if ($this->getLastSwipeTs() === null) {
-            $this->setLastSwipeTs(0);
-        }
-
-        if ($this->getLastTableshakeTs() === null) {
-            $this->setLastTableshakeTs(0);
-        }
-
-    }
-
-    /**
-     * @return int
-     */
-    public function getLastApiRecordId()
-    {
-        return $this->lastApiRecordId;
-    }
-
-    /**
-     * @param int $lastApiRecordId
-     */
-    public function setLastApiRecordId($lastApiRecordId)
-    {
-        $this->lastApiRecordId = $lastApiRecordId;
-    }
-
-    /**
-     * @return int
-     */
-    public function getLastApiRecordTs()
-    {
-        return $this->lastApiRecordTs;
-    }
-
-    /**
-     * @param int $lastApiRecordTs
-     */
-    public function setLastApiRecordTs($lastApiRecordTs)
-    {
-        $this->lastApiRecordTs = $lastApiRecordTs;
-    }
 
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @return int
-     */
-    public function getTableId()
-    {
-        return $this->tableId;
-    }
-
-    /**
-     * @param int $tableId
-     */
-    public function setTableId($tableId)
-    {
-        $this->tableId = $tableId;
-    }
-
-    /**
-     * @return int
-     */
-    public function getLastSwipeTs()
-    {
-        return $this->lastSwipeTs;
-    }
-
-    /**
-     * @param int $lastSwipeTs
-     */
-    public function setLastSwipeTs($lastSwipeTs)
-    {
-        $this->lastSwipeTs = $lastSwipeTs;
-    }
-
-    /**
-     * @return int
-     */
-    public function getLastSwipedCardId()
-    {
-        return $this->lastSwipedCardId;
-    }
-
-    /**
-     * @param int $lastSwipedCardId
-     */
-    public function setLastSwipedCardId($lastSwipedCardId)
-    {
-        $this->lastSwipedCardId = $lastSwipedCardId;
-    }
-
-    /**
-     * @return int
-     */
-    public function getLastTableshakeTs()
-    {
-        return $this->lastTableshakeTs;
-    }
-
-    /**
-     * @param int $lastTableshakeTs
-     */
-    public function setLastTableshakeTs($lastTableshakeTs)
-    {
-        $this->lastTableshakeTs = $lastTableshakeTs;
     }
 
     /**
@@ -223,7 +62,7 @@ class TableStatus
     /**
      * Get busy
      *
-     * @return integer
+     * @return integer 
      */
     public function getBusy()
     {
@@ -233,23 +72,12 @@ class TableStatus
     /**
      * Set gameId
      *
-     * @param ArrayCollection $games
+     * @param integer $gameId
      * @return TableStatus
      */
-    public function setGames(ArrayCollection $games)
+    public function setGameId($gameId)
     {
-        $this->games = $games;
-        return $this;
-    }
-
-    /**
-     * @param Game $game
-     * @return $this
-     */
-    public function addGame(Game $game)
-    {
-        $game->setTableStatus($this);
-        $this->games->add($game);
+        $this->gameId = $gameId;
 
         return $this;
     }
@@ -257,10 +85,10 @@ class TableStatus
     /**
      * Get gameId
      *
-     * @return integer
+     * @return integer 
      */
-    public function getGames()
+    public function getGameId()
     {
-        return $this->games;
+        return $this->gameId;
     }
 }
