@@ -26,50 +26,56 @@ class TableStatus
     /**
      * @var integer
      *
-     * @ORM\Column(name="busy", type="integer")
+     * @ORM\Column(name="busy", type="integer", options={"unsigned"=true})
      */
     private $busy;
 
     /**
      * @var ArrayCollection<Game>
      * @ORM\OneToMany(targetEntity="Indigo\GameBundle\Entity\Game", mappedBy="tableStatus", cascade={"persist"})
-     * @ORM\JoinColumn(name="game_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="games_id", referencedColumnName="id", nullable=true)
      */
     private $games;
 
     /**
+     * @ORM\OneToOne(targetEntity="Indigo\GameBundle\Entity\Game", mappedBy="tableStatus", cascade={"persist"})
+     * @ORM\JoinColumn(name="game_id", referencedColumnName="id", nullable=true)
+     */
+    private $game;
+
+    /**
      * @var integer
-     * @ORM\Column(name="table_id", unique=true)
+     * @ORM\Column(name="table_id", type="integer", unique=true, options={"unsigned"=true})
      */
     private $tableId;
 
     /**
      * @var integer
-     * @ORM\Column(name="last_swipe_ts")
+     * @ORM\Column(name="last_swipe_ts", type="integer", options={"unsigned"=true})
      */
     private $lastSwipeTs;
 
     /**
      * @var integer
-     * @ORM\Column(name="last_api_record_id")
+     * @ORM\Column(name="last_api_record_id", type="integer", options={"unsigned"=true})
      */
     private $lastApiRecordId;
 
     /**
      * @var integer
-     * @ORM\Column(name="last_api_record_ts")
+     * @ORM\Column(name="last_api_record_ts", type="integer", options={"unsigned"=true})
      */
     private $lastApiRecordTs;
 
     /**
      * @var integer
-     * @ORM\Column(name="last_swiped_card_id")
+     * @ORM\Column(name="last_swiped_card_id", type="integer", options={"unsigned"=true})
      */
     private $lastSwipedCardId;
 
     /**
      * @var integer
-     * @ORM\Column(name="last_tableshake_ts")
+     * @ORM\Column(name="last_tableshake_ts", type="integer", options={"unsigned"=true})
      */
     private $lastTableshakeTs;
 
@@ -231,7 +237,7 @@ class TableStatus
     }
 
     /**
-     * Set gameId
+     * Set Games
      *
      * @param ArrayCollection $games
      * @return TableStatus
@@ -246,16 +252,16 @@ class TableStatus
      * @param Game $game
      * @return $this
      */
-    public function addGame(Game $game)
+    public function addNewGame(Game $game)
     {
-        $game->setTableStatus($this);
+        $this->setGame($game);
         $this->games->add($game);
-
+        $game->setTableStatus($this);
         return $this;
     }
 
     /**
-     * Get gameId
+     * Get Games
      *
      * @return integer
      */
@@ -263,4 +269,54 @@ class TableStatus
     {
         return $this->games;
     }
+
+/*
+    public function getActiveGame()
+    {
+        foreach ($this->games as $game) {
+
+            if (!$game->isGameStatusFinished()) {
+
+                return $game;
+            }
+        }
+        return null;
+    }
+*/
+
+    /**
+     * @return bool
+     */
+    public function hasPlayers() {
+
+        if ($game = $this->getActiveGame()) {
+
+            if ($game->getPlayersCount() >0) {
+
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGame()
+    {
+        return $this->game;
+    }
+
+    /**
+     * Gali buti ir null
+     *
+     * @param $game
+     */
+    public function setGame($game)
+    {
+        $this->game = $game;
+    }
+
+
+
 }

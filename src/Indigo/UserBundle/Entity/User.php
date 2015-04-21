@@ -4,6 +4,7 @@ namespace Indigo\UserBundle\Entity;
 
 
 use Doctrine\ORM\Mapping as ORM;
+use Indigo\GameBundle\Entity\PlayerTeamRelation;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
@@ -102,7 +103,7 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
 
     /**
      * @var ArrayCollection(<PlayerTeamRelation>)
-     * @ORM\OneToMany(targetEntity="Indigo\GameBundle\Entity\PlayerTeamRelation", mappedBy="player", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="Indigo\GameBundle\Entity\PlayerTeamRelation", mappedBy="player", cascade={"persist"})
      */
     private $teams;
 
@@ -128,6 +129,12 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
         $this->teams = $teams;
         return $this;
     }
+
+    public function addTeam(PlayerTeamRelation $team)
+    {
+        $this->teams->add($team);
+    }
+
 
     /**
      * @return mixed

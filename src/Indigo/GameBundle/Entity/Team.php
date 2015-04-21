@@ -46,7 +46,7 @@ class Team
 
     /**
      * @var ArrayCollection(<PlayerTeamRelation>)
-     * @ORM\OneToMany(targetEntity="Indigo\GameBundle\Entity\PlayerTeamRelation", mappedBy="team", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="Indigo\GameBundle\Entity\PlayerTeamRelation", mappedBy="team", cascade={"persist"})
      */
     private $players;
 
