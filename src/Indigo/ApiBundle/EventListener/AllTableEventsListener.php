@@ -22,6 +22,7 @@ use Indigo\GameBundle\Entity\GameTimeRepository;
 use Indigo\GameBundle\Entity\PlayerTeamRelation;
 use Indigo\GameBundle\Event\GameFinishEvent;
 use Indigo\GameBundle\Repository\GameStatusRepository;
+use Indigo\GameBundle\Repository\GameTypeRepository;
 use Indigo\UserBundle\Entity\User as Player;
 use Indigo\GameBundle\Event\GameEvents;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -32,6 +33,7 @@ class AllTableEventsListener
 
     const DOUBLE_SWIPE_IN = 5;
     const DOUBLE_SWIPE_MIN_TS = 1;
+
     /**
      * @var EntityManager
      */
@@ -40,7 +42,6 @@ class AllTableEventsListener
     /**
      * @var EventDispatcher
      */
-
     private $ed;
 
     /**
@@ -53,6 +54,10 @@ class AllTableEventsListener
         $this->ed = $ed;
     }
 
+    /**
+     * @param $eventModel
+     * @return bool
+     */
     public function accepts($eventModel)
     {
         return ($eventModel instanceof AutoGoalModelModel);
@@ -84,7 +89,7 @@ class AllTableEventsListener
             }
         }  elseif ($tableEventModel instanceof AutoGoalModel) {
 
-            printf ( "got AutoGoalEvent event: %d\n", $tableEventModel->getId());
+            printf ( "got AutoGoalEvent event: %d, teamScores: %u\n", $tableEventModel->getId(), $tableEventModel->getTeam());
             $this->analyzeAutoGoal($tableEventModel, $tableId);
         } elseif ($tableEventModel instanceof CardSwipeModel) {
 
@@ -92,6 +97,10 @@ class AllTableEventsListener
         }
     }
 
+    /**
+     * @param TableActionInterface $tableEventModel
+     * @param $tableId
+     */
     private function analyzeAutoGoal(TableActionInterface $tableEventModel, $tableId)
     {
         /** @var AutoGoalModel $tableEventModel */
@@ -103,21 +112,60 @@ class AllTableEventsListener
                                 ->findOneByTableId((int)$tableId);
         if ($tableStatusEntity) {
 
-            $gameEntity = $this->em
-                            ->getRepository('IndigoGameBundle:Game')
-                            ->findOneByTableStatusId($tableStatusEntity->getId());
+            $gameEntity = $tableStatusEntity->getGame();
 
-            if ($gameEntity && $gameEntity->getStatus() == GameStatusRepository::STATUS_GAME_READY) { // arba game_started
+            if ($gameEntity) {
 
                 $teamPosition = $tableEventModel->getTeam();
-                $gameEntity->addTeamScore($teamPosition);
-                $this->em->persist($gameEntity);
-                if ($gameEntity->getTeamScore($teamPosition) >= 10) {
 
-                    $event = new GameFinishEvent();
-                    $event->setGame($gameEntity);
-                    $event->setTableStatus($tableStatusEntity);
-                    $this->ed->dispatch(GameEvents::GAME_FINISH_ON_SCORE, $event);
+                /**
+                 * Game turim, vadinas turim ir playeriu
+                 */
+                if (!$gameEntity->isGameStatusFinished()) {
+
+                    if (!$gameEntity->isGameStatusStarted()) {
+
+                        $gameEntity->setStatus(GameStatusRepository::STATUS_GAME_STARTED);
+                    }
+
+                    $gameEntity->addTeamScore($teamPosition);
+                    if ($gameEntity->getTeamScore($teamPosition) >= 10) {
+
+                        $event = new GameFinishEvent();
+                        $event->setGame($gameEntity);
+                        $event->setTableStatus($tableStatusEntity);
+                        $this->ed->dispatch(GameEvents::GAME_FINISH_ON_SCORE, $event);
+
+
+                        $newGameEntity = new Game();
+                        if ($gameEntity->getTeam0Player0Id()) {
+                            $newGameEntity->setTeam0Player0Id($gameEntity->getTeam0Player0Id());
+                        }
+                        if ($gameEntity->getTeam0Player1Id()) {
+                            $newGameEntity->setTeam0Player1Id($gameEntity->getTeam0Player1Id());
+                        }
+                        if ($gameEntity->getTeam1Player0Id()) {
+                            $newGameEntity->setTeam1Player0Id($gameEntity->getTeam1Player0Id());
+                        }
+                        if ($gameEntity->getTeam1Player1Id()) {
+                            $newGameEntity->setTeam1Player1Id($gameEntity->getTeam1Player1Id());
+                        }
+                        $newGameEntity->setTeam0Id($gameEntity->getTeam0Id());
+                        $newGameEntity->setTeam1Id($gameEntity->getTeam1Id());
+
+                        $newGameEntity->setTableStatus($gameEntity->getTableStatus());
+                        $newGameEntity->setMatchType($gameEntity->getMatchType());
+
+                        $newGameEntity->setGameTime($gameEntity->getGameTime());
+
+                        // darom STARTED, nes ant READY jei kas noretu double swipintis - is kart prijungines ji i komanda su kitu pries tai zaidziusiu.
+                        $newGameEntity->setStatus(GameStatusRepository::STATUS_GAME_STARTED);
+                        $tableStatusEntity->addNewGame($newGameEntity);
+
+                        $this->em->persist($newGameEntity);
+                        $this->em->persist($tableStatusEntity);
+
+                    }
                 }
                 $this->em->flush();
             }
@@ -127,12 +175,14 @@ class AllTableEventsListener
     /**
      * @param TableActionInterface $tableEventModel
      * @param $tableId
+     * @return bool
      */
     private function analyzeCardSwipe(TableActionInterface $tableEventModel, $tableId)
     {
         /* @var Game $gameEntity */
         /* @var Player $playerEntity */
         /* @var TableStatus $tableStatusEntity */
+
         $gameEntity = null;
         $tableStatusEntity = $this->em->getRepository('IndigoGameBundle:TableStatus')->findOneByTableId($tableId);
 
@@ -150,125 +200,100 @@ class AllTableEventsListener
             $playerPosition
         );
 
-        $playerEntity = $this->em->getRepository('IndigoUserBundle:User')->findOneByCardId($cardId);
-        /** @var QueryBuilder $qb */
-//        $playerEntity = $this->em->getRepository('IndigoUserBundle:User')->getPlayerWithTeamsByCardId($cardId);
-
-        if (!$playerEntity) { // automatiskai priregistruojam anonimini useri
-            $playerEntity = $this->createPlayer($cardId);
-            $teamEntity = $this->createSinglePlayerTeam($playerEntity);
-        } elseif ($playerEntity->getTeams()->count() == 0) {
-            $teamEntity = $this->createSinglePlayerTeam($playerEntity);
-        }
-
-        $playerId = $playerEntity->getId();
-
+        //jei playerio nera, sukuriamas ir grazinamas jo Entity
+        $playerEntity = $this->getPlayerEntityByCardId($cardId);
+        printf("player id : %u\n", $playerEntity->getId());
         if ($tableId) {
-            $gameEntity = $this->em->getRepository('IndigoGameBundle:Game')->findOneByTableStatusId($tableStatusEntity->getId());
-            //$gameEntity = $tableStatusEntity->getGame();
+
+            $gameEntity = $tableStatusEntity->getGame();
+/*            (if (!method_exists($gameEntity,'getTableStatus')) {
+
+                $tableStatusEntity->setGame(null);
+            }*/
+
+            //$gameEntity = $tableStatusEntity->getActiveGame();
         }
 
         if ($this->isDoubleSwipe($tableEventModel, $tableStatusEntity)) {
 
-            if ($tableStatusEntity->getGames()->getId() > 0) {
+            if ($gameEntity && !$gameEntity->isGameStatusFinished()) {
 
-                $tableStatusEntity->setLastSwipedCardId(0);
-                $tableStatusEntity->setLastSwipeTs(0);
-                $this->em->persist($tableStatusEntity);
-
-                if ($gameEntity && $gameEntity->getStatus() != GameStatusRepository::STATUS_GAME_FINISHED) {
-
-                    $event = new GameFinishEvent();
-                    $event->setGame($gameEntity);
-                    $this->ed->dispatch(GameEvents::GAME_FINISH, $event);
-                }
-
-                $this->em->flush();
+                $event = new GameFinishEvent();
+                $event->setGame($gameEntity);
+                $this->ed->dispatch(GameEvents::GAME_FINISH_ON_DOUBLE_SWIPE, $event);
             }
-
             return true;
         }
 
-            //$tableStatusEntity->setLastSwipedCardId($tableEventModel->getCardId());
-            // TEST!
-            $tableStatusEntity->setLastSwipedCardId(0);
-            $tableStatusEntity->setLastSwipeTs($tableEventModel->getTimeSec());
-            $this->em->persist($tableStatusEntity);
-            $this->em->flush();
+        $this->setLastSwipe($tableEventModel, $tableStatusEntity);
 
 
-            if ($gameEntity) {
+            if (!$gameEntity) {
+                $gameEntity  = $this->createGame($tableStatusEntity);
+            } else {
+                if ($gameEntity->isGameStatusStarted()) {
 
-                if ($gameEntity->isPlayerInThisGame($playerId) === true) {
+                    return false;
+                }
+            }
 
-                    // ignore pakartotini cardswipe, jei jis jau "prisidaves", galbut bande double swipint, bet per letai..
-                    return true;
-                } else {
+            if ($gameEntity->isPlayerInThisGame($playerEntity->getId()) === true) {
 
-                    if ($gameEntity->getPlayersCountInTeam($teamPosition) == 2) {
+                // ignore pakartotini cardswipe, jei jis jau "prisidaves", galbut bande double swipint, bet per letai..
+                return true;
+            } else {
 
-                        if (! $this->isGameStartedOrFinished($gameEntity)) {
+               $gameEntity->setPlayer($teamPosition, $playerPosition, $playerEntity);
+                if ($gameEntity->getPlayersCountInTeam($teamPosition) == 2) {
 
-                            $gameEntity->setPlayer($teamPosition, $playerPosition, $playerEntity);
+                        //check teams and setTeam!
+                        // kad nereiktu papildomai nukraudinet userio, kuri jau zinau ...
+                        if ($playerPosition == 0) {
+
+                            $player0 = $playerEntity;
+                            $player1 = $gameEntity->getPlayer($teamPosition, 1);
                         } else {
 
-                            // zaidimas pradetas ar pasibaiges, trecias zaidejas nepriimtas :)
-                            return false;
+                            $player0 = $gameEntity->getPlayer($teamPosition, 0);
+                            $player1 = $playerEntity;
                         }
-                    } else {
+                        $commonTeamId = $this->em->getRepository('IndigoGameBundle:PlayerTeamRelation')->getPlayersCommonTeam($player0, $player1);
+                        if (!$commonTeamId) {
 
-                        // yra laisvos vietos teame
-                        $gameEntity->setPlayer($teamPosition, $playerPosition, $playerEntity);
-                    }
-                    //if ($gameEntity->getPlayersCountInTeam($teamPosition) == 2) {
-                    if ($gameEntity->getPlayersCountInTeam($teamPosition) == 2) {
-                            //check teams and setTeam!
-                            // kad nereiktu papildomai nukraudinet userio, kuri jau zinau ...
-                            if ($playerPosition == 0) {
+                            $teamEntity = $this->createMultiPlayerTeam($player0, $player1);
+                            $this->em->flush();
+                            $commonTeamId = $teamEntity->getId();
+                        }
+                        $gameEntity->setTeamId($teamPosition, $commonTeamId);
 
-                                $player0 = $playerEntity;
-                                $player1 = $gameEntity->getPlayer($teamPosition, 1);
-                            } else {
+                        if ($gameEntity->isBothTeamReady()) {
+                            //if ($gameEntity->getGameTime()->getTimeOwner()) {
+                            $gameEntity->setStatus(GameStatusRepository::STATUS_GAME_READY);
+                            //TODO: is reserved?
+                            if (!$gameEntity->getGameTime()) {
 
-                                $player0 = $gameEntity->getPlayer($teamPosition, 0);
-                                $player1 = $playerEntity;
-                            }
-                            $commonTeamId = $this->em->getRepository('IndigoGameBundle:PlayerTeamRelation')->getPlayersCommonTeam($player0, $player1);
-                            if (!$commonTeamId) {
-                                $teamEntity = $this->createMultiPlayerTeam($player0, $player1);
-                                $commonTeamId = $teamEntity->getId();
-                            }
-                            $gameEntity->setTeamId($teamPosition, $commonTeamId);
 
-/*                            $player0Teams = $player0->getTeams();
-                            $player1Teams = $player1->getTeams();
+                                $gameTimeEntity = $this->em->getRepository('IndigoGameBundle:GameTime')
+                                    ->getEarliestReservation($gameEntity->getAllPlayers());
 
-                            foreach($player0Teams as $p0team) {
-                                $c = new Criteria();
-                                $c->where($c->expr()->eq('id' ,  $p0team->getTeamId()));
+                                if ($gameTimeEntity) {
+                                    $gameTimeEntity->setConfirmed(1);
+                                    $gameEntity->setMatchType(GameTypeRepository::TYPE_GAME_MATCH);
+                                } else {
 
-                                if (($match = $player1Teams->matching($c))) {
-                                    break;
+                                    $gameTimeEntity = new GameTime();
+
+                                    //TODO 15min langa daryti?
                                 }
+
+                                $gameEntity->setGameTime($gameTimeEntity);
+
+                                $this->em->persist($gameTimeEntity);
                             }
-
-                            $commonTeam = new ArrayCollection (array_intersect((array) $player0Teams, (array) $player1Teams));
-*/
-
-
-                            if ($gameEntity->isBothTeamReady()) {
-                                //TODO: is reserved?
-                                $gameEntity->setStatus(GameStatusRepository::STATUS_GAME_READY);
-                            }
-                    }
-
-
+                        }
                 }
-            } else { // nesukurtas Game'as
-
-                $gameEntity  = $this->createGame($tableStatusEntity);
-                //$tableStatusEntity->setGameId($gameEntity->getId());
             }
+
 
             $tableStatusEntity->setBusy(TableStatusRepository::STATUS_BUSY);
             $this->em->flush();
@@ -282,20 +307,22 @@ class AllTableEventsListener
      */
     private function createGame(TableStatus $tableStatusEntity, $gameStatus = null)
     {
-        if ($gameStatus === null) {
-
-            $gameStatus = GameStatusRepository::STATUS_GAME_WAITING;
-        }
-        $gameTimeEntity = new GameTime();
-        $this->em->persist($gameTimeEntity);
-        $this->em->flush();
 
         $gameEntity = new Game ();
-        $gameEntity->setGameTime($gameTimeEntity);
-        $gameEntity->setTableStatus($tableStatusEntity);
-        $gameEntity->setStatus($gameStatus);
+        $gameEntity->setGameTime(new GameTime());
+
+        if ($gameStatus !== null) {
+
+            $gameEntity->setStatus($gameStatus);
+        }
+
         $this->em->persist($gameEntity);
-        $this->em->flush($gameEntity);
+
+        $tableStatusEntity->addNewGame($gameEntity);
+
+        $this->em->persist($tableStatusEntity);
+        $this->em->persist($gameEntity);
+
         return $gameEntity;
     }
 
@@ -312,6 +339,7 @@ class AllTableEventsListener
         $playerEntity->setPassword('incredibly');
         $this->em->persist($playerEntity);
         $this->em->flush($playerEntity);
+
         return $playerEntity;
     }
 
@@ -322,11 +350,11 @@ class AllTableEventsListener
     private function createMultiPlayerTeam(Player $player0, Player $player1, $name = "Broliai Aliukai") {
 
         $teamEntity = $this->createTeam(false, $name);
-        $this->em->flush();
-        $this->createPlayerTeamRelation($player0, $teamEntity);
-        $this->createPlayerTeamRelation($player1, $teamEntity);
 
-        $this->em->flush();
+        $playerToTeamRelation1 = $this->createPlayerTeamRelation($player0, $teamEntity);
+        $playerToTeamRelation2 = $this->createPlayerTeamRelation($player1, $teamEntity);
+        $this->em->persist($playerToTeamRelation1);
+        $this->em->persist($playerToTeamRelation2);
 
         return $teamEntity;
     }
@@ -336,12 +364,11 @@ class AllTableEventsListener
      * @param string $name
      * @return Team
      */
-    private function createSinglePlayerTeam(Player $player, $name='SingleTeam') {
-
+    private function createSinglePlayerTeam(Player $player, $name='SingleTeam')
+    {
         $teamEntity = $this->createTeam(true, $name);
-        $this->createPlayerTeamRelation($player, $teamEntity);
-
-        $this->em->persist($teamEntity);
+        $playerToTeamRelation = $this->createPlayerTeamRelation($player, $teamEntity);
+        $this->em->persist($playerToTeamRelation);
 
         return $teamEntity;
     }
@@ -368,8 +395,11 @@ class AllTableEventsListener
     private function createPlayerTeamRelation(Player $player, Team $team)
     {
         $playerTeamRelationEntity = new PlayerTeamRelation();
-        $playerTeamRelationEntity->setPlayer($player);
-        $playerTeamRelationEntity->setTeam($team);
+        $playerTeamRelationEntity
+            ->setPlayer($player)
+            ->setTeam($team);
+
+        return $playerTeamRelationEntity;
     }
 
     /**
@@ -381,15 +411,54 @@ class AllTableEventsListener
     {
         $timeBetweenSwipes = abs($tableEventModel->getTimeSec() - $tableStatusEntity->getLastSwipeTs());
         return (bool) ($tableEventModel->getCardId() == $tableStatusEntity->getLastSwipedCardId() &&
-            $timeBetweenSwipes <= self::DOUBLE_SWIPE &&
+            $timeBetweenSwipes <= self::DOUBLE_SWIPE_IN &&
             $timeBetweenSwipes >= self::DOUBLE_SWIPE_MIN_TS);
     }
 
+    /**
+     * @param Game $game
+     * @return bool
+     */
     private function isGameStartedOrFinished(Game $game) {
         return (
             ($game->getStatus() == GameStatusRepository::STATUS_GAME_STARTED) ||
             ($game->getStatus() == GameStatusRepository::STATUS_GAME_FINISHED)
         );
     }
+
+    /**
+     * @param $cardId
+     * @return array
+     */
+    private function getPlayerEntityByCardId($cardId)
+    {
+        $playerEntity = $this->em->getRepository('IndigoUserBundle:User')->findOneByCardId($cardId);
+        if (!$playerEntity) {
+            // automatiskai priregistruojam anonimini useri
+
+            $playerEntity = $this->createPlayer($cardId);
+            $this->createSinglePlayerTeam($playerEntity);
+            $this->em->flush();
+        } elseif ($playerEntity->getTeams()->count() == 0) {
+
+            $this->createSinglePlayerTeam($playerEntity);
+            $this->em->flush();
+        }
+        return $playerEntity;
+    }
+
+    /**
+     * @param TableActionInterface $tableEventModel
+     * @param $tableStatusEntity
+     */
+    private function setLastSwipe(TableActionInterface $tableEventModel, $tableStatusEntity)
+    {
+
+        $tableStatusEntity->setLastSwipedCardId($tableEventModel->getCardId());
+        $tableStatusEntity->setLastSwipeTs($tableEventModel->getTimeSec());
+        $this->em->persist($tableStatusEntity);
+        $this->em->flush();
+    }
+
 
 }

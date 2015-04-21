@@ -4,6 +4,7 @@ namespace Indigo\GameBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 
+
 /**
  * GameTimeRepository
  *
@@ -12,4 +13,44 @@ use Doctrine\ORM\EntityRepository;
  */
 class GameTimeRepository extends EntityRepository
 {
+
+    CONST GAMETIME_TOLERANCE = 18000;
+    /**
+     * @param \ArrayIterator $players
+     * @return null
+     */
+    public function getEarliestReservation(\ArrayIterator $players)
+    {
+
+        //$meta = $em->getClassMetadata(get_class($entity));
+        //$identifier = $meta->getSingleIdentifierFieldName();
+        try {
+            $playersIdArray = [];
+            foreach ($players as $playerId) {
+                $meta = $this->_em->getClassMetadata(get_class($playerId));
+                $identifier = $meta->getIdentifierValues($playerId);
+                $playersIdArray [] = $identifier;
+            }
+            $qb = $this->_em->createQuery("
+                SELECT gt
+                FROM Indigo\GameBundle\Entity\GameTime gt
+                WHERE
+                gt.timeOwner IN ( :players )
+                    AND gt.confirmed = '0'
+                    AND ABS( TIME_TO_SEC( TIMEDIFF(gt.startAt, CURRENT_TIMESTAMP())) ) <= :timeInSec
+                ORDER BY gt.startAt ASC
+                ")
+                ->setParameters([
+                    'players'=> $playersIdArray,
+                    'timeInSec' => self::GAMETIME_TOLERANCE
+                ]);
+
+            $reservation = $qb->getSingleResult();
+        } catch (NoResultException $e) {
+
+            return  null;
+        }
+        return $reservation;
+    }
+
 }

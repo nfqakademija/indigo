@@ -1,18 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: simpleuser
- * Date: 4/11/2015
- * Time: 4:13 PM
- */
 
 namespace Indigo\GameBundle\Event;
 
 
 use Symfony\Component\EventDispatcher\Event;
 use Indigo\GameBundle\Entity\Game;
-class GameFinishEvent extends Event{
-
+use Indigo\GameBundle\Entity\TableStatus;
+class GameFinishEvent extends Event
+{
     /**
      * @var Game
      */
@@ -56,7 +51,4 @@ class GameFinishEvent extends Event{
         $this->tableStatus = $tableStatus;
         return $this;
     }
-
-
-
 }

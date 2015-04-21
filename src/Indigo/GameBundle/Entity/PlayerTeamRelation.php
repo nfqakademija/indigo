@@ -23,14 +23,14 @@ class PlayerTeamRelation
 
     /**
      * @var \Indigo\UserBundle\Entity\User
-     * @ORM\ManyToOne(targetEntity="Indigo\UserBundle\Entity\User", inversedBy="teams")
+     * @ORM\ManyToOne(targetEntity="Indigo\UserBundle\Entity\User", inversedBy="teams", cascade={"persist"})
      * @ORM\JoinColumn(name="player_id", nullable=false)
      */
     private $player;
 
     /**
      * @var \Indigo\GameBundle\Entity\Team
-     * @ORM\ManyToOne(targetEntity="Indigo\GameBundle\Entity\Team", inversedBy="players")
+     * @ORM\ManyToOne(targetEntity="Indigo\GameBundle\Entity\Team", inversedBy="players", cascade={"persist"})
      * @ORM\JoinColumn(name="team_id", nullable=false)
      */
     private $team;
@@ -74,6 +74,7 @@ class PlayerTeamRelation
     public function setPlayer(\Indigo\UserBundle\Entity\User $player)
     {
         $this->player = $player;
+        $this->player->addTeam($this);
 
         return $this;
     }
@@ -92,8 +93,8 @@ class PlayerTeamRelation
      */
     public function setTeam(\Indigo\GameBundle\Entity\Team $team)
     {
-        $team->addPlayer($this);
         $this->team = $team;
+        $team->addPlayer($this);
 
         return $this;
     }

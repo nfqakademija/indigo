@@ -2,6 +2,7 @@
 
 namespace Indigo\GameBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -24,10 +25,10 @@ class GameTime
 
     /**
      * @var \Indigo\GameBundle\Entity\Game
-     * @ORM\OneToOne(targetEntity="Indigo\GameBundle\Entity\Game", mappedBy="gameTime", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="Indigo\GameBundle\Entity\Game",  mappedBy="gameTime", cascade={"persist"})
      * @ORM\JoinColumn(name="game_id", referencedColumnName="id")
      */
-    private $game;
+    private $games;
 
     /**
      * @var \DateTime
@@ -44,19 +45,27 @@ class GameTime
     private $finishAt;
 
     /**
+     * User who reserved the time for game
+     *
      * @var integer
      *
-     * @ORM\Column(name="reservation_id", type="integer")
+     * @ORM\Column(name="player_id", type="integer")
      */
-    private $reservationId;
+    private $timeOwner;
 
     /**
+     *
      * @var integer
      *
-     * @ORM\Column(name="reserved", type="integer")
+     * @ORM\Column(name="ack", type="integer")
      */
-    private $reserved;
+    private $confirmed;
 
+
+    public function __construct()
+    {
+        $this->games = new ArrayCollection();
+    }
 
     /**
      * @ORM\PrePersist()
@@ -68,12 +77,12 @@ class GameTime
             $this->setFinishAt(new \DateTime('+15 minutes'));
         }
 
-        if ($this->getReservationId() === null) {
-            $this->setReservationId(0);
+        if ($this->getTimeOwner() === null) {
+            $this->setTimeOwner(0);
         }
 
-        if ($this->getReserved() === null) {
-            $this->setReserved(0);
+        if ($this->getConfirmed() === null) {
+            $this->setConfirmed(0);
         }
     }
 
@@ -96,7 +105,8 @@ class GameTime
     }
 
     /**
-     * @param Game $game
+     * @param $game
+     * @return $this
      */
     public function setGame($game)
     {
@@ -151,48 +161,70 @@ class GameTime
     }
 
     /**
-     * Set reservationId
-     *
-     * @param integer $reservationId
-     * @return GameTime
+     * @param $timeOwner
+     * @return $this
      */
-    public function setReservationId($reservationId)
+    public function setTimeOwner($timeOwner)
     {
-        $this->reservationId = $reservationId;
+        $this->timeOwner = $timeOwner;
 
         return $this;
     }
 
     /**
-     * Get reservationId
+     * Get TimeOwner
      *
      * @return integer 
      */
-    public function getReservationId()
+    public function getTimeOwner()
     {
-        return $this->reservationId;
+        return $this->timeOwner;
     }
 
     /**
-     * Set reserved
-     *
-     * @param integer $reserved
-     * @return GameTime
+     * @return int
      */
-    public function setReserved($reserved)
+    public function getConfirmed()
     {
-        $this->reserved = $reserved;
+        return $this->confirmed;
+    }
+
+    /**
+     * @param int $confirmed
+     */
+    public function setConfirmed($confirmed)
+    {
+        $this->confirmed = $confirmed;
+    }
+
+    /**
+     * @return Game
+     */
+    public function getGames()
+    {
+        return $this->games;
+    }
+
+    /**
+     * @param ArrayCollection $games
+     */
+    public function setGames(ArrayCollection $games)
+    {
+        $this->games = $games;
+    }
+
+    /**
+     * @param Game $game
+     * @return $this
+     */
+    public function addGame(Game $game)
+    {
+        $this->games->add($game);
 
         return $this;
     }
 
-    /**
-     * Get reserved
-     *
-     * @return integer 
-     */
-    public function getReserved()
-    {
-        return $this->reserved;
-    }
+
+
+
 }

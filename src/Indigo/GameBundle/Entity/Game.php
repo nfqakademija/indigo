@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Indigo\GameBundle\Repository\GameStatusRepository;
 use Indigo\GameBundle\Repository\GameTypeRepository;
 
+
 /**
  * Game
  *
@@ -33,16 +34,15 @@ class Game
 
     /**
      * @var \Indigo\GameBundle\Entity\TableStatus
-     * @ORM\ManyToOne(targetEntity="Indigo\GameBundle\Entity\TableStatus", inversedBy="games", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="Indigo\GameBundle\Entity\TableStatus", inversedBy="games", cascade={"persist"})
      * @ORM\JoinColumn(name="table_status_id", referencedColumnName="id")
      */
     private $tableStatus;
 
     /**
      * @var \Indigo\GameBundle\Entity\GameTime
-     *
-     * @ORM\OneToOne(targetEntity="Indigo\GameBundle\Entity\GameTime", inversedBy="game")
-     * @ORM\JoinColumn(name="game_time_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Indigo\GameBundle\Entity\GameTime", inversedBy="games", cascade={"persist"})
+     * @ORM\JoinColumn(name="game_time_id", referencedColumnName="id", nullable=true)
      */
     private $gameTime;
 
@@ -142,15 +142,20 @@ class Game
      */
     private $finishedAt;
 
+
+
+
+
     public function __construct()
     {
         $this->setTeam0Id(0);
         $this->setTeam0Score(0);
         $this->setTeam1Id(0);
         $this->setTeam1Score(0);
-
+        $this->setStatus(GameStatusRepository::STATUS_GAME_WAITING);
+        $this->setMatchType(GameTypeRepository::TYPE_GAME_OPEN);
         $this->setContestId(0);
-        $this->setChallengeId(0);
+
     }
 
     /**
@@ -227,6 +232,8 @@ class Game
     public function setGameTime(\Indigo\GameBundle\Entity\GameTime $gameTime)
     {
         $this->gameTime = $gameTime;
+        $this->gameTime->setGame($this);
+
         return $this;
     }
 
@@ -580,6 +587,7 @@ class Game
         return $this->finishedAt;
     }
 
+
     private function TeamAndPlayerMethod($teamPosition, $playerPosition, $action)
     {
         return sprintf('%sTeam%uPlayer%uId', $action, $teamPosition, $playerPosition);
@@ -649,6 +657,49 @@ class Game
     }
 
     /**
+     * @return int
+     */
+    public function getPlayersCount()
+    {
+        $playersInTeam = 0;
+        for ($teamPosition = 0; $teamPosition <= 1; $teamPosition++) {
+
+            for ($playerPosition = 0; $playerPosition <= 1; $playerPosition++) {
+
+                $user = $this->getPlayer($teamPosition, $playerPosition);
+                if ($user && $user->getId() > 0) {
+
+                    $playersInTeam++;
+                }
+            }
+        }
+
+        return $playersInTeam;
+    }
+
+    /**
+     * @return \ArrayIterator
+     */
+    public function getAllPlayers()
+    {
+        $players = new \ArrayIterator();
+        for ($teamPosition = 0; $teamPosition <= 1; $teamPosition++) {
+
+            for ($playerPosition = 0; $playerPosition <= 1; $playerPosition++) {
+
+                $user = $this->getPlayer($teamPosition, $playerPosition);
+                if ($user && $user->getId() > 0) {
+                    $players->append($user);
+                }
+            }
+        }
+
+        return $players;
+    }
+
+
+
+    /**
      * @param $teamPosition
      * @param $playerPosition
      * @return mixed
@@ -680,6 +731,34 @@ class Game
             return  ($this->getTeam1Player0Id() ? 1 : 0) +
             ($this->getTeam1Player1Id() ? 1 : 0);
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isGameStatusStarted() {
+        return (bool)($this->getStatus() == GameStatusRepository::STATUS_GAME_STARTED);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isGameStatusFinished() {
+        return (bool)($this->getStatus() == GameStatusRepository::STATUS_GAME_FINISHED);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isGameStatusReady() {
+        return (bool)($this->getStatus() == GameStatusRepository::STATUS_GAME_READY);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isGameStatusWaiting() {
+        return (bool)($this->getStatus() == GameStatusRepository::STATUS_GAME_READY);
     }
 
 }
