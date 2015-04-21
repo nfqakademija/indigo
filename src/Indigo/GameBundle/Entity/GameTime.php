@@ -114,7 +114,6 @@ class GameTime
         return $this;
     }
 
-
     /**
      * Set startAt
      *

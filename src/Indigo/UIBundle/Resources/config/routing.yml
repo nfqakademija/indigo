@@ -1,0 +1,50 @@
+indigo_ui_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: IndigoUIBundle:Default:index }
+
+
+indigo_ui_live:
+    path:     /live/
+    defaults: { _controller: IndigoUIBundle:Live:live }
+
+indigo_ui_table_status:
+        path:     /live/status/
+        defaults: { _controller: IndigoUIBundle:Live:status }
+        requirements:
+                _method: POST|GET
+
+
+indigo_ui_score:
+        path:     /live/score/
+        defaults: { _controller: IndigoUIBundle:Live:score }
+        requirements:
+                _method: POST|GET
+
+
+indigo_ui_player1:
+        path:     /live/player1/
+        defaults: { _controller: IndigoUIBundle:Live:player1 }
+        requirements:
+                _method: POST|GET
+
+
+
+indigo_ui_player2:
+        path:     /live/player2/
+        defaults: { _controller: IndigoUIBundle:Live:player2 }
+        requirements:
+                _method: POST|GET
+
+
+indigo_ui_player3:
+        path:     /live/player3/
+        defaults: { _controller: IndigoUIBundle:Live:player3 }
+        requirements:
+                _method: POST|GET
+
+
+indigo_ui_player4:
+        path:     /live/player4/
+        defaults: { _controller: IndigoUIBundle:Live:player4 }
+        requirements:
+                _method: POST|GET

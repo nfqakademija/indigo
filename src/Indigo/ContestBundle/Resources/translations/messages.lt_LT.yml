@@ -1,0 +1,25 @@
+#Contest creation form
+create_contest.form.contest_creation: Turnyro kūrimas
+create_contest.form.contest_title: Turnyro pavadinimas
+create_contest.form.contest_logo: Turnyro logotipas
+create_contest.form.contest_privacy: Turnyro privatumas (tik su kvietimais)
+create_contest.form.contest_type: Turnyro tipas
+create_contest.form.contest_type.team: Komandinis turnyras
+create_contest.form.contest_type.single: Pavienis turnyras
+create_contest.form.table_name: Stalo pavadinimas
+create_contest.form.submit: Kurti turnyrą
+
+#Contest creation form - errors
+#create_contest.error.mimeTypes: Blogas failo formatas. Prašome įkelti JPG, JPEG, PNG or GIF failus
+create_contest.error.no_contest: Šiuo metu nėra sukurtų varžybų
+
+#Successful creation form
+create_contest.success.contest: Turnyras
+create_contest.success.privacy.yes: privatus
+create_contest.success.privacy.no: viešas
+create_contest.success.created: Turnyras sukurtas sėkmingai!
+
+#Global
+yes: Taip
+no: Ne
+

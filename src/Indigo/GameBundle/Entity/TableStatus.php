@@ -142,7 +142,11 @@ class TableStatus
     /**
      * Get id
      *
+<<<<<<< HEAD
+     * @return integer 
+=======
      * @return integer
+>>>>>>> api_test
      */
     public function getId()
     {
