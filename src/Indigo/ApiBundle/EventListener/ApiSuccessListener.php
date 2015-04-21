@@ -31,7 +31,6 @@ class ApiSuccessListener
      */
     public function onResponseSuccess(ApiEvent $event)
     {
-        //TODO: iskelti i tablestatus lenta
         if ($count = $event->getData()->count()) {
 
             $event->getData()->seek($count - 1);
@@ -43,14 +42,11 @@ class ApiSuccessListener
 
             if (!$tableStatusEntity) {
 
-                $game = new Game();
                 $tableStatusEntity = new TableStatus();
                 $tableStatusEntity->setTableId($lastTableEvent->getTableId());
-                $tableStatusEntity->setGames($game);
+                $tableStatusEntity->setGame(null);
             }
 
-            //$tableStatusEntity->setLastApiRecordId($lastTableEvent->getId());
-            $tableStatusEntity->setLastApiRecordId(616);
             $tableStatusEntity->setLastApiRecordTs($lastTableEvent->getTimeSec());
             $this->em->persist($tableStatusEntity);
             $this->em->flush();

@@ -4,8 +4,9 @@ parameters:
 services:
     indigo_game.game_finish_listener:
       class: %indigo_game.game_finish_listener.class%
+      arguments: ["@doctrine.orm.entity_manager"]
       tags:
-          - { name: kernel.event_listener, event: indigo_game.finish, method: onGameFinish }
+          - { name: kernel.event_listener, event: indigo_game.finish_on_double_swipe, method: onGameFinishDoubleSwipe }
           - { name: kernel.event_listener, event: indigo_game.finish_on_score, method: onGameFinishMaxScoreReached }
 #          - { name: kernel.event_listener, event: indigo_game.calculate_ratings, method: onRatingsCalculate }
 #   indigo_game.example:

@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: simpleuser
- * Date: 4/11/2015
- * Time: 4:39 PM
- */
 
 namespace Indigo\GameBundle\EventListener;
-
 
 use Doctrine\ORM\EntityManagerInterface;
 use Indigo\GameBundle\Event\GameFinishEvent;
@@ -18,26 +11,30 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class GameFinishListener {
 
-//    /**
-//     * @var EventDispatcher
-//     */
-//    private $ed;
-//
-//    /**
-//     * @param EventDispatcher $ed
-//     */
-//    public function __construct(EntityManagerInterface $ed)
-//    {
-//        $this->ed = $ed;
-//    }
+    /**
+     * @var EntityManager
+     */
+    private $em;
+
+    /**
+     * @param EntityManager $em
+     */
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
 
     /**
      * @param GameFinishEvent $event
      */
-    public function onGameFinish(GameFinishEvent $event)
+    public function onGameFinishDoubleSwipe(GameFinishEvent $event)
     {
-        $this->closeGame($event);
+        $gameEntity = $this->closeGame($event);
+        $gameEntity->getTableStatus()->setLastSwipedCardId(0);
+        $gameEntity->getTableStatus()->setLastSwipeTs(0);
+        $this->em->persist($gameEntity);
 
+        $this->em->flush();
     }
 
     /**
@@ -45,7 +42,10 @@ class GameFinishListener {
      */
     public function onGameFinishMaxScoreReached(GameFinishEvent $event)
     {
-        $this->closeGame($event);
+        $gameEntity = $this->closeGame($event);
+        $this->em->persist($gameEntity);
+
+        $this->em->flush();
         //TODO: sukurti analogiska game'a
 
 /*
@@ -67,16 +67,18 @@ class GameFinishListener {
 
     /**
      * @param GameFinishEvent $event
+     * @return \Indigo\GameBundle\Entity\Game
      */
     private function closeGame(GameFinishEvent $event)
     {
         $gameEntity = $event->getGame();
         $gameEntity->setStatus(GameStatusRepository::STATUS_GAME_FINISHED);
         $gameEntity->setFinishedAt( new \DateTime());
+        //TODO: ar panaikina ?
+        $gameEntity->getTableStatus()->setGame(null);
 
-        // TODO: panaikinti relationa su tablestatus'u
-        //$gameEntity->setTableStatus()
         $this->onRatingCalculate($event);
+        return $gameEntity;
     }
 
     /**

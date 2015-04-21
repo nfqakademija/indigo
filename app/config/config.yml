@@ -66,7 +66,10 @@ doctrine:
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
-
+        dql:
+            string_functions:
+                TIMEDIFF: Indigo\GameBundle\DBAL\TimeDiff
+                TIME_TO_SEC: Indigo\GameBundle\DBAL\TimeToSec
 # Swiftmailer Configuration
 swiftmailer:
     delivery_address: info@indigo.dev
@@ -75,3 +78,5 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+
