@@ -11,6 +11,7 @@
 namespace Indigo\UIBundle\Services;
 
 
+use Indigo\GameBundle\Entity\GameRepository;
 use Indigo\UIBundle\Models\ContestModel;
 use Indigo\UIBundle\Models\LiveViewModel;
 use Indigo\UIBundle\Models\PlayerModel;

@@ -9,7 +9,7 @@
 namespace Indigo\UIBundle\Models;
 
 
-class ContestModel {
+class ContestModel implements \JsonSerializable{
 
     private $id;
     private $title;

@@ -9,9 +9,15 @@
 namespace Indigo\UIBundle\Models;
 
 
-class PlayerModel {
+class PlayerModel implements \JsonSerializable{
 
+    /**
+     * @var string
+     */
     private $name;
+    /**
+     * @var string
+     */
     private $imageUrl;
 
 

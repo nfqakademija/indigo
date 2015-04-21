@@ -22,14 +22,15 @@ class LiveController extends Controller
     {
         $is = new IndigoService();
         $model = $is->getTableStatus(0);
-        return $model->jsonSerialize();
+        $json = json_encode( $model );
+        return $model->jsonSerialize($json);
     }
 
     public function statusAction()
     {
         $is = new IndigoService();
         $model = $is->getTableStatus(0);
-        $json = json_encode( $model->jsonSerialize() );
+        $json = json_encode( $model );
         return new JsonResponse($json);
     }
 }

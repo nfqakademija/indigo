@@ -11,7 +11,7 @@
 namespace Indigo\UIBundle\Models;
 use JsonSerializable;
 
-class LiveViewModel {
+class LiveViewModel implements \JsonSerializable{
 
     private $contest;
     private $isTableBusy;
@@ -30,9 +30,9 @@ class LiveViewModel {
     public function jsonSerialize() {
         return [
             "isBusy" => $this->isTableBusy,
-            "contest" => $this->contest->jsonSerialize(),
-            "teamA" => $this->teamA->jsonSerialize(),
-            "teamB" => $this->teamB->jsonSerialize()
+            "contest" => $this->contest,
+            "teamA" => $this->teamA,
+            "teamB" => $this->teamB
         ];
     }
 

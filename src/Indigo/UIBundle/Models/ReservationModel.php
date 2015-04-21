@@ -9,7 +9,7 @@
 namespace Indigo\UIBundle\Models;
 
 
-class ReservationModel {
+class ReservationModel implements \JsonSerializable{
 
     private $contestName;
     private $dateStart;

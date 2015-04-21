@@ -9,7 +9,7 @@
 namespace Indigo\UIBundle\Models;
 
 
-class TeamModel {
+class TeamModel implements \JsonSerializable {
 
     private $player1;
     private $player2;
@@ -25,8 +25,8 @@ class TeamModel {
 
     public function jsonSerialize() {
         return [
-            "player1" => $this->player1->jsonSerialize(),
-            "player2" => $this->player2->jsonSerialize(),
+            "player1" => $this->player1,
+            "player2" => $this->player2,
             "goals" => $this->goals,
             "imageUrl" => $this->imageUrl
         ];
