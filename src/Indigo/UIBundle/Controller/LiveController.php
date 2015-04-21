@@ -14,22 +14,33 @@ use Symfony\Component\HttpFoundation\Response;
 
 class LiveController extends Controller
 {
+
+    public function __construct()
+    {
+
+    }
+
+
     /**
      * @Template()
      * @return Response
      */
     public function liveAction()
     {
-        $is = new IndigoService();
-        $model = $is->getTableStatus(0);
+        $em = $this->get('doctrine.orm.entity_manager');
+
+        $is = new IndigoService($em);
+        $model = $is->getTableStatus(1);
         $json = json_encode( $model );
         return $model->jsonSerialize($json);
     }
 
     public function statusAction()
     {
-        $is = new IndigoService();
-        $model = $is->getTableStatus(0);
+        $em = $this->get('doctrine.orm.entity_manager');
+
+        $is = new IndigoService($em);
+        $model = $is->getTableStatus(1);
         $json = json_encode( $model );
         return new JsonResponse($json);
     }

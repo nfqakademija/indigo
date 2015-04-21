@@ -37,24 +37,29 @@ body{
 .table-status
 {
     display: inline-block;
-    width: 200px;
+    width: 304px;
     padding: 2px 2px;
     margin: 2px 0px;
-    background-color: rgba(145, 8, 3, 0.37);
+    background-color: rgba(20, 172, 15, 0.40);
     font-size: 1.5em;
     line-height: 40px;
     border-radius: 2px;
+}
+
+.busy
+{
+    background-color: rgba(145, 8, 3, 0.37);
 }
 
 .score
 {
     position: relative;
     display: inline-block;
-    min-width: 100px;
+    min-width: 150px;
     padding: 0px 10px;
     margin: 0 1px;
     background-color: rgba(0,0,0,0.2);
-    font-size: 4em;
+    font-size: 5em;
     border-radius: 2px;
 }
 

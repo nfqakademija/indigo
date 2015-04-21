@@ -18,10 +18,12 @@
                 if(json.isBusy)
                 {
                     $("#ajax-table-status").html("Stalas UŽIMTAS!");
+                    $("#ajax-table-status").addClass('busy');
                 }
                 else
                 {
                     $("#ajax-table-status").html("Stalas LAISVAS!");
+                    $("#ajax-table-status").removeClass('busy');
                 }
 
                 $("#contest-title").html(json.contest.title);
@@ -56,7 +58,7 @@
 
                 <div class="row " >
                     <div class="col-xs-12">
-                       <span id="ajax-table-status" class="table-status"> Stalas užimtas </span>
+                       <span id="ajax-table-status" class="table-status">  </span>
                     </div>
                 </div>
 

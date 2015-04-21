@@ -23,7 +23,7 @@ class PlayerModel implements \JsonSerializable{
 
     public function __construct()
     {
-
+        $this->imageUrl = "/bundles/indigoui/images/anonymous.png";
     }
 
     public function jsonSerialize() {

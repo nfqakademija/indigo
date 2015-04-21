@@ -13,9 +13,21 @@ use JsonSerializable;
 
 class LiveViewModel implements \JsonSerializable{
 
+    /**
+     * @var ContestModel
+     */
     private $contest;
+    /**
+     * @var boolean
+     */
     private $isTableBusy;
+    /**
+     * @var TeamModel
+     */
     private $teamA;
+    /**
+     * @var TeamModel
+     */
     private $teamB;
 
     public function __construct()
@@ -26,7 +38,9 @@ class LiveViewModel implements \JsonSerializable{
         $this->teamB = new TeamModel();
     }
 
-
+    /**
+     * @return array
+     */
     public function jsonSerialize() {
         return [
             "isBusy" => $this->isTableBusy,

@@ -11,10 +11,25 @@ namespace Indigo\UIBundle\Models;
 
 class ContestModel implements \JsonSerializable{
 
+    /**
+     * @var int
+     */
     private $id;
+    /**
+     * @var string
+     */
     private $title;
+    /**
+     * @var string
+     */
     private $description;
+    /**
+     * @var datetime
+     */
     private $startDate;
+    /**
+     * @var datetime
+     */
     private $endData;
 
     public function __construct()
@@ -22,6 +37,9 @@ class ContestModel implements \JsonSerializable{
 
     }
 
+    /**
+     * @return array
+     */
     public function jsonSerialize() {
         return [
             "id" => $this->id,

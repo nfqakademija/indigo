@@ -11,9 +11,19 @@ namespace Indigo\UIBundle\Models;
 
 class ReservationModel implements \JsonSerializable{
 
+    /**
+     * @var string
+     */
     private $contestName;
+    /**
+     * @var datetime
+     */
     private $dateStart;
+    /**
+     * @var datetime
+     */
     private $dateEnd;
+    /** @var  PlayerModel */
     private $patron;
 
     public function __construct()
@@ -21,6 +31,9 @@ class ReservationModel implements \JsonSerializable{
 
     }
 
+    /**
+     * @return array
+     */
     public function jsonSerialize() {
         return [
             "contestName" => $this->contestName,
