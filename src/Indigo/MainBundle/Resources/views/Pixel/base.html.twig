@@ -11,15 +11,15 @@
     <title>{% block title %}Welcome!{% endblock %}</title>
 
     {% block stylesheets %}
-    <!-- Open Sans font from Google CDN -->
-    <link href="{{ asset('bundles/indigomain/css/google.css') }}" rel="stylesheet" type="text/css">
+        <!-- Open Sans font from Google CDN -->
+        <link href="{{ asset('bundles/indigomain/css/google.css') }}" rel="stylesheet" type="text/css">
 
-    <!-- Pixel Admin's stylesheets -->
-    <link href="{{ asset('bundles/indigomain/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('bundles/indigomain/css/pixel-admin.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('bundles/indigomain/css/pages.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('bundles/indigomain/css/rtl.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('bundles/indigomain/css/themes.min.css') }}" rel="stylesheet" type="text/css">
+        <!-- Pixel Admin's stylesheets -->
+        <link href="{{ asset('bundles/indigomain/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('bundles/indigomain/css/pixel-admin.min.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('bundles/indigomain/css/pages.min.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('bundles/indigomain/css/rtl.min.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('bundles/indigomain/css/themes.min.css') }}" rel="stylesheet" type="text/css">
     {% endblock %}
 </head>
 <body class="{% block body_class %}{% endblock %}">
@@ -27,14 +27,13 @@
 <script>var init = [];</script>
 
 <div id="main-wrapper">
-    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    {#{% if is_granted('IS_AUTHENTICATED_FULLY') %}#}
         {% include "IndigoMainBundle:Pixel:navigation.html.twig" %}
         {% include "IndigoMainBundle:Pixel:menu.html.twig" %}
-    {% endif %}
+    {#{% endif %}#}
 
     <div id="content-wrapper">
-        {% block content %}{% endblock %}
-        <img src="{% block contest_logo %}{% endblock %}" width="100px" height="100px"/>
+        {% block body %}{% endblock %}
     </div> <!-- / #content-wrapper -->
     <div id="main-menu-bg"></div>
 </div> <!-- / #main-wrapper -->

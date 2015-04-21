@@ -17,12 +17,12 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Indigo\MainBundle\IndigoMainBundle(),
+            new Indigo\UserBundle\IndigoUserBundle(),
+            new Indigo\GameBundle\IndigoGameBundle(),
+            new Indigo\UIBundle\IndigoUIBundle(),
+            new Indigo\ApiBundle\IndigoApiBundle(),
             new Indigo\ContestBundle\IndigoContestBundle(),
             new Indigo\LocationsRegBundle\IndigoLocationsRegBundle(),
-            new Indigo\ApiBundle\IndigoApiBundle(),
-            new Indigo\GameBundle\IndigoGameBundle(),
-            new Indigo\UserBundle\IndigoUserBundle(),
-            new Indigo\UIBundle\IndigoUIBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
