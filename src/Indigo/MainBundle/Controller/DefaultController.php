@@ -16,7 +16,7 @@ class DefaultController extends Controller
 //    }
 
     /**
-     * @Route("/{name}", name="user_dashboard")
+     * Route("/{name}", name="user_dashboard")
      */
     public function indexAction($name)
     {

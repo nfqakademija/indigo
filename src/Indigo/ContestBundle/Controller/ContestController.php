@@ -10,19 +10,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Indigo\ContestBundle\Entity\Contest;
 use Indigo\ContestBundle\Form\ContestType;
 
-/**
- * Contest controller.
- *
- * @Route("/contest")
- *
- */
+
 class ContestController extends Controller
 {
 
     /**
      * Lists all Contest entities.
      *
-     * @Route("/", name="contest")
+     * @Route("/contest", name="contest")
      * @Method("GET")
      * @Template("IndigoContestBundle:Contest:index.html.twig")
      */
@@ -38,6 +33,7 @@ class ContestController extends Controller
             'entities' => $entities,
         );
     }
+
     /**
      * Creates a new Contest entity.
      *
@@ -64,7 +60,7 @@ class ContestController extends Controller
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView()
+            'form' => $form->createView()
         );
     }
 
@@ -103,13 +99,13 @@ class ContestController extends Controller
     public function newAction()
     {
         $entity = new Contest();
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity);
 
         $this->setImageUrlGlobal($entity->getPathForImage());
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
@@ -135,7 +131,7 @@ class ContestController extends Controller
         $this->setImageUrlGlobal($entity->getPathForImage());
 
         return array(
-            'entity'      => $entity,
+            'entity' => $entity,
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -163,8 +159,8 @@ class ContestController extends Controller
         $this->setImageUrlGlobal($entity->getPathForImage());
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView()
         );
 
@@ -192,6 +188,7 @@ class ContestController extends Controller
         ]);
         return $form;
     }
+
     /**
      * Edits an existing Contest entity.
      *
@@ -226,8 +223,8 @@ class ContestController extends Controller
         }
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
             'prises' => $prises
         );
@@ -275,7 +272,8 @@ class ContestController extends Controller
             ->getForm();
     }
 
-    private function setImageUrlGlobal($url){
+    private function setImageUrlGlobal($url)
+    {
         $imageName = $url ? $url : "contest-logo.jpg";
         $this->get('twig')->addGlobal('imagePath', $imageName);
     }
