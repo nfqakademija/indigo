@@ -114,6 +114,28 @@ class Contest
     private $contestEndDate;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="prise_images_paths", type="string", length=255, nullable=true)
+     */
+    protected $pathForPriseImages;
+
+    /**
+     * @Assert\File(maxSize="3M", mimeTypes={"image/jpg", "image/jpeg", "image/gif", "image/png"})
+     * @Assert\Image(
+     *  minWidth = 500,
+     *  maxWidth = 1500,
+     *  minHeight = 500,
+     *  maxHeight = 1500,
+     *  allowLandscape = true,
+     *  allowPortrait = true,
+     *  allowSquare = true)
+     */
+
+    private $priseImages;
+
+
+    /**
      * @param \Datetime $contest_creation_date
      */
     public function __construct()
@@ -173,14 +195,14 @@ class Contest
      * @return string
      */
 
-    public function getAbsolutePath()
+    public function getAbsolutePath($imagePath)
     {
-        return null === $this->pathForImage ? null : $this->getUploadRootDir() . '/' . $this->pathForImage;
+        return null === $imagePath ? null : $this->getUploadRootDir() . '/' . $imagePath;
     }
 
-    public function getWebPath()
+    public function getWebPath($imagePath)
     {
-        return null === $this->pathForImage ? null : $this->getUploadDir() . '/' . $this->pathForImage;
+        return null === $imagePath ? null : $this->getUploadDir() . '/' . $imagePath;
     }
 
     protected function getUploadRootDir()
@@ -226,7 +248,7 @@ class Contest
 
         $this->changeImageName();
 
-        while (is_file($this->getAbsolutePath()))
+        while (is_file($this->getAbsolutePath($this->pathForImage)))
             $this->changeImageName();
 
         $this->getImage()->move(
@@ -349,5 +371,71 @@ class Contest
     {
         $this->contestEndDate = $contestEndDate;
     }
+
+    /**
+     * @return string
+     */
+    public function getPathForPriseImages()
+    {
+        return $this->pathForPriseImages;
+    }
+
+    /**
+     * @param string $pathForPriseImages
+     */
+    public function setPathForPriseImages($pathForPriseImages)
+    {
+        $this->pathForPriseImages = $pathForPriseImages;
+    }
+
+    /**
+     * @return UploadedFile
+     */
+    public function getPriseImages()
+    {
+        return $this->priseImages;
+    }
+
+    /**
+     * @param UploadedFile $priseImages
+     */
+    public function setPriseImages(UploadedFile $priseImages = null)
+    {
+        $this->priseImages = $priseImages;
+    }
+
+    /**
+     * hash contest prise images names
+     */
+    /*public function changePriseImagesNames()
+    {
+        $explode = explode(",", $this->pathForPriseImages);
+        while($explode) {
+            $filename = sha1(uniqid(mt_rand() * mt_rand(), true));
+            $this->pathForPriseImages = $filename . '.' . $this->getPriseImages()->guessExtension();
+        }
+    }*/
+
+    /**
+     * function upload contest prise images
+     */
+//    public function uploadPriseImages()
+//    {
+//        if (null === $this->getPriseImages()) {
+//            return;
+//        }
+//
+//        $this->changePriseImagesNames();
+//
+//        while (is_file($this->getAbsolutePath($this->pathForPriseImages)))
+//            $this->changePriseImagesNames();
+//
+//        $this->getPriseImages()->move(
+//            $this->getUploadRootDir(),
+//            $this->pathForPriseImages
+//        );
+//
+//        $this->image = null;
+//    }
 
 }

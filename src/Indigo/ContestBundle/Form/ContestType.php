@@ -74,6 +74,12 @@ class ContestType extends AbstractType
                 'data-on-color' => 'success',
                 'data-handle-width' => 50,
             ],
+        ])
+        ->add('pathForPriseImages', 'file', [
+            'label' => 'Prizai',
+            'required' => false,
+            'multiple' => true,
+            'attr' => ['class' => 'file contestPriseImages'],
         ]);
 }
 

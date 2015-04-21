@@ -4,7 +4,7 @@ imports:
     - { resource: services.yml }
 
 framework:
-    #default_locale: lt
+    default_locale: lt
     #esi:             ~
     translator:      { fallbacks: ["%locale%"] }
     secret:          "%secret%"
@@ -39,13 +39,13 @@ twig:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-<<<<<<< HEAD
-    bundles:
-        - IndigoMainBundle
-        - IndigoUIBundle
-=======
+
+    #bundles:
+    #    - IndigoMainBundle
+    #    - IndigoUIBundle
+
     bundles:        [ ]
->>>>>>> origin/clear
+
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
