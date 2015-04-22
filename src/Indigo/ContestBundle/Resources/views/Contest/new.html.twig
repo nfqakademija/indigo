@@ -27,10 +27,8 @@
         </div>
     </div>
     {{ form_end(form) }}
-    <a href="{{ path('contest', { 'id': entity.id }) }}" class="pull-right" title="{{ 'show'|trans }}">
-        <button type="button" class="btn btn-default">
+    <a href="{{ path('contest', { 'id': entity.id }) }}" title="{{ 'show'|trans }}" class="btn btn-default">
             <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> {{ 'back_to_the_list'|trans }}
-        </button>
     </a>
 {% endblock %}
 

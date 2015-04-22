@@ -6,10 +6,8 @@
     <h1>
         {{ 'contest_list'|trans }}
 
-        <a href="{{ path('contest_new') }}" class="pull-right">
-            <button type="button" class="btn btn-success btn-lg">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{ 'create_new_contest'|trans }}
-            </button>
+        <a href="{{ path('contest_new') }}" title="{{ 'create_new_contest'|trans }}" class="pull-right btn btn-success btn-lg">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{ 'create_new_contest'|trans }}
         </a>
     </h1>
 
@@ -45,7 +43,7 @@
                         {% set pathForImage = "contest-logo.jpg" %}
                     {% endif %}
 
-                    <img src="{{ asset('uploaded_images/contest/') }}{{ pathForImage }}" alt="*" height="100" width="100" title="{{ entity.contestTitle|capitalize }}"/>
+                    <img src="{{ asset('uploads/contest/') }}{{ pathForImage }}" alt="*" width="100" title="{{ entity.contestTitle|capitalize }}"/>
                 </td>
                 <td class="text-center">{{ entity.tableName|capitalize }}</td>
                 <td class="text-center">
@@ -65,19 +63,15 @@
                 <td class="text-center">{% if entity.contestStartingDate %}{{ entity.contestStartingDate|date('Y-m-d') }}{% endif %}</td>
                 <td class="text-center">{% if entity.contestEndDate %}{{ entity.contestEndDate|date('Y-m-d') }}{% endif %}</td>
                 <td class="text-center">
-                        <a href="{{ path('contest_show', { 'id': entity.id }) }}" title="{{ 'show'|trans }}">
-                            <button type="button" class="btn btn-default" style="margin-bottom:2px;">
-                                <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-                            </button>
-                        </a><br/>
-                        <a href="{{ path('contest_edit', { 'id': entity.id }) }}" title="{{ 'edit'|trans }}">
-                            <button type="button" class="btn btn-default" style="margin-bottom:2px;">
-                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                            </button>
-                        </a><br/>
-                        <a href="{{ path('contest_delete', { 'id': entity.id }) }}" title="{{ 'delete'|trans }}" class="btn btn-danger">
-                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                        </a>
+                    <a href="{{ path('contest_show', { 'id': entity.id }) }}" title="{{ 'show'|trans }}" class="btn btn-default" style="margin-bottom:2px;">
+                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                    </a><br/>
+                    <a href="{{ path('contest_edit', { 'id': entity.id }) }}" title="{{ 'edit'|trans }}" class="btn btn-default" style="margin-bottom:2px;">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                    </a><br/>
+                    <a href="{{ path('contest_delete', { 'id': entity.id }) }}" title="{{ 'delete'|trans }}" class="btn btn-danger">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </a>
                 </td>
             </tr>
         {% endfor %}
@@ -85,9 +79,7 @@
         </table>
     </div>
 
-            <a href="{{ path('contest_new') }}" class="pull-right">
-                <button type="button" class="btn btn-success btn-lg">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{ 'create_new_contest'|trans }}
-                </button>
-            </a>
-    {% endblock %}
+    <a href="{{ path('contest_new') }}" title="{{ 'create_new_contest'|trans }}" class="pull-right btn btn-success btn-lg">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{ 'create_new_contest'|trans }}
+    </a>
+{% endblock %}

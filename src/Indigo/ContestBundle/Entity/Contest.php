@@ -212,7 +212,7 @@ class Contest
 
     protected function getUploadDir()
     {
-        return 'uploaded_images/contest';
+        return 'uploads/contest';
     }
 
     /**
@@ -403,39 +403,5 @@ class Contest
     {
         $this->priseImages = $priseImages;
     }
-
-    /**
-     * hash contest prise images names
-     */
-    /*public function changePriseImagesNames()
-    {
-        $explode = explode(",", $this->pathForPriseImages);
-        while($explode) {
-            $filename = sha1(uniqid(mt_rand() * mt_rand(), true));
-            $this->pathForPriseImages = $filename . '.' . $this->getPriseImages()->guessExtension();
-        }
-    }*/
-
-    /**
-     * function upload contest prise images
-     */
-//    public function uploadPriseImages()
-//    {
-//        if (null === $this->getPriseImages()) {
-//            return;
-//        }
-//
-//        $this->changePriseImagesNames();
-//
-//        while (is_file($this->getAbsolutePath($this->pathForPriseImages)))
-//            $this->changePriseImagesNames();
-//
-//        $this->getPriseImages()->move(
-//            $this->getUploadRootDir(),
-//            $this->pathForPriseImages
-//        );
-//
-//        $this->image = null;
-//    }
 
 }

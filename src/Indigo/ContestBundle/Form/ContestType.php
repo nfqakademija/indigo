@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ContestType extends AbstractType
 {
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -78,7 +79,6 @@ class ContestType extends AbstractType
         ->add('pathForPriseImages', 'file', [
             'label' => 'Prizai',
             'required' => false,
-            'multiple' => true,
             'attr' => ['class' => 'file contestPriseImages'],
         ]);
 }

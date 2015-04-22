@@ -10,6 +10,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Indigo\ContestBundle\Entity\Contest;
 use Indigo\ContestBundle\Form\ContestType;
 
+/**
+ * @Route("/contest")
+ */
 
 class ContestController extends Controller
 {
@@ -17,7 +20,7 @@ class ContestController extends Controller
     /**
      * Lists all Contest entities.
      *
-     * @Route("/contest", name="contest")
+     * @Route("/", name="contest")
      * @Method("GET")
      * @Template("IndigoContestBundle:Contest:index.html.twig")
      */
@@ -212,11 +215,8 @@ class ContestController extends Controller
 
         $this->setImageUrlGlobal($entity->getPathForImage());
 
-        $prises = "prizai";
         if ($editForm->isValid()) {
             $entity->uploadImage();
-            $prises = $entity->getPriseImages();
-            //$entity->uploadPriseImages();
             $em->flush();
 
             return $this->redirect($this->generateUrl('contest_edit', array('id' => $id)));
@@ -226,7 +226,6 @@ class ContestController extends Controller
             'entity' => $entity,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
-            'prises' => $prises
         );
     }
 

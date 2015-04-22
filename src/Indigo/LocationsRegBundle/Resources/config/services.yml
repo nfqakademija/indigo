@@ -1,9 +1,0 @@
-services:
-
-#repositories
-    indigo_location.repository:
-        class: Doctrine\ORM\EntityRepository
-        factory_service: doctrine.orm.default_entity_manager
-        factory_method: getRepository
-        arguments:
-            - Indigo\LocationsRegBundle\Entity\Location
