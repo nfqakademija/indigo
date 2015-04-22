@@ -30,7 +30,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class AllTableEventsListener
 {
-
+    const MAX_SCORES = 1;
     const DOUBLE_SWIPE_IN = 5;
     const DOUBLE_SWIPE_MIN_TS = 1;
 
@@ -46,7 +46,7 @@ class AllTableEventsListener
 
     /**
      * @param EntityManagerInterface $em
-     * @param EventDispatcherInterface $ed
+     * @param EventDispatcher $ed
      */
     public function __construct(EntityManagerInterface $em, EventDispatcherInterface $ed)
     {
@@ -129,7 +129,8 @@ class AllTableEventsListener
                     }
 
                     $gameEntity->addTeamScore($teamPosition);
-                    if ($gameEntity->getTeamScore($teamPosition) >= 10) {
+                    // TODO: pakeist i 10
+                    if ($gameEntity->getTeamScore($teamPosition) >= self::MAX_SCORES) {
 
                         $event = new GameFinishEvent();
                         $event->setGame($gameEntity);
@@ -150,8 +151,12 @@ class AllTableEventsListener
                         if ($gameEntity->getTeam1Player1Id()) {
                             $newGameEntity->setTeam1Player1Id($gameEntity->getTeam1Player1Id());
                         }
-                        $newGameEntity->setTeam0Id($gameEntity->getTeam0Id());
-                        $newGameEntity->setTeam1Id($gameEntity->getTeam1Id());
+                        if ($gameEntity->getTeam0()) {
+                            $newGameEntity->setTeam0($gameEntity->getTeam0());
+                        }
+                        if ($gameEntity->getTeam1()) {
+                            $newGameEntity->setTeam1($gameEntity->getTeam1());
+                        }
 
                         $newGameEntity->setTableStatus($gameEntity->getTableStatus());
                         $newGameEntity->setMatchType($gameEntity->getMatchType());
@@ -262,9 +267,12 @@ class AllTableEventsListener
 
                             $teamEntity = $this->createMultiPlayerTeam($player0, $player1);
                             $this->em->flush();
-                            $commonTeamId = $teamEntity->getId();
+                        } else {
+
+                            $teamEntity = $this->em->getRepository('IndigoGameBundle:Team')->findOneById($commonTeamId);
                         }
-                        $gameEntity->setTeamId($teamPosition, $commonTeamId);
+
+                        $gameEntity->setTeam($teamPosition, $teamEntity);
 
                         if ($gameEntity->isBothTeamReady()) {
                             //if ($gameEntity->getGameTime()->getTimeOwner()) {

@@ -18,7 +18,8 @@ use Indigo\UIBundle\Models\PlayerModel;
 use Indigo\UIBundle\Models\TeamModel;
 use Symfony\Component\Security\Acl\Exception\Exception;
 
-class IndigoService {
+class IndigoService
+{
 
     function __construct()
     {

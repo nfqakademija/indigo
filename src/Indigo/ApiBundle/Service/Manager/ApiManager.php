@@ -222,6 +222,8 @@ class ApiManager
      */
     private function getDemoData() {
       return  json_decode('{"status":"ok","records":[
+       {"id":"96010","timeSec":"1425520550","usec":"485733","type":"CardSwipe","data":"{\u0022team\u0022:0,\u0022player\u0022:1,\u0022card_id\u0022:8461951}"},
+        {"id":"96011","timeSec":"1425520551","usec":"485733","type":"CardSwipe","data":"{\u0022team\u0022:0,\u0022player\u0022:1,\u0022card_id\u0022:8461951}"},
       {"id":"96015","timeSec":"1425520560","usec":"485733","type":"CardSwipe","data":"{\u0022team\u0022:0,\u0022player\u0022:1,\u0022card_id\u0022:8461951}"},
       {"id":"96115","timeSec":"1425520560","usec":"485733","type":"CardSwipe","data":"{\u0022team\u0022:1,\u0022player\u0022:1,\u0022card_id\u0022:8462951}"},
       {"id":"96215","timeSec":"1425522560","usec":"485733","type":"CardSwipe","data":"{\u0022team\u0022:0,\u0022player\u0022:0,\u0022card_id\u0022:8463951}"},
@@ -230,7 +232,6 @@ class ApiManager
       {"id":"96512","timeSec":"1425543551","usec":"169652","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
       {"id":"96513","timeSec":"1425543551","usec":"527308","type":"AutoGoal","data":"{\u0022team\u0022:0}"},
       {"id":"96514","timeSec":"1425543560","usec":"484757","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
-      {"id":"96515","timeSec":"1425543560","usec":"485733","type":"CardSwipe","data":"{\u0022team\u0022:0,\u0022player\u0022:1,\u0022card_id\u0022:8469951}"},
       {"id":"96515","timeSec":"1425543561","usec":"485733","type":"CardSwipe","data":"{\u0022team\u0022:0,\u0022player\u0022:1,\u0022card_id\u0022:8469951}"},
       {"id":"96516","timeSec":"1425543568","usec":"400106","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
       {"id":"96517","timeSec":"1425543568","usec":"401041","type":"CardSwipe","data":"{\u0022team\u0022:0,\u0022player\u0022:1,\u0022card_id\u0022:8469934}"},

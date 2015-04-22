@@ -43,6 +43,11 @@ class Team
      */
     private $isSingle;
 
+    /**
+     * @var ArrayCollection(<Rating>)
+     * @ORM\OneToMany(targetEntity="Indigo\GameBundle\Entity\Rating", mappedBy="team")
+     */
+    private $ratings;
 
     /**
      * @var ArrayCollection(<PlayerTeamRelation>)
@@ -55,8 +60,27 @@ class Team
     public function __construct()
     {
         $this->players = new ArrayCollection();
-        $this->totalRating = 0;
+        $this->ratings = new ArrayCollection();
+        $this->totalRating = TeamRepository::DEFAULT_RATING;
     }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getRatings()
+    {
+        return $this->ratings;
+    }
+
+    /**
+     * @param ArrayCollection $ratings
+     */
+    public function setRatings($ratings)
+    {
+        $this->ratings = $ratings;
+    }
+
+
 
     /**
      * @return mixed
