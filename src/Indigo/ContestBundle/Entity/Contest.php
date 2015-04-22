@@ -136,11 +136,13 @@ class Contest
 
 
     /**
-     * @param \Datetime $contest_creation_date
+     * set value to param $contestCreationDate
+     * set value to param $contestType
      */
     public function __construct()
     {
         $this->contestCreationDate = new \DateTime();
+        $this->contestType = true;
     }
 
     /**
