@@ -63,7 +63,7 @@
                 <td class="text-center">{% if entity.contestStartingDate %}{{ entity.contestStartingDate|date('Y-m-d') }}{% endif %}</td>
                 <td class="text-center">{% if entity.contestEndDate %}{{ entity.contestEndDate|date('Y-m-d') }}{% endif %}</td>
                 <td class="text-center">
-                    <a href="{{ path('contest_show', { 'id': entity.id }) }}" title="{{ 'show'|trans }}" class="btn btn-default" style="margin-bottom:2px;">
+                    <a href="{{ path('contest_show', { 'id': entity.id }) }}" title="{{ 'more_information'|trans }}" class="btn btn-default" style="margin-bottom:2px;">
                             <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                     </a><br/>
                     <a href="{{ path('contest_edit', { 'id': entity.id }) }}" title="{{ 'edit'|trans }}" class="btn btn-default" style="margin-bottom:2px;">

@@ -57,7 +57,7 @@ class Contest
     protected $pathForImage;
 
     /**
-     * @Assert\File(maxSize="2M", mimeTypes={"image/jpg", "image/jpeg", "image/gif", "image/png"})
+     * @Assert\File(maxSize="1M", mimeTypes={"image/jpg", "image/jpeg", "image/gif", "image/png"})
      * @Assert\Image(
      *  minWidth = 100,
      *  maxWidth = 500,
@@ -95,30 +95,30 @@ class Contest
     /**
      * @var \Datetime
      *
-     * @ORM\Column(name="contest_creation_date", type="datetime", nullable=true)
+     * @ORM\Column(name="contest_creation_date", type="datetime", nullable=false)
      */
     private $contestCreationDate;
 
     /**
      * @var datetime
      *
-     * @ORM\Column(name="contest_starting_date", type="datetime", nullable=true)
+     * @ORM\Column(name="contest_starting_date", type="datetime", nullable=false)
      */
     private $contestStartingDate;
 
     /**
      * @var datetime
      *
-     * @ORM\Column(name="contest_end_date", type="datetime", nullable=true)
+     * @ORM\Column(name="contest_end_date", type="datetime", nullable=false)
      */
     private $contestEndDate;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="prise_images_paths", type="string", length=255, nullable=true)
+     * @ORM\Column(name="prize_images_paths", type="string", length=255, nullable=true)
      */
-    protected $pathForPriseImages;
+    protected $pathForPrizeImage;
 
     /**
      * @Assert\File(maxSize="3M", mimeTypes={"image/jpg", "image/jpeg", "image/gif", "image/png"})
@@ -132,8 +132,15 @@ class Contest
      *  allowSquare = true)
      */
 
-    private $priseImages;
+    private $prizeImage;
 
+    /**
+     * @var string
+     *
+     * @Assert\NotBlank(groups={"Default"})
+     * @ORM\Column(name="prize", type="string", length=50, nullable=true)
+     */
+    private $prize;
 
     /**
      * set value to param $contestCreationDate
@@ -143,6 +150,8 @@ class Contest
     {
         $this->contestCreationDate = new \DateTime();
         $this->contestType = true;
+        $this->contestStartingDate = new \DateTime();
+        $this->contestEndDate = new \DateTime('+1 days');
     }
 
     /**
@@ -197,24 +206,24 @@ class Contest
      * @return string
      */
 
-    public function getAbsolutePath($imagePath)
+    public function getAbsolutePath($imagePath, $dir)
     {
-        return null === $imagePath ? null : $this->getUploadRootDir() . '/' . $imagePath;
+        return null === $imagePath ? null : $this->getUploadRootDir($dir) . '/' . $imagePath;
     }
 
-    public function getWebPath($imagePath)
+    public function getWebPath($imagePath, $dir)
     {
-        return null === $imagePath ? null : $this->getUploadDir() . '/' . $imagePath;
+        return null === $imagePath ? null : $this->getUploadDir($dir) . '/' . $imagePath;
     }
 
-    protected function getUploadRootDir()
+    protected function getUploadRootDir($dir)
     {
-        return __DIR__ . '/../../../../web/' . $this->getUploadDir();
+        return __DIR__ . '/../../../../web/' . $this->getUploadDir($dir);
     }
 
-    protected function getUploadDir()
+    protected function getUploadDir($dir)
     {
-        return 'uploads/contest';
+        return 'uploads/'.$dir;
     }
 
     /**
@@ -250,11 +259,11 @@ class Contest
 
         $this->changeImageName();
 
-        while (is_file($this->getAbsolutePath($this->pathForImage)))
+        while (is_file($this->getAbsolutePath($this->pathForImage, "contest")))
             $this->changeImageName();
 
         $this->getImage()->move(
-            $this->getUploadRootDir(),
+            $this->getUploadRootDir("contest"),
             $this->pathForImage
         );
 
@@ -377,33 +386,77 @@ class Contest
     /**
      * @return string
      */
-    public function getPathForPriseImages()
+    public function getPathForPrizeImage()
     {
-        return $this->pathForPriseImages;
+        return $this->pathForPrizeImage;
     }
 
     /**
-     * @param string $pathForPriseImages
+     * @param string $pathForPrizeImage
      */
-    public function setPathForPriseImages($pathForPriseImages)
+    public function setPathForPrizeImage($pathForPrizeImage)
     {
-        $this->pathForPriseImages = $pathForPriseImages;
+        $this->pathForPrizeImage = $pathForPrizeImage;
     }
 
     /**
      * @return UploadedFile
      */
-    public function getPriseImages()
+    public function getPrizeImage()
     {
-        return $this->priseImages;
+        return $this->prizeImage;
     }
 
     /**
-     * @param UploadedFile $priseImages
+     * @param UploadedFile $prizeImage
      */
-    public function setPriseImages(UploadedFile $priseImages = null)
+    public function setPrizeImage(UploadedFile $prizeImage = null)
     {
-        $this->priseImages = $priseImages;
+        $this->prizeImage = $prizeImage;
+    }
+
+    public function changePrizeImageName()
+    {
+        $filename = sha1(uniqid(mt_rand() * mt_rand(), true));
+        $this->pathForPrizeImage = $filename . '.' . $this->getPrizeImage()->guessExtension();
+    }
+
+    /**
+     * function upload contest image
+     */
+    public function uploadPrizeImage()
+    {
+        if (null === $this->getPrizeImage()) {
+            return;
+        }
+
+        $this->changePrizeImageName();
+
+        while (is_file($this->getAbsolutePath($this->pathForPrizeImage, "prizes")))
+            $this->changePrizeImageName();
+
+        $this->getPrizeImage()->move(
+            $this->getUploadRootDir("prizes"),
+            $this->pathForPrizeImage
+        );
+
+        $this->prizeImage = null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrize()
+    {
+        return $this->prize;
+    }
+
+    /**
+     * @param string $prize
+     */
+    public function setPrize($prize)
+    {
+        $this->prize = $prize;
     }
 
 }

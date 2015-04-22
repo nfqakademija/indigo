@@ -60,6 +60,28 @@
                 <th>{{ 'create_contest.form.contest_end_date'|trans }}</th>
                 <td>{{ entity.contestEndDate|date('Y-m-d') }}</td>
             </tr>
+            <tr>
+                <th>{{ 'prize'|trans }}</th>
+                <td>
+                    {% if entity.prize %}
+                        {{ entity.prize }}
+                    {% else %}
+                        {{ 'no_prize'|trans }}
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th class="vertical-center">{{ 'prize_photo'|trans }}</th>
+                <td>
+                    {% if entity.pathForPrizeImage %}
+                        <a data-toggle="lightbox" data-title="{{ 'prize_photo'|trans }}" href="{{ asset('uploads/prizes/') }}{{ entity.pathForPrizeImage }}">
+                            <img src="{{ asset('uploads/prizes/') }}{{ entity.pathForPrizeImage }}" alt="*" width="300px" title="{{ entity.contestTitle|capitalize }}"/>
+                        </a>
+                    {% else %}
+                        {{ 'no_prize_photo'|trans }}
+                    {% endif %}
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>
