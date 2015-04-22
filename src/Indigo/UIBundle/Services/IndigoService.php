@@ -62,39 +62,63 @@ class IndigoService
                     $contest->getEndData($contestEntity->getContestEndDate());
                     $model->setContest($contest);
                 }
+
+                $user00 = $this->em->getRepository('IndigoUserBundle:User')->findOneById($gameEntity->getTeam0Player0Id());
+
+                if(!$user00)
+                {
+                    $user00 = $this->em->getRepository('IndigoUserBundle:User')->findOneById(0);
+                }
+
+                $user01 = $this->em->getRepository('IndigoUserBundle:User')->findOneById($gameEntity->getTeam0Player1Id());
+
+                if(!$user01)
+                {
+                    $user01 = $this->em->getRepository('IndigoUserBundle:User')->findOneById(0);
+                }
+
+                $user10 = $this->em->getRepository('IndigoUserBundle:User')->findOneById($gameEntity->getTeam1Player0Id());
+
+                if(!$user10)
+                {
+                    $user10 = $this->em->getRepository('IndigoUserBundle:User')->findOneById(0);
+                }
+
+                $user11 = $this->em->getRepository('IndigoUserBundle:User')->findOneById($gameEntity->getTeam1Player1Id());
+
+                if(!$user11)
+                {
+                    $user11 = $this->em->getRepository('IndigoUserBundle:User')->findOneById(0);
+                }
+
+                $player00 = new PlayerModel();
+                $player01 = new PlayerModel();
+                $player10 = new PlayerModel();
+                $player11 = new PlayerModel();
+
+                $player00->setName($user00->getUsername());
+                $player00->setImageUrl($user00->getPicture());
+                $player01->setName($user01->getUsername());
+                $player01->setImageUrl($user01->getPicture());
+                $player10->setName($user10->getUsername());
+                $player10->setImageUrl($user10->getPicture());
+                $player11->setName($user11->getUsername());
+                $player11->setImageUrl($user11->getPicture());
             }
 
-            $playerA1 = new PlayerModel();
-            $playerA1->setName("Dalia");
-            //$playerA1->setImageUrl("/bundles/indigoui/images/dalia.png");
-
-            $playerA2 = new PlayerModel();
-            $playerA2->setName("Bilas");
-            //$playerA2->setImageUrl("/bundles/indigoui/images/bilas.png");
-
-            $playerB1 = new PlayerModel();
-            $playerB1->setName("Tadas");
-            //$playerB1->setImageUrl("/bundles/indigoui/images/tadas_surgailis.png");
-
-            $playerB2 = new PlayerModel();
-            $playerB2->setName("Klintonas");
-            //$playerB2->setImageUrl("/bundles/indigoui/images/clinton.png");
-
             $teamA = new TeamModel();
-            $teamA->setPlayer1( $playerA1 );
-            $teamA->setPlayer2( $playerA2 );
-            $teamA->setGoals(5);
+            $teamA->setPlayer1( $player00 );
+            $teamA->setPlayer2( $player01 );
+            $teamA->setGoals($gameEntity->getTeam0Score());
 
             $teamB = new TeamModel();
-            $teamB->setPlayer1( $playerB1 );
-            $teamB->setPlayer2( $playerB2 );
-            $teamB->setGoals(3);
+            $teamB->setPlayer1( $player10 );
+            $teamB->setPlayer2( $player11 );
+            $teamB->setGoals($gameEntity->getTeam1Score());
 
             $model->setTeamA( $teamA );
             $model->setTeamB( $teamB );
-
         }
-
         return $model;
     }
 
