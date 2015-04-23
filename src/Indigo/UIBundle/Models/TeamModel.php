@@ -19,8 +19,8 @@ class TeamModel implements \JsonSerializable {
     public function __construct()
     {
         $this->goals = 0;
-        $this->player1 = new PlayerModel();
-        $this->player2 = new PlayerModel();
+        $this->player1 = new PlayerModel("/bundles/indigoui/images/empty.png");
+        $this->player2 = new PlayerModel("/bundles/indigoui/images/empty.png");
     }
 
     public function jsonSerialize() {

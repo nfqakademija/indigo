@@ -30,6 +30,11 @@ class LiveViewModel implements \JsonSerializable{
      */
     private $teamB;
 
+    /**
+     * @var string
+     */
+    private $statusMessage;
+
     public function __construct()
     {
         $this->isTableBusy = false;
@@ -44,6 +49,7 @@ class LiveViewModel implements \JsonSerializable{
     public function jsonSerialize() {
         return [
             "isBusy" => $this->isTableBusy,
+            "statusMessage" => $this->statusMessage,
             "contest" => $this->contest,
             "teamA" => $this->teamA,
             "teamB" => $this->teamB
@@ -130,5 +136,21 @@ class LiveViewModel implements \JsonSerializable{
     public function setReservations($reservations)
     {
         $this->reservations = $reservations;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatusMessage()
+    {
+        return $this->statusMessage;
+    }
+
+    /**
+     * @param string $statusMessage
+     */
+    public function setStatusMessage($statusMessage)
+    {
+        $this->statusMessage = $statusMessage;
     }
 }

@@ -74,17 +74,11 @@
                     <img class="bg" src="{{ asset('bundles/indigoui/images/field2.png') }}"/>
 
                         <div id="player1" class="player left-top">
-                            {% if teamA.player1 != null %}
-                                <img id="player1-img" src="{{ teamA.player1.imageUrl }}"/>
-                            {% endif %}
-                            {#<p> {{ player1.name }} </p>#}
+                            <img id="player1-img" src="{{ teamA.player1.imageUrl }}"/>
                         </div>
 
                         <div class="player left-bottom">
-                            {% if teamA.player2 != null %}
                                <img id="player2-img" src="{{ teamA.player2.imageUrl }}"/>
-                                {% endif %}
-                            {#<p> {{ player1.name }} </p>#}
                         </div>
 
 
@@ -96,15 +90,18 @@
                     </div>
 
                     <div class="player right-bottom">
-                        {% if teamB.player2 != null %}
                             <img id="player4-img" src="{{ teamB.player2.imageUrl }}"/>
-                        {% endif %}
-                        {#<p> {{ player1.name }} </p>#}
                     </div>
 
                 </div>
 
             </div>
+
+        </div>
+
+        <div class="row">
+
+               <p class="status-message"> {{ statusMessage }} </p>
 
         </div>
 

@@ -20,10 +20,12 @@ class PlayerModel implements \JsonSerializable{
      */
     private $imageUrl;
 
-
-    public function __construct()
+    /**
+     * @param string
+     */
+    public function __construct($defImageUrl)
     {
-        $this->imageUrl = "/bundles/indigoui/images/anonymous.png";
+        $this->imageUrl = $defImageUrl;
     }
 
     public function jsonSerialize() {
@@ -62,7 +64,14 @@ class PlayerModel implements \JsonSerializable{
      */
     public function setImageUrl($imageUrl)
     {
-        $this->imageUrl = $imageUrl;
+        if($imageUrl)
+        {
+            $this->imageUrl = $imageUrl;
+        }
+        else
+        {
+            $this->imageUrl = "/bundles/indigoui/images/anonymous.png";
+        }
     }
 
 }
