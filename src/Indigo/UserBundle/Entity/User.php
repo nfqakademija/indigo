@@ -79,10 +79,11 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
     private $roles;
 
 
-//    /**
-//    * @ORM\OneToOne(targetEntity="ResetPassword", mappedBy="user")
-//    */
-//    private $reset_password_hash;
+    /**
+    * @ORM\OneToOne(targetEntity="ResetPassword", mappedBy="user")
+    *
+    */
+    private $reset_password_hash;
 
     /**
      *
@@ -545,4 +546,23 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
     {
         return $this->registrationDate;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getResetPasswordHash()
+    {
+        return $this->reset_password_hash;
+    }
+
+    /**
+     * @param mixed $reset_password_hash
+     */
+    public function setResetPasswordHash($reset_password_hash)
+    {
+        $this->reset_password_hash = $reset_password_hash;
+    }
+
+
+
 }

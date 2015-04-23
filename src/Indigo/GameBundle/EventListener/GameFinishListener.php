@@ -8,7 +8,6 @@ use Indigo\GameBundle\Repository\GameStatusRepository;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-
 class GameFinishListener {
 
     /**
@@ -17,7 +16,7 @@ class GameFinishListener {
     private $em;
 
     /**
-     * @param EntityManager $em
+     * @param EntityManagerInterface $em
      */
     public function __construct(EntityManagerInterface $em)
     {
@@ -46,23 +45,6 @@ class GameFinishListener {
         $this->em->persist($gameEntity);
 
         $this->em->flush();
-        //TODO: sukurti analogiska game'a
-
-/*
- *  naujo zaidimo sukurimas,
- *  senu zaideju sudejimas
-
-        $newGameEntity = new Game();
-
-        $newGameTimeEntity = new GameTime();
-        $newGameEntity->
-        $newGameEntity->setGameTime($gameTimeEntity);
-
-        $newGameEntity = $this->createGame($tableStatusEntity, GameStatusRepository::STATUS_GAME_STARTED);
-
-        //sukurti is kart nauja game'a
-        $tableStatusEntity->addGame()*/
-
     }
 
     /**
@@ -76,16 +58,7 @@ class GameFinishListener {
         $gameEntity->setFinishedAt( new \DateTime());
         //TODO: ar panaikina ?
         $gameEntity->getTableStatus()->setGame(null);
-
-        $this->onRatingCalculate($event);
         return $gameEntity;
     }
 
-    /**
-     * @param GameFinishEvent $event
-     */
-    public function onRatingCalculate(GameFinishEvent $event)
-    {
-        // smth
-    }
 }

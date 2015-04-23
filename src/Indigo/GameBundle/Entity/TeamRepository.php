@@ -12,5 +12,5 @@ use Doctrine\ORM\EntityRepository;
  */
 class TeamRepository extends EntityRepository
 {
-
+    const DEFAULT_RATING = 1200;
 }

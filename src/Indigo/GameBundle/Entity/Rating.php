@@ -23,25 +23,24 @@ class Rating
 
     /**
      * @var \Indigo\GameBundle\Entity\Team
-     *
-     * @ORM\Column(name="team_id", type="integer")
+     * @ORM\ManyToOne(targetEntity="Indigo\GameBundle\Entity\Team", inversedBy="ratings", cascade={"persist"})
+     * @ORM\JoinColumn(name="team_id", referencedColumnName="id")
      */
-    private $teamId;
+    private $team;
 
     /**
      * @var \Indigo\GameBundle\Entity\Game
-     *
-     * @ORM\Column(name="game_id", type="integer")
+     * @ORM\ManyToOne(targetEntity="Indigo\GameBundle\Entity\Game", inversedBy="ratings")
+     * @ORM\JoinColumn(name="game_id", referencedColumnName="id")
      */
-    private $gameId;
+    private $game;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="rating", type="integer")
+     * @ORM\Column(name="rating", type="integer", nullable=false)
      */
     private $rating;
-
 
     /**
      * Get id
@@ -54,45 +53,45 @@ class Rating
     }
 
     /**
-     * @param Team $teamId
+     * @param Team $team
      * @return $this
      */
-    public function setTeamId(Team $teamId)
+    public function setTeam(Team $team)
     {
-        $this->teamId = $teamId;
+        $this->team = $team;
 
         return $this;
     }
 
     /**
-     * Get teamId
+     * Get team
      *
      * @return integer 
      */
-    public function getTeamId()
+    public function getTeam()
     {
-        return $this->teamId;
+        return $this->team;
     }
 
     /**
-     * @param Game $gameId
+     * @param Game $game
      * @return $this
      */
-    public function setGameId(Game $gameId)
+    public function setGame(Game $game)
     {
-        $this->gameId = $gameId;
-
+        $this->game = $game;
+        $this->getGame()->addRating($this);
         return $this;
     }
 
     /**
-     * Get gameId
+     * Get game
      *
      * @return integer 
      */
-    public function getGameId()
+    public function getGame()
     {
-        return $this->gameId;
+        return $this->game;
     }
 
     /**

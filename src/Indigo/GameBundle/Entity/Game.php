@@ -2,6 +2,7 @@
 
 namespace Indigo\GameBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Indigo\GameBundle\Repository\GameStatusRepository;
 use Indigo\GameBundle\Repository\GameTypeRepository;
@@ -100,18 +101,18 @@ class Game
     private $team1Score;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="team0_id", type="integer", options={"default"=0})
+     * @var \Indigo\GameBundle\Entity\Team
+     * @ORM\ManyToOne(targetEntity="Indigo\GameBundle\Entity\Team")
+     * @ORM\JoinColumn(name="team0_id", referencedColumnName="id")
      */
-    private $team0Id;
+    private $team0;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="team1_id", type="integer", options={"default"=0})
+     * @var \Indigo\GameBundle\Entity\Team
+     * @ORM\ManyToOne(targetEntity="Indigo\GameBundle\Entity\Team")
+     * @ORM\JoinColumn(name="team1_id", referencedColumnName="id")
      */
-    private $team1Id;
+    private $team1;
 
     /**
      * @var string
@@ -142,20 +143,45 @@ class Game
      */
     private $finishedAt;
 
-
-
+    /**
+     * @var ArrayCollection<Rating>
+     * @ORM\OneToMany(targetEntity="Indigo\GameBundle\Entity\Rating", mappedBy="game" )
+     */
+    private $ratings;
 
 
     public function __construct()
     {
-        $this->setTeam0Id(0);
+        $this->ratings = new ArrayCollection();
         $this->setTeam0Score(0);
-        $this->setTeam1Id(0);
         $this->setTeam1Score(0);
         $this->setStatus(GameStatusRepository::STATUS_GAME_WAITING);
         $this->setMatchType(GameTypeRepository::TYPE_GAME_OPEN);
         $this->setContestId(0);
+    }
 
+    /**
+     * @return ArrayCollection
+     */
+    public function getRatings()
+    {
+        return $this->ratings;
+    }
+
+    /**
+     * @param ArrayCollection $ratings
+     */
+    public function setRatings(ArrayCollection $ratings)
+    {
+        $this->ratings = $ratings;
+    }
+
+    /**
+     * @param Rating $rating
+     */
+    public function addRating(Rating $rating)
+    {
+        $this->ratings->add($rating);
     }
 
     /**
@@ -410,67 +436,77 @@ class Game
 
     /**
      * @param $teamPosition
-     * @param $teamId
+     * @param Team $team
      * @return $this
      */
-    public function setTeamId($teamPosition, $teamId)
+    public function setTeam($teamPosition, Team $team)
     {
         if ($teamPosition) {
 
-            $this->setTeam1Id((int)$teamId);
+            $this->setTeam1($team);
         }
         else {
 
-            $this->setTeam0Id((int)$teamId);
+            $this->setTeam0($team);
         }
 
         return $this;
     }
 
     /**
-     * Set team0Id
-     *
-     * @param integer $team0Id
-     * @return Game
+     * @param $teamPosition
+     * @return Team
      */
-    public function setTeam0Id($team0Id)
+    public function getTeam($teamPosition)
     {
-        $this->team0Id = $team0Id;
+        if ($teamPosition) {
+
+            return $this->getTeam1();
+        }
+
+        return $this->getTeam0();
+    }
+
+    /**
+     * @param Team $team0
+     * @return $this
+     */
+    public function setTeam0(Team $team0)
+    {
+        $this->team0 = $team0;
 
         return $this;
     }
 
     /**
-     * Get team0Id
+     * Get team0
      *
-     * @return integer
+     * @return Team
      */
-    public function getTeam0Id()
+    public function getTeam0()
     {
-        return $this->team0Id;
+        return $this->team0;
     }
 
     /**
-     * Set team1Id
-     *
-     * @param integer $team1Id
-     * @return Game
+     * @param Team $team1
+     * @return $this
      */
-    public function setTeam1Id($team1Id)
+    public function setTeam1(Team $team1)
     {
-        $this->team1Id = $team1Id;
+        $this->team1 = $team1;
 
         return $this;
     }
 
     /**
-     * Get team1Id
+     * Get team1
      *
-     * @return integer
+     * @return Team
      */
-    public function getTeam1Id()
+    public function getTeam1()
     {
-        return $this->team1Id;
+        return $this->team1;
     }
 
     /**

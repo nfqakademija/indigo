@@ -1,8 +1,8 @@
 parameters:
     indigo_game.game_finish_listener.class: Indigo\GameBundle\EventListener\GameFinishListener
-
+    game.rating_calculator.class: Indigo\GameBundle\Service\RatingService
 services:
-    indigo_game.game_finish_listener:
+    game.finish.listener:
       class: %indigo_game.game_finish_listener.class%
       arguments: ["@doctrine.orm.entity_manager"]
       tags:
@@ -14,3 +14,14 @@ services:
 #        arguments: [@service_id, "plain_value", %parameter%]
 
 
+    game.rating:
+      class: %game.rating_calculator.class%
+      arguments: ["@doctrine.orm.entity_manager"]
+
+
+    game.rating.subscriber:
+        class: Indigo\GameBundle\EventListener\RatingCalculatorSubscriber
+        calls:
+            - [ setRatingService, ["@game.rating"] ]
+        tags:
+            - { name: kernel.event_subscriber }

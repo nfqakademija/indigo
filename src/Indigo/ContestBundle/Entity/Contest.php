@@ -57,15 +57,15 @@ class Contest
     protected $pathForImage;
 
     /**
-     * @Assert\File(maxSize="2M", mimeTypes={"image/jpg", "image/jpeg", "image/gif", "image/png"})
+     * @Assert\File(maxSize="3M", mimeTypes={"image/jpg", "image/jpeg", "image/gif", "image/png"})
      * @Assert\Image(
      *  minWidth = 100,
-     *  maxWidth = 500,
+     *  maxWidth = 1024,
      *  minHeight = 100,
-     *  maxHeight = 500,
-     *  allowLandscape = false,
+     *  maxHeight = 1024,
+     *  allowLandscape = true,
      *  allowPortrait = false,
-     *  allowSquare = true)
+     *  allowSquare = false)
      */
 
     private $image;

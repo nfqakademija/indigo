@@ -30,7 +30,6 @@ class EventFlowLogicManager
             foreach ($eventList as $tableEventModel) {
                 $tableEvent = new TableEvent();
                 $tableEvent->setTableEventModel($tableEventModel);
-                //var_dump($tableEventModel);
                 $this->ed->dispatch('indigo_table.new_event',  $tableEvent);
             }
         }
