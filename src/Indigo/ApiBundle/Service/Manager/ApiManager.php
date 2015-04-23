@@ -74,13 +74,13 @@ class ApiManager
     public function getEvents($tableKey, array $query, $tryTestOnFailure = false)
     {
 
-        if ($eventsJSON = $this->getDemoData()) {
+       /* if ($eventsJSON = $this->getDemoData()) {
 
             $eventList = $this->parseResponseData($eventsJSON);
             $eventList->setTableId(-1); // virtual table
 
             return $eventList;
-        }
+        }*/
 
         try {
             $table = $this->getTable($tableKey);
@@ -92,7 +92,7 @@ class ApiManager
             ];
 
             $response = $this->getClient()->get($table['table_api_url'], $query);
-
+            //var_dump($response);
             if ($response->getStatusCode() == 200) {
 
                 if (stripos($response->getHeader('content-type'), 'json') !== false) {

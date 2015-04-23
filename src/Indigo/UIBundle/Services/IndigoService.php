@@ -47,7 +47,20 @@ class IndigoService
         if($tableStatus)
         {
             $model->setIsTableBusy($tableStatus->getBusy());
-            $gameEntity = $this->em->getRepository('IndigoGameBundle:Game')->find($tableStatus->getGame());
+            if($tableStatus->getGame()) {
+                $gameEntity = $this->em->getRepository('IndigoGameBundle:Game')->find($tableStatus->getGame());
+            }
+            else{
+                $gameEntity = null;
+            }
+
+            $player00 = new PlayerModel();
+            $player01 = new PlayerModel();
+            $player10 = new PlayerModel();
+            $player11 = new PlayerModel();
+
+            $teamA = new TeamModel();
+            $teamB = new TeamModel();
 
             if($gameEntity)
             {
@@ -91,11 +104,6 @@ class IndigoService
                     $user11 = $this->em->getRepository('IndigoUserBundle:User')->findOneById(0);
                 }
 
-                $player00 = new PlayerModel();
-                $player01 = new PlayerModel();
-                $player10 = new PlayerModel();
-                $player11 = new PlayerModel();
-
                 $player00->setName($user00->getUsername());
                 $player00->setImageUrl($user00->getPicture());
                 $player01->setName($user01->getUsername());
@@ -104,17 +112,17 @@ class IndigoService
                 $player10->setImageUrl($user10->getPicture());
                 $player11->setName($user11->getUsername());
                 $player11->setImageUrl($user11->getPicture());
+
+                $teamA->setGoals($gameEntity->getTeam0Score());
+                $teamB->setGoals($gameEntity->getTeam1Score());
             }
 
-            $teamA = new TeamModel();
+
             $teamA->setPlayer1( $player00 );
             $teamA->setPlayer2( $player01 );
-            $teamA->setGoals($gameEntity->getTeam0Score());
 
-            $teamB = new TeamModel();
             $teamB->setPlayer1( $player10 );
             $teamB->setPlayer2( $player11 );
-            $teamB->setGoals($gameEntity->getTeam1Score());
 
             $model->setTeamA( $teamA );
             $model->setTeamB( $teamB );

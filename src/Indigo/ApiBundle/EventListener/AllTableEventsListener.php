@@ -30,7 +30,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class AllTableEventsListener
 {
-    const MAX_SCORES = 1;
+    const MAX_SCORES = 10;
     const DOUBLE_SWIPE_IN = 5;
     const DOUBLE_SWIPE_MIN_TS = 1;
 

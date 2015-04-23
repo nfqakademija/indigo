@@ -76,9 +76,9 @@ class EventCaptureCommand extends ContainerAwareCommand
             $eventList = $manager->getEvents(
                 $tableKey,
                 $query,
-                $isDevEnv
+                false
             );
-
+            //var_dump($eventList);
             if ($eventList) {
 
                 $eventLogicManager = $this->getContainer()->get('indigo_table.event_flow_logic_manager');

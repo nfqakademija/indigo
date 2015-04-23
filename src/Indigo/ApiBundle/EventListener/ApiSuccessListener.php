@@ -48,6 +48,7 @@ class ApiSuccessListener
             }
 
             $tableStatusEntity->setLastApiRecordTs($lastTableEvent->getTimeSec());
+            $tableStatusEntity->setLastApiRecordId($lastTableEvent->getId());
             $this->em->persist($tableStatusEntity);
             $this->em->flush();
             printf("last API event id:%u\n", $lastTableEvent->getId());
