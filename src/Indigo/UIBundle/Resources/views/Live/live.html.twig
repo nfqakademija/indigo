@@ -1,9 +1,13 @@
-{#{% extends "IndigoMainBundle:Pixel:base.html.twig" %}#}
+<!DOCTYPE html>
+<html>
+<head>
 
-<link rel="stylesheet" href="{{ asset('bundles/indigomain/css/bootstrap.min.css') }}" />
-<link rel="stylesheet" href="{{ asset('bundles/indigoui/css/main.css') }}" />
-<srip src="{{ asset('bundles/indigomain/js/bootstrap.min.js') }}"></srip>
-<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <link rel="stylesheet" href="{{ asset('bundles/indigomain/css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/indigoui/css/main.css') }}" />
+    <srip src="{{ asset('bundles/indigomain/js/bootstrap.min.js') }}"></srip>
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+
+</head>
 
 <script>
 
@@ -42,13 +46,16 @@
 </script>
 
 
-{% block content%}
+<body>
+
+{#{% block content%}#}
+
+    <div class="live">
 
     <div class="container-fluid">
         <div class="row">
 
-            <div class="col-md-2">  </div>
-            <div class="col-md-8 content">
+            <div class=" col-xs-12 col-sm-12 col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2 content">
 
 
                 <div class="title">
@@ -110,89 +117,13 @@
         <div class="col-md-2">  </div>
         <div class="col-md-8 center">
 
-
-
-         {#<div class="reservation-item {% if reservations[0].isReserved %} booked {% endif %}">#}
-            {#<div class="res-title">#}
-                {#{% if reservations[0].isReserved == true %}#}
-                    {#Stalas rezervuotas#}
-                {#{% else %}#}
-                    {#Stalas laisvas#}
-                {#{% endif %}#}
-                            {#</div>#}
-
-                            {#<div class="res-time"> {{ reservations[0].timeFrom}} - {{ reservations[0].timeTo }} </div>#}
-
-                            {#{% if reservations[0].isReserved == false %}#}
-                    {#<button class="res-button"> Rezervuoti </button>#}
-                {#{% endif %}#}
-        {#</div>#}
-
-        {#<div class="reservation-item {% if reservations[1].isReserved %} booked {% endif %}">#}
-
-            {#<div class="res-title">#}
-                {#{% if reservations[1].isReserved == true %}#}
-                    {#Stalas rezervuotas#}
-                {#{% else %}#}
-                    {#Stalas laisvas#}
-                {#{% endif %}#}
-            {#</div>#}
-
-            {#<div class="res-time"> {{ reservations[1].timeFrom}} - {{ reservations[1].timeTo }} </div>#}
-
-            {#{% if reservations[1].isReserved == false %}#}
-                {#<button class="res-button"> Rezervuoti </button>#}
-            {#{% endif %}#}
-
-        {#</div>#}
-
-        {#<div class="reservation-item {% if reservations[2].isReserved  %} booked {% endif %}">#}
-            {#<div class="res-title">#}
-                {#{% if reservations[2].isReserved == true %}#}
-                    {#Stalas rezervuotas#}
-                {#{% else %}#}
-                    {#Stalas laisvas#}
-                {#{% endif %}#}
-                            {#</div>#}
-
-                            {#<div class="res-time"> {{ reservations[2].timeFrom}} - {{ reservations[2].timeTo }} </div>#}
-
-                            {#{% if reservations[2].isReserved == false %}#}
-                    {#<button class="res-button"> Rezervuoti </button>#}
-                {#{% endif %}#}
-        {#</div>#}
-
-        {#<div class="reservation-item {% if reservations[3].isReserved %} booked {% endif %}">#}
-            {#<div class="res-title">#}
-                {#{% if reservations[3].isReserved == true %}#}
-                    {#Stalas rezervuotas#}
-                {#{% else %}#}
-                    {#Stalas laisvas#}
-                {#{% endif %}#}
-                            {#</div>#}
-
-                            {#<div class="res-time"> {{ reservations[3].timeFrom}} - {{ reservations[3].timeTo }} </div>#}
-
-                            {#{% if reservations[3].isReserved == false %}#}
-                    {#<button class="res-button"> Rezervuoti </button>#}
-                {#{% endif %}#}
-        {#</div>#}
-
-         {#</div>#}
-        {#<div class="col-md-2">  </div>#}
-
-
-
-
-
-
-
             </div>
         </div>
     </div>
 
+    </div>
+</body>
 
+</html>
 
-
-
-{% endblock %}
+{#{% endblock %}#}

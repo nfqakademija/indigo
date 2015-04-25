@@ -13,6 +13,7 @@ namespace Indigo\UIBundle\Services;
 use Indigo\GameBundle\Entity\Game;
 use Indigo\GameBundle\Entity\Contest;
 use Indigo\UIBundle\Models\ContestModel;
+use Indigo\UIBundle\Models\DashboardViewModel;
 use Indigo\UIBundle\Models\LiveViewModel;
 use Indigo\UIBundle\Models\PlayerModel;
 use Indigo\UIBundle\Models\TeamModel;
@@ -37,6 +38,28 @@ class IndigoService
         $this->em = $em;
     }
 
+    /**
+     * @return DashboardViewModel
+     */
+    public function getDashboardViewModel()
+    {
+        $dashModel = new DashboardViewModel();
+
+        $dashModel->getCurrentContest()->setTitle("Vasaros turnyras");
+        $dashModel->getCurrentContest()->setDescription("Laimėkite dviejų porų kelionę į Turkiją!");
+        $dashModel->getCurrentContest()->setImageUrl("/bundles/indigoui/images/content-box.png");
+
+        $dashModel->getNextContest()->setTitle("Greičio turnyras");
+        $dashModel->getNextContest()->setDescription("Laimėkite pasivažinėjimą kartingais!");
+        $dashModel->getNextContest()->setImageUrl("/bundles/indigoui/images/content-box-2.png");
+
+        return $dashModel;
+    }
+
+    /**
+     * @param $tableId
+     * @return LiveViewModel
+     */
     public function getTableStatus($tableId)
     {
         $model = new LiveViewModel();

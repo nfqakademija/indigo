@@ -1,5 +1,115 @@
-{% block content%}
+<!DOCTYPE html>
+<html>
+<head>
 
-Hello!
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="{{ asset('bundles/indigomain/css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/indigoui/css/main.css') }}" />
+    <srip src="{{ asset('bundles/indigomain/js/bootstrap.min.js') }}"></srip>
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 
-{% endblock %}
+</head>
+
+
+<body>
+<div class="dashboard">
+
+    <div class="container-fluid">
+
+        <div class="row nav">
+        </div>
+
+        <div class="row">
+            <div class="col-sm-8 col-md-8 col-lg-6 col-sm-offset-2  col-md-offset-2  col-lg-offset-3" >
+
+                <div class="row no-gutter">
+                    <div class="contest-block" style="background: url({{ currentContest.imageUrl }}) no-repeat center;  background-size: cover;">
+                        <div class="info-box" >
+                            <h1> {{ currentContest.title }} </h1>
+                            <h3> {{ currentContest.description }} </h3>
+                            <button > Rezervuoti stalą </button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row no-gutter">
+                    <div class="col-md-6 col-xs-12 col-sm-12" style="text-align: center">
+                        <div class="block">
+                            <h4> Klintonas&Softas </h4>
+                            <img src="{{ asset('bundles/indigoui/images/bilas.png') }}" class="img-circle statistic-image">
+                            <img src="{{ asset('bundles/indigoui/images/clinton.png') }}" class="img-circle statistic-image">
+
+                            <h1> Turnyro lyderiai </h1>
+                            <h2> 1541 tšk. </h2>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-xs-12 col-sm-12" style="text-align: center">
+                        <div class="block">
+                            <h4> Klintonas&Softas </h4>
+                            <img src="{{ asset('bundles/indigoui/images/bilas.png') }}" class="img-circle statistic-image">
+                            <img src="{{ asset('bundles/indigoui/images/clinton.png') }}" class="img-circle statistic-image">
+
+                            <h1> Geriausiai besiginantys </h1>
+                            <h2>  5.2 įv. </h2>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row no-gutter">
+
+                    <div class="col-md-6 col-xs-12 col-sm-12" style="text-align: center">
+
+                        <div class="block">
+                            <h4> Klintonas&Softas </h4>
+                            <img src="{{ asset('bundles/indigoui/images/bilas.png') }}" class="img-circle statistic-image">
+                            <img src="{{ asset('bundles/indigoui/images/clinton.png') }}" class="img-circle statistic-image">
+
+                            <h1> Pergalės laiko rekordas </h1>
+                            <h2> 4 min. </h2>
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-md-6 col-xs-12 col-sm-12" style="text-align: center">
+
+                        <div class="block">
+                            <h4> Klintonas&Softas </h4>
+                            <img src="{{ asset('bundles/indigoui/images/bilas.png') }}" class="img-circle statistic-image">
+                            <img src="{{ asset('bundles/indigoui/images/clinton.png') }}" class="img-circle statistic-image">
+
+                            <h1> Turnyro aktyviausi </h1>
+                            <h2> 26 žaid. </h2>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row no-gutter">
+                    <div class="contest-block" style="background: url({{ nextContest.imageUrl }}) no-repeat center;  background-size: cover;">
+                        <div class="info-box" >
+                            <h1> {{ nextContest.Title }} </h1>
+                            <h3> {{ nextContest.Description }} </h3>
+                            <label > Jau greitai!!! </label>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
+
+
+
+
+

@@ -32,6 +32,12 @@ class ContestModel implements \JsonSerializable{
      */
     private $endData;
 
+    /**
+     * @var string
+     */
+    private $imageUrl;
+
+
     public function __construct()
     {
 
@@ -46,7 +52,8 @@ class ContestModel implements \JsonSerializable{
             "title" => $this->title,
             "description" => $this->description,
             "startDate" => $this->startDate,
-            "endData" => $this->endData
+            "endData" => $this->endData,
+            "imageUrl" => $this->imageUrl
         ];
     }
 
@@ -128,6 +135,22 @@ class ContestModel implements \JsonSerializable{
     public function setEndData($endData)
     {
         $this->endData = $endData;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImageUrl()
+    {
+        return $this->imageUrl;
+    }
+
+    /**
+     * @param string $imageUrl
+     */
+    public function setImageUrl($imageUrl)
+    {
+        $this->imageUrl = $imageUrl;
     }
 
 }
