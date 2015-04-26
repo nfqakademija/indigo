@@ -69,16 +69,16 @@ class TimeReservationController extends Controller
      * @Method("POST")
      * @Template("")
      */
-    public function clickedAction()
-    {
-        $entity = new GameTime();
-        $em = $this->getDoctrine()->getManager();
-        $entity->setConfirmed(1);
-        $entity->setStartAt(new \DateTime());
-        $em->persist($entity);
-        $em->flush();
-
-        return array();
-    }
+//    public function clickedAction()
+//    {
+//        $entity = new GameTime();
+//        $em = $this->getDoctrine()->getManager();
+//        $entity->setConfirmed(1);
+//        $entity->setStartAt(new \DateTime());
+//        $em->persist($entity);
+//        $em->flush();
+//
+//        return array();
+//    }
 
 }

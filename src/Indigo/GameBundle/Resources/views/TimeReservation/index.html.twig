@@ -61,7 +61,7 @@
         $('#timeReservationTable tr td').click(function(){
             if($(this).attr('class') != "bg-danger")
                 $('#form_startAt').val($(this).attr('time'));
-            {% render url('time_reservation/clicked') %}
+            {#{% render url('time_reservation/clicked') %}#}
         });
 
         var dataArray = new Array();

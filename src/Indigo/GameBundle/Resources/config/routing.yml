@@ -10,6 +10,6 @@ indigo_get_list_of_dates:
     path:     /time_reservation/get_list_of_dates
     defaults: { _controller: IndigoGameBundle:TimeReservation:getListOfDates }
 
-indigo_clicked:
-    path:     /time_reservation/clicked
-    defaults: { _controller: IndigoGameBundle:TimeReservation:clicked }
+#indigo_clicked:
+#    path:     /time_reservation/clicked
+#    defaults: { _controller: IndigoGameBundle:TimeReservation:clicked }
