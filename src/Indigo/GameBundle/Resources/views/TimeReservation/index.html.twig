@@ -1,0 +1,115 @@
+{% extends "IndigoMainBundle:Pixel:base.html.twig" %}
+
+{% block title %}Time Reservation{% endblock %}
+
+{% block body %}
+    <style>
+        #timeReservationTable tr td{
+            cursor:pointer;
+        }
+
+        #timeReservationTable tr td:hover{
+            background-color:#5EBD5E;
+            color:#fff;
+        }
+    </style>
+
+    <h1>{{ 'Laiko rezervaciją' }}</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form.startAt) }}
+        {{ form_widget(form.submit) }}
+    {{ form_end(form) }}
+
+    {% set time_interval = 15 %} {# laiko intervalas 15 minuciu #}
+
+    <div class="table-responsive">
+        <table class="table table-bordered" id="timeReservationTable">
+            {% for i in 8..21 %}
+                <tr>
+                   {% for x in 1..4 %}
+                           {% set first_interval_number = x*time_interval-time_interval %}
+                           {% set second_interval_number = x*time_interval %}
+
+                           {% if not first_interval_number %}
+                               {% set first_interval_number = '00' %}
+                           {% endif %}
+
+                           {% set second_interval_numberCorrected = second_interval_number %}
+
+                           {% if second_interval_number == 60 %}
+                               {% set second_interval_numberCorrected = '00' %}
+                           {% endif %}
+
+                           {% set i_second = i %}
+                           {% if x == 4 %}
+                               {% set i_second = i+1 %}
+                           {% endif %}
+
+                           <td time="{{ i }}:{{ first_interval_number }} - {{ i_second }}:{{ second_interval_numberCorrected }}">
+                               {{ i }}:{{ first_interval_number }} - {{ i_second }}:{{ second_interval_numberCorrected }}
+                           </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <script type="text/javascript"> window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js">'+"<"+"/script>"); </script>
+
+    <script>
+        $('#timeReservationTable tr td').click(function(){
+            if($(this).attr('class') != "bg-danger")
+                $('#form_startAt').val($(this).attr('time'));
+            {% render url('time_reservation/clicked') %}
+        });
+
+        var dataArray = new Array();
+
+        function getJSONDataToArray(){
+            var dataArray = new Array();
+            $.ajax({
+                type: "GET",
+                url: 'http://indigo.dev/time_reservation/get_list_of_dates',
+                dataType : 'json',
+                async: false,
+                cache: false,
+                success: function(data) {
+                    var jsonString = JSON.stringify(data);
+                    //alert(jsonString);
+                    dataArray = $.parseJSON(jsonString); //dataArray[0]['id']
+                }
+            });
+            return dataArray;
+        }
+
+        dataArray = getJSONDataToArray();
+
+        $('#timeReservationTable tr td').each(function() {
+            var dateNow = new Date().getTime();
+            var value = $(this).attr('time');
+            var split = value.split(" - ");
+            var date = new Date();
+            var year = date.getFullYear();
+            var month = date.getMonth()+1;
+            if(month < 10)
+                month = '0'+month;
+            var day = date.getDate();
+            var dateString = year+"/"+month+"/"+day+" "+split[1]+":00";
+            var dateStringToNumber = new Date(dateString).getTime();
+
+            if(dateNow > dateStringToNumber)
+                $(this).addClass('bg-danger').attr({'title' : 'Nebegalima rezervuoti šios datos.'});
+
+            for(var i=0; i<dataArray.length; i++){
+                var dateStringFromArraySplit = dataArray[i]['finishAt']['date'].split('.');
+                var dateStringToNumberFromArray = new Date(dateStringFromArraySplit[0].replace(/-/g, '/')).getTime();
+                //var action = dataArray[i]['ack'];
+
+                if(dateStringToNumber == dateStringToNumberFromArray)
+                    $(this).addClass('bg-danger').attr({'title': 'Nebegalima rezervuoti šios datos.'});
+            }
+        });
+
+    </script>
+{% endblock %}

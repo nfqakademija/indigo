@@ -72,10 +72,10 @@ class GameTime
      */
     public function prePersist()
     {
-        if ($this->getStartAt() === null) {
+        /*if ($this->getStartAt() === null) {
             $this->setStartAt(new \DateTime());
             $this->setFinishAt(new \DateTime('+15 minutes'));
-        }
+        }*/
 
         if ($this->getTimeOwner() === null) {
             $this->setTimeOwner(0);
@@ -89,29 +89,11 @@ class GameTime
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @return Game
-     */
-    public function getGame()
-    {
-        return $this->game;
-    }
-
-    /**
-     * @param $game
-     * @return $this
-     */
-    public function setGame($game)
-    {
-        $this->game = $game;
-        return $this;
     }
 
     /**
@@ -120,17 +102,23 @@ class GameTime
      * @param \DateTime $startAt
      * @return GameTime
      */
-    public function setStartAt($startAt)
+    public function setStartAt($startAt = null)
     {
-        $this->startAt = $startAt;
-
+        if($startAt !== null){
+            $explode = explode(" - ", $startAt);
+            $this->startAt = new \DateTime($explode[0]);
+            $this->finishAt = new \DateTime($explode[1]);
+        }else{
+            $this->startAt = new \DateTime();
+            $this->finishAt = new \DateTime('+15 minutes');
+        }
         return $this;
     }
 
     /**
      * Get startAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getStartAt()
     {
@@ -143,17 +131,18 @@ class GameTime
      * @param \DateTime $finishAt
      * @return GameTime
      */
-    public function setFinishAt($finishAt)
+    /*public function setFinishAt($startAt)
     {
-        $this->finishAt = $finishAt;
+        $explode = explode(" - ", $startAt);
+        $this->finishAt = new \DateTime($explode[1]);
 
         return $this;
-    }
+    }*/
 
     /**
      * Get finishAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFinishAt()
     {
@@ -174,7 +163,7 @@ class GameTime
     /**
      * Get TimeOwner
      *
-     * @return integer 
+     * @return integer
      */
     public function getTimeOwner()
     {
@@ -214,12 +203,12 @@ class GameTime
     }
 
     /**
-     * @param Game $game
+     * @param Game $games
      * @return $this
      */
-    public function addGame(Game $game)
+    public function addGame(Game $games)
     {
-        $this->games->add($game);
+        $this->games->add($games);
 
         return $this;
     }

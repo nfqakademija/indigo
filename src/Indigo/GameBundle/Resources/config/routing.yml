@@ -1,3 +1,15 @@
 indigo_game_homepage:
     path:     /hello/{name}
     defaults: { _controller: IndigoGameBundle:Default:index }
+
+indigo_time_reservation:
+    path:     /time_reservation
+    defaults: { _controller: IndigoGameBundle:TimeReservation:index }
+
+indigo_get_list_of_dates:
+    path:     /time_reservation/get_list_of_dates
+    defaults: { _controller: IndigoGameBundle:TimeReservation:getListOfDates }
+
+indigo_clicked:
+    path:     /time_reservation/clicked
+    defaults: { _controller: IndigoGameBundle:TimeReservation:clicked }
