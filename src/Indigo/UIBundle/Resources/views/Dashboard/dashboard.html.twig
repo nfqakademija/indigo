@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,8 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="{{ asset('bundles/indigomain/css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('bundles/indigoui/css/main.css') }}" />
-    <srip src="{{ asset('bundles/indigomain/js/bootstrap.min.js') }}"></srip>
+    <link rel="stylesheet" href="{{ asset('bundles/indigomain/css/pixel-admin.min.css') }}">
+
     <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="{{ asset('bundles/indigomain/js/pixel-admin.min.js') }}"></script>
 
 </head>
 
@@ -16,83 +20,295 @@
 
     <div class="container-fluid">
 
-        <div class="row nav">
+        <div class="row padding-sm-vr">
+
+            <div class="col-sm-8 col-md-8 col-lg-6 col-sm-offset-2  col-md-offset-2  col-lg-offset-3" >
+
+                <div class="btn-group btn-group-lg">
+                    <button type="button" class="btn btn-primary">Ppen league</button>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Dropdown&nbsp;<i class="fa fa-caret-down"></i></button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">NFQ contest</a></li>
+                            <li><a href="#">Speed contest</a></li>
+                            <li><a href="#">Speed contest</a></li>
+
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
 
         <div class="row">
-            <div class="col-sm-8 col-md-8 col-lg-8 col-sm-offset-2  col-md-offset-2  col-lg-offset-2" >
+            <div class="col-sm-8 col-md-8 col-lg-6 col-sm-offset-2  col-md-offset-2  col-lg-offset-3" >
 
                 <div class="row no-gutter">
                     <div class="contest-block" style="background: url({{ currentContest.imageUrl }}) no-repeat center;  background-size: cover;">
                         <div class="info-box" >
-                            <h1> {{ currentContest.title }} </h1>
-                            <h3> {{ currentContest.description }} </h3>
-                            <button > Rezervuoti stalą </button>
+                            <span class="text-xlg">{{ currentContest.title }} </span></br>
+                            <span class="text-bg"> {{ currentContest.dateFrom }} - {{ currentContest.dateTo }} </span></br></br>
+                            <span class="text-lg"> {{ currentContest.description }} </span></br>
+                            <button > Table reservation </button>
                         </div>
                     </div>
                 </div>
 
 
-                <div class="row no-gutter">
-                    <div class="col-md-6 col-xs-12 col-sm-12" style="text-align: center">
-                        <div class="block">
-                            <h4> Klintonas&Softas </h4>
-                            <img src="{{ asset('bundles/indigoui/images/bilas.png') }}" class="img-circle statistic-image">
-                            <img src="{{ asset('bundles/indigoui/images/clinton.png') }}" class="img-circle statistic-image">
+                <div class="row">
 
-                            <h1> Turnyro lyderiai </h1>
-                            <h2> 1541 tšk. </h2>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-xs-12 col-sm-12" style="text-align: center">
-                        <div class="block">
-                            <h4> Klintonas&Softas </h4>
-                            <img src="{{ asset('bundles/indigoui/images/bilas.png') }}" class="img-circle statistic-image">
-                            <img src="{{ asset('bundles/indigoui/images/clinton.png') }}" class="img-circle statistic-image">
-
-                            <h1> Geriausiai besiginantys </h1>
-                            <h2>  5.2 įv. </h2>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="row no-gutter">
 
                     <div class="col-md-6 col-xs-12 col-sm-12" style="text-align: center">
 
-                        <div class="block">
-                            <h4> Klintonas&Softas </h4>
-                            <img src="{{ asset('bundles/indigoui/images/bilas.png') }}" class="img-circle statistic-image">
-                            <img src="{{ asset('bundles/indigoui/images/clinton.png') }}" class="img-circle statistic-image">
+                            <div class="stat-panel" style="height: 80px;">
+                                <div class="stat-cell bg-green-sl valign-middle">
+                                    <span class="text-lg"> 2015 March 12 </span></br>
+                                    <span class="text-center-md"> Sekantis rezervuotas stalas </span>
+                                </div>
+                            </div>
 
-                            <h1> Pergalės laiko rekordas </h1>
-                            <h2> 4 min. </h2>
+                        <div class="stat-panel" style="height: 211px;">
+                            <div class="stat-row">
+                                <div class="stat-cell bg-green-l darker">
+
+                                    <span>
+                                    <img src="{{ asset('bundles/indigoui/images/bilas.png') }}" class="img-circle icon-sm border-wide icon-narrow">
+                                    <img src="{{ asset('bundles/indigoui/images/clinton.png') }}" class="img-circle icon-sm border-wide icon-narrow">
+                                    </span><br>
+
+                                    <i class="fa fa-trophy bg-icon" style="font-size:60px;line-height:80px;height:80px;"></i>
+                                    <span class="text-lg">Overview</span><br>
+                                    <span class="text-sm">Your games statistics</span><br>
+                                </div>
+                            </div> <!-- /.stat-row -->
+                            <div class="stat-row">
+
+                                    <div class="stat-counters bg-green-m no-border-b no-padding text-center">
+                                         <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
+                                        <span class="text-bg"><strong>12</strong></span><br>
+                                         <span class="text-xs">Wins</span>
+                                    </div>
+
+                                    <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
+                                        <span class="text-bg"><strong>17</strong></span><br>
+                                         <span class="text-xs">Loses</span>
+                                    </div>
+
+                                    <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
+                                        <span class="text-bg"><strong>49</strong></span><br>
+                                        <span class="text-xs">Total</span>
+                                    </div>
+
+                                </div> <!-- /.stat-counters -->
+                            </div> <!-- /.stat-row -->
+                            <div class="stat-row">
+
+                                <div class="stat-counters bg-green-m no-border-b no-padding text-center">
+                                    <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
+                                        <span class="text-bg"><strong>203</strong></span><br>
+                                        <span class="text-xs">Goals</span>
+                                    </div>
+
+                                    <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
+                                        <span class="text-bg"><strong>1056</strong></span><br>
+                                        <span class="text-xs">Missed</span>
+                                    </div>
+
+                                    <a href="#" class="stat-cell col-xs-4 bg-green-m padding-sm no-padding-hr valign-middle">
+                                        <span class="text-xs font-green-l">MORE&nbsp;&nbsp;<i class="fa fa-caret-right"></i></span>
+                                    </a>
+
+                                </div> <!-- /.stat-counters -->
+                            </div> <!-- /.stat-row -->
+                        </div>
+
+                        <div class="row">
+
+
+                            <div class="col-xs-12 col-sm-6 col-md-6">
+                                <div class="stat-panel">
+                                    <div class="stat-cell bg-green-sl valign-middle">
+                                        <span class="text-xlg"><strong>4 sec.</strong></span><br>
+                                        <span class="text-bg">Fastest Goal</span><br>
+                                        <span class="text-sm">Wow! This is amazing!</span>
+                                    </div> <!-- /.stat-cell -->
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-sm-6 col-md-6">
+                                <div class="stat-panel">
+                                    <div class="stat-cell bg-green-sl  valign-middle">
+                                        <span class="text-xlg"><strong>1240</strong></span><br>
+                                        <span class="text-bg">Team rating</span><br>
+                                        <span class="text-sm">You can do better!</span>
+                                    </div> <!-- /.stat-cell -->
+                                </div>
+                            </div>
+
                         </div>
 
 
+
+                        <div class="row">
+
+
+                            <div class="col-xs-12 col-sm-6 col-md-6">
+                                <div class="stat-panel">
+                                    <div class="stat-cell bg-green-sl  valign-middle">
+                                        <span class="text-xlg"><strong>4 sec.</strong></span><br>
+                                        <span class="text-bg">Fastest win</span><br>
+                                        <span class="text-sm">Wow! This is amazing!</span>
+                                    </div> <!-- /.stat-cell -->
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-sm-6 col-md-6">
+                                <div class="stat-panel">
+                                    <div class="stat-cell bg-green-sl  valign-middle">
+                                        <span class="text-xlg"><strong>0.4</strong></span><br>
+                                        <span class="text-bg"> PoF </span><br>
+                                        <span class="text-sm">Probability of winning</span>
+                                    </div> <!-- /.stat-cell -->
+                                </div>
+                            </div>
+
+                        </div>
+
                     </div>
+
+                    {# Right bar #}
 
                     <div class="col-md-6 col-xs-12 col-sm-12" style="text-align: center">
 
-                        <div class="block">
-                            <h4> Klintonas&Softas </h4>
-                            <img src="{{ asset('bundles/indigoui/images/bilas.png') }}" class="img-circle statistic-image">
-                            <img src="{{ asset('bundles/indigoui/images/clinton.png') }}" class="img-circle statistic-image">
+                        <a href="{{ path('indigo_ui_live', {'id' : 0}) }}">
 
-                            <h1> Turnyro aktyviausi </h1>
-                            <h2> 26 žaid. </h2>
+                        <div class="stat-panel" style="height: 80px;">
+                            <div class="stat-cell bg-red-m valign-middle">
+
+                                <div class="counter-separated counter-lg">
+                                    <span>9</span>
+                                    <span>5</span>
+                                </div>
+                                </br>
+                                <span class="text-bg"> Table is occupied
+                                </span><br>
+                            </div>
                         </div>
 
+                            </a>
+
+
+                        <div class="stat-panel" style="height: 145px;">
+                            <div class="stat-cell bg-gold valign-middle">
+                                <i class="fa fa-trophy bg-icon"></i>
+                                 <span>
+                                    <img src="{{ asset('bundles/indigoui/images/bilas.png') }}" class="img-circle icon-md border-wide icon-narrow">
+                                    <img src="{{ asset('bundles/indigoui/images/clinton.png') }}" class="img-circle icon-md border-wide icon-narrow">
+                                </span><br>
+                                <span class="text-lg"> Contest leaders </span><br>
+                                <span class="text-bg"> 1250 pts. </span>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="stat-panel">
+                                    <div class="stat-cell bg-silver valign-middle">
+
+                                        <span class="text-xlg">
+                                            <img src="{{ asset('bundles/indigoui/images/bilas.png') }}" class="img-circle border-thin icon-xs icon-narrow">
+                                            <img src="{{ asset('bundles/indigoui/images/clinton.png') }}" class="img-circle border-thin icon-xs icon-narrow">
+                                        </span><br>
+
+                                        <span class="text-lg">2 vieta</span><br>
+                                        <span class="text-bg">1250 pts.</span>
+                                    </div> <!-- /.stat-cell -->
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="stat-panel">
+                                    <div class="stat-cell bg-bronze valign-middle">
+
+                                        <span class="text-xlg">
+                                            <img src="{{ asset('bundles/indigoui/images/bilas.png') }}" class="img-circle icon-xs border-thin icon-narrow ">
+                                            <img src="{{ asset('bundles/indigoui/images/clinton.png') }}" class="img-circle icon-xs border-thin icon-narrow ">
+                                        </span><br>
+
+                                        <span class="text-lg">3 vieta</span><br>
+                                        <span class="text-bg">1250 pts.</span>
+
+                                    </div> <!-- /.stat-cell -->
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="stat-panel" style="height: 211px;">
+                            <div class="stat-row">
+                                <div class="stat-cell bg-blue-l darker">
+                                    <i class="fa fa-trophy bg-icon" style="font-size:60px;line-height:80px;height:80px;"></i>
+                                    <span class="text-lg">Overview</span><br>
+                                    <span class="text-sm">Contest games statistics</span><br>
+                                </div>
+                            </div> <!-- /.stat-row -->
+                            <div class="stat-row">
+
+                                <div class="stat-counters bg-blue-m no-border-b no-padding text-center">
+                                    <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
+                                        <span class="text-bg"><strong>12</strong></span><br>
+                                        <span class="text-xs">Wins</span>
+                                    </div>
+
+                                    <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
+                                        <span class="text-bg"><strong>17</strong></span><br>
+                                        <span class="text-xs">Loses</span>
+                                    </div>
+
+                                    <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
+                                        <span class="text-bg"><strong>49</strong></span><br>
+                                        <span class="text-xs">Total</span>
+                                    </div>
+
+                                </div> <!-- /.stat-counters -->
+                            </div> <!-- /.stat-row -->
+                            <div class="stat-row">
+
+                                <div class="stat-counters bg-blue-m no-border-b no-padding text-center">
+                                    <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
+                                        <span class="text-bg"><strong>203</strong></span><br>
+                                        <span class="text-xs">Goals</span>
+                                    </div>
+
+                                    <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
+                                        <span class="text-bg"><strong>1056</strong></span><br>
+                                        <span class="text-xs">Missed</span>
+                                    </div>
+
+                                    <a href="#" class="stat-cell col-xs-4 bg-blue-m padding-sm no-padding-hr valign-middle">
+                                        <span class="text-xs font-blue-l">MORE&nbsp;&nbsp;<i class="fa fa-caret-right"></i></span>
+                                    </a>
+
+                                </div> <!-- /.stat-counters -->
+                            </div> <!-- /.stat-row -->
+                        </div>
+
+
+
+
                     </div>
+
                 </div>
 
                 <div class="row no-gutter">
                     <div class="contest-block" style="background: url({{ nextContest.imageUrl }}) no-repeat center;  background-size: cover;">
                         <div class="info-box" >
                             <h1> {{ nextContest.Title }} </h1>
-                            <h3> {{ nextContest.Description }} </h3>
+                            {#<h3> {{ nextContest.Description }} </h3>#}
                             <label > Jau greitai!!! </label>
                         </div>
                     </div>

@@ -9,7 +9,7 @@
 namespace Indigo\UIBundle\Controller;
 
 use Indigo\UIBundle\Models\ContestModel;
-use Indigo\UIBundle\Services\IndigoService;
+use Indigo\UIBundle\Services\LiveViewService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,11 +21,14 @@ class DashboardController extends Controller {
      * @Template()
      * @return JsonResponse
      */
-    public function dashboardAction()
+    public function dashboardAction($id)
     {
-        $em = $this->get('doctrine.orm.entity_manager');
-        $is = new IndigoService($em);
-        $model = $is->getDashboardViewModel();
+        $model = $this->getDashboardViewService()->getDashboardViewModel();
         return $this->render('IndigoUIBundle:Dashboard:dashboard.html.twig', $model->jsonSerialize() );
+    }
+
+    private function getDashboardViewService()
+    {
+        return $this->get('indigo_ui.dashboard_view_service');
     }
 }

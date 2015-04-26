@@ -11,7 +11,8 @@
 namespace Indigo\UIBundle\Models;
 use JsonSerializable;
 
-class LiveViewModel implements \JsonSerializable{
+class LiveViewModel implements \JsonSerializable
+{
 
     /**
      * @var ContestModel

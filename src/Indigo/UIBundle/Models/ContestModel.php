@@ -37,10 +37,20 @@ class ContestModel implements \JsonSerializable{
      */
     private $imageUrl;
 
+    /**
+     * @var datetime
+     */
+    private $dateFrom;
+
+    /**
+     * @var datetime
+     */
+    private  $dateTo;
+
 
     public function __construct()
     {
-
+        $this->description = " ";
     }
 
     /**
@@ -152,5 +162,38 @@ class ContestModel implements \JsonSerializable{
     {
         $this->imageUrl = $imageUrl;
     }
+
+    /**
+     * @return datetime
+     */
+    public function getDateFrom()
+    {
+        return $this->dateFrom;
+    }
+
+    /**
+     * @param datetime $dateFrom
+     */
+    public function setDateFrom($dateFrom)
+    {
+        $this->dateFrom = $dateFrom;
+    }
+
+    /**
+     * @return datetime
+     */
+    public function getDateTo()
+    {
+        return $this->dateTo;
+    }
+
+    /**
+     * @param datetime $dateTo
+     */
+    public function setDateTo($dateTo)
+    {
+        $this->dateTo = $dateTo;
+    }
+
 
 }

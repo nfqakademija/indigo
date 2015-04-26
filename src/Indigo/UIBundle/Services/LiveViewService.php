@@ -26,7 +26,7 @@ use Symfony\Component\Security\Acl\Exception\Exception;
  * @doctrine.orm.entity_manager
  */
 
-class IndigoService
+class LiveViewService
 {
     private $em;
 
@@ -39,7 +39,7 @@ class IndigoService
     }
 
     /**
-     * @return DashboardViewModel
+     * @return array
      */
     public function getDashboardViewModel()
     {

@@ -6,7 +6,7 @@ use Indigo\UIBundle\Models\ContestModel;
 use Indigo\UIBundle\Models\TeamModel;
 use Indigo\UIBundle\Models\PlayerModel;
 
-use Indigo\UIBundle\Services\IndigoService;
+use Indigo\UIBundle\Services\LiveViewService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,23 +25,20 @@ class LiveController extends Controller
      * @Template()
      * @return Response
      */
-    public function liveAction()
+    public function liveAction($id)
     {
-        $em = $this->get('doctrine.orm.entity_manager');
-
-        $is = new IndigoService($em);
-        $model = $is->getTableStatus(1);
-        $json = json_encode( $model );
-        return $model->jsonSerialize($json);
+        $model = $this->getIndigoStatsService()->getTableStatus(1);
+        return $this->render('IndigoUIBundle:Live:live.html.twig', $model->jsonSerialize() );
     }
 
-    public function statusAction()
+    public function statusAction($id)
     {
-        $em = $this->get('doctrine.orm.entity_manager');
+        $model = $this->getIndigoStatsService()->getTableStatus(1);
+        return new JsonResponse(json_encode( $model ));
+    }
 
-        $is = new IndigoService($em);
-        $model = $is->getTableStatus(1);
-        $json = json_encode( $model );
-        return new JsonResponse($json);
+    private function getIndigoStatsService()
+    {
+        return $this->get('indigo_ui.live_view_service');
     }
 }

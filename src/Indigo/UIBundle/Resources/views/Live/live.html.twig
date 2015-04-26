@@ -7,6 +7,7 @@
     <srip src="{{ asset('bundles/indigomain/js/bootstrap.min.js') }}"></srip>
     <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 
+
 </head>
 
 <script>
@@ -15,7 +16,7 @@
     {
         setInterval(function () {
 
-            var status = $.get( "/live/status", function(data) {
+            var status = $.get( "/live/status/0", function(data) {
 
                 var json = $.parseJSON(data);
 
