@@ -1,36 +1,28 @@
 <?php
 
-namespace Indigo\ApiBundle\EventListener;
+namespace Indigo\TableBundle\EventListener;
 
-use Doctrine\Common\Collections\Criteria;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
-use Indigo\ApiBundle\Event\TableEvent;
-use Indigo\ApiBundle\Model\AutoGoalModel;
-use Indigo\ApiBundle\Model\CardSwipeModel;
-use Indigo\ApiBundle\Model\TableActionInterface;
-use Indigo\ApiBundle\Model\TableShakeModel;
 use Doctrine\ORM\EntityManager;
-use Indigo\ApiBundle\Repository\TableStatusRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Indigo\GameBundle\Entity\Game;
 use Indigo\GameBundle\Entity\GameTime;
+use Indigo\GameBundle\Entity\PlayerTeamRelation;
 use Indigo\GameBundle\Entity\TableStatus;
 use Indigo\GameBundle\Entity\Team;
-use Indigo\GameBundle\Entity\GameTimeRepository;
-use Indigo\GameBundle\Entity\PlayerTeamRelation;
+use Indigo\GameBundle\Event\GameEvents;
 use Indigo\GameBundle\Event\GameFinishEvent;
 use Indigo\GameBundle\Repository\GameStatusRepository;
 use Indigo\GameBundle\Repository\GameTypeRepository;
+use Indigo\TableBundle\Event\TableEvent;
+use Indigo\TableBundle\Model\CardSwipeModel;
+use Indigo\TableBundle\Model\TableActionInterface;
+use Indigo\TableBundle\Repository\TableStatusRepository;
 use Indigo\UserBundle\Entity\User as Player;
-use Indigo\GameBundle\Event\GameEvents;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class AllTableEventsListener
+class CardSwipeListener
 {
-    const MAX_SCORES = 10;
     const DOUBLE_SWIPE_IN = 5;
     const DOUBLE_SWIPE_MIN_TS = 1;
 
@@ -46,7 +38,7 @@ class AllTableEventsListener
 
     /**
      * @param EntityManagerInterface $em
-     * @param EventDispatcher $ed
+     * @param EventDispatcherInterface $ed
      */
     public function __construct(EntityManagerInterface $em, EventDispatcherInterface $ed)
     {
@@ -60,122 +52,24 @@ class AllTableEventsListener
      */
     public function accepts($eventModel)
     {
-        return ($eventModel instanceof AutoGoalModelModel);
+        return ($eventModel instanceof CardSwipeModel);
     }
 
     /**
      * @param TableEvent $event
      */
-    public function onNewEvent(TableEvent $event)
+    public function onEvent(TableEvent $event)
     {
         $tableEventModel = $event->getTableEventModel();
 
-//        if (!$this->accepts($tableEventModel)) {
-//            return;
-//        }
+        if (!$this->accepts($tableEventModel)) {
+            return;
+        }
         
         $tableId = $tableEventModel->getTableId();
-
-        if ($tableEventModel instanceof TableShakeModel) {
-            printf ("got tableShake event: %d\n", $tableEventModel->getId());
-            // pasizymet last shake ts
-            $tableStatusEntity = $this->em->getRepository('IndigoGameBundle:TableStatus')
-                ->findOneById($tableId);
-            if ($tableStatusEntity) {
-
-                $tableStatusEntity->setLastTableShakeTs($tableEventModel->getTimeSec());
-                $this->em->persist($tableStatusEntity);
-                $this->em->flush();
-            }
-        }  elseif ($tableEventModel instanceof AutoGoalModel) {
-
-            printf ( "got AutoGoalEvent event: %d, teamScores: %u\n", $tableEventModel->getId(), $tableEventModel->getTeam());
-            $this->analyzeAutoGoal($tableEventModel, $tableId);
-        } elseif ($tableEventModel instanceof CardSwipeModel) {
-
-            $this->analyzeCardSwipe($tableEventModel, $tableId);
-        }
+        $this->analyzeCardSwipe($tableEventModel, $tableId);
     }
 
-    /**
-     * @param TableActionInterface $tableEventModel
-     * @param $tableId
-     */
-    private function analyzeAutoGoal(TableActionInterface $tableEventModel, $tableId)
-    {
-        /** @var AutoGoalModel $tableEventModel */
-        /** @var Game $gameEntity */
-        /** @var TableStatus $tableStatusEntity */
-
-        $tableStatusEntity = $this->em
-                                ->getRepository('IndigoGameBundle:TableStatus')
-                                ->findOneByTableId((int)$tableId);
-        if ($tableStatusEntity) {
-
-            $gameEntity = $tableStatusEntity->getGame();
-
-            if ($gameEntity) {
-
-                $teamPosition = $tableEventModel->getTeam();
-
-                /**
-                 * Game turim, vadinas turim ir playeriu
-                 */
-                if (!$gameEntity->isGameStatusFinished()) {
-
-                    if (!$gameEntity->isGameStatusStarted()) {
-
-                        $gameEntity->setStatus(GameStatusRepository::STATUS_GAME_STARTED);
-                    }
-
-                    $gameEntity->addTeamScore($teamPosition);
-                    // TODO: pakeist i 10
-                    if ($gameEntity->getTeamScore($teamPosition) >= self::MAX_SCORES) {
-
-                        $event = new GameFinishEvent();
-                        $event->setGame($gameEntity);
-                        $event->setTableStatus($tableStatusEntity);
-                        $this->ed->dispatch(GameEvents::GAME_FINISH_ON_SCORE, $event);
-
-
-                        $newGameEntity = new Game();
-                        if ($gameEntity->getTeam0Player0Id()) {
-                            $newGameEntity->setTeam0Player0Id($gameEntity->getTeam0Player0Id());
-                        }
-                        if ($gameEntity->getTeam0Player1Id()) {
-                            $newGameEntity->setTeam0Player1Id($gameEntity->getTeam0Player1Id());
-                        }
-                        if ($gameEntity->getTeam1Player0Id()) {
-                            $newGameEntity->setTeam1Player0Id($gameEntity->getTeam1Player0Id());
-                        }
-                        if ($gameEntity->getTeam1Player1Id()) {
-                            $newGameEntity->setTeam1Player1Id($gameEntity->getTeam1Player1Id());
-                        }
-                        if ($gameEntity->getTeam0()) {
-                            $newGameEntity->setTeam0($gameEntity->getTeam0());
-                        }
-                        if ($gameEntity->getTeam1()) {
-                            $newGameEntity->setTeam1($gameEntity->getTeam1());
-                        }
-
-                        $newGameEntity->setTableStatus($gameEntity->getTableStatus());
-                        $newGameEntity->setMatchType($gameEntity->getMatchType());
-
-                        $newGameEntity->setGameTime($gameEntity->getGameTime());
-
-                        // darom STARTED, nes ant READY jei kas noretu double swipintis - is kart prijungines ji i komanda su kitu pries tai zaidziusiu.
-                        $newGameEntity->setStatus(GameStatusRepository::STATUS_GAME_STARTED);
-                        $tableStatusEntity->addNewGame($newGameEntity);
-
-                        $this->em->persist($newGameEntity);
-                        $this->em->persist($tableStatusEntity);
-
-                    }
-                }
-                $this->em->flush();
-            }
-        }
-    }
 
     /**
      * @param TableActionInterface $tableEventModel

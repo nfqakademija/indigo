@@ -1,0 +1,30 @@
+parameters:
+  indigo_table.logic_manager.class: Indigo\TableBundle\Service\Manager\LogicManager
+  indigo_table.table_shake_listener.class: Indigo\TableBundle\EventListener\TableShakeListener
+  indigo_table.auto_goal_listener.class: Indigo\TableBundle\EventListener\AutoGoalListener
+  indigo_table.card_swipe_listener.class: Indigo\TableBundle\EventListener\CardSwipeListener
+
+services:
+    indigo_table.table_shake_listener:
+        class: %indigo_table.table_shake_listener.class%
+        arguments: ["@doctrine.orm.entity_manager"]
+        tags:
+            - { name: kernel.event_listener, event: indigo_table.new_event, method: onEvent }
+
+    indigo_table.auto_goal_listener:
+        class: %indigo_table.auto_goal_listener.class%
+        arguments: ["@doctrine.orm.entity_manager", "@event_dispatcher"]
+        tags:
+            - { name: kernel.event_listener, event: indigo_table.new_event, method: onEvent }
+
+    indigo_table.card_swipe_listener:
+        class: %indigo_table.card_swipe_listener.class%
+        arguments: ["@doctrine.orm.entity_manager", "@event_dispatcher"]
+        tags:
+            - { name: kernel.event_listener, event: indigo_table.new_event, method: onEvent }
+
+    indigo_table.logic_manager:
+        class: %indigo_table.logic_manager.class%
+        arguments: ["@event_dispatcher"]
+
+

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Indigo\ApiBundle\Model;
+namespace Indigo\TableBundle\Model;
 
 
 class TableShakeModel extends TableActionModel implements TableActionInterface

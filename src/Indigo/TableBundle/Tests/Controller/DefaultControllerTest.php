@@ -1,6 +1,6 @@
 <?php
 
-namespace Indigo\GameBundle\Tests\Controller;
+namespace Indigo\TableBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

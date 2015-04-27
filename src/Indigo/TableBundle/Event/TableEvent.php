@@ -1,8 +1,8 @@
 <?php
 
-namespace Indigo\ApiBundle\Event;
+namespace Indigo\TableBundle\Event;
 
-use Indigo\ApiBundle\Model\TableActionInterface;
+use Indigo\TableBundle\Model\TableActionInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 class TableEvent  extends Event
