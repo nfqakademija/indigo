@@ -79,6 +79,13 @@ class TableStatus
      */
     private $lastTableshakeTs;
 
+    /**
+     * @var string
+     * @ORM\Column(name="url", type="string", options={"nullable"=false})
+     */
+    private $Url;
+
+
     public function __construct()
     {
         $this->games = new ArrayCollection();
@@ -319,6 +326,22 @@ class TableStatus
     public function setGame($game)
     {
         $this->game = $game;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->Url;
+    }
+
+    /**
+     * @param string $Url
+     */
+    public function setUrl($Url)
+    {
+        $this->Url = $Url;
     }
 
 

@@ -15,6 +15,7 @@ class GameTimeRepository extends EntityRepository
 {
 
     CONST GAMETIME_TOLERANCE = 18000;
+
     /**
      * @param \ArrayIterator $players
      * @return null

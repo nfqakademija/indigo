@@ -27,8 +27,8 @@ class RatingCalculatorSubscriber extends Container implements EventSubscriberInt
     public static function getSubscribedEvents()
     {
         return [
-            GameEvents::GAME_FINISH_ON_DOUBLE_SWIPE => ['calculateRatings', -2],
-            GameEvents::GAME_FINISH_ON_SCORE => 'calculateRatings'
+            GameEvents::GAME_FINISH_ON_DOUBLE_SWIPE => ['calculateRatings', 1],
+            GameEvents::GAME_FINISH_ON_SCORE => ['calculateRatings', 1]
         ];
     }
 
@@ -38,12 +38,11 @@ class RatingCalculatorSubscriber extends Container implements EventSubscriberInt
     public function calculateRatings(GameFinishEvent $event)
     {
         $gameEntity = $event->getGame();
-        if ($gameEntity->getPlayersCountInTeam(0) == $gameEntity->getPlayersCountInTeam(1)) {
-                /** @var \Indigo\GameBundle\Service\RatingService */
-            $this->ratingService->setGame($gameEntity);
-            $this->ratingService->save();
+        /** @var \Indigo\GameBundle\Service\RatingService */
+        $this->ratingService->updateRatings($gameEntity);
 
-        }
+
+        //if ($gameEntity->getPlayersCountInTeam(0) == $gameEntity->getPlayersCountInTeam(1)) {}
 
     }
 

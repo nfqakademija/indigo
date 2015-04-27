@@ -32,13 +32,6 @@ class Team
     /**
      * @var integer
      *
-     * @ORM\Column(name="total_rating", type="integer")
-     */
-    private $totalRating;
-
-    /**
-     * @var integer
-     *
      * @ORM\Column(name="is_single", type="integer")
      */
     private $isSingle;
@@ -55,13 +48,24 @@ class Team
      */
     private $players;
 
+    /**
+     * @ORM\Column(name="contest_rating", type="integer")
+     */
+    private $contestRating;
+
+    /**
+     * @ORM\Column(name="open_rating", type="integer")
+     */
+    private $openRating;
 
 
     public function __construct()
     {
         $this->players = new ArrayCollection();
         $this->ratings = new ArrayCollection();
-        $this->totalRating = TeamRepository::DEFAULT_RATING;
+        $this
+            ->setContestRating(TeamRepository::DEFAULT_RATING)
+            ->setOpenRating(TeamRepository::DEFAULT_RATING);
     }
 
     /**
@@ -158,25 +162,40 @@ class Team
     }
 
     /**
-     * Set totalRating
-     *
-     * @param integer $totalRating
-     * @return Team
+     * @return mixed
      */
-    public function setTotalRating($totalRating)
+    public function getContestRating()
     {
-        $this->totalRating = $totalRating;
+        return $this->contestRating;
+    }
 
+    /**
+     * @param $contestRating
+     * @return $this
+     */
+    public function setContestRating($contestRating)
+    {
+        $this->contestRating = $contestRating;
         return $this;
     }
 
     /**
-     * Get totalRating
-     *
-     * @return integer 
+     * @return mixed
      */
-    public function getTotalRating()
+    public function getOpenRating()
     {
-        return $this->totalRating;
+        return $this->openRating;
     }
+
+    /**
+     * @param $openRating
+     * @return $this
+     */
+    public function setOpenRating($openRating)
+    {
+        $this->openRating = $openRating;
+        return $this;
+    }
+
+
 }
