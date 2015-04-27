@@ -12,11 +12,13 @@ web_profiler:
     intercept_redirects: false
 
 monolog:
+    channels: ["api.events"]
     handlers:
         main:
             type:   stream
             path:   "%kernel.logs_dir%/%kernel.environment%.log"
             level:  debug
+            channels: ["!api.events"]
         console:
             type:   console
             bubble: false
@@ -32,6 +34,11 @@ monolog:
                 VERBOSITY_VERY_VERBOSE: NOTICE
                 VERBOSITY_DEBUG: DEBUG
             channels: ["doctrine"]
+        indigo_api:
+            type:   stream
+            path:   "%kernel.logs_dir%/%kernel.environment%.api.log"
+            level:  debug
+            channels: [ "api.events" ]
         # uncomment to get logging in your browser
         # you may have to allow bigger header sizes in your Web server configuration
         #firephp:

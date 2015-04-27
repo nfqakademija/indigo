@@ -23,6 +23,7 @@ class AppKernel extends Kernel
             new Indigo\ApiBundle\IndigoApiBundle(),
             new Indigo\ContestBundle\IndigoContestBundle(),
             new Indigo\LocationsRegBundle\IndigoLocationsRegBundle(),
+            new Indigo\TableBundle\IndigoTableBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

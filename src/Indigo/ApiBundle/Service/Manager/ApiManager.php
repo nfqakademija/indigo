@@ -1,23 +1,25 @@
 <?php
 namespace Indigo\ApiBundle\Service\Manager;
 
-use Indigo\ApiBundle\Model\TableShakeModel;
-use Indigo\ApiBundle\Repository\TableEventList;
+use Indigo\TableBundle\Model\TableShakeModel;
+use Indigo\TableBundle\Repository\TableEventList;
 use GuzzleHttp;
 use Indigo\ApiBundle\Event\ApiEvent;
 use Indigo\ApiBundle\Event\ApiEvents;
 use Indigo\ApiBundle\Factory\EventFactory;
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-
-class ApiManager
+class ApiManager implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     const LAST_RECORD_TS = 'api.last_record_ts';
     const LAST_RECORD_ID = 'api.last_record_id';
     const LAST_RECORDS_COUNT = 'api.last_record_count';
-
 
     /**
      * @var string
@@ -53,18 +55,6 @@ class ApiManager
     }
 
     /**
-     * @return GuzzleHttp\Client;
-     */
-    protected function getClient()
-    {
-        if (!$this->client) {
-            $this->client = new GuzzleHttp\Client();
-        }
-
-        return $this->client;
-    }
-
-    /**
      * @param $tableKey
      * @param array $query
      * @param bool $tryTestOnFailure
@@ -92,7 +82,6 @@ class ApiManager
             ];
 
             $response = $this->getClient()->get($table['table_api_url'], $query);
-            //var_dump($response);
             if ($response->getStatusCode() == 200) {
 
                 if (stripos($response->getHeader('content-type'), 'json') !== false) {
@@ -107,7 +96,6 @@ class ApiManager
 
                         $successEvent = new ApiEvent();
                         $successEvent->setData($eventList);
-
                         $this->ed->dispatch(ApiEvents::API_SUCCESS_EVENT, $successEvent);
 
                         return $eventList;
@@ -131,6 +119,58 @@ class ApiManager
         }
 
         return false;
+    }
+
+    /**
+     * @param \stdClass $data
+     * @return TableEventList
+     */
+    public function parseResponseData(\stdClass $data)
+    {
+        $TableShakeModel = null;
+        $lastTableShakeIndex = -1;
+        $eventList = new TableEventList();
+        $i = 0;
+
+        foreach ($data->records as $d) {
+
+            if (strlen($d->data) > 2) {
+                $d->data = json_decode($d->data);
+            } else {
+                $d->data = new \stdClass();
+            }
+
+            $event = EventFactory::factory($d);
+            if ($event) {
+
+                $eventList->append($event);
+                $this->logger && $this->logger->debug('added events', ['event' => $event]);
+                if ($event instanceof TableShakeModel) {
+
+                    ($lastTableShakeIndex > -1)  && $eventList->offsetUnset($lastTableShakeIndex);
+                    $lastTableShakeIndex = $i;
+                }
+            } else {
+
+                $this->logger && $this->logger->warning('unknown event', ['data' => $d]);
+            }
+
+            $i++;
+        }
+
+        return $eventList;
+    }
+
+    /**
+     * @return GuzzleHttp\Client;
+     */
+    protected function getClient()
+    {
+        if (!$this->client) {
+            $this->client = new GuzzleHttp\Client();
+        }
+
+        return $this->client;
     }
 
     /**
@@ -181,41 +221,7 @@ class ApiManager
         return ($a->getTimeWithUsec() > $b->getTimeWithUsec()) ? 1 : -1;
     }
 
-    /**
-     * @param \stdClass $data
-     * @return TableEventList
-     */
-    private function parseResponseData(\stdClass $data)
-    {
-        $TableShakeModel = null;
-        $lastTableShakeIndex = -1;
-        $eventList = new TableEventList();
-        $i = 0;
 
-        foreach ($data->records as $d) {
-
-            if (strlen($d->data) > 2) {
-                $d->data = json_decode($d->data);
-            } else {
-                $d->data = new \stdClass();
-            }
-
-            $event = EventFactory::factory($d);
-            $eventList->append($event);
-
-            if ($event instanceof TableShakeModel) {
-
-                if ($lastTableShakeIndex > -1) {
-
-                    $eventList->offsetUnset($lastTableShakeIndex);
-                }
-                $lastTableShakeIndex = $i;
-            }
-            $i++;
-        }
-
-        return $eventList;
-    }
 
     /**
      * @return string

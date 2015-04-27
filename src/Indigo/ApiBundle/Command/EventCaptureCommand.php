@@ -6,8 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Indigo\ApiBundle\Service\Manager\ApiManager;
-use Indigo\GameBundle\Entity\Game;
+
 class EventCaptureCommand extends ContainerAwareCommand
 {
 
@@ -32,16 +31,6 @@ class EventCaptureCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
-/*
-
-        $gameCalculator = $this->getContainer()->get(GameEvents::'indigo_game.rating_calculator');
-        $game = new Game();
-        $gameCalculator->setGame($game);
-        var_dump($gameCalculator);
-
-        die;
-*/
         $query = ['rows' => $input->getArgument('rows')];
         if ($input->getArgument('from-id') == 'last') {
 
@@ -78,10 +67,9 @@ class EventCaptureCommand extends ContainerAwareCommand
                 $query,
                 false
             );
-            //var_dump($eventList);
             if ($eventList) {
 
-                $eventLogicManager = $this->getContainer()->get('indigo_table.event_flow_logic_manager');
+                $eventLogicManager = $this->getContainer()->get('indigo_table.logic_manager');
                 $eventLogicManager->analyzeEventFlow($eventList);
             } else {
 
