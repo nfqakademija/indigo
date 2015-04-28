@@ -39,7 +39,7 @@
                 $("#contest-title").html(json.contest.title);
 
 
-                if( json.teamA.goals == 0 && json.teamB.goals == 0 && (lastScoreTeamA == 10 || lastScoreTeamB == 10))
+                if( json.teamA.goals == 0 && json.teamB.goals == 0 && (_lastScoreTeamA == 9 || _lastScoreTeamB == 9))
                 {
                     $("#not-wrapper").show().fadeIn(2000, function(){
                         $('#not-end-msg').show().fadeIn(2000);
@@ -59,8 +59,6 @@
                     $("#player4-img").attr("src", json.teamB.player2.imageUrl + "?" + new Date().getTime());
                 }
 
-
-
                 if(_firstTime)
                 {
                     lastScoreTeamA = json.teamA.goals;
@@ -78,12 +76,6 @@
                     lastScoreTeamA = json.teamA.goals;
                     lastScoreTeamB = json.teamB.goals;
                 }
-
-
-
-
-
-
             });
 
         },2000);
