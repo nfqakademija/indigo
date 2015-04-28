@@ -11,6 +11,8 @@
 
     <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
     <script src="{{ asset('bundles/indigomain/js/pixel-admin.min.js') }}"></script>
+    <script src="{{ asset('bundles/indigomain/css/bootstrap.min.css') }}"></script>
+
 
 </head>
 
@@ -50,7 +52,7 @@
                             <span class="text-xlg">{{ currentContest.title }} </span></br>
                             <span class="text-bg"> {{ currentContest.dateFrom }} - {{ currentContest.dateTo }} </span></br></br>
                             <span class="text-lg"> {{ currentContest.description }} </span></br>
-                            <button > Table reservation </button>
+                            <button class="bg-green-m"> Table reservation </button>
                         </div>
                     </div>
                 </div>
@@ -61,12 +63,17 @@
 
                     <div class="col-md-6 col-xs-12 col-sm-12" style="text-align: center">
 
+                        {% if nextReservation != null %}
                             <div class="stat-panel" style="height: 80px;">
                                 <div class="stat-cell bg-green-sl valign-middle">
-                                    <span class="text-lg"> 2015 March 12 </span></br>
-                                    <span class="text-center-md"> Sekantis rezervuotas stalas </span>
+                                    <span class="text-lg"> {{ nextReservation.dateStart}} </span></br>
+                                    <span class="text-center-md"> Next reserved table </span>
                                 </div>
                             </div>
+                        {% endif %}
+
+
+
 
                         <div class="stat-panel" style="height: 211px;">
                             <div class="stat-row">
@@ -179,20 +186,29 @@
 
                     {# Right bar #}
 
+
+
                     <div class="col-md-6 col-xs-12 col-sm-12" style="text-align: center">
 
                         <a href="{{ path('indigo_ui_live', {'id' : 0}) }}">
-
                         <div class="stat-panel" style="height: 80px;">
-                            <div class="stat-cell bg-red-m valign-middle">
+                            <div class="stat-cell {% if isTableBusy %}bg-red-m {% else %} bg-green-sl {% endif %} valign-middle">
 
                                 <div class="counter-separated counter-lg">
-                                    <span>9</span>
-                                    <span>5</span>
+                                    <span> {{ teamAScore }} </span>
+                                    <span> {{ teamBScore }}</span>
                                 </div>
                                 </br>
-                                <span class="text-bg"> Table is occupied
-                                </span><br>
+                                <span class="text-bg">
+
+                                    {% if isTableBusy %}
+                                        Table is occupied
+                                    {% else %}
+                                        Table is available
+                                    {% endif %}
+
+
+                                </span>
                             </div>
                         </div>
 
@@ -200,8 +216,8 @@
 
 
                         <div class="stat-panel" style="height: 145px;">
-                            <div class="stat-cell bg-gold valign-middle">
-                                <i class="fa fa-trophy bg-icon"></i>
+                            <div class="stat-cell bg-blue-d valign-middle">
+                                <div class="medal gold-medal-icon"></div>
                                  <span>
                                     <img src="{{ asset('bundles/indigoui/images/bilas.png') }}" class="img-circle icon-md border-wide icon-narrow">
                                     <img src="{{ asset('bundles/indigoui/images/clinton.png') }}" class="img-circle icon-md border-wide icon-narrow">
@@ -216,14 +232,16 @@
 
                             <div class="col-md-6">
                                 <div class="stat-panel">
-                                    <div class="stat-cell bg-silver valign-middle">
+                                    <div class="stat-cell bg-blue-d valign-middle">
+
+                                        <div class="medal silver-medal-icon"></div>
 
                                         <span class="text-xlg">
-                                            <img src="{{ asset('bundles/indigoui/images/bilas.png') }}" class="img-circle border-thin icon-xs icon-narrow">
-                                            <img src="{{ asset('bundles/indigoui/images/clinton.png') }}" class="img-circle border-thin icon-xs icon-narrow">
+                                            <img src="{{ asset('bundles/indigoui/images/bilas.png') }}" class="img-circle border-thin icon-sm icon-narrow">
+                                            <img src="{{ asset('bundles/indigoui/images/clinton.png') }}" class="img-circle border-thin icon-sm icon-narrow">
                                         </span><br>
 
-                                        <span class="text-lg">2 vieta</span><br>
+
                                         <span class="text-bg">1250 pts.</span>
                                     </div> <!-- /.stat-cell -->
                                 </div>
@@ -231,14 +249,16 @@
 
                             <div class="col-md-6">
                                 <div class="stat-panel">
-                                    <div class="stat-cell bg-bronze valign-middle">
+                                    <div class="stat-cell bg-blue-d valign-middle">
+
+                                        <div class="medal bronze-medal-icon"></div>
 
                                         <span class="text-xlg">
-                                            <img src="{{ asset('bundles/indigoui/images/bilas.png') }}" class="img-circle icon-xs border-thin icon-narrow ">
-                                            <img src="{{ asset('bundles/indigoui/images/clinton.png') }}" class="img-circle icon-xs border-thin icon-narrow ">
+                                            <img src="{{ asset('bundles/indigoui/images/bilas.png') }}" class="img-circle icon-sm border-thin icon-narrow ">
+                                            <img src="{{ asset('bundles/indigoui/images/clinton.png') }}" class="img-circle icon-sm border-thin icon-narrow ">
                                         </span><br>
 
-                                        <span class="text-lg">3 vieta</span><br>
+
                                         <span class="text-bg">1250 pts.</span>
 
                                     </div> <!-- /.stat-cell -->

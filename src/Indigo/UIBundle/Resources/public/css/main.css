@@ -481,7 +481,6 @@ body
     color: #f16c00;
 }
 
-
 a{
      color: white;
  }
@@ -490,6 +489,38 @@ a:hover{
     color: white;
 }
 
+.medal
+{
+    position: absolute !important;
+    top: 0;
+    right: 5px;
+    width: 40px;
+    height: 80px;
+
+    z-index: 1000;
+
+}
+
+.gold-medal-icon
+{
+    background-image: url("../images/gold-medal.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.silver-medal-icon
+{
+    background-image: url("../images/silver-medal.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.bronze-medal-icon
+{
+    background-image: url("../images/bronze-medal.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
 
 /*  */
 
@@ -533,7 +564,7 @@ a:hover{
     line-height: 50px;
     font-size: 1.4em;
     margin-top: 15%;
-    background-color: rgba(101, 220, 33, 0.8);
+    background-color: rgba(146, 182, 0, 0.60);
     border: none;
 }
 
@@ -544,7 +575,7 @@ a:hover{
 }
 
 .info-box button:hover {
-    background-color: rgba(101, 220, 33, 1);
+    background-color: rgba(146, 182, 0, 0.60);
 }
 
 @media screen  and (max-width: 600px){
@@ -586,4 +617,37 @@ a:hover{
 .row {
     margin-left: -2px;
     margin-right: -2px;
+}
+
+/* Notifications */
+#not-wrapper
+{
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 100;
+    text-align: center;
+}
+
+#not-goal-msg, #not-end-msg
+{
+    display: none;
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    margin: auto;
+    font-size: 1000%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+#not-end-msg
+{
+    font-size: 500%;
+
 }

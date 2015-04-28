@@ -12,11 +12,16 @@
 
 <script>
 
+    var _lastScoreTeamA = 0;
+    var _lastScoreTeamB = 0;
+    var _firstTime = true;
+
+
     $(document).ready(function()
     {
         setInterval(function () {
 
-            var status = $.get( "/live/status/0", function(data) {
+            var status = $.get( "/live/status/1", function(data) {
 
                 var json = $.parseJSON(data);
 
@@ -32,12 +37,53 @@
                 }
 
                 $("#contest-title").html(json.contest.title);
-                $("#scoreA").html(json.teamA.goals);
-                $("#scoreB").html(json.teamB.goals);
-                $("#player1-img").attr("src", json.teamA.player1.imageUrl + "?" + new Date().getTime());
-                $("#player2-img").attr("src", json.teamA.player2.imageUrl + "?" + new Date().getTime());
-                $("#player3-img").attr("src", json.teamB.player1.imageUrl + "?" + new Date().getTime());
-                $("#player4-img").attr("src", json.teamB.player2.imageUrl + "?" + new Date().getTime());
+
+
+                if( json.teamA.goals == 0 && json.teamB.goals == 0 && (lastScoreTeamA == 10 || lastScoreTeamB == 10))
+                {
+                    $("#not-wrapper").show().fadeIn(2000, function(){
+                        $('#not-end-msg').show().fadeIn(2000);
+                    });
+                }
+                else
+                {
+                    $("#not-wrapper").hide().fadeOut(2000, function(){
+                        $('#not-end-msg').hide().fadeOut(2000);
+                    });
+
+                    $("#scoreA").html(json.teamA.goals);
+                    $("#scoreB").html(json.teamB.goals);
+                    $("#player1-img").attr("src", json.teamA.player1.imageUrl + "?" + new Date().getTime());
+                    $("#player2-img").attr("src", json.teamA.player2.imageUrl + "?" + new Date().getTime());
+                    $("#player3-img").attr("src", json.teamB.player1.imageUrl + "?" + new Date().getTime());
+                    $("#player4-img").attr("src", json.teamB.player2.imageUrl + "?" + new Date().getTime());
+                }
+
+
+
+                if(_firstTime)
+                {
+                    lastScoreTeamA = json.teamA.goals;
+                    lastScoreTeamB = json.teamB.goals;
+                    _firstTime = false;
+                }
+                else
+                {
+                    if(json.teamA.goals > lastScoreTeamA || json.teamB.goals > lastScoreTeamB)
+                    {
+                        $("#not-wrapper").show().fadeIn(2000, function(){
+                            $('#not-goal-msg').show().fadeIn(2000).fadeOut(2000);
+                        }).fadeOut(2000);
+                    }
+                    lastScoreTeamA = json.teamA.goals;
+                    lastScoreTeamB = json.teamB.goals;
+                }
+
+
+
+
+
+
             });
 
         },2000);
@@ -50,6 +96,11 @@
 <body>
 
 {#{% block content%}#}
+
+<div id="not-wrapper">
+    <span id="not-goal-msg"> GOAL! </span>
+    <span id="not-end-msg"> GAME OVER </br> Kick to start new game </span>
+</div>
 
     <div class="live">
 

@@ -11,15 +11,6 @@ use JsonSerializable;
 
 class DashboardViewModel implements \JsonSerializable {
 
-    /**
-     * @var ContestModel
-     */
-    private $currentContest;
-    /**
-     * @var ContestModel
-     */
-    private $nextContest;
-
     public function __construct()
     {
         $this->currentContest = new ContestModel();
@@ -32,10 +23,91 @@ class DashboardViewModel implements \JsonSerializable {
     public function jsonSerialize() {
         return [
             "currentContest" => $this->currentContest,
-            "nextContest" => $this->nextContest
+            "nextContest" => $this->nextContest,
+            "nextReservation" => $this->nextReservation,
+            "isTableBusy" => $this->isTableBusy,
+            "teamAScore" => $this->teamAScore,
+            "teamBScore" => $this->teamBScore
         ];
     }
 
+
+    /**
+     * @var ContestModel
+     */
+    private $currentContest;
+    /**
+     * @var ContestModel
+     */
+    private $nextContest;
+
+    /**
+     * @var ReservationModel
+     */
+    private $nextReservation;
+
+    /**
+     * @var int
+     */
+    private $teamAScore;
+
+    /**
+     * @var int
+     */
+    private $teamBScore;
+
+    /**
+     * @var boolean
+     */
+    private $isTableBusy;
+
+    /**
+     * @return boolean
+     */
+    public function isIsTableBusy()
+    {
+        return $this->isTableBusy;
+    }
+
+    /**
+     * @param boolean $isTableBusy
+     */
+    public function setIsTableBusy($isTableBusy)
+    {
+        $this->isTableBusy = $isTableBusy;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTeamAScore()
+    {
+        return $this->teamAScore;
+    }
+
+    /**
+     * @param int $teamAScore
+     */
+    public function setTeamAScore($teamAScore)
+    {
+        $this->teamAScore = $teamAScore;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTeamBScore()
+    {
+        return $this->teamBScore;
+    }
+
+    /**
+     * @param int $teamBScore
+     */
+    public function setTeamBScore($teamBScore)
+    {
+        $this->teamBScore = $teamBScore;
+    }
 
     /**
      * @return ContestModel
@@ -67,6 +139,22 @@ class DashboardViewModel implements \JsonSerializable {
     public function setNextContest($nextContest)
     {
         $this->nextContest = $nextContest;
+    }
+
+    /**
+     * @return ReservationModel
+     */
+    public function getNextReservation()
+    {
+        return $this->nextReservation;
+    }
+
+    /**
+     * @param ReservationModel $nextReservation
+     */
+    public function setNextReservation($nextReservation)
+    {
+        $this->nextReservation = $nextReservation;
     }
 
 }

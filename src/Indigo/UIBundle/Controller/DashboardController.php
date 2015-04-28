@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DashboardController extends Controller {
 
+
     /**
      * @Template()
      * @return JsonResponse
