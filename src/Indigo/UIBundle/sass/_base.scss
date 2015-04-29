@@ -1,0 +1,89 @@
+
+
+
+
+/* Icns URL's */
+
+$bg-pattern-img       : '../images/tile.gif';
+$default-player-image : "../images/player_bg.png";
+$icon-gold-medal      : "../images/gold-medal.png";
+$icon-silver-medal    : "../images/silver-medal.png";
+$icon-bronze-medal    : "../images/bronze-medal.png";
+
+
+
+
+
+@mixin base-font()
+{
+  $main-font: Candara;
+  color: white;
+}
+
+@mixin bg-grad()
+{
+  background: rgb(178,178,178); /* Old browsers */
+  background: -moz-radial-gradient(center, ellipse cover, rgba(178,178,178,1) 0%, rgba(71,71,71,1) 39%, rgba(19,19,19,1) 100%); /* FF3.6+ */
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(178,178,178,1)), color-stop(39%,rgba(71,71,71,1)), color-stop(100%,rgba(19,19,19,1))); /* Chrome,Safari4+ */
+  background: -webkit-radial-gradient(center, ellipse cover, rgba(178,178,178,1) 0%,rgba(71,71,71,1) 39%,rgba(19,19,19,1) 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-radial-gradient(center, ellipse cover, rgba(178,178,178,1) 0%,rgba(71,71,71,1) 39%,rgba(19,19,19,1) 100%); /* Opera 12+ */
+  background: -ms-radial-gradient(center, ellipse cover, rgba(178,178,178,1) 0%,rgba(71,71,71,1) 39%,rgba(19,19,19,1) 100%); /* IE10+ */
+  background: radial-gradient(ellipse at center, rgba(178,178,178,1) 0%,rgba(71,71,71,1) 39%,rgba(19,19,19,1) 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b2b2b2', endColorstr='#131313',GradientType=1 );
+}
+
+@mixin border-radius($radius)
+{
+  -moz-border-radius: $radius;
+  -webkit-border-radius: $radius;
+  border-radius: $radius;
+}
+
+@mixin size($w, $h)
+{
+  width: $w;
+  height: $h;
+}
+
+@mixin fill()
+{
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+@mixin bg-icon-contain($url)
+{
+  background-image: url($url);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+
+
+/* Colors */
+$bg-color       : rgba(26, 26, 28, 0.90);
+$color-white    : #ffffff;
+$color-silver-l : #dbdbdb;
+$color-red-l    : #fa4c4e;
+$color-gold     : #cfb53b;
+$color-silver   : #c0c0c0;
+$color-bronze   : #cd7f32;
+$color-busy     : #d54237;
+$color-free     : #6eb133;
+$color-green-sl : #92b600;
+$color-green-l  : #6f8f00;
+$color-green-m  : #617d00;
+$color-green-d  : #4a6100;
+$color-orange-l : #f16c00;
+$color-orange-m : #d76100;
+$color-orange-d : #b35100;
+$color-red-l    : #fa4c4e;
+$color-red-m    : #cc4042;
+$color-red-d    : #b73c3e;
+$color-blue-l   : #007ea2;
+$color-blue-m   : #006b8a;
+$color-blue-d   : #005067;
+$color-blue-l   : #007ea2;
+$color-orange-l : #f16c00;
