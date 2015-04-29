@@ -102,7 +102,7 @@ body {
     width: 100%;
     height: auto;
     border-radius: 50%;
-    background: url("../images/empty-thumbnail.png") no-repeat center;
+    background: url($icon-empty) no-repeat center;
     border: solid white 4px;
 
     box-shadow: 0 0 2px #000000;

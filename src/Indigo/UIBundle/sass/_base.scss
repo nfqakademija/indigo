@@ -1,7 +1,4 @@
 
-
-
-
 /* Icns URL's */
 
 $bg-pattern-img       : '../images/tile.gif';
@@ -9,10 +6,35 @@ $default-player-image : "../images/player_bg.png";
 $icon-gold-medal      : "../images/gold-medal.png";
 $icon-silver-medal    : "../images/silver-medal.png";
 $icon-bronze-medal    : "../images/bronze-medal.png";
+$icon-empty : "../images/empty-thumbnail.png";
 
+/* Colors */
+$bg-color       : rgba(26, 26, 28, 0.90);
+$color-white    : #ffffff;
+$color-silver-l : #dbdbdb;
+$color-red-l    : #fa4c4e;
+$color-gold     : #cfb53b;
+$color-silver   : #c0c0c0;
+$color-bronze   : #cd7f32;
+$color-busy     : #d54237;
+$color-free     : #6eb133;
+$color-green-sl : #92b600;
+$color-green-l  : #6f8f00;
+$color-green-m  : #617d00;
+$color-green-d  : #4a6100;
+$color-orange-l : #f16c00;
+$color-orange-m : #d76100;
+$color-orange-d : #b35100;
+$color-red-l    : #fa4c4e;
+$color-red-m    : #cc4042;
+$color-red-d    : #b73c3e;
+$color-blue-l   : #007ea2;
+$color-blue-m   : #006b8a;
+$color-blue-d   : #005067;
+$color-blue-l   : #007ea2;
+$color-orange-l : #f16c00;
 
-
-
+/* Mixins */
 
 @mixin base-font()
 {
@@ -62,28 +84,4 @@ $icon-bronze-medal    : "../images/bronze-medal.png";
 
 
 
-/* Colors */
-$bg-color       : rgba(26, 26, 28, 0.90);
-$color-white    : #ffffff;
-$color-silver-l : #dbdbdb;
-$color-red-l    : #fa4c4e;
-$color-gold     : #cfb53b;
-$color-silver   : #c0c0c0;
-$color-bronze   : #cd7f32;
-$color-busy     : #d54237;
-$color-free     : #6eb133;
-$color-green-sl : #92b600;
-$color-green-l  : #6f8f00;
-$color-green-m  : #617d00;
-$color-green-d  : #4a6100;
-$color-orange-l : #f16c00;
-$color-orange-m : #d76100;
-$color-orange-d : #b35100;
-$color-red-l    : #fa4c4e;
-$color-red-m    : #cc4042;
-$color-red-d    : #b73c3e;
-$color-blue-l   : #007ea2;
-$color-blue-m   : #006b8a;
-$color-blue-d   : #005067;
-$color-blue-l   : #007ea2;
-$color-orange-l : #f16c00;
+
