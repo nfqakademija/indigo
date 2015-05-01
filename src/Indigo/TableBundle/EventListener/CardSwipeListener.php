@@ -25,6 +25,11 @@ class CardSwipeListener
 {
     const DOUBLE_SWIPE_IN = 5;
     const DOUBLE_SWIPE_MIN_TS = 1;
+    const ANONYMOUS_EMAIL_DOMAIN = 'example.com';
+    const ANONYMOUS_USERNAME = 'anonymous';
+    const ANONYMOUS_PASSWORD = 'incredibly';
+    const SINGLE_PLAYER_TEAM_NAME = 'singlePlayerTeam';
+    const MULTI_PLAYER_TEAM_NAME = 'multiPlayerTeam';
 
     /**
      * @var EntityManager
@@ -81,7 +86,7 @@ class CardSwipeListener
         /* @var Game $gameEntity */
         /* @var Player $playerEntity */
         /* @var TableStatus $tableStatusEntity */
-
+        /* @var CardSwipeModel $tableEventModel */
         $gameEntity = null;
         $tableStatusEntity = $this->em->getRepository('IndigoGameBundle:TableStatus')->findOneByTableId($tableId);
 
@@ -89,19 +94,17 @@ class CardSwipeListener
         $teamPosition = $tableEventModel->getTeam();
         $playerPosition = $tableEventModel->getPlayer();
         $cardId = $tableEventModel->getCardId();
-
-        printf(
-            "%s got CardSwipe event: %d, cardid: %d, team/player position: %d/%d \n",
-            date('Y-m-d H:i:s', $tableEventModel->getTimeSec()),
-            $tableEventModel->getId(),
-            $cardId,
-            $teamPosition,
-            $playerPosition
-        );
-
         //jei playerio nera, sukuriamas ir grazinamas jo Entity
         $playerEntity = $this->getPlayerEntityByCardId($cardId);
-        printf("player id : %u\n", $playerEntity->getId());
+        printf(
+            " * CardSwipe  cardid: %d, team/player position: %d/%d, PLAYER: %u \n",
+            $cardId,
+            $teamPosition,
+            $playerPosition,
+            $playerEntity->getId()
+        );
+
+
         if ($tableId) {
 
             $gameEntity = $tableStatusEntity->getGame();
@@ -120,6 +123,7 @@ class CardSwipeListener
                 $event = new GameFinishEvent();
                 $event->setGame($gameEntity);
                 $this->ed->dispatch(GameEvents::GAME_FINISH_ON_DOUBLE_SWIPE, $event);
+                printf("DoubleSwipe -> GAME FINISH'ed by team:%u, position: %u\n", $tableEventModel->getTeam(), $tableEventModel->getPlayer());
             }
             return true;
         }
@@ -131,7 +135,7 @@ class CardSwipeListener
                 $gameEntity  = $this->createGame($tableStatusEntity);
             } else {
                 if ($gameEntity->isGameStatusStarted()) {
-
+                    printf("CardSwipe IGNORED, game Started! team:%u, position: %u, cardid: %u\n", $tableEventModel->getTeam(), $tableEventModel->getPlayer(), $tableEventModel->getCardId());
                     return false;
                 }
             }
@@ -139,6 +143,7 @@ class CardSwipeListener
             if ($gameEntity->isPlayerInThisGame($playerEntity->getId()) === true) {
 
                 // ignore pakartotini cardswipe, jei jis jau "prisidaves", galbut bande double swipint, bet per letai..
+                printf("CardSwipe IGNORED,  player already in game! team:%u, position: %u, cardid: %u\n", $tableEventModel->getTeam(), $tableEventModel->getPlayer(), $tableEventModel->getCardId());
                 return true;
             } else {
 
@@ -159,7 +164,7 @@ class CardSwipeListener
                         $commonTeamId = $this->em->getRepository('IndigoGameBundle:PlayerTeamRelation')->getPlayersCommonTeam($player0, $player1);
                         if (!$commonTeamId) {
 
-                            $teamEntity = $this->createMultiPlayerTeam($player0, $player1);
+                            $teamEntity = $this->createMultiPlayerTeam($player0, $player1, self::MULTI_PLAYER_TEAM_NAME);
                             $this->em->flush();
                         } else {
 
@@ -181,6 +186,8 @@ class CardSwipeListener
                                 if ($gameTimeEntity) {
                                     $gameTimeEntity->setConfirmed(1);
                                     $gameEntity->setMatchType(GameTypeRepository::TYPE_GAME_MATCH);
+                                    // TODO: set contest id
+                                    //$gameEntity->setContestId()
                                 } else {
 
                                     $gameTimeEntity = new GameTime();
@@ -236,9 +243,9 @@ class CardSwipeListener
     {
         $playerEntity = new Player();
         $playerEntity->setCardId($cardId);
-        $playerEntity->setUsername(sprintf('anonymous%u', $cardId));
-        $playerEntity->setEmail(sprintf('%s@example.com', $playerEntity->getUsername()));
-        $playerEntity->setPassword('incredibly');
+        $playerEntity->setUsername(sprintf('%s%d', self::ANONYMOUS_USERNAME, $cardId));
+        $playerEntity->setEmail(sprintf('%s@%s', $playerEntity->getUsername(), self::ANONYMOUS_EMAIL_DOMAIN));
+        $playerEntity->setPassword(self::ANONYMOUS_PASSWORD);
         $this->em->persist($playerEntity);
         $this->em->flush($playerEntity);
 
@@ -339,11 +346,11 @@ class CardSwipeListener
             // automatiskai priregistruojam anonimini useri
 
             $playerEntity = $this->createPlayer($cardId);
-            $this->createSinglePlayerTeam($playerEntity);
+            $this->createSinglePlayerTeam($playerEntity, self::SINGLE_PLAYER_TEAM_NAME);
             $this->em->flush();
         } elseif ($playerEntity->getTeams()->count() == 0) {
 
-            $this->createSinglePlayerTeam($playerEntity);
+            $this->createSinglePlayerTeam($playerEntity, self::SINGLE_PLAYER_TEAM_NAME);
             $this->em->flush();
         }
         return $playerEntity;

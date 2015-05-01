@@ -13,6 +13,8 @@ use Indigo\TableBundle\Event\TableEvent;
 use Indigo\TableBundle\Model\TableActionInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Indigo\TableBundle\Model\AutoGoalModel;
+
 
 class AutoGoalListener
 {
@@ -54,7 +56,7 @@ class AutoGoalListener
 
             return;
         }
-        printf ( "got AutoGoalEvent event: %d, teamScores: %u\n", $tableEventModel->getId(), $tableEventModel->getTeam());
+        printf ( "AutoGoal!!!! teamScores: %u\n",  $tableEventModel->getTeam());
         $this->analyzeAutoGoal($tableEventModel, $tableEventModel->getTableId());
 
     }
@@ -98,7 +100,7 @@ class AutoGoalListener
                         $event->setGame($gameEntity);
                         $event->setTableStatus($tableStatusEntity);
                         $this->ed->dispatch(GameEvents::GAME_FINISH_ON_SCORE, $event);
-
+                        printf("-------------------- dublicate GAME(on scoreFINISH: %u) ----------------- \n", self::MAX_SCORES);
 
                         $newGameEntity = new Game();
                         if ($gameEntity->getTeam0Player0Id()) {

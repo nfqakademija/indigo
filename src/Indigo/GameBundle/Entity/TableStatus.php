@@ -344,6 +344,9 @@ class TableStatus
         $this->Url = $Url;
     }
 
-
+    public function hasTimeout()
+    {
+        return  (bool) ($this->getLastTableshakeTs() + TableStatusRepository::TIMEOUT < time());
+    }
 
 }

@@ -9,6 +9,7 @@ use Indigo\GameBundle\Entity\TableStatus;
 use Indigo\TableBundle\Event\TableEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Indigo\TableBundle\Model\TableShakeModel;
 
 class TableShakeListener {
 
@@ -45,7 +46,7 @@ class TableShakeListener {
             return;
         }
 
-        printf ("got tableShake event: %d\n", $tableEventModel->getId());
+        printf (" - TableShake!! event: %d\n", $tableEventModel->getId());
         $tableStatusEntity = $this->em->getRepository('IndigoGameBundle:TableStatus')
             ->findOneById($tableEventModel->getTableId());
         if ($tableStatusEntity) {

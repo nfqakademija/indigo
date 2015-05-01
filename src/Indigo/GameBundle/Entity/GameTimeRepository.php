@@ -3,6 +3,7 @@
 namespace Indigo\GameBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Security\Acl\Exception\Exception;
 
 
 /**
@@ -38,7 +39,8 @@ class GameTimeRepository extends EntityRepository
                 WHERE
                 gt.timeOwner IN ( :players )
                     AND gt.confirmed = '0'
-                    AND ABS( TIME_TO_SEC( TIMEDIFF(gt.startAt, CURRENT_TIMESTAMP())) ) <= :timeInSec
+                    AND (ABS( TIME_TO_SEC( TIMEDIFF(gt.startAt, CURRENT_TIMESTAMP())) ) <= :timeInSec
+                    OR (gt.startAt <= CURRENT_TIMESTAMP() AND gt.finishAt >= CURRENT_TIMESTAMP()))
                 ORDER BY gt.startAt ASC
                 ")
                 ->setParameters([
@@ -46,8 +48,10 @@ class GameTimeRepository extends EntityRepository
                     'timeInSec' => self::GAMETIME_TOLERANCE
                 ]);
 
+            //var_dump ($qb->getSQL());
+            //var_dump ($qb->getParameters());
             $reservation = $qb->getSingleResult();
-        } catch (NoResultException $e) {
+        } catch (\Exception $e) {
 
             return  null;
         }

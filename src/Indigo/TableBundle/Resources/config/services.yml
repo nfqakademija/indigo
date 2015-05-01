@@ -3,6 +3,7 @@ parameters:
   indigo_table.table_shake_listener.class: Indigo\TableBundle\EventListener\TableShakeListener
   indigo_table.auto_goal_listener.class: Indigo\TableBundle\EventListener\AutoGoalListener
   indigo_table.card_swipe_listener.class: Indigo\TableBundle\EventListener\CardSwipeListener
+  indigo_table.timeout_manager.class: Indigo\TableBundle\Service\Manager\TimeoutManager
 
 services:
     indigo_table.table_shake_listener:
@@ -28,3 +29,6 @@ services:
         arguments: ["@event_dispatcher"]
 
 
+    indigo_table.timeout_manager:
+        class: %indigo_table.timeout_manager.class%
+        arguments: ["@doctrine.orm.entity_manager", "@event_dispatcher"]
