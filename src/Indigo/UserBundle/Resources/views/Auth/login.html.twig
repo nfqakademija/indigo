@@ -11,21 +11,21 @@
 		<img src="{{ asset('bundles/indigomain/images/demo/signin-bg-1.jpg') }}" alt="">
 	</div>
 	<div class="signin-container">
-		<div class="signin-info">
-			<a href="index.html" class="logo">
-				<img src="{{ asset('bundles/indigomain/images/demo/logo-big.png') }}" alt="" style="margin-top: -5px;">&nbsp;
-				PixelAdmin
-			</a>
-			<div class="slogan">
-				Simple. Flexible. Powerful.
-			</div>
-			<ul>
-				<li><i class="fa fa-sitemap signin-icon"></i> Flexible modular structure</li>
-				<li><i class="fa fa-file-text-o signin-icon"></i> LESS &amp; SCSS source files</li>
-				<li><i class="fa fa-outdent signin-icon"></i> RTL direction support</li>
-				<li><i class="fa fa-heart signin-icon"></i> Crafted with love</li>
-			</ul>
-		</div>
+		{#<div class="signin-info">#}
+			{#<a href="index.html" class="logo">#}
+				{#<img src="{{ asset('bundles/indigomain/images/demo/logo-big.png') }}" alt="" style="margin-top: -5px;">&nbsp;#}
+				{#PixelAdmin#}
+			{#</a>#}
+			{#<div class="slogan">#}
+				{#Simple. Flexible. Powerful.#}
+			{#</div>#}
+			{#<ul>#}
+				{#<li><i class="fa fa-sitemap signin-icon"></i> Flexible modular structure</li>#}
+				{#<li><i class="fa fa-file-text-o signin-icon"></i> LESS &amp; SCSS source files</li>#}
+				{#<li><i class="fa fa-outdent signin-icon"></i> RTL direction support</li>#}
+				{#<li><i class="fa fa-heart signin-icon"></i> Crafted with love</li>#}
+			{#</ul>#}
+		{#</div>#}
 		<div class="signin-form">
 			{{ form_start(form_login) }}
 				<div class="signin-text">

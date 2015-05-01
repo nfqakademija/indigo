@@ -16,7 +16,6 @@
     var _lastScoreTeamB = 0;
     var _firstTime = true;
 
-
     $(document).ready(function()
     {
         setInterval(function () {
@@ -39,11 +38,13 @@
                 $("#contest-title").html(json.contest.title);
 
 
-                if( json.teamA.goals == 0 && json.teamB.goals == 0 && (_lastScoreTeamA == 9 || _lastScoreTeamB == 9))
+                if( json.teamA.goals == 0 && json.teamB.goals == 0 && (_lastScoreTeamA == 9 || _lastScoreTeamB == 9) )
                 {
-                    $("#not-wrapper").show().fadeIn(2000, function(){
-                        $('#not-end-msg').show().fadeIn(2000);
-                    });
+                    $('#not-goal-msg').hide();
+
+                        $("#not-wrapper").show().fadeIn(2000, function () {
+                            $('#not-end-msg').show().fadeIn(2000).delay(5000)
+                        });
                 }
                 else
                 {
@@ -61,20 +62,20 @@
 
                 if(_firstTime)
                 {
-                    lastScoreTeamA = json.teamA.goals;
-                    lastScoreTeamB = json.teamB.goals;
+                    _lastScoreTeamA = json.teamA.goals;
+                    _lastScoreTeamB = json.teamB.goals;
                     _firstTime = false;
                 }
-                else
+                else if(!(json.teamA.goals == 0 && json.teamB.goals == 0))
                 {
-                    if(json.teamA.goals > lastScoreTeamA || json.teamB.goals > lastScoreTeamB)
+                    if(json.teamA.goals > _lastScoreTeamA || json.teamB.goals > _lastScoreTeamB)
                     {
                         $("#not-wrapper").show().fadeIn(2000, function(){
-                            $('#not-goal-msg').show().fadeIn(2000).fadeOut(2000);
+                            $('#not-goal-msg').show().fadeIn(2000).delay(4000).fadeOut(2000);
                         }).fadeOut(2000);
                     }
-                    lastScoreTeamA = json.teamA.goals;
-                    lastScoreTeamB = json.teamB.goals;
+                    _lastScoreTeamA = json.teamA.goals;
+                    _lastScoreTeamB = json.teamB.goals;
                 }
             });
 

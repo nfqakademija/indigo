@@ -499,6 +499,8 @@ a:hover{
 
   background-color: rgba(0, 0, 0, 0.31);
   text-align: center;
+
+  @include base-font();
 }
 
 .info-box button,

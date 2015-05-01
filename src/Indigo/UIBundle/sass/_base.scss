@@ -38,7 +38,7 @@ $color-orange-l : #f16c00;
 
 @mixin base-font()
 {
-  $main-font: Candara;
+  font-family: Candara;
   color: white;
 }
 
