@@ -39,13 +39,13 @@ security:
 
         secured_area:
             context: login
-            pattern: ^/dashboard
-            security: false
+            pattern: ^/
+
             form_login:
                 username_parameter: "indigo_user_login[username]"
                 password_parameter: "indigo_user_login[password]"
                 csrf_parameter: "indigo_user_login[_token]"
-                check_path: _security_check
+                check_path: login_check
                 login_path: login_action
                 default_target_path: /
             logout:
@@ -63,5 +63,5 @@ security:
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         - { path: "^/(login|login_modal|register|remind_password|password_recovery)", roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: "^/(logout|profile)", roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/dashboard2, roles: ROLE_USER }
+        - { path: ^/dashboard, roles: ROLE_USER }
         - { path: "/", roles: IS_AUTHENTICATED_ANONYMOUSLY }

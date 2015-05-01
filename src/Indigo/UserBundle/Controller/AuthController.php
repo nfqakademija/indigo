@@ -35,7 +35,7 @@ class AuthController extends Controller
     public function loginAction(Request $request)
     {
         if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
-           return $this->redirectToRoute('user_dashboard');
+           return $this->redirectToRoute('indigo_ui_dashboard');
         }
 
         $request = $this->container->get('request_stack')->getCurrentRequest();
@@ -58,7 +58,7 @@ class AuthController extends Controller
 
         $formBuilder = $formFactory->createBuilder($formLoginType);
         $formBuilder->setMethod('POST');
-        $formBuilder->setAction($this->generateUrl('_security_check'));
+        $formBuilder->setAction($this->generateUrl('login_check'));
 
         $formLogin = $formBuilder->getForm();
 
@@ -78,7 +78,7 @@ class AuthController extends Controller
     }
 
     /**
-     * @Route("/login_check", name="_security_check")
+     * @Route("/login_check", name="login_check")
      */
     public function securityCheckAction()
     {
@@ -178,7 +178,7 @@ class AuthController extends Controller
                $em->persist($userEntity);
                $em->flush();
 
-              return $this->redirectToRoute('user_dashboard');
+              return $this->redirectToRoute('indigo_ui_dashboard');
            }
         }
 
