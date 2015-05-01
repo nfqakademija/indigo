@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Indigo\GameBundle\Repository\GameStatusRepository;
 use Indigo\GameBundle\Repository\GameTypeRepository;
-
+use Indigo\ContestBundle\Entity\Contest;
 
 /**
  * Game
@@ -123,11 +123,11 @@ class Game
     private $matchType;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="contest_id", type="integer", options={"default"=0})
+     * @ORM\ManyToOne(targetEntity="Indigo\ContestBundle\Entity\Contest", inversedBy="games")
+     * @ORM\JoinColumn(name="contest_id", referencedColumnName="id")
+     * @ORM\Column(name="contest_id", type="integer", nullable=true)
      */
-    private $contestId;
+    private $contest;
 
     /**
      * @var \DateTime
@@ -157,7 +157,6 @@ class Game
         $this->setTeam1Score(0);
         $this->setStatus(GameStatusRepository::STATUS_GAME_WAITING);
         $this->setMatchType(GameTypeRepository::TYPE_GAME_OPEN);
-        $this->setContestId(0);
     }
 
     /**
@@ -555,26 +554,26 @@ class Game
     }
 
     /**
-     * Set contestId
+     * Set contest
      *
-     * @param integer $contestId
+     * @param Contest $contest
      * @return Game
      */
-    public function setContestId($contestId)
+    public function setContest(Contest $contest)
     {
-        $this->contestId = $contestId;
+        $this->contest = $contest;
 
         return $this;
     }
 
     /**
-     * Get contestId
+     * Get contest
      *
      * @return integer
      */
-    public function getContestId()
+    public function getContest()
     {
-        return $this->contestId;
+        return $this->contest;
     }
 
     /**

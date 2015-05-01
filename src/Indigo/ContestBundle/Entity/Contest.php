@@ -1,13 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Tadas
- * Date: 2015-03-23
- * Time: 16:41
- */
+
 
 namespace Indigo\ContestBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Indigo\UserBundle\Entity\User;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -136,11 +132,19 @@ class Contest
 
 
     /**
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="Indigo\GameBundle\Entity\Game", mappedBy="contest")
+     * @ORM\JoinColumn(referencedColumnName="id")
+     */
+    private $games;
+
+    /**
      * @param \Datetime $contest_creation_date
      */
     public function __construct()
     {
         $this->contestCreationDate = new \DateTime();
+        $this->games = new ArrayCollection();
     }
 
     /**
