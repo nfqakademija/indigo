@@ -1,13 +1,5 @@
-indigo_table:
-    resource: "@IndigoTableBundle/Resources/config/routing.yml"
-    prefix:   /
-
 indigo_ui:
     resource: "@IndigoUIBundle/Resources/config/routing.yml"
-    prefix:   /
-    
-indigo_game:
-    resource: "@IndigoGameBundle/Resources/config/routing.yml"
     prefix:   /
 
 indigo_user:
