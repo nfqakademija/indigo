@@ -34,7 +34,7 @@ class LiveController extends Controller
     public function statusAction($id)
     {
         $model = $this->getIndigoStatsService()->getTableStatus(1);
-        return new JsonResponse(json_encode( $model ));
+        return new Response(json_encode( $model ));
     }
 
     private function getIndigoStatsService()

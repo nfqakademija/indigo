@@ -4,8 +4,12 @@
 
     <link rel="stylesheet" href="{{ asset('bundles/indigomain/css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('bundles/indigoui/css/main.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/indigomain/css/pixel-admin.min.css') }}">
+
     <srip src="{{ asset('bundles/indigomain/js/bootstrap.min.js') }}"></srip>
     <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="{{ asset('bundles/indigomain/js/pixel-admin.min.js') }}"></script>
+    <script src="{{ asset('bundles/indigomain/css/bootstrap.min.css') }}"></script>
 
 
 </head>
@@ -95,12 +99,10 @@
     <span id="not-end-msg"> GAME OVER </br> Kick to start new game </span>
 </div>
 
-    <div class="live">
-
     <div class="container-fluid">
-        <div class="row">
+        <div class="row padding-sm">
 
-            <div class=" col-xs-12 col-sm-12 col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2 content">
+            <div class=" col-xs-12 col-sm-12 col-md-10 col-lg-10 col-md-offset-1 col-lg-offset-1 content">
 
 
                 <div class="title">
@@ -151,20 +153,61 @@
 
         </div>
 
-        <div class="row">
+        <div class="row padding-sm">
 
-               <p class="status-message"> {{ statusMessage }} </p>
+            <div class=" col-xs-4 col-sm-3 col-md-2 col-sm-offset-1 col-md-offset-3 " style="top: -40px">
 
-        </div>
+                <div class="stat-panel text-center border-thin b-color-selected" style="height: 200px;">
+                    <div class="stat-cell {% if reservations[0].status == "Reserved" %} bg-color-reserved {% else %} bg-color-not-reserved {% endif %}">
+                        <span class="text-md"> Now </span></br>
+                        <span class="time-text"> {{ reservations[0].time }} </span><br>
+                        <span class="text-md"> {% if reservations[0].status == "Reserved" %} Table is reserved {% else %} Table is not reserved {% endif %} </span></br></br>
+                        <span style="height: 100px">
+                            {% if reservations[0].whoIsReservedImageUrl != null %}
+                                <img src="{{ reservations[0].whoIsReservedImageUrl }}" class="img-circle icon-sm border-wide icon-narrow">
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
 
-        <div class="row">
+            </div>
 
-        <div class="col-md-2">  </div>
-        <div class="col-md-8 center">
+            <div class="col-xs-4 col-sm-3 col-md-2" style="top: -40px">
+
+                <div class="stat-panel text-center" style="height: 200px;">
+                    <div class="stat-cell {% if reservations[1].status == "Reserved" %} bg-color-reserved {% else %} bg-color-not-reserved {% endif %}">
+                        <span class="text-md"> Next </span></br>
+                        <span class="time-text"> {{ reservations[1].time }} </span><br>
+                        <span class="text-md"> {% if reservations[1].status == "Reserved" %} Table is reserved {% else %} Table is not reserved {% endif %} </span></br></br>
+                        <span style="height: 100px">
+                             {% if reservations[1].whoIsReservedImageUrl != null %}
+                                 <img src="{{ reservations[1].whoIsReservedImageUrl }}" class="img-circle icon-sm border-wide icon-narrow">
+                             {% endif %}
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-xs-4 col-sm-3 col-md-2" style="top: -40px">
+
+                <div class="stat-panel text-center" style="height: 200px;">
+                    <div class="stat-cell {% if reservations[2].status == "Reserved" %} bg-color-reserved {% else %} bg-color-not-reserved {% endif %} ">
+                        <span class="text-md"> Later </span></br>
+                        <span class="time-text"> {{ reservations[2].time }} </span><br>
+                        <span class="text-md"> {% if reservations[2].status == "Reserved" %} Table is reserved {% else %} Table is not reserved {% endif %} </span></br></br>
+                        <span style="height: 100px">
+
+                            {% if reservations[2].whoIsReservedImageUrl != null %}
+                                <img src="{{ reservations[2].whoIsReservedImageUrl }}" class="img-circle icon-sm border-wide icon-narrow">
+                            {% endif %}
+
+                        </span>
+                    </div>
+                </div>
 
             </div>
         </div>
-    </div>
 
     </div>
 </body>

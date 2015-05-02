@@ -71,6 +71,8 @@ class LiveViewService
         $player10 = new PlayerModel("/bundles/indigoui/images/empty.png");
         $player11 = new PlayerModel("/bundles/indigoui/images/empty.png");
 
+        $model->setReservations($this->getLastReservations());
+
         $model->setStatusMessage("Sveiki!");
 
         $tableStatus = $this->em->getRepository('IndigoGameBundle:TableStatus')->findOneById($tableId);
@@ -164,6 +166,39 @@ class LiveViewService
         }
 
         return $model;
+    }
+
+    /**
+     * @param int
+     * @param int
+     * @return array
+     */
+    public function getLastReservations()
+    {
+        $reservations = array();
+
+                $reservations [] = [
+                  "time" => "12:00 - 12:15",
+                  "status" => "Free",
+                  "whoIsReservedName" => null,
+                  "whoIsReservedImageUrl" => null
+                ];
+
+                $reservations [] = [
+                    "time" => "12:15 - 12:30",
+                    "status" => "Reserved",
+                    "whoIsReservedName" => "Tadas",
+                    "whoIsReservedImageUrl" => "/bundles/indigoui/images/tadas_surgailis.png"
+                ];
+
+                $reservations [] = [
+                    "time" => "12:30 - 12:45",
+                    "status" => "Free",
+                    "whoIsReservedName" => null,
+                    "whoIsReservedImageUrl" => null
+                ];
+
+        return $reservations;
     }
 
     public function getCurrentContestInfo()
