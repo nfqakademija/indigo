@@ -108,6 +108,20 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
      */
     private $teams;
 
+
+
+
+
+    public function __construct()
+    {
+        $this->isActive = 1;
+        $this->isLocked = 0;
+        $this->salt = md5(uniqid(null, true));
+        $this->roles = new ArrayCollection();
+        $this->teams = new ArrayCollection();
+        $this->registrationDate = new \DateTime('now');
+    }
+
     public function __toString()
     {
         return (string)$this->getId();
@@ -151,16 +165,6 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
     public function setCardId($cardId)
     {
         $this->cardId = $cardId;
-    }
-
-    public function __construct()
-    {
-        $this->isActive = true;
-        $this->isLocked = false;
-        $this->salt = md5(uniqid(null, true));
-        $this->roles = new ArrayCollection();
-        $this->registrationDate = new \DateTime('now');
-        $this->teams = new ArrayCollection();
     }
 
 
