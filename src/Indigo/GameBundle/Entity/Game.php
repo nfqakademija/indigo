@@ -20,32 +20,37 @@ class Game
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="table_status_id", type="integer")
-     */
-    private $tableStatusId;
-
-    /**
      * @var \Indigo\GameBundle\Entity\TableStatus
-     * @ORM\ManyToOne(targetEntity="Indigo\GameBundle\Entity\TableStatus", inversedBy="games", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Indigo\GameBundle\Entity\TableStatus", inversedBy="games")
      * @ORM\JoinColumn(name="table_status_id", referencedColumnName="id")
      */
     private $tableStatus;
 
+
+    /**
+     * @ORM\Column(name="table_status_id", type="integer", options={"unsigned":true})
+     */
+    private $tableStatusId;
+
     /**
      * @var \Indigo\GameBundle\Entity\GameTime
      * @ORM\ManyToOne(targetEntity="Indigo\GameBundle\Entity\GameTime", inversedBy="games", cascade={"persist"})
-     * @ORM\JoinColumn(name="game_time_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="game_time", referencedColumnName="id")
      */
     private $gameTime;
+
+    /**
+     * @ORM\Column(name="game_time", type="integer", nullable=true, options={"unsigned":true})
+     */
+    private $gameTimeId;
+
 
     /**
      * @var \Indigo\UserBundle\Entity\User
@@ -89,14 +94,14 @@ class Game
     /**
      * @var integer
      *
-     * @ORM\Column(name="team0_score", type="integer", options={"default"=0})
+     * @ORM\Column(name="team0_score", type="smallint", options={"default"=0, "unsigned":true})
      */
     private $team0Score;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="team1_score", type="integer", options={"default"=0})
+     * @ORM\Column(name="team1_score", type="smallint", options={"default"=0, "unsigned":true})
      */
     private $team1Score;
 
@@ -125,9 +130,14 @@ class Game
     /**
      * @ORM\ManyToOne(targetEntity="Indigo\ContestBundle\Entity\Contest", inversedBy="games")
      * @ORM\JoinColumn(name="contest_id", referencedColumnName="id")
-     * @ORM\Column(name="contest_id", type="integer", nullable=true)
+
      */
     private $contest;
+
+    /**
+     * @ORM\Column(name="contest_id", type="integer", nullable=true, options={"unsigned":true})
+     */
+    private $contestId;
 
     /**
      * @var \DateTime
@@ -249,15 +259,14 @@ class Game
     }
 
     /**
-     * Set gametimeId
-     *
+     * Set gametime
+     * could be null
      * @param \Indigo\GameBundle\Entity\GameTime $gameTime
      * @return Game
      */
-    public function setGameTime(\Indigo\GameBundle\Entity\GameTime $gameTime)
+    public function setGameTime($gameTime)
     {
         $this->gameTime = $gameTime;
-        $this->gameTime->setGame($this);
 
         return $this;
     }
@@ -559,7 +568,7 @@ class Game
      * @param Contest $contest
      * @return Game
      */
-    public function setContest(Contest $contest)
+    public function setContest($contest)
     {
         $this->contest = $contest;
 
@@ -796,4 +805,35 @@ class Game
         return (bool)($this->getStatus() == GameStatusRepository::STATUS_GAME_READY);
     }
 
+    /**
+     * @return mixed
+     */
+    public function getContestId()
+    {
+        return $this->contestId;
+    }
+
+    /**
+     * @param mixed $contestId
+     */
+    public function setContestId($contestId)
+    {
+        $this->contestId = (int)$contestId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGameTimeId()
+    {
+        return $this->gameTimeId;
+    }
+
+    /**
+     * @param mixed $gameTimeId
+     */
+    public function setGameTimeId($gameTimeId)
+    {
+        $this->gameTimeId = $gameTimeId;
+    }
 }

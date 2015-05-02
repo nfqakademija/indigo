@@ -16,7 +16,7 @@ class Team
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -32,13 +32,14 @@ class Team
     /**
      * @var integer
      *
-     * @ORM\Column(name="is_single", type="integer")
+     * @ORM\Column(name="is_single", type="smallint", options={"unsigned":true})
      */
     private $isSingle;
 
     /**
      * @var ArrayCollection(<Rating>)
      * @ORM\OneToMany(targetEntity="Indigo\GameBundle\Entity\Rating", mappedBy="team")
+     *
      */
     private $ratings;
 
@@ -49,12 +50,12 @@ class Team
     private $players;
 
     /**
-     * @ORM\Column(name="contest_rating", type="integer")
+     * @ORM\Column(name="contest_rating", type="integer", options={"unsigned":true})
      */
     private $contestRating;
 
     /**
-     * @ORM\Column(name="open_rating", type="integer")
+     * @ORM\Column(name="open_rating", type="integer", options={"unsigned":true})
      */
     private $openRating;
 

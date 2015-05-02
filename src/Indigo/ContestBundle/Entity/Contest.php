@@ -138,6 +138,14 @@ class Contest
      */
     private $games;
 
+
+    /**
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="Indigo\GameBundle\Entity\GameTime", mappedBy="contest")
+     * @ORM\JoinColumn(referencedColumnName="id")
+     */
+    private $gameTimes;
+
     /**
      * @param \Datetime $contest_creation_date
      */
@@ -145,6 +153,7 @@ class Contest
     {
         $this->contestCreationDate = new \DateTime();
         $this->games = new ArrayCollection();
+        $this->gameTimes = new ArrayCollection();
     }
 
     /**
@@ -409,6 +418,38 @@ class Contest
     }
 
     /**
+     * @return ArrayCollection
+     */
+    public function getGames()
+    {
+        return $this->games;
+    }
+
+    /**
+     * @param ArrayCollection $games
+     */
+    public function setGames($games)
+    {
+        $this->games = $games;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getGameTimes()
+    {
+        return $this->gameTimes;
+    }
+
+    /**
+     * @param ArrayCollection $gameTimes
+     */
+    public function setGameTimes($gameTimes)
+    {
+        $this->gameTimes = $gameTimes;
+    }
+
+    /**
      * hash contest prise images names
      */
     /*public function changePriseImagesNames()
@@ -441,5 +482,7 @@ class Contest
 //
 //        $this->image = null;
 //    }
+
+
 
 }

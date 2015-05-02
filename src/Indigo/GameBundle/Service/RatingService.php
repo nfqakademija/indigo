@@ -34,7 +34,8 @@ class RatingService
      */
     private function isInGameBothTeams(Game $gameEntity)
     {
-        return (($gameEntity->getTeam0()->getId() && $gameEntity->getTeam1()->getId()) ? true : false );
+        return (($gameEntity->getTeam0() && $gameEntity->getTeam1() &&
+            $gameEntity->getTeam0()->getId() && $gameEntity->getTeam1()->getId()) ? true : false );
     }
 
     private function getTeam0WinRatio($score0, $score1)

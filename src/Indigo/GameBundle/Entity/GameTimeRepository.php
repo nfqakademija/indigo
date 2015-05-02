@@ -3,7 +3,6 @@
 namespace Indigo\GameBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\Security\Acl\Exception\Exception;
 
 
 /**
@@ -57,5 +56,4 @@ class GameTimeRepository extends EntityRepository
         }
         return $reservation;
     }
-
 }

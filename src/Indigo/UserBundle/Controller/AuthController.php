@@ -35,6 +35,7 @@ class AuthController extends Controller
     public function loginAction(Request $request)
     {
         if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+
            return $this->redirectToRoute('indigo_ui_dashboard');
         }
 
@@ -43,16 +44,18 @@ class AuthController extends Controller
 
         // get the login error if there is one
         if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
+
             $error = $request->attributes->get(
                 SecurityContext::AUTHENTICATION_ERROR
             );
         } else {
+
             $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
             $session->remove(SecurityContext::AUTHENTICATION_ERROR);
         }
 
         $formLoginType = new LoginType();
-        $formRemindPasswordType = new RemindPasswordType();
+
 
         $formFactory = $this->get('form.factory');
 
@@ -62,6 +65,8 @@ class AuthController extends Controller
 
         $formLogin = $formBuilder->getForm();
 
+
+        $formRemindPasswordType = new RemindPasswordType();
         $formBuilder = $formFactory->createBuilder($formRemindPasswordType);
         $formBuilder->setMethod('POST');
         $formBuilder->setAction($this->generateUrl('remind_password_action'));

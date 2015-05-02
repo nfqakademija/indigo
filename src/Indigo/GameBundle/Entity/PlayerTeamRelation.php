@@ -36,7 +36,7 @@ class PlayerTeamRelation
     private $team;
 
     /**
-     * @ORM\Column(name="team_id", type="integer")
+     * @ORM\Column(name="team_id", type="integer", options={"unsigned":true})
      */
     private $teamId;
 

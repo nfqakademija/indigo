@@ -17,7 +17,7 @@ class GameTime
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -25,7 +25,7 @@ class GameTime
 
     /**
      * @var \Indigo\GameBundle\Entity\Game
-     * @ORM\OneToMany(targetEntity="Indigo\GameBundle\Entity\Game",  mappedBy="gameTime", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Indigo\GameBundle\Entity\Game", mappedBy="gameTime")
      * @ORM\JoinColumn(name="game_id", referencedColumnName="id")
      */
     private $games;
@@ -60,6 +60,18 @@ class GameTime
      * @ORM\Column(name="ack", type="integer")
      */
     private $confirmed;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Indigo\ContestBundle\Entity\Contest", inversedBy="gameTimes")
+     * @ORM\JoinColumn(name="contest_id", referencedColumnName="id")
+     */
+    private $contest;
+
+    /**
+     * @ORM\Column(name="contest_id", type="integer", nullable=true, options={"unsigned":true})
+     */
+    private $contestId;
+
 
 
     public function __construct()
@@ -222,6 +234,40 @@ class GameTime
         $this->games->add($game);
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getContest()
+    {
+        return $this->contest;
+    }
+
+    /**
+     * @param Contest $contest
+     * @return $this
+     */
+    public function setContest($contest)
+    {
+        $this->contest = $contest;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getContestId()
+    {
+        return $this->contestId;
+    }
+
+    /**
+     * @param mixed $contestId
+     */
+    public function setContestId($contestId)
+    {
+        $this->contestId = (int)$contestId;
     }
 
 

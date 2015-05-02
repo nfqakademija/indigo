@@ -17,7 +17,7 @@ class TableStatus
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -33,15 +33,20 @@ class TableStatus
     /**
      * @var ArrayCollection<Game>
      * @ORM\OneToMany(targetEntity="Indigo\GameBundle\Entity\Game", mappedBy="tableStatus", cascade={"persist"})
-     * @ORM\JoinColumn(name="games_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="game_id", referencedColumnName="id")
      */
     private $games;
 
     /**
-     * @ORM\OneToOne(targetEntity="Indigo\GameBundle\Entity\Game", mappedBy="tableStatus", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="Indigo\GameBundle\Entity\Game",cascade={"persist"})
      * @ORM\JoinColumn(name="game_id", referencedColumnName="id", nullable=true)
      */
     private $game;
+
+    /**
+     * @ORM\Column(name="game_id", type="integer", nullable=true, options={"unsigned"=true})
+     */
+    private $gameId;
 
     /**
      * @var integer
@@ -81,7 +86,7 @@ class TableStatus
 
     /**
      * @var string
-     * @ORM\Column(name="url", type="string", options={"nullable"=false})
+     * @ORM\Column(name="url", type="string")
      */
     private $Url;
 
@@ -322,10 +327,15 @@ class TableStatus
      * Gali buti ir null
      *
      * @param $game
+     * @return $this
      */
     public function setGame($game)
     {
         $this->game = $game;
+        if ($game instanceof Game) {
+            $game->setTableStatus($this);
+        }
+        return $this;
     }
 
     /**
@@ -348,5 +358,40 @@ class TableStatus
     {
         return  (bool) ($this->getLastTableshakeTs() + TableStatusRepository::TIMEOUT < time());
     }
+
+    /**
+     * @return mixed
+     */
+    public function getGameId()
+    {
+        return $this->gameId;
+    }
+
+    /**
+     * @param mixed $gameId
+     */
+    public function setGameId($gameId)
+    {
+        $this->gameId = (int)$gameId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCurrentGame()
+    {
+        return $this->currentGame;
+    }
+
+    /**
+     * @param mixed $currentGame
+     */
+    public function setCurrentGame($currentGame)
+    {
+        $this->currentGame = $currentGame;
+    }
+
+
+
 
 }

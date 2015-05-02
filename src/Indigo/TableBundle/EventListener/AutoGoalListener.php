@@ -103,6 +103,7 @@ class AutoGoalListener
                         printf("-------------------- dublicate GAME(on scoreFINISH: %u) ----------------- \n", self::MAX_SCORES);
 
                         $newGameEntity = new Game();
+
                         if ($gameEntity->getTeam0Player0Id()) {
                             $newGameEntity->setTeam0Player0Id($gameEntity->getTeam0Player0Id());
                         }
@@ -123,6 +124,8 @@ class AutoGoalListener
                         }
 
                         $newGameEntity->setTableStatus($gameEntity->getTableStatus());
+                        $newGameEntity->setContest($gameEntity->getContest());
+
                         $newGameEntity->setMatchType($gameEntity->getMatchType());
 
                         $newGameEntity->setGameTime($gameEntity->getGameTime());

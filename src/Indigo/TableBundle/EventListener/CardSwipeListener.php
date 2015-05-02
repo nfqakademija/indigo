@@ -16,7 +16,7 @@ use Indigo\GameBundle\Repository\GameTypeRepository;
 use Indigo\TableBundle\Event\TableEvent;
 use Indigo\TableBundle\Model\CardSwipeModel;
 use Indigo\TableBundle\Model\TableActionInterface;
-use Indigo\TableBundle\Repository\TableStatusRepository;
+use Indigo\GameBundle\Entity\TableStatusRepository;
 use Indigo\UserBundle\Entity\User as Player;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -132,10 +132,15 @@ class CardSwipeListener
 
 
             if (!$gameEntity) {
+
                 $gameEntity  = $this->createGame($tableStatusEntity);
+                $this->em->flush();
             } else {
+
                 if ($gameEntity->isGameStatusStarted()) {
+
                     printf("CardSwipe IGNORED, game Started! team:%u, position: %u, cardid: %u\n", $tableEventModel->getTeam(), $tableEventModel->getPlayer(), $tableEventModel->getCardId());
+
                     return false;
                 }
             }
@@ -148,6 +153,7 @@ class CardSwipeListener
             } else {
 
                $gameEntity->setPlayer($teamPosition, $playerPosition, $playerEntity);
+
                 if ($gameEntity->getPlayersCountInTeam($teamPosition) == 2) {
 
                         //check teams and setTeam!
@@ -174,32 +180,37 @@ class CardSwipeListener
                         $gameEntity->setTeam($teamPosition, $teamEntity);
 
                         if ($gameEntity->isBothTeamReady()) {
-                            //if ($gameEntity->getGameTime()->getTimeOwner()) {
+
                             $gameEntity->setStatus(GameStatusRepository::STATUS_GAME_READY);
-                            //TODO: is reserved?
-                            if (!$gameEntity->getGameTime()) {
 
 
-                                $gameTimeEntity = $this->em->getRepository('IndigoGameBundle:GameTime')
-                                    ->getEarliestReservation($gameEntity->getAllPlayers());
-
-                                if ($gameTimeEntity) {
-                                    $gameTimeEntity->setConfirmed(1);
-                                    $gameEntity->setMatchType(GameTypeRepository::TYPE_GAME_MATCH);
-                                    // TODO: set contest id
-                                    //$gameEntity->setContestId()
-                                } else {
-
-                                    $gameTimeEntity = new GameTime();
-
-                                    //TODO 15min langa daryti?
-                                }
-
-                                $gameEntity->setGameTime($gameTimeEntity);
-
-                                $this->em->persist($gameTimeEntity);
-                            }
                         }
+                } else {
+
+                    $teamEntity = $this->getPlayerSingleTeam($playerEntity);
+                    $gameEntity->setTeam($teamPosition, $teamEntity);
+                }
+
+                if (!$gameEntity->getGameTime()) {
+
+                    $gameTimeEntity = $this->em->getRepository('IndigoGameBundle:GameTime')
+                        ->getEarliestReservation($gameEntity->getAllPlayers());
+                    /** @var GameTime $gameTimeEntity */
+                    if ($gameTimeEntity) {
+
+                        $gameTimeEntity->setConfirmed(1);
+                        $contestEntity = $gameTimeEntity->getContest();
+                        if ($contestEntity) {
+
+                            $gameEntity->setMatchType(GameTypeRepository::TYPE_GAME_MATCH);
+                        } else {
+
+                            $gameEntity->setMatchType(GameTypeRepository::TYPE_GAME_OPEN);
+                        }
+                        $gameEntity->setContest($contestEntity);
+                        $gameEntity->setGameTime($gameTimeEntity);
+                        $this->em->persist($gameEntity);
+                    } // jei nera rezervuoto laiko, tai ir paliekam NULL
                 }
             }
 
@@ -211,28 +222,37 @@ class CardSwipeListener
     }
 
     /**
+     * @param Player $playerEntity
+     * @return Team
+     */
+    private function getPlayerSingleTeam(Player $playerEntity)
+    {
+
+        $teamEntity =  $this->em->getRepository('IndigoGameBundle:PlayerTeamRelation')->getPlayerSingleTeam($playerEntity);
+        if (!$teamEntity) {
+            $teamEntity  = $this->createSinglePlayerTeam($playerEntity);
+        }
+
+        return $teamEntity;
+    }
+
+
+
+    /**
      * @param $tableStatusEntity
      * @return Game
      */
-    private function createGame(TableStatus $tableStatusEntity, $gameStatus = null)
+    private function createGame(TableStatus $tableStatusEntity)
     {
 
-        $gameEntity = new Game ();
-        $gameEntity->setGameTime(new GameTime());
+        //$gameEntity->setTableStatus($tableStatusEntity);
+        //$gameEntity->setGameTime(new GameTime());
+        //$this->em->persist($gameEntity);
 
-        if ($gameStatus !== null) {
-
-            $gameEntity->setStatus($gameStatus);
-        }
-
-        $this->em->persist($gameEntity);
-
-        $tableStatusEntity->addNewGame($gameEntity);
-
+        $tableStatusEntity->setGame(new Game ());
         $this->em->persist($tableStatusEntity);
-        $this->em->persist($gameEntity);
-
-        return $gameEntity;
+        $this->em->flush();
+        return $tableStatusEntity->getGame();
     }
 
     /**
