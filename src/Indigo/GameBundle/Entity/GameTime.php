@@ -33,25 +33,41 @@ class GameTime
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="start_at", type="datetime")
+     * @ORM\Column(name="start_at", type="datetime", nullable=false)
      */
     private $startAt;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="finish_at", type="datetime", nullable=true)
+     * @ORM\Column(name="finish_at", type="datetime", nullable=false)
      */
     private $finishAt;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="insertion_time", type="datetime", nullable=false)
+     */
+    private $insertionTime;
 
     /**
      * User who reserved the time for game
      *
      * @var integer
      *
-     * @ORM\Column(name="player_id", type="integer")
+     * @ORM\Column(name="player_id", type="integer", nullable=false)
      */
     private $timeOwner;
+
+    /**
+     * User who reserved the time for game
+     *
+     * @var integer
+     *
+     * @ORM\Column(name="contest_id", type="integer", nullable=true)
+     */
+    private $contestId;
 
     /**
      *
@@ -65,25 +81,6 @@ class GameTime
     public function __construct()
     {
         $this->games = new ArrayCollection();
-    }
-
-    /**
-     * @ORM\PrePersist()
-     */
-    public function prePersist()
-    {
-        /*if ($this->getStartAt() === null) {
-            $this->setStartAt(new \DateTime());
-            $this->setFinishAt(new \DateTime('+15 minutes'));
-        }*/
-
-        if ($this->getTimeOwner() === null) {
-            $this->setTimeOwner(0);
-        }
-
-        if ($this->getConfirmed() === null) {
-            $this->setConfirmed(0);
-        }
     }
 
     /**
@@ -102,16 +99,11 @@ class GameTime
      * @param \DateTime $startAt
      * @return GameTime
      */
-    public function setStartAt($startAt = null)
+    public function setStartAtAndFinishAt($startAt = null)
     {
-        if($startAt !== null){
-            $explode = explode(" - ", $startAt);
-            $this->startAt = new \DateTime($explode[0]);
-            $this->finishAt = new \DateTime($explode[1]);
-        }else{
-            $this->startAt = new \DateTime();
-            $this->finishAt = new \DateTime('+15 minutes');
-        }
+        $this->startAt = new \DateTime($startAt);
+        $this->finishAt = (new \DateTime($startAt))->add(new \DateInterval('PT15M'));
+
         return $this;
     }
 
@@ -213,7 +205,35 @@ class GameTime
         return $this;
     }
 
+    /**
+     * @return \DateTime
+     */
+    public function getInsertionTime()
+    {
+        return $this->insertionTime;
+    }
 
+    /**
+     * @param \DateTime $insertionTime
+     */
+    public function setInsertionTime($insertionTime)
+    {
+        $this->insertionTime = new \Datetime($insertionTime);
+    }
 
+    /**
+     * @return int
+     */
+    public function getContestId()
+    {
+        return $this->contestId;
+    }
 
+    /**
+     * @param int $contestId
+     */
+    public function setContestId($contestId)
+    {
+        $this->contestId = $contestId;
+    }
 }
