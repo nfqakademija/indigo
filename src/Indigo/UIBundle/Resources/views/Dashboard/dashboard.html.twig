@@ -10,8 +10,7 @@
 
     <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
     <script src="{{ asset('bundles/indigomain/js/pixel-admin.min.js') }}"></script>
-    <script src="{{ asset('bundles/indigomain/css/bootstrap.min.css') }}"></script>
-
+    <script src="{{ asset('bundles/indigomain/js/bootstrap.min.js') }}"></script>
 
 </head>
 
@@ -23,7 +22,7 @@
 
         <div class="row padding-sm valign-middle">
 
-            <div class=" col-sm-6 col-md-4 col-lg-4 col-sm-offset-2 col-md-offset-2 col-lg-offset-3">
+            <div class=" col-sm-6 col-md-4 col-lg-4 col-sm-offset-2 col-md-offset-2 col-lg-offset-2">
                 <img src="{{ asset('bundles/indigoui/images/bilas.png') }}" class="img-circle icon-sm border-wide icon-narrow">
 
                 <div class="btn-group btn-group-lg" style="left: 10px;">
@@ -65,7 +64,7 @@
         </div>
 
         <div class="row">
-            <div class="col-sm-8 col-md-8 col-lg-6 col-sm-offset-2  col-md-offset-2  col-lg-offset-3" >
+            <div class="col-sm-8 col-md-8 col-lg-8 col-sm-offset-2  col-md-offset-2  col-lg-offset-2" >
 
                 <div class="row no-gutter">
                     <div class="contest-block" style="background: url({{ currentContest.imageUrl }}) no-repeat center;  background-size: cover;">
@@ -81,8 +80,16 @@
 
                 <div class="row">
 
-
                     <div class="col-md-6 col-xs-12 col-sm-12" style="text-align: center">
+
+                        <div class="stat-panel" style="height: 80px;">
+                            <div class="stat-cell bg-green-sl valign-middle">
+                                <span class="text-lg"> {{ nextReservation.dateStart}} </span></br>
+                                <span class="text-center-md"> Next reserved table </span>
+                            </div>
+                        </div>
+
+
 
                         {% if nextReservation != null %}
                             <div class="stat-panel" style="height: 80px;">

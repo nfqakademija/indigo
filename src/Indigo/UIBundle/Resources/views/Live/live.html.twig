@@ -2,14 +2,15 @@
 <html>
 <head>
 
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="{{ asset('bundles/indigomain/css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('bundles/indigoui/css/main.css') }}" />
     <link rel="stylesheet" href="{{ asset('bundles/indigomain/css/pixel-admin.min.css') }}">
 
-    <srip src="{{ asset('bundles/indigomain/js/bootstrap.min.js') }}"></srip>
     <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
     <script src="{{ asset('bundles/indigomain/js/pixel-admin.min.js') }}"></script>
-    <script src="{{ asset('bundles/indigomain/css/bootstrap.min.css') }}"></script>
+    <script src="{{ asset('bundles/indigomain/js/bootstrap.min.js') }}"></script>
+
 
 
 </head>
@@ -116,12 +117,10 @@
                     </div>
                 </div>
 
-                <div id="scoreA"  class="score" >
-                    {{ teamA.goals }}
-                </div>
-                <div id="scoreB" class="score" >
-                    {{ teamB.goals }}
-                </div>
+                <div id="scoreA"  class="score" > {{ teamA.goals }}  </div>
+
+                <div id="scoreB" class="score" >  {{ teamB.goals }} </div>
+
 
                 <div class="field">
 

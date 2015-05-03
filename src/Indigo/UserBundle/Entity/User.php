@@ -120,6 +120,7 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
         $this->roles = new ArrayCollection();
         $this->teams = new ArrayCollection();
         $this->registrationDate = new \DateTime('now');
+        $this->picture = "/bundles/indigoui/images/anonymous.png";
     }
 
     public function __toString()

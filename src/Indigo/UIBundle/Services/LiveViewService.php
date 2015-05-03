@@ -28,6 +28,8 @@ use Symfony\Component\Security\Acl\Exception\Exception;
 
 class LiveViewService
 {
+    private $defaultProfilePic = '';
+
     private $em;
 
     /**
@@ -66,10 +68,10 @@ class LiveViewService
         $contest = new ContestModel();
         $teamA = new TeamModel();
         $teamB = new TeamModel();
-        $player00 = new PlayerModel("/bundles/indigoui/images/empty.png");
-        $player01 = new PlayerModel("/bundles/indigoui/images/empty.png");
-        $player10 = new PlayerModel("/bundles/indigoui/images/empty.png");
-        $player11 = new PlayerModel("/bundles/indigoui/images/empty.png");
+        $player00 = new PlayerModel();
+        $player01 = new PlayerModel();
+        $player10 = new PlayerModel();
+        $player11 = new PlayerModel();
 
         $model->setReservations($this->getLastReservations());
 
@@ -82,12 +84,9 @@ class LiveViewService
             $model->setIsTableBusy($tableStatus->getBusy());
             if($tableStatus->getGame())
             {
-                $gameEntity = $this->em->getRepository('IndigoGameBundle:Game')->find($tableStatus->getGame());
-
-
-                if($gameEntity && ($gameEntity->getStatus() == "started" || $gameEntity->getStatus() == "waiting"))
+                if($tableStatus->getGame() && ($tableStatus->getGame()->getStatus() == "started" || $tableStatus->getGame()->getStatus() == "waiting" || $tableStatus->getGame()->getStatus() == "ready"))
                 {
-                    $contestEntity = $this->em->getRepository('IndigoContestBundle:Contest')->findOneById($gameEntity->getContestId());
+                    $contestEntity = $this->em->getRepository('IndigoContestBundle:Contest')->findOneById($tableStatus->getGame()->getContestId());
 
                     if($contestEntity)
                     {
@@ -99,45 +98,31 @@ class LiveViewService
                         $model->setContest($contest);
                     }
 
-                    $user00 = $this->em->getRepository('IndigoUserBundle:User')->findOneById($gameEntity->getTeam0Player0Id());
-
-                    if(!$user00)
-                    {
-                        $user00 = $this->em->getRepository('IndigoUserBundle:User')->findOneById(0);
+                    if($tableStatus->getGame()->getTeam0Player0Id()) {
+                        $player00->setName($tableStatus->getGame()->getTeam0Player0Id()->getUsername());
+                        $player00->setImageUrl($tableStatus->getGame()->getTeam0Player0Id()->getPicture());
                     }
 
-                    $user01 = $this->em->getRepository('IndigoUserBundle:User')->findOneById($gameEntity->getTeam0Player1Id());
-
-                    if(!$user01)
+                    if($tableStatus->getGame()->getTeam0Player1Id())
                     {
-                        $user01 = $this->em->getRepository('IndigoUserBundle:User')->findOneById(0);
+                        $player01->setName($tableStatus->getGame()->getTeam0Player1Id()->getUsername());
+                        $player01->setImageUrl($tableStatus->getGame()->getTeam0Player1Id()->getPicture());
                     }
 
-                    $user10 = $this->em->getRepository('IndigoUserBundle:User')->findOneById($gameEntity->getTeam1Player0Id());
-
-                    if(!$user10)
+                    if($tableStatus->getGame()->getTeam1Player0Id())
                     {
-                        $user10 = $this->em->getRepository('IndigoUserBundle:User')->findOneById(0);
+                        $player10->setName($tableStatus->getGame()->getTeam1Player0Id()->getUsername());
+                        $player10->setImageUrl($tableStatus->getGame()->getTeam1Player0Id()->getPicture());
                     }
 
-                    $user11 = $this->em->getRepository('IndigoUserBundle:User')->findOneById($gameEntity->getTeam1Player1Id());
-
-                    if(!$user11)
+                    if($tableStatus->getGame()->getTeam1Player1Id())
                     {
-                        $user11 = $this->em->getRepository('IndigoUserBundle:User')->findOneById(0);
+                        $player11->setName($tableStatus->getGame()->getTeam1Player1Id()->getUsername());
+                        $player11->setImageUrl($tableStatus->getGame()->getTeam1Player1Id()->getPicture());
                     }
 
-                    $player00->setName($user00->getUsername());
-                    $player00->setImageUrl($user00->getPicture());
-                    $player01->setName($user01->getUsername());
-                    $player01->setImageUrl($user01->getPicture());
-                    $player10->setName($user10->getUsername());
-                    $player10->setImageUrl($user10->getPicture());
-                    $player11->setName($user11->getUsername());
-                    $player11->setImageUrl($user11->getPicture());
-
-                    $teamA->setGoals($gameEntity->getTeam0Score());
-                    $teamB->setGoals($gameEntity->getTeam1Score());
+                    $teamA->setGoals($tableStatus->getGame()->getTeam0Score());
+                    $teamB->setGoals($tableStatus->getGame()->getTeam1Score());
 
                     $model->setStatusMessage("Žaidimas pradėtas!");
                 }

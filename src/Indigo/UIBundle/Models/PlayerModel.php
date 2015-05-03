@@ -9,8 +9,8 @@
 namespace Indigo\UIBundle\Models;
 
 
-class PlayerModel implements \JsonSerializable{
-
+class PlayerModel implements \JsonSerializable
+{
     /**
      * @var string
      */
@@ -18,15 +18,7 @@ class PlayerModel implements \JsonSerializable{
     /**
      * @var string
      */
-    private $imageUrl;
-
-    /**
-     * @param string
-     */
-    public function __construct($defImageUrl)
-    {
-        $this->imageUrl = $defImageUrl;
-    }
+    private $imageUrl = '/bundles/indigoui/images/empty.png';
 
     public function jsonSerialize() {
         return [
@@ -70,7 +62,7 @@ class PlayerModel implements \JsonSerializable{
         }
         else
         {
-            $this->imageUrl = "/bundles/indigoui/images/empty.png";
+            $this->imageUrl = "/bundles/indigoui/images/anonymous.png";
         }
     }
 
