@@ -52,8 +52,12 @@ class AuthController extends Controller
             //$error = 'user.error.bad_credentials';
         } else {
 
-            //$error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
-            $error = 'user.error.bad_credentials';
+            $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
+
+            if ($error) {
+
+                $error = 'user.error.bad_credentials';
+            }
             $session->remove(SecurityContext::AUTHENTICATION_ERROR);
         }
 
@@ -80,7 +84,7 @@ class AuthController extends Controller
         return [
             'form_login' => $formLogin->createView(),
             'form_remind_password' => $formRemindPassword->createView(),
-//            'last_username' => ($error == null ?  : '' ),
+            'last_username' => $session->get(SecurityContext::LAST_USERNAME),
             'error_message' => $error,
         ];
     }
