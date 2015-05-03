@@ -15,6 +15,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Role  implements RoleInterface
 {
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+    const ROLE_USER = 'ROLE_USER';
+
     /**
      * @var integer
      *

@@ -73,7 +73,7 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
     private $salt;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
+     * @ORM\ManyToMany(targetEntity="Role", inversedBy="users", cascade={"persist"})
      * @ORM\JoinTable(name="user_role",)
      */
     private $roles;
@@ -214,12 +214,12 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
     /**
      * Set isActive
      *
-     * @param boolean $isActive
+     * @param integer $isActive
      * @return User
      */
     public function setIsActive($isActive)
     {
-        $this->isActive = $isActive;
+        $this->isActive = (int)$isActive;
 
         return $this;
     }
@@ -227,16 +227,16 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
     /**
      * Get isActive
      *
-     * @return boolean
+     * @return integer
      */
     public function getIsActive()
     {
-        return (bool)$this->isActive;
+        return (int)$this->isActive;
     }
 
     public function setIsLocked($isLocked)
     {
-        $this->isLocked = $isLocked;
+        $this->isLocked = (int)$isLocked;
 
         return $this;
     }
@@ -364,14 +364,6 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
     public function getPicture()
     {
         return $this->picture;
-    }
-
-
-    /**
-     *
-     */
-    public function cryptPassword() {
-        $this->password = md5($this->password);
     }
 
 
@@ -526,7 +518,6 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
     {
         $this->roles->removeElement($roles);
     }
-
 
     /**
      * Set registrationDate

@@ -3,6 +3,7 @@
 namespace Indigo\UserBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Indigo\UserBundle\Entity\Role;
 use Indigo\UserBundle\Entity\User;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
@@ -26,77 +27,26 @@ class Registration
         $this->ef = $ef;
     }
 
-    public function register(Form $form)
+    public function  register(User $userEntity)
     {
-        if ($form->isSubmitted() && $form->isValid()) {
+        $userEntity->setUsername($userEntity->getEmail());
 
-            $email =  $form->get('email')->getData();
-            $data = $this->em->getRepository('IndigoUserBundle:User')->findOneByEmail($email);
-            if ($data != null) {
+        $encoder = $this->ef->getEncoder($userEntity);
+        $encoded = $encoder->encodePassword($userEntity->getPassword(), $userEntity->getSalt());
+        $userEntity->setPassword($encoded);
 
-                return [
-                    'status' => 0,
-                    'error_message' => 'user.error.user-exist'
-                ];
-            }
+        $this->setRoles($userEntity);
 
-            $userEntity = new User();
-            $userEntity->setUsername($email);
-            $userEntity->setEmail($email);
-            $encoder = $this->ef->getEncoder($userEntity);
-            $encoded = $encoder->encodePassword($userEntity->getPassword(), $userEntity->getSalt());
-            $userEntity->setPassword($encoded);
-            $this->em->persist($userEntity);
-            $this->em->flush();
+        $this->em->persist($userEntity);
+        $this->em->flush();
 
-            return [
-              'status' => 1
-            ];
-        }
+    }
 
-        return [
-            'status' => 0
-        ];
+    private function setRoles(User $user)
+    {
+        $role = $this->em->getRepository('IndigoUserBundle:Role')->findOneBy(['role' => Role::ROLE_USER]);
 
-
-/*        $message = '';
-        $userEntity = new User();
-        $formType = new RegisterType();
-        $formFactory = $this->get('form.factory');
-        $formBuilder = $formFactory->createBuilder($formType, $userEntity);
-        $form = $formBuilder->getForm();
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $email =  $form->get('email')->getData();
-            $data = $this->get('indigo_user.repository')->findOneByEmail($email);
-
-            if ($data) { // toks useris jau egzistuoja
-                $message = 'user.error.user-exist';
-            } else {
-
-                $data = $form->getData();
-                $userEntity->setUsername($email);
-
-
-                $encoder = $this->container->get('security.encoder_factory')->getEncoder($userEntity);
-
-                $encoded = $encoder->encodePassword($userEntity->getPassword(), $userEntity->getSalt());
-                $userEntity->setPassword($encoded);
-                $em = $this->get('doctrine.orm.entity_manager');
-                $em->persist($userEntity);
-                $em->flush();
-
-                return $this->redirectToRoute('indigo_ui_dashboard');
-            }
-        }
-
-
-        return  [
-            'form' => $form->createView(),
-            'error_message' => $message,
-        ];
-        */
+        $user->addRole($role);
     }
 
 }
