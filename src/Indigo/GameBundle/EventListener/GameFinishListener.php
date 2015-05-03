@@ -49,6 +49,17 @@ class GameFinishListener {
 
     /**
      * @param GameFinishEvent $event
+     */
+    public function onGameFinishTimeout(GameFinishEvent $event)
+    {
+        $gameEntity = $this->closeGame($event);
+        $this->em->persist($gameEntity);
+
+        $this->em->flush();
+    }
+
+    /**
+     * @param GameFinishEvent $event
      * @return \Indigo\GameBundle\Entity\Game
      */
     private function closeGame(GameFinishEvent $event)
@@ -57,7 +68,6 @@ class GameFinishListener {
         $gameEntity = $event->getGame();
         $gameEntity->setStatus(GameStatusRepository::STATUS_GAME_FINISHED);
         $gameEntity->setFinishedAt( new \DateTime());
-        //TODO: ar panaikina ?
         $gameEntity->getTableStatus()->setGame(null);
         return $gameEntity;
     }

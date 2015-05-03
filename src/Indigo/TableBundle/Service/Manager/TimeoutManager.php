@@ -48,7 +48,7 @@ class TimeoutManager
                     $event = new GameFinishEvent();
                     $event->setGame($gameEntity);
                     $event->setTableStatus($tableStatusEntity);
-                    $this->ed->dispatch(GameEvents::GAME_FINISH_ON_SCORE, $event);
+                    $this->ed->dispatch(GameEvents::GAME_FINISH_TIMEOUT, $event);
                 }
             }
         }

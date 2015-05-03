@@ -8,6 +8,7 @@ services:
       tags:
           - { name: kernel.event_listener, event: indigo_game.finish_on_double_swipe, method: onGameFinishDoubleSwipe }
           - { name: kernel.event_listener, event: indigo_game.finish_on_score, method: onGameFinishMaxScoreReached }
+          - { name: kernel.event_listener, event: indigo_game.finish_on_timeout, method: onGameFinishTimeout }
 #          - { name: kernel.event_listener, event: indigo_game.calculate_ratings, method: onRatingsCalculate }
 #   indigo_game.example:
 #        class: Indigo\GameBundle\Example
