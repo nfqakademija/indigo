@@ -34,7 +34,7 @@ security:
 
         login:
             context: login
-            pattern: ^/(live|login|signin|register.*|remind_password|password_recovery/.*)$
+            pattern: ^/(live|live/.*|login|signin|register.*|remind_password|password_recovery/.*)$
             anonymous: ~
 
         secured_area:
