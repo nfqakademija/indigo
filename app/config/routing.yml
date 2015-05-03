@@ -16,3 +16,7 @@ indigo_contest:
     resource: "@IndigoContestBundle/Controller/"
     type:     annotation
     prefix:   /
+
+indigo_game:
+    resource: "@IndigoGameBundle/Resources/config/routing.yml"
+    prefix:   /
