@@ -123,17 +123,14 @@ class AuthController extends Controller
             if ($form->isValid()) {
 
                 $this->get('indigo_user.registration.service')->register($userEntity);
-
-            } else {
-                return [
-                    'form' => $form->createView(),
-                    'error_message' => (isset($result['error_message']) ? $result['error_message'] : ''),
-                ];
+                return $this->redirectToRoute('indigo_ui_dashboard');
             }
-
         }
 
-        return $this->redirectToRoute('indigo_ui_dashboard');
+        return [
+            'form' => $form->createView(),
+            'error_message' => (isset($result['error_message']) ? $result['error_message'] : ''),
+        ];
     }
 
     /**
@@ -142,7 +139,6 @@ class AuthController extends Controller
      */
     public function remindPasswordAction(Request $request)
     {
-
         $form= $this->createForm(new RemindPasswordType(), new User ());
         $form->handleRequest($request);
         // TODO: kodel nevalid?
