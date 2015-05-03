@@ -1,69 +1,488 @@
-/*
-Error: Invalid CSS after "  bottom: -": expected expression (e.g. 1px, bold), was ";"
-        on line 67 of main.scss
+/* Icns URL's */
+/* Colors */
+/* Font size */
+/* Mixins */
+body {
+  min-height: 100%;
+  height: 100%;
+  font-family: Candara;
+  color: white;
+  background: #b2b2b2;
+  /* Old browsers */
+  background: -moz-radial-gradient(center, ellipse cover, #b2b2b2 0%, #474747 39%, #131313 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, #b2b2b2), color-stop(39%, #474747), color-stop(100%, #131313));
+  /* Chrome,Safari4+ */
+  background: -webkit-radial-gradient(center, ellipse cover, #b2b2b2 0%, #474747 39%, #131313 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-radial-gradient(center, ellipse cover, #b2b2b2 0%, #474747 39%, #131313 100%);
+  /* Opera 12+ */
+  background: -ms-radial-gradient(center, ellipse cover, #b2b2b2 0%, #474747 39%, #131313 100%);
+  /* IE10+ */
+  background: radial-gradient(ellipse at center, #b2b2b2 0%, #474747 39%, #131313 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b2b2b2', endColorstr='#131313',GradientType=1 ); }
 
-62:   background-color: rgba(0,0,0,0.4);
-63:   font-family: Impact;
-64:   font-size: 5em;
-65:   @include border-radius(2px);
-66: 
-67:   bottom: -;
-68: }
-69: 
-70: .status-message
-71: {
-72:   width: 100%;
+.dashboard {
+  position: relative;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(26, 26, 28, 0.9);
+  background-image: url("../images/tile.gif");
+  background-repeat: repeat; }
 
-Backtrace:
-main.scss:67
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:1165:in `expected'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/script/lexer.rb:221:in `expected!'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/script/parser.rb:573:in `assert_expr'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/script/parser.rb:250:in `unary_minus'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/script/parser.rb:246:in `unary_plus'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/script/parser.rb:227:in `times_div_or_mod'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/script/parser.rb:227:in `plus_or_minus'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/script/parser.rb:227:in `relational'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/script/parser.rb:227:in `eq_or_neq'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/script/parser.rb:227:in `and_expr'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/script/parser.rb:227:in `or_expr'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/script/parser.rb:361:in `space'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/script/parser.rb:345:in `interpolation'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/script/parser.rb:293:in `expr'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/script/parser.rb:571:in `assert_expr'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/script/parser.rb:62:in `parse'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:1027:in `sass_script'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:880:in `value!'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:753:in `block in try_declaration'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:1141:in `call'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:1141:in `rethrow'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:766:in `try_declaration'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:696:in `declaration_or_ruleset'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:661:in `block_child'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:653:in `block_contents'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:642:in `block'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:635:in `ruleset'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:660:in `block_child'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:653:in `block_contents'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:117:in `stylesheet'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:42:in `parse'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/engine.rb:393:in `_to_tree'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/engine.rb:368:in `_render_with_sourcemap'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/engine.rb:285:in `render_with_sourcemap'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/plugin/compiler.rb:490:in `update_stylesheet'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/plugin/compiler.rb:209:in `each'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/plugin.rb:82:in `update_stylesheets'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/exec/sass_scss.rb:361:in `watch_or_update'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/exec/sass_scss.rb:51:in `process_result'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/exec/base.rb:52:in `parse'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/lib/sass/exec/base.rb:19:in `parse!'
-C:/Ruby22/lib/ruby/gems/2.2.0/gems/sass-3.4.13/bin/scss:13:in `<top (required)>'
-C:/Ruby22/bin/scss:23:in `load'
-C:/Ruby22/bin/scss:23:in `<main>'
-*/
-body:before {
-  white-space: pre;
-  font-family: monospace;
-  content: "Error: Invalid CSS after \"  bottom: -\": expected expression (e.g. 1px, bold), was \";\"\A         on line 67 of main.scss\A \A 62:   background-color: rgba(0,0,0,0.4);\A 63:   font-family: Impact;\A 64:   font-size: 5em;\A 65:   @include border-radius(2px);\A 66: \A 67:   bottom: -;\A 68: }\A 69: \A 70: .status-message\A 71: {\A 72:   width: 100%;"; }
+.title {
+  padding-bottom: 30px; }
+
+/* Field style */
+.field {
+  position: relative; }
+
+.table-status {
+  display: inline-block;
+  min-width: 204px;
+  width: 30%;
+  padding: 2px 2px;
+  margin: 2px 0;
+  color: #dbdbdb;
+  font-size: 2.5em;
+  line-height: 40px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px; }
+
+.busy {
+  color: #fa4c4e; }
+
+.score {
+  position: relative;
+  display: inline-block;
+  min-width: 100px;
+  width: 12%;
+  background-color: rgba(0, 0, 0, 0.4);
+  font-family: Impact;
+  font-size: 5em;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  bottom: -40px; }
+
+.status-message {
+  width: 100%;
+  font-size: 4em;
+  color: white;
+  text-align: center; }
+
+.field {
+  position: relative; }
+  .field .player {
+    width: 120px;
+    height: 155px;
+    background-image: url("../images/player_bg.png");
+    background-size: cover;
+    -moz-background-size: cover;
+    background-position: bottom;
+    color: white; }
+
+.player p {
+  top: -20px;
+  width: 100%;
+  position: absolute;
+  text-align: center;
+  color: #dbdbdb; }
+
+.player img {
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+  background: url("../images/empty-thumbnail.png") no-repeat center;
+  border: solid white 4px;
+  box-shadow: 0 0 2px #000000; }
+.player .bg {
+  width: 100%;
+  height: auto; }
+
+.left-top {
+  position: absolute;
+  top: -15%;
+  left: 25%; }
+
+.left-bottom {
+  position: absolute;
+  bottom: 35%;
+  left: 35%; }
+
+.right-top {
+  position: absolute;
+  top: -15%;
+  right: 25%; }
+
+.right-bottom {
+  position: absolute;
+  bottom: 35%;
+  right: 35%; }
+
+.top-space {
+  margin-top: 5%; }
+
+.time-text {
+  font-size: xx-large; }
+
+@media screen and (max-width: 400px) {
+  .left-top {
+    position: absolute;
+    top: -30%;
+    left: 15%; }
+
+  .left-bottom {
+    position: absolute;
+    bottom: 40%;
+    left: 30%; }
+
+  .right-top {
+    position: absolute;
+    top: -30%;
+    right: 15%; }
+
+  .right-bottom {
+    position: absolute;
+    bottom: 40%;
+    right: 30%; }
+
+  .time-text {
+    font-size: large; } }
+@media screen and (max-width: 600px) {
+  .field .bg {
+    max-width: 400px;
+    margin: 0 auto; }
+  .field .player {
+    width: 60px;
+    height: 75px; }
+
+  .table-status {
+    font-size: 2em; }
+
+  .time-text {
+    font-size: large; } }
+@media screen and (min-width: 601px) and (max-width: 799px) {
+  .field .bg {
+    max-width: 600px;
+    margin: 0 auto; }
+  .field .player {
+    width: 80px;
+    height: 100px; }
+
+  .table-status {
+    font-size: 2em; }
+
+  .status-message {
+    font-size: 2.5em; } }
+@media screen and (min-width: 800px) {
+  .field .bg {
+    max-width: 800px;
+    margin: 0 auto; } }
+@media screen and (min-width: 1401px) {
+  .field .bg {
+    max-width: 1200px;
+    margin: 0 auto; }
+
+  .left-top {
+    position: absolute;
+    top: 0%;
+    left: 25%; }
+
+  .left-bottom {
+    position: absolute;
+    bottom: 40%;
+    left: 35%; }
+
+  .right-top {
+    position: absolute;
+    top: 0;
+    right: 25%; }
+
+  .right-bottom {
+    position: absolute;
+    bottom: 40%;
+    right: 35%; } }
+.content {
+  text-align: center; }
+
+.reservation-item {
+  vertical-align: top;
+  display: inline-block;
+  width: 180px;
+  min-height: 150px;
+  background-color: rgba(0, 0, 0, 0.2);
+  margin: 5px; }
+  .reservation-item img {
+    display: block;
+    width: 50px;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%; }
+  .reservation-item .res-title {
+    font-size: 1.4em;
+    margin: 10px auto; }
+  .reservation-item .res-time {
+    font-size: 1.8em;
+    margin: 10px auto; }
+  .reservation-item .res-button {
+    width: 80%;
+    height: 40px;
+    margin: 10px auto;
+    font-size: 1.4em;
+    background-color: transparent;
+    border: solid 1px #dbdbdb; }
+    .reservation-item .res-button:hover {
+      background-color: rgba(255, 255, 255, 0.1); }
+
+.booked {
+  background-color: rgba(96, 31, 30, 0.8); }
+
+.center {
+  text-align: center; }
+
+/* Dashboard view style */
+.nav {
+  height: 100px; }
+
+/* Image styles  */
+.icon-xs {
+  width: 40px;
+  height: 40px; }
+
+/* Image styles  */
+.icon-sm {
+  width: 60px;
+  height: 60px; }
+
+.icon-md {
+  width: 80px;
+  height: 80px; }
+
+.icon-lg {
+  width: 100px;
+  height: 100px; }
+
+.icon-xl {
+  width: 140px;
+  height: 140px; }
+
+.icon-narrow:first-of-type {
+  margin-right: -5px; }
+
+.icon-narrow:last-of-type {
+  margin-left: -5px; }
+
+.border-thin {
+  border: solid 1px !important;
+  border-bottom: white; }
+
+.border-wide {
+  border: solid 3px !important;
+  border-bottom: white; }
+
+/* bg colors */
+.bg-gold {
+  background-color: #cfb53b; }
+
+.bg-silver {
+  background-color: #c0c0c0; }
+
+.bg-bronze {
+  background-color: #cd7f32; }
+
+.bg-busy {
+  background-color: #d54237; }
+
+.bg-free {
+  background-color: #6eb133; }
+
+.bg-green-sl {
+  background-color: #92b600; }
+
+.bg-green-l {
+  background-color: #6f8f00; }
+
+.bg-green-m {
+  background-color: #617d00; }
+
+.bg-green-d {
+  background-color: #4a6100; }
+
+.bg-orange-l {
+  background-color: #f16c00; }
+
+.bg-orange-m {
+  background-color: #d76100; }
+
+.bg-orange-d {
+  background-color: #b35100; }
+
+.bg-red-l {
+  background-color: #fa4c4e; }
+
+.bg-red-m {
+  background-color: #cc4042; }
+
+.bg-red-d {
+  background-color: #b73c3e; }
+
+.bg-blue-l {
+  background-color: #007ea2; }
+
+.bg-blue-m {
+  background-color: #006b8a; }
+
+.bg-blue-d {
+  background-color: #005067; }
+
+.font-blue-l {
+  color: #007ea2; }
+
+.font-green-l {
+  color: #92b600; }
+
+.font-orange-l {
+  color: #f16c00; }
+
+.bg-color-reserved {
+  background-color: rgba(114, 0, 10, 0.4); }
+
+.bg-color-not-reserved {
+  background-color: rgba(44, 44, 47, 0.4); }
+
+.b-color-selected {
+  border-color: rgba(255, 252, 249, 0.4) !important; }
+
+a {
+  color: #ffffff; }
+
+a:hover {
+  color: #ffffff; }
+
+.medal {
+  position: absolute !important;
+  top: 0;
+  right: 5px;
+  width: 40px;
+  height: 80px;
+  z-index: 1000; }
+
+.gold-medal-icon {
+  background-image: url("../images/gold-medal.png");
+  background-repeat: no-repeat;
+  background-size: contain; }
+
+.silver-medal-icon {
+  background-image: url("../images/silver-medal.png");
+  background-repeat: no-repeat;
+  background-size: contain; }
+
+.bronze-medal-icon {
+  background-image: url("../images/bronze-medal.png");
+  background-repeat: no-repeat;
+  background-size: contain; }
+
+/*  */
+.stat-panel {
+  background: transparent !important;
+  margin-bottom: 4px !important; }
+
+.contest-block {
+  height: 300px;
+  background-position: bottom;
+  background-size: cover; }
+
+.info-box {
+  float: right;
+  width: 50%;
+  height: 94%;
+  min-height: 94%;
+  margin: 1%;
+  padding: 2%;
+  background-color: rgba(0, 0, 0, 0.31);
+  text-align: center;
+  font-family: Candara;
+  color: white; }
+
+.info-box button,
+.info-box label {
+  width: 50%;
+  min-width: 100px;
+  height: 50px;
+  line-height: 50px;
+  font-size: 1.4em;
+  margin-top: 15%;
+  background-color: #6f8f00;
+  border: none; }
+
+.info-box label {
+  font-weight: normal; }
+
+.info-box button:hover {
+  background-color: #4a6100; }
+
+@media screen and (max-width: 600px) {
+  .info-box {
+    width: 98%; } }
+.statistic-image {
+  position: relative;
+  top: 25%;
+  width: 40%;
+  max-width: 100px;
+  border: solid 3px white; }
+
+.row .no-gutter {
+  margin: 10px 0; }
+  .row .no-gutter [class*='col-']:not(:first-child),
+  .row .no-gutter [class*='col-']:not(:last-child) {
+    padding-right: 4px;
+    padding-left: 4px; }
+
+/* override */
+.col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+  position: relative;
+  min-height: 1px;
+  padding-left: 2px;
+  padding-right: 2px; }
+
+.row {
+  margin-left: -2px;
+  margin-right: -2px; }
+
+/* Notifications */
+#not-wrapper {
+  display: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 100;
+  text-align: center; }
+
+#not-goal-msg,
+#not-end-msg {
+  display: none;
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  margin: auto;
+  font-size: 1000%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0; }
+
+#not-end-msg {
+  font-size: 500%; }
+
+.btn-contest-select {
+  background-color: rgba(19, 19, 19, 0.62); }
+
+/*# sourceMappingURL=main.css.map */

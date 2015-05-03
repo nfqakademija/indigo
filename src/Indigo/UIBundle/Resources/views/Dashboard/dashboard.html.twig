@@ -21,23 +21,45 @@
 
     <div class="container-fluid">
 
-        <div class="row padding-sm-vr">
+        <div class="row padding-sm valign-middle">
 
-            <div class="col-sm-8 col-md-8 col-lg-6 col-sm-offset-2  col-md-offset-2  col-lg-offset-3" >
+            <div class=" col-sm-6 col-md-4 col-lg-4 col-sm-offset-2 col-md-offset-2 col-lg-offset-3">
+                <img src="{{ asset('bundles/indigoui/images/bilas.png') }}" class="img-circle icon-sm border-wide icon-narrow">
 
-                <div class="btn-group btn-group-lg">
-                    <button type="button" class="btn btn-primary">Open league</button>
+                <div class="btn-group btn-group-lg" style="left: 10px;">
+                    <button type="button" class="btn btn-contest-select">Open league</button>
                     <div class="btn-group">
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Dropdown&nbsp;<i class="fa fa-caret-down"></i></button>
+                        <button type="button" class="btn btn-contest-select dropdown-toggle" data-toggle="dropdown">Dropdown&nbsp;<i class="fa fa-caret-down"></i></button>
                         <ul class="dropdown-menu">
                             <li><a href="#">NFQ contest</a></li>
                             <li><a href="#">Speed contest</a></li>
                             <li><a href="#">Speed contest</a></li>
-
                         </ul>
                     </div>
                 </div>
 
+            </div>
+
+
+            <div class="col-sm-2 col-md-3 col-lg-1 col-lg-offset-1" style="text-align: center">
+
+                <a href="{{ path('indigo_ui_live', {'id' : 0}) }}">
+                    <div class="counter-separated counter-lg">
+                        <span> {{ teamAScore }} </span>
+                        <span> {{ teamBScore }}</span>
+                    </div>
+                    </br>
+                    <span class="text-bg">
+
+                    {% if isTableBusy %}
+                       <span class="text-sm"> Table is occupied </span>
+                    {% else %}
+                        <span class="text-sm"> Table is available </span>
+                    {% endif %}
+
+
+                    </span>
+                </a>
             </div>
 
         </div>
@@ -70,9 +92,6 @@
                                 </div>
                             </div>
                         {% endif %}
-
-
-
 
                         <div class="stat-panel" style="height: 211px;">
                             <div class="stat-row">
@@ -189,29 +208,13 @@
 
                     <div class="col-md-6 col-xs-12 col-sm-12" style="text-align: center">
 
-                        <a href="{{ path('indigo_ui_live', {'id' : 0}) }}">
-                        <div class="stat-panel" style="height: 80px;">
-                            <div class="stat-cell {% if isTableBusy %}bg-red-m {% else %} bg-green-sl {% endif %} valign-middle">
 
-                                <div class="counter-separated counter-lg">
-                                    <span> {{ teamAScore }} </span>
-                                    <span> {{ teamBScore }}</span>
-                                </div>
-                                </br>
-                                <span class="text-bg">
-
-                                    {% if isTableBusy %}
-                                        Table is occupied
-                                    {% else %}
-                                        Table is available
-                                    {% endif %}
-
-
-                                </span>
-                            </div>
-                        </div>
-
-                            </a>
+                        {#<div class="stat-panel" style="height: 90px;">#}
+                            {#<div class="stat-cell bg-green-sl valign-middle">#}
+                                {#<span class="text-lg"> {{ nextReservation.dateStart}} </span></br>#}
+                                {#<span class="text-center-md"> Next reserved table </span>#}
+                            {#</div>#}
+                        {#</div>#}
 
 
                         <div class="stat-panel" style="height: 145px;">

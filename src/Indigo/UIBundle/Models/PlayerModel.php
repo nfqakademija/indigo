@@ -70,7 +70,7 @@ class PlayerModel implements \JsonSerializable{
         }
         else
         {
-            $this->imageUrl = "/bundles/indigoui/images/anonymous.png";
+            $this->imageUrl = "/bundles/indigoui/images/empty.png";
         }
     }
 

@@ -42,6 +42,12 @@ body {
   padding-bottom: 30px;
 }
 
+/* Field style */
+/* line 31, ../../../sass/main.scss */
+.field {
+  position: relative;
+}
+
 /* line 36, ../../../sass/main.scss */
 .table-status {
   display: inline-block;
@@ -64,15 +70,17 @@ body {
 
 /* line 56, ../../../sass/main.scss */
 .score {
+  position: relative;
   display: inline-block;
   min-width: 100px;
-  width: 10%;
+  width: 12%;
   background-color: rgba(0, 0, 0, 0.4);
   font-family: Impact;
   font-size: 5em;
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
   border-radius: 2px;
+  bottom: -40px;
 }
 
 /* line 70, ../../../sass/main.scss */
@@ -86,7 +94,6 @@ body {
 /* line 78, ../../../sass/main.scss */
 .field {
   position: relative;
-  top:-40px;
 }
 /* line 80, ../../../sass/main.scss */
 .field .player {
@@ -683,4 +690,9 @@ a:hover {
 /* line 653, ../../../sass/main.scss */
 #not-end-msg {
   font-size: 500%;
+}
+
+/* line 658, ../../../sass/main.scss */
+.btn-contest-select {
+  background-color: rgba(19, 19, 19, 0.62);
 }
