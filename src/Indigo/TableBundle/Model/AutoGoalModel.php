@@ -1,11 +1,7 @@
 <?php
 
-namespace Indigo\ApiBundle\Model;
+namespace Indigo\TableBundle\Model;
 
-/*
-        {"id":"96512","timeSec":"1425543551","usec":"169652","type":"AutoGoal",
-            "data":"{\u0022team\u0022:1}"},
-*/
 class AutoGoalModel extends TableActionModel implements TableActionInterface
 {
     /**

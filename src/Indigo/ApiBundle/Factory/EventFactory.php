@@ -3,9 +3,9 @@
 
 namespace Indigo\ApiBundle\Factory;
 
-use Indigo\ApiBundle\Model\AutoGoalModel;
-use Indigo\ApiBundle\Model\CardSwipeModel;
-use Indigo\ApiBundle\Model\TableShakeModel;
+use Indigo\TableBundle\Model\AutoGoalModel;
+use Indigo\TableBundle\Model\CardSwipeModel;
+use Indigo\TableBundle\Model\TableShakeModel;
 
 class EventFactory
 {

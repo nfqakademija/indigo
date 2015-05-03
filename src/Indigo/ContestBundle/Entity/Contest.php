@@ -1,13 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Tadas
- * Date: 2015-03-23
- * Time: 16:41
- */
 
 namespace Indigo\ContestBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Indigo\UserBundle\Entity\User;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -57,14 +52,14 @@ class Contest
     protected $pathForImage;
 
     /**
-     * @Assert\File(maxSize="1M", mimeTypes={"image/jpg", "image/jpeg", "image/gif", "image/png"})
+     * @Assert\File(maxSize="3M", mimeTypes={"image/jpg", "image/jpeg", "image/gif", "image/png"})
      * @Assert\Image(
      *  minWidth = 100,
-     *  maxWidth = 500,
+     *  maxWidth = 1024,
      *  minHeight = 100,
-     *  maxHeight = 500,
-     *  allowLandscape = false,
-     *  allowPortrait = false,
+     *  maxHeight = 1024,
+     *  allowLandscape = true,
+     *  allowPortrait = true,
      *  allowSquare = true)
      */
 
@@ -143,12 +138,30 @@ class Contest
     private $prize;
 
     /**
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="Indigo\GameBundle\Entity\Game", mappedBy="contest")
+     * @ORM\JoinColumn(referencedColumnName="id")
+     */
+    private $games;
+
+
+    /**
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="Indigo\GameBundle\Entity\GameTime", mappedBy="contest")
+     * @ORM\JoinColumn(referencedColumnName="id")
+     */
+    private $gameTimes;
+
+    /**
+     * @param \Datetime $contest_creation_date
      * set value to param $contestCreationDate
      * set value to param $contestType
      */
     public function __construct()
     {
         $this->contestCreationDate = new \DateTime();
+        $this->games = new ArrayCollection();
+        $this->gameTimes = new ArrayCollection();
         $this->contestType = true;
         $this->contestStartingDate = new \DateTime();
         $this->contestEndDate = new \DateTime('+1 days');
@@ -422,6 +435,39 @@ class Contest
     }
 
     /**
+     * @return ArrayCollection
+     */
+    public function getGames()
+    {
+        return $this->games;
+    }
+
+    /**
+     * @param ArrayCollection $games
+     */
+    public function setGames($games)
+    {
+        $this->games = $games;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getGameTimes()
+    {
+        return $this->gameTimes;
+    }
+
+    /**
+     * @param ArrayCollection $gameTimes
+     */
+    public function setGameTimes($gameTimes)
+    {
+        $this->gameTimes = $gameTimes;
+    }
+
+    /**
+     * hash contest prise images names
      * function upload contest image
      */
     public function uploadPrizeImage()
@@ -446,17 +492,23 @@ class Contest
     /**
      * @return string
      */
-    public function getPrize()
-    {
-        return $this->prize;
-    }
-
-    /**
-     * @param string $prize
-     */
-    public function setPrize($prize)
-    {
-        $this->prize = $prize;
-    }
+//    public function uploadPriseImages()
+//    {
+//        if (null === $this->getPriseImages()) {
+//            return;
+//        }
+//
+//        $this->changePriseImagesNames();
+//
+//        while (is_file($this->getAbsolutePath($this->pathForPriseImages)))
+//            $this->changePriseImagesNames();
+//
+//        $this->getPriseImages()->move(
+//            $this->getUploadRootDir(),
+//            $this->pathForPriseImages
+//        );
+//
+//        $this->image = null;
+//    }
 
 }

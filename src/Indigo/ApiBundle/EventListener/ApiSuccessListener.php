@@ -2,16 +2,16 @@
 
 namespace Indigo\ApiBundle\EventListener;
 
-use Indigo\GameBundle\Entity\Game;
-use Symfony\Bridge\Doctrine;
 use Doctrine\ORM\EntityManager;
 use Indigo\ApiBundle\Event\ApiEvent;
-use Indigo\ApiBundle\Entity\Param;
-use Indigo\ApiBundle\Service\Manager\ApiManager;
 use Indigo\GameBundle\Entity\TableStatus;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Symfony\Bridge\Doctrine;
 
-class ApiSuccessListener
+class ApiSuccessListener implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
 
     /**
      * @var EntityManager
@@ -51,10 +51,10 @@ class ApiSuccessListener
             $tableStatusEntity->setLastApiRecordId($lastTableEvent->getId());
             $this->em->persist($tableStatusEntity);
             $this->em->flush();
-            printf("last API event id:%u\n", $lastTableEvent->getId());
+            $this->logger && $this->logger->debug('EVENT DUMP SUCCESSFUL', ['last_event_id' => $lastTableEvent->getId()]);
         } else {
-            //TODO: jei 0 eventu - we have most fresh info ?
 
+            $this->logger && $this->logger->warning('no events!', ['events' => $event->getData()]);
         }
     }
 }

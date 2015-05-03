@@ -1,6 +1,6 @@
 <?php
 
-namespace Indigo\ApiBundle\Model;
+namespace Indigo\TableBundle\Model;
 
 interface TableActionInterface {
 

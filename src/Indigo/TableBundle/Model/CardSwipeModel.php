@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Indigo\ApiBundle\Model;
+namespace Indigo\TableBundle\Model;
 
 
 class CardSwipeModel extends TableActionModel implements TableActionInterface

@@ -25,7 +25,7 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", unique=true)
+     * @ORM\Column(name="id", type="integer",  options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -34,7 +34,7 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
     /**
      * @var integer
      *
-     * @ORM\Column(name="active", options={"default" : 1})
+     * @ORM\Column(name="active", type="smallint", options={"default" : 1})
      */
     private $isActive;
 
@@ -74,7 +74,7 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
 
     /**
      * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
-     * @ORM\JoinTable(name="user_role")
+     * @ORM\JoinTable(name="user_role",)
      */
     private $roles;
 
@@ -98,7 +98,7 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
     private $registrationDate;
 
     /**
-     * @ORM\Column(name="card_id")
+     * @ORM\Column(name="card_id", type="integer", nullable=true, options={"unsigned":true})
      */
     private $cardId;
 
@@ -107,6 +107,20 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
      * @ORM\OneToMany(targetEntity="Indigo\GameBundle\Entity\PlayerTeamRelation", mappedBy="player", cascade={"persist"})
      */
     private $teams;
+
+
+
+
+
+    public function __construct()
+    {
+        $this->isActive = 1;
+        $this->isLocked = 0;
+        $this->salt = md5(uniqid(null, true));
+        $this->roles = new ArrayCollection();
+        $this->teams = new ArrayCollection();
+        $this->registrationDate = new \DateTime('now');
+    }
 
     public function __toString()
     {
@@ -151,16 +165,6 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
     public function setCardId($cardId)
     {
         $this->cardId = $cardId;
-    }
-
-    public function __construct()
-    {
-        $this->isActive = true;
-        $this->isLocked = false;
-        $this->salt = md5(uniqid(null, true));
-        $this->roles = new ArrayCollection();
-        $this->registrationDate = new \DateTime('now');
-        $this->teams = new ArrayCollection();
     }
 
 

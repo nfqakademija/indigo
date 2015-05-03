@@ -6,8 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Indigo\ApiBundle\Service\Manager\ApiManager;
-use Indigo\GameBundle\Entity\Game;
+
 class EventCaptureCommand extends ContainerAwareCommand
 {
 
@@ -32,20 +31,11 @@ class EventCaptureCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
-/*
-
-        $gameCalculator = $this->getContainer()->get(GameEvents::'indigo_game.rating_calculator');
-        $game = new Game();
-        $gameCalculator->setGame($game);
-        var_dump($gameCalculator);
-
-        die;
-*/
+        $tableKey = 1;
         $query = ['rows' => $input->getArgument('rows')];
         if ($input->getArgument('from-id') == 'last') {
 
-            $tableKey = 1;
+
             $em = $this->getContainer()->get('doctrine.orm.entity_manager');
             $er = $em->getRepository('IndigoGameBundle:TableStatus');
             $tableStatus = $er->findOneByTableId($tableKey);
@@ -78,20 +68,30 @@ class EventCaptureCommand extends ContainerAwareCommand
                 $query,
                 false
             );
-            //var_dump($eventList);
             if ($eventList) {
 
-                $eventLogicManager = $this->getContainer()->get('indigo_table.event_flow_logic_manager');
+                $eventLogicManager = $this->getContainer()->get('indigo_table.logic_manager');
                 $eventLogicManager->analyzeEventFlow($eventList);
             } else {
 
                 $logger->addInfo('No events from API');
             }
+
+
         } catch (\Exception $e) {
 
             $logger->addError(sprintf('Failed API response: %s, in: %s:%u ', $e->getMessage(),$e->getFile(), $e->getLine()));
             exit(1);
         }
 
+        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $tables = $em->getRepository('IndigoGameBundle:TableStatus')->findAll();
+
+        if ($tables !== null) {
+
+            $timeoutManager = $this->getContainer()->get('indigo_table.timeout_manager');
+            $timeoutManager->setTables($tables);
+            $timeoutManager->check();
+        }
     }
 }

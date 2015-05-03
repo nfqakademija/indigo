@@ -14,6 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\SecurityContext;
 
 
@@ -35,7 +36,8 @@ class AuthController extends Controller
     public function loginAction(Request $request)
     {
         if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
-           return $this->redirectToRoute('user_dashboard');
+
+           return $this->redirectToRoute('indigo_ui_dashboard');
         }
 
         $request = $this->container->get('request_stack')->getCurrentRequest();
@@ -43,31 +45,41 @@ class AuthController extends Controller
 
         // get the login error if there is one
         if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
+
             $error = $request->attributes->get(
                 SecurityContext::AUTHENTICATION_ERROR
             );
+            //$error = 'user.error.bad_credentials';
         } else {
+
             $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
+
+            if ($error) {
+
+                $error = 'user.error.bad_credentials';
+            }
             $session->remove(SecurityContext::AUTHENTICATION_ERROR);
         }
 
         $formLoginType = new LoginType();
-        $formRemindPasswordType = new RemindPasswordType();
+
 
         $formFactory = $this->get('form.factory');
 
         $formBuilder = $formFactory->createBuilder($formLoginType);
         $formBuilder->setMethod('POST');
-        $formBuilder->setAction($this->generateUrl('_security_check'));
+        $formBuilder->setAction($this->generateUrl('login_check'));
+
+
 
         $formLogin = $formBuilder->getForm();
 
+        $formRemindPasswordType = new RemindPasswordType();
         $formBuilder = $formFactory->createBuilder($formRemindPasswordType);
         $formBuilder->setMethod('POST');
         $formBuilder->setAction($this->generateUrl('remind_password_action'));
 
         $formRemindPassword = $formBuilder->getForm();
-
 
         return [
             'form_login' => $formLogin->createView(),
@@ -78,7 +90,7 @@ class AuthController extends Controller
     }
 
     /**
-     * @Route("/login_check", name="_security_check")
+     * @Route("/login_check", name="login_check")
      */
     public function securityCheckAction()
     {
@@ -140,6 +152,7 @@ class AuthController extends Controller
      */
     public function logoutAction()
     {
+
         $this->container->get('request_stack')->getCurrentRequest()->getSession()->clear();
         return $this->redirectToRoute('user_signin');
     }
@@ -148,45 +161,55 @@ class AuthController extends Controller
       * @Route("/register", name="register_action")
       * @Template("IndigoUserBundle:Auth:register.html.twig")
       */
-    public function registerAction(Request $request) {
-
-        $message = '';
-        $userEntity = new User();
-        $formType = new RegisterType();
+    public function registerAction(Request $request)
+    {
         $formFactory = $this->get('form.factory');
-        $formBuilder = $formFactory->createBuilder($formType, $userEntity);
+        $formBuilder = $formFactory->createBuilder(new RegisterType(), new User());
         $form = $formBuilder->getForm();
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-           $email =  $form->get('email')->getData();
-           $data = $this->get('indigo_user.repository')->findOneByEmail($email);
 
-           if ($data) { // toks useris jau egzistuoja
-               $message = 'user.error.user-exist';
-           } else {
+        $registrationService = $this->get('indigo_user.registration.service');
+        $result = $registrationService->register($form);
 
-               $data = $form->getData();
-               $userEntity->setUsername($email);
-
-
-               $encoder = $this->container->get('security.encoder_factory')->getEncoder($userEntity);
-
-               $encoded = $encoder->encodePassword($userEntity->getPassword(), $userEntity->getSalt());
-               $userEntity->setPassword($encoded);
-               $em = $this->get('doctrine.orm.entity_manager');
-               $em->persist($userEntity);
-               $em->flush();
-
-              return $this->redirectToRoute('user_dashboard');
-           }
+        if ($result['status'] == 0) {
+            return  [
+                'form' => $form->createView(),
+                'error_message' => (isset($result['error_message']) ? $result['error_message'] : ''),
+            ];
         }
 
+        return $this->redirectToRoute('indigo_ui_dashboard');
 
-        return  [
+
+        /*if ($form->isSubmitted() && $form->isValid()) {
+            $email =  $form->get('email')->getData();
+            $data = $this->get('indigo_user.repository')->findOneByEmail($email);
+
+            if ($data) { // toks useris jau egzistuoja
+                $message = 'user.error.user-exist';
+            } else {
+
+                $data = $form->getData();
+                $userEntity->setUsername($email);
+
+
+                $encoder = $this->container->get('security.encoder_factory')->getEncoder($userEntity);
+
+                $encoded = $encoder->encodePassword($userEntity->getPassword(), $userEntity->getSalt());
+                $userEntity->setPassword($encoded);
+                $em = $this->get('doctrine.orm.entity_manager');
+                $em->persist($userEntity);
+                $em->flush();
+
+                return $this->redirectToRoute('indigo_ui_dashboard');
+            }
+        }
+                return  [
             'form' => $form->createView(),
             'error_message' => $message,
         ];
+        */
     }
 
     /**

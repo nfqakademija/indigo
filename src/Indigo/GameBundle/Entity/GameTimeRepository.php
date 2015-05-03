@@ -17,15 +17,13 @@ class GameTimeRepository extends EntityRepository
     CONST GAMETIME_TOLERANCE = 18000;
     CONST TIME_INTERVAL = 15;//minutes
     CONST INTERVAL_FOR_NEXT_CLICK = 1;//minutes
+
     /**
      * @param \ArrayIterator $players
      * @return null
      */
     public function getEarliestReservation(\ArrayIterator $players)
     {
-
-        //$meta = $em->getClassMetadata(get_class($entity));
-        //$identifier = $meta->getSingleIdentifierFieldName();
         try {
             $playersIdArray = [];
             foreach ($players as $playerId) {
@@ -39,7 +37,8 @@ class GameTimeRepository extends EntityRepository
                 WHERE
                 gt.timeOwner IN ( :players )
                     AND gt.confirmed = '0'
-                    AND ABS( TIME_TO_SEC( TIMEDIFF(gt.startAt, CURRENT_TIMESTAMP())) ) <= :timeInSec
+                    AND (ABS( TIME_TO_SEC( TIMEDIFF(gt.startAt, CURRENT_TIMESTAMP())) ) <= :timeInSec
+                    OR (gt.startAt <= CURRENT_TIMESTAMP() AND gt.finishAt >= CURRENT_TIMESTAMP()))
                 ORDER BY gt.startAt ASC
                 ")
                 ->setParameters([
@@ -48,11 +47,10 @@ class GameTimeRepository extends EntityRepository
                 ]);
 
             $reservation = $qb->getSingleResult();
-        } catch (NoResultException $e) {
+        } catch (\Exception $e) {
 
             return  null;
         }
         return $reservation;
     }
-
 }

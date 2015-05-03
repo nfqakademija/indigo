@@ -45,4 +45,36 @@ class PlayerTeamRelationRepository extends EntityRepository
         }
         return $commonTeam['teamId'];
     }
+
+
+    /**
+     * @param User $player
+     * @return mixed|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getPlayerSingleTeam( User $player)
+    {
+        try {
+            $qb = $this->_em->createQueryBuilder();
+            $qb->select('pt2')
+                ->from('IndigoGameBundle:PlayerTeamRelation', 'pt1')
+                ->innerJoin('IndigoGameBundle:Team', 'pt2', 'WITH', 'pt2.id = pt1.team')
+                ->where('pt1.player = :player1')
+                ->andWhere('pt2.isSingle = :isSingle')
+                ->setParameters(
+                    [
+                        'player1' => $player->getId(),
+                        'isSingle' => 1
+                    ]
+                );
+
+            $playerTeam = $qb->getQuery()->getSingleResult();
+        } catch (NoResultException $e) {
+
+            return  null;
+        }
+        return $playerTeam;
+    }
+
+
 }

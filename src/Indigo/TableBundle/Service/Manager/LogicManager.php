@@ -1,17 +1,17 @@
 <?php
 
-namespace Indigo\ApiBundle\Service\Manager;
+namespace Indigo\TableBundle\Service\Manager;
 
 
-use Indigo\ApiBundle\Event\TableEvent;
+use Indigo\TableBundle\Event\TableEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class EventFlowLogicManager
+class LogicManager
 {
     /**
      * @var EventDispatcher
      */
-    private $ed;
+    private $em;
 
     public function __construct(EventDispatcherInterface $ed)
     {

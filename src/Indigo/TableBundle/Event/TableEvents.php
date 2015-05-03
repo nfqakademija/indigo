@@ -1,6 +1,6 @@
 <?php
 
-namespace Indigo\ApiBundle\Event;
+namespace Indigo\TableBundle\Event;
 
 final class TableEvents
 {

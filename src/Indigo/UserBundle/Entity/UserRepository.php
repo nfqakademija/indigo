@@ -3,7 +3,6 @@
 namespace Indigo\UserBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -40,6 +39,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         return $playerEntity;
     }*/
 
+
     public function loadUserByUsername($username)
     {
         $q = $this
@@ -55,7 +55,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             $user = $q->getSingleResult();
         } catch (NoResultException $e) {
             $message = sprintf(
-                'Unable to find an active admin AcmeUserBundle:User object identified by "%s".',
+                'Unable to find an active IndigoUserBundle:User object identified by "%s".',
                 $username
             );
             throw new UsernameNotFoundException($message, 0, $e);
@@ -84,45 +84,45 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         return $this->getEntityName() === $class
         || is_subclass_of($class, $this->getEntityName());
     }
-
-    /**
-     * @return array
-     */
-    public function getUser($email, $password)
-    {
-        $qb = $this->_em->createQueryBuilder();
-        //createQuery("SELECT `id` FROM IndigoUserBundle:User WHERE `email`=")
-        $qb
-            ->select('u.id')
-            ->from('IndigoUserBundle:User','u')
-            ->where("u.email= :email")
-            ->andWhere("u.password = :password")
-            ->setParameters([
-                    'email' => $email,
-                    'password' => md5($password)
-            ]);
-
-
-        $query = $qb->getQuery();
-
-        return $query->getArrayResult();
-    }
-
-
-    /**
-     * @return array
-     */
-    public function userExists($email)
-    {
-        $qb = $this->_em->createQueryBuilder();
-
-        $qb
-            ->select('u.id')
-            ->from('IndigoUserBundle:User','u')
-            ->where("u.email= :email")
-            ->setParameter('email', $email );
-        $query = $qb->getQuery();
-
-        return $query->getArrayResult();
-    }
+//
+//    /**
+//     * @return array
+//     */
+//    public function getUser($email, $password)
+//    {
+//        $qb = $this->_em->createQueryBuilder();
+//        //createQuery("SELECT `id` FROM IndigoUserBundle:User WHERE `email`=")
+//        $qb
+//            ->select('u.id')
+//            ->from('IndigoUserBundle:User','u')
+//            ->where("u.email= :email")
+//            ->andWhere("u.password = :password")
+//            ->setParameters([
+//                    'email' => $email,
+//                    'password' => md5($password)
+//            ]);
+//
+//
+//        $query = $qb->getQuery();
+//
+//        return $query->getArrayResult();
+//    }
+//
+//
+//    /**
+//     * @return array
+//     */
+//    public function userExists($email)
+//    {
+//        $qb = $this->_em->createQueryBuilder();
+//
+//        $qb
+//            ->select('u.id')
+//            ->from('IndigoUserBundle:User','u')
+//            ->where("u.email= :email")
+//            ->setParameter('email', $email );
+//        $query = $qb->getQuery();
+//
+//        return $query->getArrayResult();
+//    }
 }

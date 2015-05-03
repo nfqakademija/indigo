@@ -1,7 +1,6 @@
+parameters:
+        indigo_user.registration.service.class: Indigo\UserBundle\Service\Registration
 services:
-    #indigo_foo_service:
-        #class: Indigo\UserBundle\Services\FooService
-
     indigo_user.repository:
         class: Doctrine\ORM\EntityRepository
         factory_service: doctrine.orm.default_entity_manager
@@ -22,3 +21,8 @@ services:
         factory_method: getRepository
         arguments:
             - Indigo\UserBundle\Entity\ResetPassword
+
+
+    indigo_user.registration.service:
+            class: %indigo_user.registration.service.class%
+            arguments: ["@doctrine.orm.entity_manager", "@security.encoder_factory"]

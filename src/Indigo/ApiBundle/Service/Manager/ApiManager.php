@@ -1,23 +1,25 @@
 <?php
 namespace Indigo\ApiBundle\Service\Manager;
 
-use Indigo\ApiBundle\Model\TableShakeModel;
-use Indigo\ApiBundle\Repository\TableEventList;
+use Indigo\TableBundle\Model\TableShakeModel;
+use Indigo\TableBundle\Repository\TableEventList;
 use GuzzleHttp;
 use Indigo\ApiBundle\Event\ApiEvent;
 use Indigo\ApiBundle\Event\ApiEvents;
 use Indigo\ApiBundle\Factory\EventFactory;
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-
-class ApiManager
+class ApiManager implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     const LAST_RECORD_TS = 'api.last_record_ts';
     const LAST_RECORD_ID = 'api.last_record_id';
     const LAST_RECORDS_COUNT = 'api.last_record_count';
-
 
     /**
      * @var string
@@ -53,18 +55,6 @@ class ApiManager
     }
 
     /**
-     * @return GuzzleHttp\Client;
-     */
-    protected function getClient()
-    {
-        if (!$this->client) {
-            $this->client = new GuzzleHttp\Client();
-        }
-
-        return $this->client;
-    }
-
-    /**
      * @param $tableKey
      * @param array $query
      * @param bool $tryTestOnFailure
@@ -74,7 +64,7 @@ class ApiManager
     public function getEvents($tableKey, array $query, $tryTestOnFailure = false)
     {
 
-       /* if ($eventsJSON = $this->getDemoData()) {
+/*        if ($eventsJSON = $this->getDemoData()) {
 
             $eventList = $this->parseResponseData($eventsJSON);
             $eventList->setTableId(-1); // virtual table
@@ -92,7 +82,6 @@ class ApiManager
             ];
 
             $response = $this->getClient()->get($table['table_api_url'], $query);
-            //var_dump($response);
             if ($response->getStatusCode() == 200) {
 
                 if (stripos($response->getHeader('content-type'), 'json') !== false) {
@@ -107,7 +96,6 @@ class ApiManager
 
                         $successEvent = new ApiEvent();
                         $successEvent->setData($eventList);
-
                         $this->ed->dispatch(ApiEvents::API_SUCCESS_EVENT, $successEvent);
 
                         return $eventList;
@@ -131,6 +119,58 @@ class ApiManager
         }
 
         return false;
+    }
+
+    /**
+     * @param \stdClass $data
+     * @return TableEventList
+     */
+    public function parseResponseData(\stdClass $data)
+    {
+        $TableShakeModel = null;
+        $lastTableShakeIndex = -1;
+        $eventList = new TableEventList();
+        $i = 0;
+
+        foreach ($data->records as $d) {
+
+            if (strlen($d->data) > 2) {
+                $d->data = json_decode($d->data);
+            } else {
+                $d->data = new \stdClass();
+            }
+
+            $event = EventFactory::factory($d);
+            if ($event) {
+
+                $eventList->append($event);
+                $this->logger && $this->logger->debug('added events', ['event' => $event]);
+                if ($event instanceof TableShakeModel) {
+
+                    ($lastTableShakeIndex > -1)  && $eventList->offsetUnset($lastTableShakeIndex);
+                    $lastTableShakeIndex = $i;
+                }
+            } else {
+
+                $this->logger && $this->logger->warning('unknown event', ['data' => $d]);
+            }
+
+            $i++;
+        }
+
+        return $eventList;
+    }
+
+    /**
+     * @return GuzzleHttp\Client;
+     */
+    protected function getClient()
+    {
+        if (!$this->client) {
+            $this->client = new GuzzleHttp\Client();
+        }
+
+        return $this->client;
     }
 
     /**
@@ -181,77 +221,34 @@ class ApiManager
         return ($a->getTimeWithUsec() > $b->getTimeWithUsec()) ? 1 : -1;
     }
 
-    /**
-     * @param \stdClass $data
-     * @return TableEventList
-     */
-    private function parseResponseData(\stdClass $data)
-    {
-        $TableShakeModel = null;
-        $lastTableShakeIndex = -1;
-        $eventList = new TableEventList();
-        $i = 0;
 
-        foreach ($data->records as $d) {
-
-            if (strlen($d->data) > 2) {
-                $d->data = json_decode($d->data);
-            } else {
-                $d->data = new \stdClass();
-            }
-
-            $event = EventFactory::factory($d);
-            $eventList->append($event);
-
-            if ($event instanceof TableShakeModel) {
-
-                if ($lastTableShakeIndex > -1) {
-
-                    $eventList->offsetUnset($lastTableShakeIndex);
-                }
-                $lastTableShakeIndex = $i;
-            }
-            $i++;
-        }
-
-        return $eventList;
-    }
 
     /**
      * @return string
      */
     private function getDemoData() {
       return  json_decode('{"status":"ok","records":[
-       {"id":"96010","timeSec":"1425520550","usec":"485733","type":"CardSwipe","data":"{\u0022team\u0022:0,\u0022player\u0022:1,\u0022card_id\u0022:8461951}"},
-        {"id":"96011","timeSec":"1425520551","usec":"485733","type":"CardSwipe","data":"{\u0022team\u0022:0,\u0022player\u0022:1,\u0022card_id\u0022:8461951}"},
-      {"id":"96015","timeSec":"1425520560","usec":"485733","type":"CardSwipe","data":"{\u0022team\u0022:0,\u0022player\u0022:1,\u0022card_id\u0022:8461951}"},
+      {"id":"96115","timeSec":"1425520557","usec":"485733","type":"CardSwipe","data":"{\u0022team\u0022:1,\u0022player\u0022:1,\u0022card_id\u0022:8462951}"},
+      {"id":"96115","timeSec":"1425520558","usec":"485733","type":"CardSwipe","data":"{\u0022team\u0022:1,\u0022player\u0022:1,\u0022card_id\u0022:8462951}"},
       {"id":"96115","timeSec":"1425520560","usec":"485733","type":"CardSwipe","data":"{\u0022team\u0022:1,\u0022player\u0022:1,\u0022card_id\u0022:8462951}"},
       {"id":"96215","timeSec":"1425522560","usec":"485733","type":"CardSwipe","data":"{\u0022team\u0022:0,\u0022player\u0022:0,\u0022card_id\u0022:8463951}"},
       {"id":"96315","timeSec":"1425523560","usec":"485733","type":"CardSwipe","data":"{\u0022team\u0022:1,\u0022player\u0022:0,\u0022card_id\u0022:8464951}"},
       {"id":"96511","timeSec":"1425543550","usec":"93454","type":"TableShake","data":"[]"},
       {"id":"96512","timeSec":"1425543551","usec":"169652","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
+      {"id":"96512","timeSec":"1425543551","usec":"169652","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
+      {"id":"96512","timeSec":"1425543551","usec":"169652","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
+      {"id":"96512","timeSec":"1425543551","usec":"169652","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
+      {"id":"96512","timeSec":"1425543551","usec":"169652","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
+      {"id":"96512","timeSec":"1425543551","usec":"169652","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
+      {"id":"96512","timeSec":"1425543551","usec":"169652","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
+      {"id":"96512","timeSec":"1425543551","usec":"169652","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
+      {"id":"96512","timeSec":"1425543551","usec":"169652","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
+      {"id":"96512","timeSec":"1425543551","usec":"169652","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
+      {"id":"96512","timeSec":"1425543551","usec":"169652","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
+      {"id":"96512","timeSec":"1425543551","usec":"169652","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
+      {"id":"96512","timeSec":"1425543551","usec":"169652","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
       {"id":"96513","timeSec":"1425543551","usec":"527308","type":"AutoGoal","data":"{\u0022team\u0022:0}"},
       {"id":"96514","timeSec":"1425543560","usec":"484757","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
-      {"id":"96515","timeSec":"1425543561","usec":"485733","type":"CardSwipe","data":"{\u0022team\u0022:0,\u0022player\u0022:1,\u0022card_id\u0022:8469951}"},
-      {"id":"96516","timeSec":"1425543568","usec":"400106","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
-      {"id":"96517","timeSec":"1425543568","usec":"401041","type":"CardSwipe","data":"{\u0022team\u0022:0,\u0022player\u0022:1,\u0022card_id\u0022:8469934}"},
-      {"id":"96518","timeSec":"1425543574","usec":"856993","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
-      {"id":"96519","timeSec":"1425543574","usec":"857931","type":"CardSwipe","data":"{\u0022team\u0022:1,\u0022player\u0022:0,\u0022card_id\u0022:8469934}"},
-      {"id":"96520","timeSec":"1425543581","usec":"794230","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
-      {"id":"96521","timeSec":"1425543581","usec":"795173","type":"CardSwipe","data":"{\u0022team\u0022:0,\u0022player\u0022:0,\u0022card_id\u0022:8469951}"},
-      {"id":"96523","timeSec":"1425543570","usec":"134255","type":"TableShake","data":"[]"},
-      {"id":"96525","timeSec":"1425543570","usec":"138302","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
-      {"id":"96527","timeSec":"1425543572","usec":"7159","type":"TableShake","data":"[]"},
-      {"id":"96529","timeSec":"1425543574","usec":"863239","type":"TableShake","data":"[]"},
-      {"id":"96531","timeSec":"1425543574","usec":"874316","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
-      {"id":"96533","timeSec":"1425543576","usec":"226701","type":"TableShake","data":"[]"},
-      {"id":"96535","timeSec":"1425543578","usec":"67659","type":"TableShake","data":"[]"},
-      {"id":"96537","timeSec":"1425543578","usec":"67835","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
-      {"id":"96539","timeSec":"1425543901","usec":"685291","type":"TableShake","data":"[]"},
-      {"id":"96540","timeSec":"1425543901","usec":"685465","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
-      {"id":"96541","timeSec":"1425543903","usec":"78746","type":"TableShake","data":"[]"},
-      {"id":"96542","timeSec":"1425543907","usec":"302682","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
-      {"id":"96543","timeSec":"1425543907","usec":"303637","type":"CardSwipe","data":"{\u0022team\u0022:0,\u0022player\u0022:1,\u0022card_id\u0022:8469934}"},
       {"id":"96544","timeSec":"1425543914","usec":"309757","type":"AutoGoal","data":"{\u0022team\u0022:1}"}]}');
     }
 }

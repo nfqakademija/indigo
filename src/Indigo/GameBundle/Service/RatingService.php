@@ -5,6 +5,7 @@ namespace Indigo\GameBundle\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Indigo\GameBundle\Entity\Game;
 use Indigo\GameBundle\Entity\Rating;
+use Indigo\GameBundle\Repository\GameTypeRepository;
 
 class RatingService
 {
@@ -20,31 +21,6 @@ class RatingService
     private $em;
 
     /**
-     * @var Game
-     */
-    private $gameEntity;
-
-    /**
-     * @var int
-     */
-    private $ratingTeam0;
-
-    /**
-     * @var int
-     */
-    private $ratingTeam1;
-
-    /**
-     * @var int
-     */
-    private $scoreTeam0;
-
-    /**
-     * @var int
-     */
-    private $scoreTeam1;
-
-    /**
      * @param EntityManagerInterface $em
      */
     public function __construct (EntityManagerInterface $em)
@@ -52,128 +28,74 @@ class RatingService
         $this->em = $em;
     }
 
-    public function setGame(Game $gameEntity)
+    /**
+     * @param Game $gameEntity
+     * @return bool
+     */
+    private function isInGameBothTeams(Game $gameEntity)
     {
-        $this->gameEntity = $gameEntity;
+        return (($gameEntity->getTeam0() && $gameEntity->getTeam1() &&
+            $gameEntity->getTeam0()->getId() && $gameEntity->getTeam1()->getId()) ? true : false );
+    }
 
-        $this
-            ->setRatingTeam1(
-                $gameEntity
-                    ->getTeam1()
-                    ->getTotalRating()
-            )
-            ->setRatingTeam0(
-                $gameEntity
-                    ->getTeam0()
-                    ->getTotalRating()
-            )
-            ->setScoreTeam0(0)
-            ->setScoreTeam1(0);
+    private function getTeam0WinRatio($score0, $score1)
+    {
+        if ($score0 > $score1) {
 
-        $diff = ($this->gameEntity->getTeam0Score()  -  $this->gameEntity->getTeam1Score());
-        if ($diff > 0) {
+            return 1;
+        } elseif ($score0 < $score1) {
 
-            $this->setScoreTeam0(1);
-        } elseif ($diff < 0) {
-
-            $this->setScoreTeam1(1);
-        } else {
-
-            $this
-                ->setScoreTeam0(0.5)
-                ->setScoreTeam1(0.5);
+            return 0;
         }
 
+        return 0.5;
     }
 
     /**
-     * @return int
+     * @param Game $gameEntity
+     * @return bool
      */
-    public function getRatingTeam0()
+    public function updateRatings(Game $gameEntity)
     {
-        return $this->ratingTeam0;
+
+        if (!$this->isInGameBothTeams($gameEntity)) {
+            return false;
+        }
+
+        $team0WinRatio = $this->getTeam0WinRatio($gameEntity->getTeam0Score(), $gameEntity->getTeam1Score());
+
+        $matchType = $gameEntity->getMatchType(); // open/match
+
+        if ($matchType == GameTypeRepository::TYPE_GAME_OPEN) {
+
+            $ratings = $this->newRatings(
+                $gameEntity->getTeam0()->getOpenRating(),
+                $gameEntity->getTeam1()->getOpenRating(),
+                $team0WinRatio
+            );
+        } else {
+
+            $ratings = $this->newRatings(
+                $gameEntity->getTeam0()->getContestRating(),
+                $gameEntity->getTeam1()->getContestRating(),
+                $team0WinRatio
+            );
+        }
+
+        $this->save($gameEntity, $ratings);
+        return true;
     }
 
-    /**
-     * @param $ratingTeam0
-     * @return $this
-     */
-    public function setRatingTeam0($ratingTeam0)
+    private function newRatings($team0Rating, $team1Rating, $team0WinRatio)
     {
-        $this->ratingTeam0 = (int)$ratingTeam0;
-        return $this;
-    }
 
-    /**
-     * @return int
-     */
-    public function getRatingTeam1()
-    {
-        return $this->ratingTeam1;
-    }
+        $expectedScoreTeam0 = 1 / ( 1 + ( pow( 10 , ($team1Rating - $team0Rating  ) / 400 ) ) );
+        $ratingDiffTeam0 = round( self::KFACTOR * ( $team0WinRatio - $expectedScoreTeam0 ));
 
-    /**
-     * @param $ratingTeam1
-     * @return $this
-     */
-    public function setRatingTeam1($ratingTeam1)
-    {
-        $this->ratingTeam1 = (int)$ratingTeam1;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getScoreTeam0()
-    {
-        return $this->scoreTeam0;
-    }
-
-    /**
-     * @param $scoreTeam0
-     * @return $this
-     */
-    public function setScoreTeam0($scoreTeam0)
-    {
-        $this->scoreTeam0 = (int)$scoreTeam0;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getScoreTeam1()
-    {
-        return $this->scoreTeam1;
-    }
-
-    /**
-     * @param $scoreTeam1
-     * @return $this
-     */
-    public function setScoreTeam1($scoreTeam1)
-    {
-        $this->scoreTeam1 = (int)$scoreTeam1;
-        return $this;
-    }
+        $newRatingTeam0 = $team0Rating + $ratingDiffTeam0 ;
+        $newRatingTeam1 = $team1Rating + $ratingDiffTeam0 * (-1);
 
 
-
-
-    public function getNewRatings()
-    {
-/*        $expectedScoreTeam0 = 1 / ( 1 + ( pow( 10 , ((int)$ratingTeam1 - (int)$ratingTeam0 ) / 400 ) ) );
-        $expectedScoreTeam1 = 1 / ( 1 + ( pow( 10 , ((int)$ratingTeam0 - (int)$ratingTeam1 ) / 400 ) ) );
-        $newRatingTeam0 = $ratingTeam0 + ( self::KFACTOR * ( $scoreTeam0 - $expectedScoreTeam0 ) );
-        $newRatingTeam1 = $ratingTeam1 + ( self::KFACTOR * ( $scoreTeam1 - $expectedScoreTeam1 ) );*/
-
-        $expectedScoreTeam0 = 1 / ( 1 + ( pow( 10 , ($this->getRatingTeam1() - $this->getRatingTeam0()  ) / 400 ) ) );
-       // $expectedScoreTeam1 =  1 - $expectedScoreTeam0
-        $ratingDiffTeam0 = round( self::KFACTOR * ( $this->getScoreTeam0() - $expectedScoreTeam0 ));
-
-        $newRatingTeam0 = $this->getRatingTeam0() + $ratingDiffTeam0 ;
-        $newRatingTeam1 = $this->getRatingTeam1() + $ratingDiffTeam0 * (-1);
 
         return [
             0 => [
@@ -187,27 +109,42 @@ class RatingService
         ];
     }
 
-    public function save()
+    /**
+     * @param Game $gameEntity
+     * @param Array $ratings
+     */
+    public function save(Game $gameEntity, $ratings)
     {
-        $ratings = $this->getNewRatings();
+
         $ratingEntity = new Rating();
-        $teamEntity = $this->gameEntity->getTeam0();
-        $ratingEntity->setGame($this->gameEntity);
-        $teamEntity->setTotalRating($ratings[0]['rating']);
+        $teamEntity = $gameEntity->getTeam0();
+        $ratingEntity->setGame($gameEntity);
+        if ($gameEntity->getMatchType() == GameTypeRepository::TYPE_GAME_OPEN) {
+
+            $teamEntity->setOpenRating($ratings[0]['rating']);
+        } else {
+
+            $teamEntity->setContestRating($ratings[0]['rating']);
+        }
         $ratingEntity->setTeam($teamEntity);
         $ratingEntity->setRating($ratings[0]['diff']);
 
         $this->em->persist($ratingEntity);
 
         $ratingEntity = new Rating();
-        $teamEntity = $this->gameEntity->getTeam1();
-        $ratingEntity->setGame($this->gameEntity);
-        $teamEntity->setTotalRating($ratings[1]['rating']);
+        $teamEntity = $gameEntity->getTeam1();
+        $ratingEntity->setGame($gameEntity);
+        if ($gameEntity->getMatchType() == GameTypeRepository::TYPE_GAME_OPEN) {
+
+            $teamEntity->setOpenRating($ratings[1]['rating']);
+        } else {
+
+            $teamEntity->setContestRating($ratings[1]['rating']);
+        }
         $ratingEntity->setTeam($teamEntity);
         $ratingEntity->setRating($ratings[1]['diff']);
 
         $this->em->persist($ratingEntity);
         $this->em->flush();
     }
-
 }

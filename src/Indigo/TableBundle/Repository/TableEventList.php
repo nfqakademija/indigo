@@ -1,6 +1,6 @@
 <?php
 
-namespace Indigo\ApiBundle\Repository;
+namespace Indigo\TableBundle\Repository;
 
 
 class TableEventList extends \ArrayIterator

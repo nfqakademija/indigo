@@ -12,4 +12,8 @@ use Doctrine\ORM\EntityRepository;
  */
 class TableStatusRepository extends EntityRepository
 {
+
+    const TIMEOUT = 30;
+    const STATUS_BUSY = 1;
+    const STATUS_IDLE = 0;
 }
