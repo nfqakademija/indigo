@@ -10,6 +10,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Indigo\ContestBundle\Entity\Contest;
 use Indigo\ContestBundle\Form\ContestType;
 
+/**
+ * @Route("/contest")
+ */
 
 class ContestController extends Controller
 {
@@ -17,7 +20,7 @@ class ContestController extends Controller
     /**
      * Lists all Contest entities.
      *
-     * @Route("/contest", name="contest")
+     * @Route("/", name="contest")
      * @Method("GET")
      * @Template("IndigoContestBundle:Contest:index.html.twig")
      */
@@ -28,6 +31,7 @@ class ContestController extends Controller
         $entities = $em->getRepository('IndigoContestBundle:Contest')->findAll();
 
         $this->setImageUrlGlobal("");
+        $this->setPrizeImageUrlGlobal("");
 
         return array(
             'entities' => $entities,
@@ -50,6 +54,7 @@ class ContestController extends Controller
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $entity->uploadImage();
+            $entity->uploadPrizeImage();
             $em->persist($entity);
             $em->flush();
 
@@ -57,6 +62,7 @@ class ContestController extends Controller
         }
 
         $this->setImageUrlGlobal("");
+        $this->setPrizeImageUrlGlobal("");
 
         return array(
             'entity' => $entity,
@@ -102,6 +108,7 @@ class ContestController extends Controller
         $form = $this->createCreateForm($entity);
 
         $this->setImageUrlGlobal($entity->getPathForImage());
+        $this->setPrizeImageUrlGlobal($entity->getPathForPrizeImage());
 
         return array(
             'entity' => $entity,
@@ -129,6 +136,7 @@ class ContestController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         $this->setImageUrlGlobal($entity->getPathForImage());
+        $this->setPrizeImageUrlGlobal($entity->getPathForPrizeImage());
 
         return array(
             'entity' => $entity,
@@ -157,6 +165,7 @@ class ContestController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         $this->setImageUrlGlobal($entity->getPathForImage());
+        $this->setPrizeImageUrlGlobal($entity->getPathForPrizeImage());
 
         return array(
             'entity' => $entity,
@@ -211,12 +220,11 @@ class ContestController extends Controller
         $editForm->handleRequest($request);
 
         $this->setImageUrlGlobal($entity->getPathForImage());
+        $this->setPrizeImageUrlGlobal($entity->getPathForPrizeImage());
 
-        $prises = "prizai";
         if ($editForm->isValid()) {
             $entity->uploadImage();
-            $prises = $entity->getPriseImages();
-            //$entity->uploadPriseImages();
+            $entity->uploadPrizeImage();
             $em->flush();
 
             return $this->redirect($this->generateUrl('contest_edit', array('id' => $id)));
@@ -226,7 +234,6 @@ class ContestController extends Controller
             'entity' => $entity,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
-            'prises' => $prises
         );
     }
 
@@ -276,6 +283,12 @@ class ContestController extends Controller
     {
         $imageName = $url ? $url : "contest-logo.jpg";
         $this->get('twig')->addGlobal('imagePath', $imageName);
+    }
+
+    private function setPrizeImageUrlGlobal($url)
+    {
+        $imageName = $url ? $url : false;
+        $this->get('twig')->addGlobal('prizeImagePath', $imageName);
     }
 
     /**

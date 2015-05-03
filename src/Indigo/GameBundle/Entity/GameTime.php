@@ -33,25 +33,41 @@ class GameTime
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="start_at", type="datetime")
+     * @ORM\Column(name="start_at", type="datetime", nullable=false)
      */
     private $startAt;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="finish_at", type="datetime", nullable=true)
+     * @ORM\Column(name="finish_at", type="datetime", nullable=false)
      */
     private $finishAt;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="insertion_time", type="datetime", nullable=false)
+     */
+    private $insertionTime;
 
     /**
      * User who reserved the time for game
      *
      * @var integer
      *
-     * @ORM\Column(name="player_id", type="integer")
+     * @ORM\Column(name="player_id", type="integer", nullable=false)
      */
     private $timeOwner;
+
+    /**
+     * User who reserved the time for game
+     *
+     * @var integer
+     *
+     * @ORM\Column(name="contest_id", type="integer", nullable=true)
+     */
+    private $contestId;
 
     /**
      *
@@ -68,50 +84,13 @@ class GameTime
     }
 
     /**
-     * @ORM\PrePersist()
-     */
-    public function prePersist()
-    {
-        if ($this->getStartAt() === null) {
-            $this->setStartAt(new \DateTime());
-            $this->setFinishAt(new \DateTime('+15 minutes'));
-        }
-
-        if ($this->getTimeOwner() === null) {
-            $this->setTimeOwner(0);
-        }
-
-        if ($this->getConfirmed() === null) {
-            $this->setConfirmed(0);
-        }
-    }
-
-    /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @return Game
-     */
-    public function getGame()
-    {
-        return $this->game;
-    }
-
-    /**
-     * @param $game
-     * @return $this
-     */
-    public function setGame($game)
-    {
-        $this->game = $game;
-        return $this;
     }
 
     /**
@@ -120,9 +99,10 @@ class GameTime
      * @param \DateTime $startAt
      * @return GameTime
      */
-    public function setStartAt($startAt)
+    public function setStartAtAndFinishAt($startAt = null)
     {
-        $this->startAt = $startAt;
+        $this->startAt = new \DateTime($startAt);
+        $this->finishAt = (new \DateTime($startAt))->add(new \DateInterval('PT15M'));
 
         return $this;
     }
@@ -130,7 +110,7 @@ class GameTime
     /**
      * Get startAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getStartAt()
     {
@@ -143,17 +123,18 @@ class GameTime
      * @param \DateTime $finishAt
      * @return GameTime
      */
-    public function setFinishAt($finishAt)
+    /*public function setFinishAt($startAt)
     {
-        $this->finishAt = $finishAt;
+        $explode = explode(" - ", $startAt);
+        $this->finishAt = new \DateTime($explode[1]);
 
         return $this;
-    }
+    }*/
 
     /**
      * Get finishAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFinishAt()
     {
@@ -174,7 +155,7 @@ class GameTime
     /**
      * Get TimeOwner
      *
-     * @return integer 
+     * @return integer
      */
     public function getTimeOwner()
     {
@@ -214,17 +195,45 @@ class GameTime
     }
 
     /**
-     * @param Game $game
+     * @param Game $games
      * @return $this
      */
-    public function addGame(Game $game)
+    public function addGame(Game $games)
     {
-        $this->games->add($game);
+        $this->games->add($games);
 
         return $this;
     }
 
+    /**
+     * @return \DateTime
+     */
+    public function getInsertionTime()
+    {
+        return $this->insertionTime;
+    }
 
+    /**
+     * @param \DateTime $insertionTime
+     */
+    public function setInsertionTime($insertionTime)
+    {
+        $this->insertionTime = new \Datetime($insertionTime);
+    }
 
+    /**
+     * @return int
+     */
+    public function getContestId()
+    {
+        return $this->contestId;
+    }
 
+    /**
+     * @param int $contestId
+     */
+    public function setContestId($contestId)
+    {
+        $this->contestId = $contestId;
+    }
 }

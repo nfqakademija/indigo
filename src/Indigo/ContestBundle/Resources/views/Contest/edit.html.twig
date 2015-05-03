@@ -27,12 +27,28 @@
             {{ form_widget(edit_form.contestPrivacy, {'data' : edit_form.contestPrivacy, 'attr' : {'data-on-text' : 'yes'|trans, 'data-off-text' : 'no'|trans}}) }}
         </div>
     </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label required"></label>
+        <div class="col-sm-10">
+            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#optionalPrize">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{ 'add_prize'|trans }} ({{ 'optional'|trans }})
+            </button>
+        </div>
+    </div>
+    <div id="optionalPrize" class="collapse">
+        {{ form_row(edit_form.prize) }}
+        {{ form_row(edit_form.prizeImage) }}
+    </div>
     {{ form_end(edit_form) }}
-    {{ dump(edit_form) }}
-    {{ form(delete_form) }}
-    <a href="{{ path('contest', { 'id': entity.id }) }}" title="{{ 'show'|trans }}" class="pull-right">
-        <button type="button" class="btn btn-default">
-            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> {{ 'back_to_the_list'|trans }}
-        </button>
-    </a>
+    <div class="form-group">
+        <label class="col-sm-2 control-label required"></label>
+        <div class="col-sm-10" style="padding-left:5px;">
+            <a href="{{ path('contest_delete', { 'id': entity.id }) }}" title="{{ 'delete'|trans }}" class="btn btn-danger">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> {{ 'delete'|trans }}
+            </a>
+            <a href="{{ path('contest', { 'id': entity.id }) }}" title="{{ 'back_to_the_list'|trans }}" class="pull-right btn btn-default">
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> {{ 'back_to_the_list'|trans }}
+            </a>
+        </div>
+    </div>
 {% endblock %}

@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ContestType extends AbstractType
 {
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -48,8 +49,8 @@ class ContestType extends AbstractType
             'label' => 'create_contest.form.contest_starting_date',
             'widget' => 'single_text',
             'format' => 'yyyy-MM-dd',
+            'required' => true,
             'attr' => [
-                'placeholder' => date('Y-m-d'),
                 'class' => 'input-group date'
             ],
             'html5' => false
@@ -58,8 +59,8 @@ class ContestType extends AbstractType
             'label' => 'create_contest.form.contest_end_date',
             'widget' => 'single_text',
             'format' => 'yyyy-MM-dd',
+            'required' => true,
             'attr' => [
-                'placeholder' => date('Y-m-d', strtotime(date('Y-m-d'). ' + 1 days')),
                 'class' => 'input-group date'
             ],
             'html5' => false
@@ -75,11 +76,15 @@ class ContestType extends AbstractType
                 'data-handle-width' => 50,
             ],
         ])
-        ->add('pathForPriseImages', 'file', [
-            'label' => 'Prizai',
+        ->add('prize', 'text', [
+            'label' => 'prize',
+            'required' => false
+        ])
+        ->add('prizeImage', 'file', [
+            'label' => 'prize_photo',
+            'data_class' => null,
             'required' => false,
-            'multiple' => true,
-            'attr' => ['class' => 'file contestPriseImages'],
+            'attr' => ['class' => 'file contestPrizeImages'],
         ]);
 }
 
