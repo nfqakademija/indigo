@@ -179,6 +179,21 @@ class GameTime
         return $this->finishAt;
     }
 
+
+    /**
+     * Set startAt
+     *
+     * @param \DateTime $startAt
+     * @return GameTime
+     */
+    public function setStartAtAndFinishAt($startAt = null)
+    {
+        $this->startAt = new \DateTime($startAt);
+        $this->finishAt = (new \DateTime($startAt))->add(new \DateInterval('PT15M'));
+
+        return $this;
+    }
+
     /**
      * @param $timeOwner
      * @return $this
