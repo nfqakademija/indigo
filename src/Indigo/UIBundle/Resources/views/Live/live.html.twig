@@ -31,12 +31,12 @@
 
                 if(json.isBusy)
                 {
-                    $("#ajax-table-status").html("Stalas UŽIMTAS!");
+                    $("#ajax-table-status").html("Table is occupied!");
                     $("#ajax-table-status").addClass('busy');
                 }
                 else
                 {
-                    $("#ajax-table-status").html("Stalas LAISVAS!");
+                    $("#ajax-table-status").html("Table is free!");
                     $("#ajax-table-status").removeClass('busy');
                 }
 
@@ -63,6 +63,45 @@
                     $("#player2-img").attr("src", json.teamA.player2.imageUrl + "?" + new Date().getTime());
                     $("#player3-img").attr("src", json.teamB.player1.imageUrl + "?" + new Date().getTime());
                     $("#player4-img").attr("src", json.teamB.player2.imageUrl + "?" + new Date().getTime());
+
+                    if(json.reservations)
+                    {
+                        for(var ind = 0; ind < json.reservations.length; ind++)
+                        {
+                            if(json.reservations[ind])
+                            {
+                                var imgUrl = json.reservations[ind].whoIsReservedImageUrl;
+
+                                if(json.reservations[ind].status == 'Reserved')
+                                {
+                                    $('#reserv-itm-cont-' + ind).addClass('bg-color-reserved');
+                                    $('#reserv-itm-cont-' + ind).removeClass('bg-color-not-reserved');
+
+                                    if(!imgUrl)
+                                    {
+                                        imgUrl = "/bundles/indigoui/images/anonymous.png";
+                                    }
+
+                                    $('#reserv-itm-img-' + ind).attr("src", imgUrl + "?" + new Date().getTime());
+                                    $('#reserv-itm-img-' + ind).show();
+                                }
+                                else
+                                {
+                                    $('#reserv-itm-cont-' + ind).removeClass('bg-color-reserved');
+                                    $('#reserv-itm-cont-' + ind).add('bg-color-not-reserved');
+                                    $('#reserv-itm-img-' + ind).attr("src", "#");
+                                    $('#reserv-itm-img-' + ind).hide();
+                                }
+
+                                var strTime = json.reservations[ind].time;
+                                var strStatus = json.reservations[ind].status;
+                                var imgUrl = json.reservations[ind].whoIsReservedImageUrl;
+                                $('#reserv-itm-time-' + ind).text( strTime );
+                                $('#reserv-itm-status-' + ind).text( strStatus );
+                            }
+                        }
+
+                    }
                 }
 
                 if(_firstTime)
@@ -105,13 +144,12 @@
 
             <div class=" col-xs-12 col-sm-12 col-md-10 col-lg-10 col-md-offset-1 col-lg-offset-1 content">
 
-
-                <div class="title">
-                    <h1 id="contest-title"> {{ contest.title}} </h1>
+                <div>
+                    <h1 id="contest-title" class="title"> {{ contest.title}} </h1>
                 </div>
 
 
-                <div class="row top-space" >
+                <div class="row" >
                     <div class="col-xs-12">
                        <span id="ajax-table-status" class="table-status">  </span>
                     </div>
@@ -147,67 +185,56 @@
                     </div>
 
                 </div>
-
             </div>
-
         </div>
 
         <div class="row padding-sm">
 
-            <div class=" col-xs-4 col-sm-3 col-md-2 col-sm-offset-1 col-md-offset-3 " style="top: -40px">
+            <div class=" col-xs-3 col-sm-3 col-md-2 col-xs-offset-1 col-sm-offset-2 col-md-offset-3 " style="top: -40px">
 
                 <div class="stat-panel text-center border-thin b-color-selected" style="height: 200px;">
-                    <div class="stat-cell {% if reservations[0].status == "Reserved" %} bg-color-reserved {% else %} bg-color-not-reserved {% endif %}">
+                    <div id="reserv-itm-cont-0" class="stat-cell {% if reservations[0].status == "Reserved" %} bg-color-reserved {% else %} bg-color-not-reserved {% endif %}">
                         <span class="text-md"> Now </span></br>
-                        <span class="time-text"> {{ reservations[0].time }} </span><br>
-                        <span class="text-md"> {% if reservations[0].status == "Reserved" %} Table is reserved {% else %} Table is not reserved {% endif %} </span></br></br>
+                        <span id="reserv-itm-time-0" class="time-text"> {{ reservations[0].time }} </span><br>
+                        <span id="reserv-itm-status-0" class="text-md"> {{  reservations[0].status }} </span></br></br>
                         <span style="height: 100px">
-                            {% if reservations[0].whoIsReservedImageUrl != null %}
-                                <img src="{{ reservations[0].whoIsReservedImageUrl }}" class="img-circle icon-sm border-wide icon-narrow">
-                            {% endif %}
+                            <img id="reserv-itm-img-0" src="#" class="img-circle icon-sm border-wide icon-narrow" hidden="">
                         </span>
                     </div>
                 </div>
 
             </div>
 
-            <div class="col-xs-4 col-sm-3 col-md-2" style="top: -40px">
+            <div class="col-xs-3 col-sm-3 col-md-2" style="top: -40px">
 
-                <div class="stat-panel text-center" style="height: 200px;">
-                    <div class="stat-cell {% if reservations[1].status == "Reserved" %} bg-color-reserved {% else %} bg-color-not-reserved {% endif %}">
+                <div class="stat-panel text-center border-thin b-color-selected" style="height: 200px;">
+                    <div id="reserv-itm-cont-1" class="stat-cell {% if reservations[1].status == "Reserved" %} bg-color-reserved {% else %} bg-color-not-reserved {% endif %}">
                         <span class="text-md"> Next </span></br>
-                        <span class="time-text"> {{ reservations[1].time }} </span><br>
-                        <span class="text-md"> {% if reservations[1].status == "Reserved" %} Table is reserved {% else %} Table is not reserved {% endif %} </span></br></br>
+                        <span id="reserv-itm-time-1" class="time-text"> {{ reservations[1].time }} </span><br>
+                        <span id="reserv-itm-status-1" class="text-md"> {{  reservations[1].status }} </span></br></br>
                         <span style="height: 100px">
-                             {% if reservations[1].whoIsReservedImageUrl != null %}
-                                 <img src="{{ reservations[1].whoIsReservedImageUrl }}" class="img-circle icon-sm border-wide icon-narrow">
-                             {% endif %}
+                            <img id="reserv-itm-img-1" src="#" class="img-circle icon-sm border-wide icon-narrow" hidden="">
                         </span>
                     </div>
                 </div>
 
             </div>
 
-            <div class="col-xs-4 col-sm-3 col-md-2" style="top: -40px">
+            <div class="col-xs-3 col-sm-3 col-md-2" style="top: -40px">
 
-                <div class="stat-panel text-center" style="height: 200px;">
-                    <div class="stat-cell {% if reservations[2].status == "Reserved" %} bg-color-reserved {% else %} bg-color-not-reserved {% endif %} ">
+                <div class="stat-panel text-center border-thin b-color-selected" style="height: 200px;">
+                    <div id="reserv-itm-cont-2" class="stat-cell {% if reservations[2].status == "Reserved" %} bg-color-reserved {% else %} bg-color-not-reserved {% endif %}">
                         <span class="text-md"> Later </span></br>
-                        <span class="time-text"> {{ reservations[2].time }} </span><br>
-                        <span class="text-md"> {% if reservations[2].status == "Reserved" %} Table is reserved {% else %} Table is not reserved {% endif %} </span></br></br>
+                        <span id="reserv-itm-time-2" class="time-text"> {{ reservations[2].time }} </span><br>
+                        <span id="reserv-itm-status-2" class="text-md"> {{  reservations[2].status }} </span></br></br>
                         <span style="height: 100px">
-
-                            {% if reservations[2].whoIsReservedImageUrl != null %}
-                                <img src="{{ reservations[2].whoIsReservedImageUrl }}" class="img-circle icon-sm border-wide icon-narrow">
-                            {% endif %}
-
+                            <img id="reserv-itm-img-2" src="#" class="img-circle icon-sm border-wide icon-narrow" hidden="">
                         </span>
                     </div>
                 </div>
 
             </div>
         </div>
-
     </div>
 </body>
 

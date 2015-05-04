@@ -12,12 +12,14 @@ namespace Indigo\UIBundle\Services;
 
 use Indigo\GameBundle\Entity\Game;
 use Indigo\GameBundle\Entity\Contest;
+use Indigo\GameBundle\Entity\GameTimeRepository;
 use Indigo\UIBundle\Models\ContestModel;
 use Indigo\UIBundle\Models\DashboardViewModel;
 use Indigo\UIBundle\Models\LiveViewModel;
 use Indigo\UIBundle\Models\PlayerModel;
 use Indigo\UIBundle\Models\TeamModel;
 use Symfony\Component\Security\Acl\Exception\Exception;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 
 /**
@@ -28,6 +30,7 @@ use Symfony\Component\Security\Acl\Exception\Exception;
 
 class LiveViewService
 {
+    private $defRegistrationTimeInterval = 15;
     private $defaultProfilePic = '';
 
     private $em;
@@ -160,29 +163,48 @@ class LiveViewService
      */
     public function getLastReservations()
     {
+        $segment = floor( date("i") / $this->defRegistrationTimeInterval);
+        $dateFrom = new \DateTime(date("Y-m-d H:0:0"));
+        $dateFrom->add(new \DateInterval('PT' . $segment * $this->defRegistrationTimeInterval. 'M'));
+        $dateTo = new \DateTime($dateFrom->format('Y-m-d H:i:s'));
+        $dateTo->add(new \DateInterval('PT' . $this->defRegistrationTimeInterval . 'M'));
+
+        $now =  new \DateTime(date("Y-m-d H:00:00"));
+        $now->add(new \DateInterval('PT' . $segment * $this->defRegistrationTimeInterval . 'M'));
         $reservations = array();
 
-                $reservations [] = [
-                  "time" => "12:00 - 12:15",
-                  "status" => "Free",
-                  "whoIsReservedName" => null,
-                  "whoIsReservedImageUrl" => null
-                ];
+                for($i = 0; $i < 3; $i++ )
+                {
+                    $reservation = $this->getReservation($now);
 
-                $reservations [] = [
-                    "time" => "12:15 - 12:30",
-                    "status" => "Reserved",
-                    "whoIsReservedName" => "Tadas",
-                    "whoIsReservedImageUrl" => "/bundles/indigoui/images/tadas_surgailis.png"
-                ];
+                    if($reservation)
+                    {
+                        $id = $reservation[0]["timeOwner"];
+                        $user = $this->getUserById($id);
 
-                $reservations [] = [
-                    "time" => "12:30 - 12:45",
-                    "status" => "Free",
-                    "whoIsReservedName" => null,
-                    "whoIsReservedImageUrl" => null
-                ];
+                        $reservations [] = [
+                            "time" => $dateFrom->format('H:i') .'-'. $dateTo->format('H:i'),
+                            "status" => "Reserved",
+                            "whoIsReservedName" => $user != null ? $user->getUsername() : null,
+                            "whoIsReservedImageUrl" => $user != null ? $user->getPicture() : null
+                        ];
+                    }
+                    else
+                    {
+                        $reservations [] = [
+                            "time" => $dateFrom->format('H:i') .'-'. $dateTo->format('H:i'),
+                            "status" => "Free",
+                            "whoIsReservedName" => null,
+                            "whoIsReservedImageUrl" => null
+                        ];
+                    }
 
+                    $now->add(new \DateInterval('PT' . $this->defRegistrationTimeInterval . 'M'));
+
+                    $dateFrom = $dateTo;
+                    $dateTo = new \DateTime($dateTo->format('Y-m-d H:i:s'));
+                    $dateTo->add(new \DateInterval('PT' . $this->defRegistrationTimeInterval . 'M'));
+                }
         return $reservations;
     }
 
@@ -190,4 +212,29 @@ class LiveViewService
     {
         return new Exception("This method is not implemented");
     }
+
+    /**
+     * @param $time
+     * @return array
+     */
+    public function getReservation($time)
+    {
+        $qb = $this->em->getRepository('IndigoGameBundle:GameTime')->createQueryBuilder('p');
+        $qb->where('p.startAt = :time')
+            ->andWhere('p.finishAt >  :time')
+            ->setParameter('time', $time);
+
+        return $qb->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @param int
+     * @return \Indigo\UserBundle\Entity\User
+     */
+    public function getUserById($userId)
+    {
+        return $this->em->getRepository('IndigoUserBundle:User')->findOneById($userId);
+    }
+
+
 }
