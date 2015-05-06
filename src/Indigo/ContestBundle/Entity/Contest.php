@@ -529,27 +529,21 @@ class Contest
 
         return $this;
     }
+
     /**
      * @return string
      */
-//    public function uploadPriseImages()
-//    {
-//        if (null === $this->getPriseImages()) {
-//            return;
-//        }
-//
-//        $this->changePriseImagesNames();
-//
-//        while (is_file($this->getAbsolutePath($this->pathForPriseImages)))
-//            $this->changePriseImagesNames();
-//
-//        $this->getPriseImages()->move(
-//            $this->getUploadRootDir(),
-//            $this->pathForPriseImages
-//        );
-//
-//        $this->image = null;
-//    }
+    public function getPrize()
+    {
+        return $this->prize;
+    }
 
+    /**
+     * @param string $prize
+     */
+    public function setPrize($prize)
+    {
+        $this->prize = $prize;
+    }
 
 }

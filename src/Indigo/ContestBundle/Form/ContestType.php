@@ -45,6 +45,17 @@ class ContestType extends AbstractType
             ],
             'required' => true
         ])
+        ->add('scoreLimit', 'number', [
+            'label' => 'create_contest.form.scoreLimit',
+            'required' => true,
+            'attr' => [
+                'data-slider-id' => 'scoreLimitSeekbar',
+                'data-slider-min' => 5,
+                'data-slider-max' => 10,
+                'data-slider-step' => 1,
+                'data-slider-value' => 10
+            ]
+        ])
         ->add('contestStartingDate', 'datetime', [
             'label' => 'create_contest.form.contest_starting_date',
             'widget' => 'single_text',

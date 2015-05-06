@@ -57,7 +57,6 @@ class ContestController extends Controller
             $entity->uploadPrizeImage();
             $em->persist($entity);
             $em->flush();
-
             return $this->redirect($this->generateUrl('contest_show', array('id' => $entity->getId())));
         }
 

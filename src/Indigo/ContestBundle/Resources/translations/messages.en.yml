@@ -7,6 +7,7 @@ create_contest.form.contest_privacy: Privacy contest (only with invitation)
 create_contest.form.contest_type: Type
 create_contest.form.contest_type.team: Team contest
 create_contest.form.contest_type.single: Single player contest
+create_contest.form.scoreLimit: Score limit
 create_contest.form.table_name: Table
 create_contest.form.contest_starting_date: Starting date
 create_contest.form.contest_end_date: End date

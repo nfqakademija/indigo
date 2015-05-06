@@ -3,6 +3,7 @@
 {% block title %}{{ 'create_contest.form.contest_creation'|trans }}{% endblock %}
 
 {% block body -%}
+
     <h1>{{ 'create_contest.form.contest_creation'|trans }}</h1>
     {{ form_start(form) }}
     {{ form_row(form.user) }}
@@ -10,6 +11,7 @@
     {{ form_row(form.image) }}
     {{ form_row(form.tableName) }}
     {{ form_row(form.contestType) }}
+    {{ form_row(form.scoreLimit) }}
     <div class="form-group">
         <label class="col-sm-2 control-label required">{{ 'period'|trans }}</label>
         <div class="col-sm-10">
@@ -39,8 +41,7 @@
         {{ form_row(form.prizeImage) }}
     </div>
     {{ form_end(form) }}
-    <a href="{{ path('contest', { 'id': entity.id }) }}" title="{{ 'show'|trans }}" class="btn btn-default">
+    <a href="{{ path('contest') }}" title="{{ 'back_to_the_list'|trans }}" class="btn btn-default">
             <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> {{ 'back_to_the_list'|trans }}
     </a>
 {% endblock %}
-

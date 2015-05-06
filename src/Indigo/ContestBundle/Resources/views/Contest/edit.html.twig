@@ -1,6 +1,6 @@
 {% extends 'IndigoMainBundle:Pixel:pages-create-contest.html.twig' %}
 
-{% block title %}{{ 'create_contest.form.contest_creation'|trans }}{% endblock %}
+{% block title %}{{ 'contest_edit'|trans }}{% endblock %}
 
 {% block body -%}
     <h1>{{ 'contest_edit'|trans }}</h1>
@@ -46,7 +46,7 @@
             <a href="{{ path('contest_delete', { 'id': entity.id }) }}" title="{{ 'delete'|trans }}" class="btn btn-danger">
                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> {{ 'delete'|trans }}
             </a>
-            <a href="{{ path('contest', { 'id': entity.id }) }}" title="{{ 'back_to_the_list'|trans }}" class="pull-right btn btn-default">
+            <a href="{{ path('contest') }}" title="{{ 'back_to_the_list'|trans }}" class="pull-right btn btn-default">
                 <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> {{ 'back_to_the_list'|trans }}
             </a>
         </div>

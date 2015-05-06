@@ -7,6 +7,7 @@ create_contest.form.contest_privacy: Privatus turnyras (tik su kvietimais)
 create_contest.form.contest_type: Tipas
 create_contest.form.contest_type.team: Komandinis turnyras
 create_contest.form.contest_type.single: Pavienis turnyras
+create_contest.form.scoreLimit: Taškų limitas
 create_contest.form.table_name: Stalas
 create_contest.form.contest_starting_date: Startavimo data
 create_contest.form.contest_end_date: Pabaigos data
