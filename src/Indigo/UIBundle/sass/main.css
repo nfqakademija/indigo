@@ -50,7 +50,7 @@ body {
   border-radius: 2px; }
 
 .busy {
-  color: #fa4c4e; }
+  color: #f16c00; }
 
 .score {
   position: relative;
@@ -58,11 +58,19 @@ body {
   min-width: 100px;
   width: 12%;
   background-color: rgba(0, 0, 0, 0.4);
-  font-family: Impact;
   font-size: 5em;
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
   border-radius: 2px; }
+
+.score-font {
+  font-family: Impact; }
+
+.img-round {
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  border: solid white 2px; }
 
 .status-message {
   width: 100%;
@@ -296,7 +304,7 @@ body {
   background-color: #cd7f32; }
 
 .bg-busy {
-  background-color: #d54237; }
+  background-color: #d56a04; }
 
 .bg-free {
   background-color: #6eb133; }
@@ -360,6 +368,15 @@ body {
 
 .text-xl {
   font-size: x-large; }
+
+.text-ul {
+  font-size: 250%; }
+
+.text-uxl {
+  font-size: 5em; }
+
+.text-uxxl {
+  font-size: 10em; }
 
 .title {
   font-size: 5em;
@@ -468,31 +485,37 @@ a:hover {
 #not-wrapper {
   display: none;
   position: absolute;
+  padding: 10%;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.9);
   z-index: 100;
   text-align: center; }
 
 #not-goal-msg,
 #not-end-msg {
   display: none;
-  position: absolute;
-  width: 50%;
-  height: 50%;
-  margin: auto;
-  font-size: 1000%;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0; }
+  position: relative;
+  margin: auto; }
 
-#not-end-msg {
-  font-size: 500%; }
+#info-message {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 20px; }
+
+.bg-semi-we {
+  background-color: rgba(255, 255, 255, 0.51); }
+
+#player-images {
+  position: relative; }
 
 .btn-contest-select {
   background-color: rgba(19, 19, 19, 0.62); }
+
+.padding-md {
+  margin: 5px; }
 
 /*# sourceMappingURL=main.css.map */

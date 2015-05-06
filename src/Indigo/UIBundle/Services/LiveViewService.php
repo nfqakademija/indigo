@@ -18,6 +18,7 @@ use Indigo\UIBundle\Models\DashboardViewModel;
 use Indigo\UIBundle\Models\LiveViewModel;
 use Indigo\UIBundle\Models\PlayerModel;
 use Indigo\UIBundle\Models\TeamModel;
+use Indigo\UIBundle\Models\WinnerTeamModel;
 use Symfony\Component\Security\Acl\Exception\Exception;
 use Symfony\Component\Validator\Constraints\DateTime;
 
@@ -79,6 +80,15 @@ class LiveViewService
         $model->setReservations($this->getLastReservations());
 
         $model->setStatusMessage("Sveiki!");
+
+        $lastWinner = $this->getLastWinnerModel(60);
+        if($lastWinner)
+        {
+            $model->setShowGreetingMessage(true);
+            $model->setLastWinnerTeam($lastWinner);
+        }
+
+       // $model->setShowGreetingMessage( $this->doWeHaveWinner(10) );
 
         $tableStatus = $this->em->getRepository('IndigoGameBundle:TableStatus')->findOneById($tableId);
 
@@ -156,6 +166,10 @@ class LiveViewService
         return $model;
     }
 
+
+
+
+
     /**
      * @param int
      * @param int
@@ -222,7 +236,8 @@ class LiveViewService
         $qb = $this->em->getRepository('IndigoGameBundle:GameTime')->createQueryBuilder('p');
         $qb->where('p.startAt = :time')
             ->andWhere('p.finishAt >  :time')
-            ->setParameter('time', $time);
+            ->setParameter('time', $time)
+            ->orderBy('p.finishAt', 'DESC');
 
         return $qb->getQuery()->getArrayResult();
     }
@@ -234,6 +249,73 @@ class LiveViewService
     public function getUserById($userId)
     {
         return $this->em->getRepository('IndigoUserBundle:User')->findOneById($userId);
+    }
+
+
+    /**
+     * @param $range
+     * @return \Indigo\UserBundle\Entity\Game
+     */
+    public function doWeHaveWinner($range)
+    {
+        $topScore = 10;
+        $tableId = 1;
+
+        $tableStatus = $this->em->getRepository('IndigoGameBundle:TableStatus')->findOneById($tableId);
+
+        if($tableStatus) {
+
+            $qb2 = $this->em->getRepository('IndigoGameBundle:Game')->createQueryBuilder('p');
+            $qb2->where("p.id = :gameId")
+                ->andWhere('p.team0Score > :zero OR p.team1Score > :zero OR p.team0Player0Id IS NOT NULL OR p.team0Player1Id IS NOT NULL OR p.team1Player0Id IS NOT NULL OR p.team1Player1Id IS NOT NULL')
+                ->setParameter('gameId', $tableStatus->getGameId())
+                ->setParameter('zero', 0);
+
+            if (!$qb2->getQuery()->getResult()) {
+                $date = new \DateTime(date("Y-m-d H:i:s"));
+                $date = $date->sub(new \DateInterval('PT' . $range . 'S'));
+
+                $qb = $this->em->getRepository('IndigoGameBundle:Game')->createQueryBuilder('p');
+                $qb->where("p.status = 'finished'")
+                    //->andWhere('p.finishedAt >  :time')
+                    ->andWhere('p.team0Score = :topScore OR p.team1Score = :topScore')
+                    ->addOrderBy('p.finishedAt', 'DESC')
+                    //->setParameter('time', $date)
+                    ->setParameter('topScore', $topScore);
+                //return $qb->getQuery()->getResult() != null ? true : false;
+                return $qb->getQuery()->getResult()[0];
+            }
+        }
+        return null;
+    }
+
+    public function getLastWinnerModel($range)
+    {
+        $game = $this->doWeHaveWinner($range);
+
+        if($game) {
+            $model = new WinnerTeamModel();
+            $model->setScore($game->getTeam0Score() . "-" . $game->getTeam1Score());
+
+            if ($game->getTeam0Score() > $game->getTeam1Score()) {
+                if ($game->getTeam0Player0Id()) {
+                    $model->getPlayer1()->setImageUrl($game->getTeam0Player0Id()->getPicture());
+                }
+                if ($game->getTeam0Player1Id()) {
+                    $model->getPlayer2()->setImageUrl($game->getTeam0Player1Id()->getPicture());
+                }
+            } else {
+
+                if ($game->getTeam1Player0Id()) {
+                    $model->getPlayer1()->setImageUrl($game->getTeam1Player0Id()->getPicture());
+                }
+                if ($game->getTeam1Player1Id()) {
+                    $model->getPlayer2()->setImageUrl($game->getTeam1Player1Id()->getPicture());
+                }
+            }
+            return $model;
+        }
+        return null;
     }
 
 
