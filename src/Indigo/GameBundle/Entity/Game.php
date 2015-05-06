@@ -4,19 +4,23 @@ namespace Indigo\GameBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Indigo\ContestBundle\Entity\Contest;
 use Indigo\GameBundle\Repository\GameStatusRepository;
 use Indigo\GameBundle\Repository\GameTypeRepository;
-use Indigo\ContestBundle\Entity\Contest;
 
 /**
  * Game
  *
  * @ORM\Table(name="games")
  * @ORM\Entity(repositoryClass="Indigo\GameBundle\Entity\GameRepository")
- * @ORM\HasLifecycleCallbacks()
+ * @ORM\EntityListeners({"Indigo\GameBundle\EventListener\GamePrePersistListener"})
  */
 class Game
 {
+    const DEFAULT_SCORE = 0;
+    const GAME_WITH_STATS = 1;
+    const GAME_WITHOUT_STATS = 0;
+
     /**
      * @var integer
      *
@@ -50,7 +54,6 @@ class Game
      * @ORM\Column(name="game_time", type="integer", nullable=true, options={"unsigned":true})
      */
     private $gameTimeId;
-
 
     /**
      * @var \Indigo\UserBundle\Entity\User
@@ -130,12 +133,11 @@ class Game
     /**
      * @ORM\ManyToOne(targetEntity="Indigo\ContestBundle\Entity\Contest", inversedBy="games")
      * @ORM\JoinColumn(name="contest_id", referencedColumnName="id")
-
      */
     private $contest;
 
     /**
-     * @ORM\Column(name="contest_id", type="integer", nullable=true, options={"unsigned":true})
+     * @ORM\Column(name="contest_id", type="integer", options={"unsigned":true})
      */
     private $contestId;
 
@@ -159,15 +161,295 @@ class Game
      */
     private $ratings;
 
+    /**
+     * @ORM\Column(name="is_stat", type="smallint", nullable=false, options={"default": 0})
+     */
+    private $isStat;
+
 
     public function __construct()
     {
         $this->ratings = new ArrayCollection();
-        $this->setTeam0Score(0);
-        $this->setTeam1Score(0);
-        $this->setStatus(GameStatusRepository::STATUS_GAME_WAITING);
+
+        $this->setTeam0Score(self::DEFAULT_SCORE);
+        $this->setTeam1Score(self::DEFAULT_SCORE);
+
+        $this->isStat = self::GAME_WITHOUT_STATS;
+
         $this->setMatchType(GameTypeRepository::TYPE_GAME_OPEN);
+        $this->setStatus(GameStatusRepository::STATUS_GAME_WAITING);
     }
+
+    /**
+     * @param $teamPosition
+     * @param $playerPosition
+     * @param $action
+     * @return string
+     */
+    private function TeamAndPlayerMethod($teamPosition, $playerPosition, $action)
+    {
+        return sprintf('%sTeam%uPlayer%uId', $action, $teamPosition, $playerPosition);
+    }
+
+    /**
+     * @param $teamPosition
+     * @param $playerPosition
+     * @param $playerId
+     */
+    public function setPlayer($teamPosition, $playerPosition, $playerId)
+    {
+        $method = $this->TeamAndPlayerMethod($teamPosition, $playerPosition, 'set');
+        $this->$method($playerId);
+    }
+
+    /**
+     * @param $teamPosition
+     * @param $playerPosition
+     * @return mixed
+     */
+    public function getPlayer($teamPosition, $playerPosition)
+    {
+
+        $method = $this->TeamAndPlayerMethod((int) $teamPosition, (int) $playerPosition, 'get');
+
+        $user = $this->$method();
+        if ($user && $user->getId() > 0) {
+
+            return $user;
+        }
+
+        return null;
+    }
+
+    /**
+     * @return \ArrayIterator
+     */
+    public function getAllPlayers()
+    {
+        $players = new \ArrayIterator();
+        for ($teamPosition = 0; $teamPosition <= 1; $teamPosition++) {
+
+            for ($playerPosition = 0; $playerPosition <= 1; $playerPosition++) {
+
+                if ($player = $this->getPlayer($teamPosition, $playerPosition)) {
+                    $players->append($player);
+                }
+            }
+        }
+
+        return $players;
+    }
+
+    public function getPlayersInTeam($teamPosition)
+    {
+        $players = new \ArrayIterator();
+        for ($playerPosition = 0; $playerPosition <= 1; $playerPosition++) {
+
+            if ($player = $this->getPlayer($teamPosition, $playerPosition)) {
+
+                $players->append($player);
+            }
+        }
+
+        return $players;
+    }
+
+    /**
+     * @param $teamPosition
+     * @return int
+     */
+    public function getPlayersCountInTeam($teamPosition)
+    {
+        $players = $this->getPlayersInTeam($teamPosition);
+
+        return $players->count();
+    }
+
+    /**
+     * @return int
+     */
+    public function getPlayersCount()
+    {
+        return $this->getPlayersCountInTeam(0) + $this->getPlayersCountInTeam(1);
+    }
+
+    /**
+     * @param $playerId
+     * @return bool
+     */
+    public function isPlayerInThisGame($playerId)
+    {
+        for ($teamPosition=0; $teamPosition <= 1; $teamPosition++) {
+
+            for ($playerPosition=0; $playerPosition <= 1; $playerPosition++) {
+
+                if ($user = $this->getPlayer($teamPosition, $playerPosition)) {
+
+                    if ($user->getId() == (int)$playerId) {
+
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param $teamPosition
+     * @param Team $team
+     * @return $this
+     */
+    public function setTeam($teamPosition, Team $team)
+    {
+        if ($teamPosition) {
+
+            $this->setTeam1($team);
+        }
+        else {
+
+            $this->setTeam0($team);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param $teamPosition
+     * @return Team
+     */
+    public function getTeam($teamPosition)
+    {
+        if ($teamPosition) {
+
+            return $this->getTeam1();
+        }
+
+        return $this->getTeam0();
+    }
+
+    /**
+     * @param $teamPosition
+     * @return $this
+     */
+    public function addTeamScore($teamPosition)
+    {
+        if ((int) $teamPosition) {
+            $this->setTeam1Score($this->getTeam1Score() + 1);
+        } else {
+            $this->setTeam0Score($this->getTeam0Score() + 1);
+        }
+        return $this;
+    }
+
+    /**
+     * @param $teamPosition
+     * @return int
+     */
+    public function getTeamScore($teamPosition)
+    {
+        if ((int) $teamPosition) {
+            return $this->getTeam1Score();
+        }
+        return $this->getTeam0Score();
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasBothTeamsAllPlayers()
+    {
+        return (bool)(($this->getPlayersCount()) == 4);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInGameBothTeams()
+    {
+        return (bool)($this->getPlayersCountInTeam(0) > 0 && $this->getPlayersCountInTeam(1) > 0);
+    }
+
+    /**
+     * Turi buti bent du zaidejai
+     *
+     * @return bool
+     */
+    public function isEvenPlayersCount()
+    {
+        return (bool)($this->isInGameBothTeams() && $this->getPlayersCount() % 2 == 0);
+    }
+
+    /**
+     * @return int
+     */
+    public function getWinnerTeamPosition()
+    {
+        if ($this->getTeam0Score() == $this->getTeam1Score()) {
+            return -1;
+        }
+
+        return  ($this->getTeam0Score() > $this->getTeam1Score() ? 0 : 1);
+    }
+    /**
+     * @return bool
+     */
+    public function isGameStatusStarted()
+    {
+        return (bool)($this->getStatus() == GameStatusRepository::STATUS_GAME_STARTED);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isGameStatusFinished()
+    {
+        return (bool)($this->getStatus() == GameStatusRepository::STATUS_GAME_FINISHED);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isGameStatusReady()
+    {
+        return (bool)($this->getStatus() == GameStatusRepository::STATUS_GAME_READY);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isGameStatusWaiting()
+    {
+        return (bool)($this->getStatus() == GameStatusRepository::STATUS_GAME_READY);
+    }
+
+    /**
+     *
+     */
+    public function getDuration()
+    {
+        if ($this->getStatus() == GameStatusRepository::STATUS_GAME_FINISHED) {
+
+            return abs($this->getFinishedAt()->getTimestamp() - $this->getStartedAt()->getTimestamp());
+        }
+    }
+
+    /**
+     * @param Rating $rating
+     */
+    public function addRating(Rating $rating)
+    {
+        $this->ratings->add($rating);
+    }
+
+
+
+
+
+
+
+
 
     /**
      * @return ArrayCollection
@@ -185,31 +467,7 @@ class Game
         $this->ratings = $ratings;
     }
 
-    /**
-     * @param Rating $rating
-     */
-    public function addRating(Rating $rating)
-    {
-        $this->ratings->add($rating);
-    }
 
-    /**
-     * @ORM\PrePersist()
-     */
-    public function prePersist()
-    {
-        if ($this->getStartedAt() === null) {
-            $this->setStartedAt(new \DateTime());
-        }
-
-        if ($this->getMatchType() === null) {
-            $this->setMatchType(GameTypeRepository::TYPE_GAME_OPEN);
-        }
-
-        if ($this->getStatus() === null) {
-            $this->setStatus(GameStatusRepository::STATUS_GAME_WAITING);
-        }
-    }
 
     /**
      * Get id
@@ -442,40 +700,7 @@ class Game
         return $this->team1Score;
     }
 
-    /**
-     * @param $teamPosition
-     * @param Team $team
-     * @return $this
-     */
-    public function setTeam($teamPosition, Team $team)
-    {
-        if ($teamPosition) {
-
-            $this->setTeam1($team);
-        }
-        else {
-
-            $this->setTeam0($team);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param $teamPosition
-     * @return Team
-     */
-    public function getTeam($teamPosition)
-    {
-        if ($teamPosition) {
-
-            return $this->getTeam1();
-        }
-
-        return $this->getTeam0();
-    }
-
-    /**
+     /**
      * @param Team $team0
      * @return $this
      */
@@ -540,35 +765,13 @@ class Game
         return $this->matchType;
     }
 
-    /**
-     * @param $teamPosition
-     * @return $this
-     */
-    public function addTeamScore($teamPosition)
-    {
-        if ((int) $teamPosition) {
-            $this->setTeam1Score($this->getTeam1Score() + 1);
-        } else {
-            $this->setTeam0Score($this->getTeam0Score() + 1);
-        }
-        return $this;
-    }
-
-    public function getTeamScore($teamPosition)
-    {
-        if ((int) $teamPosition) {
-            return $this->getTeam1Score();
-        }
-        return $this->getTeam0Score();
-    }
-
-    /**
+     /**
      * Set contest
      *
      * @param Contest $contest
      * @return Game
      */
-    public function setContest($contest)
+    public function setContest(Contest $contest)
     {
         $this->contest = $contest;
 
@@ -631,45 +834,6 @@ class Game
         return $this->finishedAt;
     }
 
-
-    private function TeamAndPlayerMethod($teamPosition, $playerPosition, $action)
-    {
-        return sprintf('%sTeam%uPlayer%uId', $action, $teamPosition, $playerPosition);
-    }
-    /**
-     * @param $teamPosition
-     * @param $playerPosition
-     * @param $playerId
-     */
-    public function setPlayer($teamPosition, $playerPosition, $playerId)
-    {
-        $method = $this->TeamAndPlayerMethod($teamPosition, $playerPosition, 'set');
-        $this->$method($playerId);
-    }
-
-    /**
-     * @param $playerId
-     * @return bool
-     */
-    public function isPlayerInThisGame($playerId)
-    {
-        for ($teamPosition=0; $teamPosition <= 1; $teamPosition++) {
-
-            for ($playerPosition=0; $playerPosition <= 1; $playerPosition++) {
-
-                if ($user = $this->getPlayer($teamPosition, $playerPosition)) {
-
-                    if ($user->getId() == (int)$playerId) {
-
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
-    }
-
     /**
      * @param $player
      */
@@ -681,131 +845,7 @@ class Game
         $this->setTeam1Player1Id($player);
     }
 
-    /**
-     * @param $teamPosition
-     * @return int
-     */
-    public function getPlayersCountInTeam($teamPosition)
-    {
-        $playersInTeam = 0;
-        for ($playerPosition=0; $playerPosition <= 1; $playerPosition++) {
-
-            $user = $this->getPlayer($teamPosition, $playerPosition);
-            if ($user && $user->getId() > 0 ) {
-
-                $playersInTeam++;
-            }
-        }
-
-        return $playersInTeam;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPlayersCount()
-    {
-        $playersInTeam = 0;
-        for ($teamPosition = 0; $teamPosition <= 1; $teamPosition++) {
-
-            for ($playerPosition = 0; $playerPosition <= 1; $playerPosition++) {
-
-                $user = $this->getPlayer($teamPosition, $playerPosition);
-                if ($user && $user->getId() > 0) {
-
-                    $playersInTeam++;
-                }
-            }
-        }
-
-        return $playersInTeam;
-    }
-
-    /**
-     * @return \ArrayIterator
-     */
-    public function getAllPlayers()
-    {
-        $players = new \ArrayIterator();
-        for ($teamPosition = 0; $teamPosition <= 1; $teamPosition++) {
-
-            for ($playerPosition = 0; $playerPosition <= 1; $playerPosition++) {
-
-                $user = $this->getPlayer($teamPosition, $playerPosition);
-                if ($user && $user->getId() > 0) {
-                    $players->append($user);
-                }
-            }
-        }
-
-        return $players;
-    }
-
-
-
-    /**
-     * @param $teamPosition
-     * @param $playerPosition
-     * @return mixed
-     */
-    public function getPlayer($teamPosition, $playerPosition) {
-
-        $method = $this->TeamAndPlayerMethod((int) $teamPosition, (int) $playerPosition, 'get');
-
-        return $this->$method();
-    }
-
-    /**
-     * @return bool
-     */
-    public function isBothTeamReady() {
-        return (bool)(($this->getPlayersCountInTeam(0) + $this->getPlayersCountInTeam(1)) == 4);
-    }
-
-    /**
-     * @param $team
-     * @return int
-     */
-    public function getMemberCountInTeam ($team)
-    {
-        if ((int)$team == 0) {
-            return  ($this->getTeam0Player0Id() ? 1 : 0) +
-            ($this->getTeam0Player1Id() ? 1 : 0);
-        } else {
-            return  ($this->getTeam1Player0Id() ? 1 : 0) +
-            ($this->getTeam1Player1Id() ? 1 : 0);
-        }
-    }
-
-    /**
-     * @return bool
-     */
-    public function isGameStatusStarted() {
-        return (bool)($this->getStatus() == GameStatusRepository::STATUS_GAME_STARTED);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isGameStatusFinished() {
-        return (bool)($this->getStatus() == GameStatusRepository::STATUS_GAME_FINISHED);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isGameStatusReady() {
-        return (bool)($this->getStatus() == GameStatusRepository::STATUS_GAME_READY);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isGameStatusWaiting() {
-        return (bool)($this->getStatus() == GameStatusRepository::STATUS_GAME_READY);
-    }
-
-    /**
+     /**
      * @return mixed
      */
     public function getContestId()
@@ -836,4 +876,24 @@ class Game
     {
         $this->gameTimeId = $gameTimeId;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getIsStat()
+    {
+        return $this->isStat;
+    }
+
+    /**
+     * @param $isStat
+     * @return $this
+     */
+    public function setIsStat($isStat)
+    {
+        $this->isStat = (int)$isStat;
+        return $this;
+    }
+
+
 }

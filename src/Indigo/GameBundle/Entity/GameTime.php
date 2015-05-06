@@ -75,7 +75,7 @@ class GameTime
     private $contest;
 
     /**
-     * @ORM\Column(name="contest_id", type="integer", nullable=true, options={"unsigned":true})
+     * @ORM\Column(name="contest_id", type="integer", nullable=false, options={"unsigned":true})
      */
     private $contestId;
 
@@ -270,7 +270,7 @@ class GameTime
      * @param Contest $contest
      * @return $this
      */
-    public function setContest($contest)
+    public function setContest(Contest $contest)
     {
         $this->contest = $contest;
         return $this;

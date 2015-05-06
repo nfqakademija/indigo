@@ -4,6 +4,7 @@ namespace Indigo\TableBundle\EventListener;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Indigo\ContestBundle\IndigoContestBundle;
 use Indigo\GameBundle\Entity\Game;
 use Indigo\GameBundle\Entity\GameTime;
 use Indigo\GameBundle\Entity\PlayerTeamRelation;
@@ -179,11 +180,22 @@ class CardSwipeListener
 
                         $gameEntity->setTeam($teamPosition, $teamEntity);
 
-                        if ($gameEntity->isBothTeamReady()) {
+                        if ($gameEntity->hasBothTeamsAllPlayers()) {
 
                             $gameEntity->setStatus(GameStatusRepository::STATUS_GAME_READY);
 
+                            $gameTimeEntity = $gameEntity->getGameTime();
+                            if ($gameTimeEntity !== null) {
 
+                                $contestEntity = $gameTimeEntity->getContest();
+                                /** @var \Indigo\ContestBundle\Entity\Contest $contestEntity */
+                                if (!$contestEntity->isContestOpen()) {
+
+                                    $gameEntity->setMatchType(GameTypeRepository::TYPE_GAME_MATCH);
+                                    $gameEntity->setContest($contestEntity);
+                                    $this->em->persist($gameEntity);
+                                }
+                            }
                         }
                 } else {
 
@@ -199,16 +211,8 @@ class CardSwipeListener
                     if ($gameTimeEntity) {
 
                         $gameTimeEntity->setConfirmed(1);
-                        $contestEntity = $gameTimeEntity->getContest();
-                        if ($contestEntity) {
-
-                            $gameEntity->setMatchType(GameTypeRepository::TYPE_GAME_MATCH);
-                        } else {
-
-                            $gameEntity->setMatchType(GameTypeRepository::TYPE_GAME_OPEN);
-                        }
-                        $gameEntity->setContest($contestEntity);
                         $gameEntity->setGameTime($gameTimeEntity);
+
                         $this->em->persist($gameEntity);
                     } // jei nera rezervuoto laiko, tai ir paliekam NULL
                 }
@@ -382,7 +386,6 @@ class CardSwipeListener
      */
     private function setLastSwipe(TableActionInterface $tableEventModel, $tableStatusEntity)
     {
-
         $tableStatusEntity->setLastSwipedCardId($tableEventModel->getCardId());
         $tableStatusEntity->setLastSwipeTs($tableEventModel->getTimeSec());
         $this->em->persist($tableStatusEntity);

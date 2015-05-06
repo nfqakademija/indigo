@@ -28,16 +28,6 @@ class RatingService
         $this->em = $em;
     }
 
-    /**
-     * @param Game $gameEntity
-     * @return bool
-     */
-    private function isInGameBothTeams(Game $gameEntity)
-    {
-        return (($gameEntity->getTeam0() && $gameEntity->getTeam1() &&
-            $gameEntity->getTeam0()->getId() && $gameEntity->getTeam1()->getId()) ? true : false );
-    }
-
     private function getTeam0WinRatio($score0, $score1)
     {
         if ($score0 > $score1) {
@@ -58,8 +48,9 @@ class RatingService
     public function updateRatings(Game $gameEntity)
     {
 
-        if (!$this->isInGameBothTeams($gameEntity)) {
-            return false;
+        if (! $gameEntity->getIsStat()) {
+
+            return;
         }
 
         $team0WinRatio = $this->getTeam0WinRatio($gameEntity->getTeam0Score(), $gameEntity->getTeam1Score());
@@ -113,7 +104,7 @@ class RatingService
      * @param Game $gameEntity
      * @param Array $ratings
      */
-    public function save(Game $gameEntity, $ratings)
+    private function save(Game $gameEntity, $ratings)
     {
 
         $ratingEntity = new Rating();

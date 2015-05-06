@@ -44,7 +44,6 @@ class RatingCalculatorSubscriber extends Container implements EventSubscriberInt
             /** @var \Indigo\GameBundle\Service\RatingService */
             $this->ratingService->updateRatings($gameEntity);
         }
-
     }
 
     public function setRatingService ($service)

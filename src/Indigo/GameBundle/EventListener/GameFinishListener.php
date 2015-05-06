@@ -42,6 +42,10 @@ class GameFinishListener {
     public function onGameFinishMaxScoreReached(GameFinishEvent $event)
     {
         $gameEntity = $this->closeGame($event);
+        if ($gameEntity->isInGameBothTeams()) {
+
+            $gameEntity->setIsStat(1);
+        }
         $this->em->persist($gameEntity);
 
         $this->em->flush();
@@ -52,10 +56,11 @@ class GameFinishListener {
      */
     public function onGameFinishTimeout(GameFinishEvent $event)
     {
+        print("game finish on timeout\n");
         $gameEntity = $this->closeGame($event);
         $this->em->persist($gameEntity);
-
         $this->em->flush();
+
     }
 
     /**
