@@ -118,17 +118,17 @@
 
                                     <div class="stat-counters bg-green-m no-border-b no-padding text-center">
                                          <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
-                                        <span class="text-bg"><strong>12</strong></span><br>
+                                        <span class="text-bg"><strong>{{ playerStat.wins }}</strong></span><br>
                                          <span class="text-xs">Wins</span>
                                     </div>
 
                                     <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
-                                        <span class="text-bg"><strong>17</strong></span><br>
+                                        <span class="text-bg"><strong>{{ playerStat.losses }}</strong></span><br>
                                          <span class="text-xs">Loses</span>
                                     </div>
 
                                     <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
-                                        <span class="text-bg"><strong>49</strong></span><br>
+                                        <span class="text-bg"><strong>{{ playerStat.totalGames }}</strong></span><br>
                                         <span class="text-xs">Total</span>
                                     </div>
 
@@ -138,12 +138,12 @@
 
                                 <div class="stat-counters bg-green-m no-border-b no-padding text-center">
                                     <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
-                                        <span class="text-bg"><strong>203</strong></span><br>
+                                        <span class="text-bg"><strong>{{ playerStat.scoredGoals }}</strong></span><br>
                                         <span class="text-xs">Goals</span>
                                     </div>
 
                                     <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
-                                        <span class="text-bg"><strong>1056</strong></span><br>
+                                        <span class="text-bg"><strong>{{ playerStat.missedGoals }}</strong></span><br>
                                         <span class="text-xs">Missed</span>
                                     </div>
 
@@ -161,9 +161,9 @@
                             <div class="col-xs-12 col-sm-6 col-md-6">
                                 <div class="stat-panel">
                                     <div class="stat-cell bg-green-sl valign-middle">
-                                        <span class="text-xlg"><strong>4 sec.</strong></span><br>
+                                        <span class="text-xlg"><strong>{{ playerStat.slowestWinGameTs }} sec.</strong></span><br>
                                         <span class="text-bg">Fastest Goal</span><br>
-                                        <span class="text-sm">Wow! This is amazing!</span>
+                                        <span class="text-sm">Wow! This is amazing slowly!</span>
                                     </div> <!-- /.stat-cell -->
                                 </div>
                             </div>
@@ -171,7 +171,7 @@
                             <div class="col-xs-12 col-sm-6 col-md-6">
                                 <div class="stat-panel">
                                     <div class="stat-cell bg-green-sl  valign-middle">
-                                        <span class="text-xlg"><strong>1240</strong></span><br>
+                                        <span class="text-xlg"><strong>{{ playerStat.teamRating }}</strong></span><br>
                                         <span class="text-bg">Team rating</span><br>
                                         <span class="text-sm">You can do better!</span>
                                     </div> <!-- /.stat-cell -->
@@ -188,7 +188,7 @@
                             <div class="col-xs-12 col-sm-6 col-md-6">
                                 <div class="stat-panel">
                                     <div class="stat-cell bg-green-sl  valign-middle">
-                                        <span class="text-xlg"><strong>4 sec.</strong></span><br>
+                                        <span class="text-xlg"><strong>{{ playerStat.fastestWinGameTs }} sec.</strong></span><br>
                                         <span class="text-bg">Fastest win</span><br>
                                         <span class="text-sm">Wow! This is amazing!</span>
                                     </div> <!-- /.stat-cell -->
@@ -198,7 +198,7 @@
                             <div class="col-xs-12 col-sm-6 col-md-6">
                                 <div class="stat-panel">
                                     <div class="stat-cell bg-green-sl  valign-middle">
-                                        <span class="text-xlg"><strong>0.4</strong></span><br>
+                                        <span class="text-xlg"><strong>{{ playerStat.wins/(playerStat.wins + playerStat.losses)|number_format(1, '.', '') | round(1) }}</strong></span><br>
                                         <span class="text-bg"> PoF </span><br>
                                         <span class="text-sm">Probability of winning</span>
                                     </div> <!-- /.stat-cell -->

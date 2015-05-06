@@ -85,13 +85,12 @@ class EventCaptureCommand extends ContainerAwareCommand
         }
 
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $tables = $em->getRepository('IndigoGameBundle:TableStatus')->findAll();
+        $table = $em->getRepository('IndigoGameBundle:TableStatus')->findOneById($tableKey);
 
-        if ($tables !== null) {
+        if ($table !== null) {
 
             $timeoutManager = $this->getContainer()->get('indigo_table.timeout_manager');
-            $timeoutManager->setTables($tables);
-            $timeoutManager->check();
+            $timeoutManager->check($table);
         }
     }
 }

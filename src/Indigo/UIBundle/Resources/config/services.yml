@@ -1,6 +1,7 @@
 parameters:
     indigo_ui.live_view_service.class: Indigo\UIBundle\Services\LiveViewService
     indigo_ui.dashboard_view_service.class: Indigo\UIBundle\Services\DashboardViewService
+    indigo_ui.player_stat_service.class: Indigo\UIBundle\Services\PlayerStatService
 
 services:
     indigo_ui.live_view_service:
@@ -10,5 +11,13 @@ services:
 
     indigo_ui.dashboard_view_service:
       class: %indigo_ui.dashboard_view_service.class%
-      arguments: ["@doctrine.orm.entity_manager"]
+      arguments: ["@doctrine.orm.entity_manager","@indigo_ui.player_stat.service"]
+
+    indigo_ui.player_stat.service:
+      class: %indigo_ui.player_stat_service.class%
+      arguments: ["@doctrine.orm.entity_manager", "@security.token_storage"]
+      calls:
+          - [setLogger, ["@?logger"]]
+      tags:
+        - { name: monolog.logger, channel: ui.dashboard_stats }
 

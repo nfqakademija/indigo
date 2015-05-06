@@ -1,31 +1,36 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: TSU
- * Date: 2015.04.26
- * Time: 23:55
- */
 
 namespace Indigo\UIBundle\Services;
 
 
 use Indigo\UIBundle\Models\DashboardViewModel;
+use Indigo\UIBundle\Models\PlayerStatModel;
 use Indigo\UIBundle\Models\ReservationModel;
 
-class DashboardViewService {
+class DashboardViewService
+{
 
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
     private $em;
+
+    /**
+     * @var PlayerStatService
+     */
+    private $playerStatService;
 
     /**
      * @param \Doctrine\ORM\EntityManager $em
      */
-    function __construct(\Doctrine\ORM\EntityManager $em)
+    function __construct(\Doctrine\ORM\EntityManager $em, PlayerStatService $playerStatService)
     {
         $this->em = $em;
+        $this->playerStatService = $playerStatService;
     }
 
 
-    public function getDashboardViewModel()
+    public function getDashboardViewModel($contestId)
     {
         $tableId = 1;
         $tableStatus = $this->em->getRepository('IndigoGameBundle:TableStatus')->findOneById($tableId);
@@ -69,7 +74,27 @@ class DashboardViewService {
         $model->setNextReservation(new ReservationModel());
         $model->getNextReservation()->setDateStart("2012-02-01 15:00");
 
+        $model->setPlayerStat( $this->getPlayerStat($contestId));
 
         return $model;
+    }
+
+    private function getPlayerStat($contestId)
+    {
+        $playerStat = new PlayerStatModel();
+
+        $stat =  $this->playerStatService->getPlayerContestStat($contestId);
+
+/*        $playerStat->setWins($stat['wins']);
+        $playerStat->setLosses($stat['losses']);
+        $playerStat->setTotalGames(($stat['losses'] + $stat['wins']));
+        $playerStat->setMissedGoals($stat['missed_goals']);
+        $playerStat->setScoredGoals($stat['scored_goals']);
+
+        $playerStat->setTeamRating($stat['team_rating']);
+        $playerStat->setFastestWinGameTs($stat['fastest_win_ts']);
+        $playerStat->setSlowestWinGameTs($stat['slowest_win_ts']);*/
+
+        return $playerStat;
     }
 }

@@ -1,41 +1,20 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: TSU
- * Date: 2015.04.25
- * Time: 14:16
- */
 
 namespace Indigo\UIBundle\Models;
 use JsonSerializable;
 
-class DashboardViewModel implements \JsonSerializable {
-
-    public function __construct()
-    {
-        $this->currentContest = new ContestModel();
-        $this->nextContest = new ContestModel();
-    }
-
+class DashboardViewModel implements \JsonSerializable
+{
     /**
-     * @return array
+     * @var PlayerStatModel
      */
-    public function jsonSerialize() {
-        return [
-            "currentContest" => $this->currentContest,
-            "nextContest" => $this->nextContest,
-            "nextReservation" => $this->nextReservation,
-            "isTableBusy" => $this->isTableBusy,
-            "teamAScore" => $this->teamAScore,
-            "teamBScore" => $this->teamBScore
-        ];
-    }
-
+    private $playerStat;
 
     /**
      * @var ContestModel
      */
     private $currentContest;
+
     /**
      * @var ContestModel
      */
@@ -60,6 +39,46 @@ class DashboardViewModel implements \JsonSerializable {
      * @var boolean
      */
     private $isTableBusy;
+
+    public function __construct()
+    {
+
+        $this->currentContest = new ContestModel();
+        $this->nextContest = new ContestModel();
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+
+        return [
+            "currentContest" => $this->currentContest,
+            "nextContest" => $this->nextContest,
+            "nextReservation" => $this->nextReservation,
+            "isTableBusy" => $this->isTableBusy,
+            "teamAScore" => $this->teamAScore,
+            "teamBScore" => $this->teamBScore,
+            "playerStat" => $this->getPlayerStat()
+        ];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlayerStat()
+    {
+        return $this->playerStat;
+    }
+
+    /**
+     * @param mixed $playerStat
+     */
+    public function setPlayerStat(PlayerStatModel $playerStat)
+    {
+        $this->playerStat = $playerStat;
+    }
 
     /**
      * @return boolean
