@@ -22,7 +22,6 @@ class TimeoutManager
      */
     private $ed;
 
-    private $tables;
 
     public function __construct(EntityManagerInterface $em, EventDispatcherInterface $ed)
     {
@@ -30,15 +29,12 @@ class TimeoutManager
         $this->ed = $ed;
     }
 
-    public function setTables($tables)
-    {
-        $this->tables = $tables;
-    }
 
-    public function check()
+    /**
+     * @param TableStatus $tableStatusEntity
+     */
+    public function check(TableStatus $tableStatusEntity)
     {
-        foreach ($this->tables as $tableStatusEntity) {
-
             /** @var TableStatus $tableStatusEntity */
             if ($tableStatusEntity->hasTimeout())  {
 
@@ -49,9 +45,13 @@ class TimeoutManager
                     $event->setGame($gameEntity);
                     $event->setTableStatus($tableStatusEntity);
                     $this->ed->dispatch(GameEvents::GAME_FINISH_TIMEOUT, $event);
-                }
-            }
-        }
-    }
+                } else {
 
+                    $this->em->persist($tableStatusEntity);
+                    $this->em->flush();
+                }
+
+
+            }
+    }
 }
