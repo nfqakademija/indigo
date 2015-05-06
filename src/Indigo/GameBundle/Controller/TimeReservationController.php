@@ -171,7 +171,7 @@ class TimeReservationController extends Controller
         $contestNumberById = $this->checkingIfContestExist($contestId);
 
          if(!$contestNumberById)
-             $contestId = null;
+             $contestId = 1;
 
         $entity = new GameTime();
         $em = $this->getDoctrine()->getManager();
