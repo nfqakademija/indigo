@@ -535,57 +535,62 @@ html, body {
 }
 
 /* line 512, ../../../sass/main.scss */
+.bg-color-free {
+  background-color: #6f8f00 !important;
+}
+
+/* line 517, ../../../sass/main.scss */
 .bg-color-not-reserved {
   background-color: rgba(44, 44, 47, 0.4);
 }
 
-/* line 517, ../../../sass/main.scss */
+/* line 522, ../../../sass/main.scss */
 .text-xxl {
   font-size: xx-large;
 }
 
-/* line 522, ../../../sass/main.scss */
+/* line 527, ../../../sass/main.scss */
 .text-xl {
   font-size: x-large;
 }
 
-/* line 527, ../../../sass/main.scss */
+/* line 532, ../../../sass/main.scss */
 .text-ul {
   font-size: 250%;
 }
 
-/* line 532, ../../../sass/main.scss */
+/* line 537, ../../../sass/main.scss */
 .text-uxl {
   font-size: 5em;
 }
 
-/* line 537, ../../../sass/main.scss */
+/* line 542, ../../../sass/main.scss */
 .text-uxxl {
   font-size: 10em;
 }
 
-/* line 543, ../../../sass/main.scss */
+/* line 548, ../../../sass/main.scss */
 .title {
   font-size: 5em;
   margin: 10px 0;
 }
 
-/* line 550, ../../../sass/main.scss */
+/* line 555, ../../../sass/main.scss */
 .b-color-selected {
   border-color: rgba(255, 252, 249, 0.4) !important;
 }
 
-/* line 556, ../../../sass/main.scss */
+/* line 561, ../../../sass/main.scss */
 a {
   color: #ffffff;
 }
 
-/* line 560, ../../../sass/main.scss */
+/* line 565, ../../../sass/main.scss */
 a:hover {
   color: #ffffff;
 }
 
-/* line 564, ../../../sass/main.scss */
+/* line 569, ../../../sass/main.scss */
 .medal {
   position: absolute !important;
   top: 0;
@@ -595,21 +600,21 @@ a:hover {
   z-index: 1000;
 }
 
-/* line 574, ../../../sass/main.scss */
+/* line 579, ../../../sass/main.scss */
 .gold-medal-icon {
   background-image: url("../images/gold-medal.png");
   background-repeat: no-repeat;
   background-size: contain;
 }
 
-/* line 579, ../../../sass/main.scss */
+/* line 584, ../../../sass/main.scss */
 .silver-medal-icon {
   background-image: url("../images/silver-medal.png");
   background-repeat: no-repeat;
   background-size: contain;
 }
 
-/* line 584, ../../../sass/main.scss */
+/* line 589, ../../../sass/main.scss */
 .bronze-medal-icon {
   background-image: url("../images/bronze-medal.png");
   background-repeat: no-repeat;
@@ -617,20 +622,20 @@ a:hover {
 }
 
 /*  */
-/* line 591, ../../../sass/main.scss */
+/* line 596, ../../../sass/main.scss */
 .stat-panel {
   background: transparent !important;
   margin-bottom: 4px !important;
 }
 
-/* line 596, ../../../sass/main.scss */
+/* line 601, ../../../sass/main.scss */
 .contest-block {
   height: 300px;
   background-position: bottom;
   background-size: cover;
 }
 
-/* line 602, ../../../sass/main.scss */
+/* line 607, ../../../sass/main.scss */
 .info-box {
   float: right;
   width: 50%;
@@ -644,7 +649,7 @@ a:hover {
   color: white;
 }
 
-/* line 617, ../../../sass/main.scss */
+/* line 622, ../../../sass/main.scss */
 .info-box button,
 .info-box label {
   width: 50%;
@@ -657,23 +662,23 @@ a:hover {
   border: none;
 }
 
-/* line 629, ../../../sass/main.scss */
+/* line 634, ../../../sass/main.scss */
 .info-box label {
   font-weight: normal;
 }
 
-/* line 633, ../../../sass/main.scss */
+/* line 638, ../../../sass/main.scss */
 .info-box button:hover {
   background-color: #4a6100;
 }
 
 @media screen and (max-width: 600px) {
-  /* line 638, ../../../sass/main.scss */
+  /* line 643, ../../../sass/main.scss */
   .info-box {
     width: 98%;
   }
 }
-/* line 643, ../../../sass/main.scss */
+/* line 648, ../../../sass/main.scss */
 .statistic-image {
   position: relative;
   top: 25%;
@@ -682,11 +687,11 @@ a:hover {
   border: solid 3px white;
 }
 
-/* line 652, ../../../sass/main.scss */
+/* line 657, ../../../sass/main.scss */
 .row .no-gutter {
   margin: 10px 0;
 }
-/* line 654, ../../../sass/main.scss */
+/* line 659, ../../../sass/main.scss */
 .row .no-gutter [class*='col-']:not(:first-child),
 .row .no-gutter [class*='col-']:not(:last-child) {
   padding-right: 4px;
@@ -694,7 +699,7 @@ a:hover {
 }
 
 /* override */
-/* line 664, ../../../sass/main.scss */
+/* line 669, ../../../sass/main.scss */
 .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
   position: relative;
   min-height: 1px;
@@ -702,25 +707,26 @@ a:hover {
   padding-right: 2px;
 }
 
-/* line 671, ../../../sass/main.scss */
+/* line 676, ../../../sass/main.scss */
 .row {
   margin-left: -2px;
   margin-right: -2px;
 }
 
 /* Notifications */
-/* line 677, ../../../sass/main.scss */
+/* line 682, ../../../sass/main.scss */
 #not-wrapper {
   display: none;
   position: absolute;
   width: 100%;
+  height: 100%;
   padding: 10%;
   background-color: rgba(0, 0, 0, 0.9);
   z-index: 100;
   text-align: center;
 }
 
-/* line 688, ../../../sass/main.scss */
+/* line 694, ../../../sass/main.scss */
 #not-goal-msg,
 #not-end-msg {
   display: none;
@@ -728,7 +734,7 @@ a:hover {
   margin: auto;
 }
 
-/* line 695, ../../../sass/main.scss */
+/* line 701, ../../../sass/main.scss */
 #info-message {
   position: absolute;
   left: 0;
@@ -736,27 +742,27 @@ a:hover {
   bottom: 20px;
 }
 
-/* line 703, ../../../sass/main.scss */
+/* line 709, ../../../sass/main.scss */
 .bg-semi-we {
   background-color: rgba(255, 255, 255, 0.51);
 }
 
-/* line 708, ../../../sass/main.scss */
+/* line 714, ../../../sass/main.scss */
 #player-images {
   position: relative;
 }
 
-/* line 713, ../../../sass/main.scss */
+/* line 719, ../../../sass/main.scss */
 .btn-contest-select {
   background-color: rgba(19, 19, 19, 0.62);
 }
 
-/* line 719, ../../../sass/main.scss */
+/* line 725, ../../../sass/main.scss */
 .padding-md {
   margin: 5px;
 }
 
-/* line 725, ../../../sass/main.scss */
+/* line 731, ../../../sass/main.scss */
 .fill {
   width: 100%;
   height: 100%;
@@ -764,7 +770,7 @@ a:hover {
 }
 
 /* widget */
-/* line 734, ../../../sass/main.scss */
+/* line 740, ../../../sass/main.scss */
 #widget-container {
   position: absolute;
   left: 50%;
@@ -776,7 +782,7 @@ a:hover {
   border: solid #fc8404 1px;
 }
 
-/* line 746, ../../../sass/main.scss */
+/* line 752, ../../../sass/main.scss */
 #widget-left-bar {
   float: left;
   width: 50%;
@@ -785,7 +791,7 @@ a:hover {
   color: #fc8404;
 }
 
-/* line 755, ../../../sass/main.scss */
+/* line 761, ../../../sass/main.scss */
 #widget-right-bar {
   float: right;
   width: 50%;
@@ -793,7 +799,7 @@ a:hover {
   background-color: #fc8404;
 }
 
-/* line 764, ../../../sass/main.scss */
+/* line 769, ../../../sass/main.scss */
 #widget-score {
   height: 50px;
   display: block;
@@ -804,7 +810,7 @@ a:hover {
   vertical-align: middle;
 }
 
-/* line 775, ../../../sass/main.scss */
+/* line 780, ../../../sass/main.scss */
 #widget-title, #widget-state {
   display: block;
   width: 100%;
@@ -813,7 +819,7 @@ a:hover {
   font-size: larger;
 }
 
-/* line 784, ../../../sass/main.scss */
+/* line 789, ../../../sass/main.scss */
 #widget-state {
   font-size: smaller;
 }
