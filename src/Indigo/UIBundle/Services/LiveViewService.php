@@ -99,7 +99,8 @@ class LiveViewService
             {
                 if($tableStatus->getGame() && ($tableStatus->getGame()->getStatus() == "started" || $tableStatus->getGame()->getStatus() == "waiting" || $tableStatus->getGame()->getStatus() == "ready"))
                 {
-                    $contestEntity = $this->em->getRepository('IndigoContestBundle:Contest')->findOneById($tableStatus->getGame()->getContestId());
+                    $contestEntity = $tableStatus->getGame()->getContest();
+                    //$this->em->getRepository('IndigoContestBundle:Contest')->findOneById($tableStatus->getGame()->getContestId());
 
                     if($contestEntity)
                     {

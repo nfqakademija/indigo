@@ -23,6 +23,9 @@ html, body {
   /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b2b2b2', endColorstr='#131313',GradientType=1 ); }
 
+.clear {
+  background: white !important; }
+
 .dashboard {
   position: relative;
   top: 0;
@@ -519,5 +522,48 @@ a:hover {
   width: 100%;
   height: 100%;
   min-height: 100%; }
+
+/* widget */
+#widget-container {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -90px;
+  margin-top: -25px;
+  width: 180px;
+  height: 50px;
+  border: solid #fc8404 1px; }
+
+#widget-left-bar {
+  float: left;
+  width: 50%;
+  height: 100%;
+  background-color: white;
+  color: #fc8404; }
+
+#widget-right-bar {
+  float: right;
+  width: 50%;
+  height: 100%;
+  background-color: #fc8404; }
+
+#widget-score {
+  height: 50px;
+  display: block;
+  line-height: 50px;
+  font-size: 2em;
+  font-family: Impact;
+  text-align: center;
+  vertical-align: middle; }
+
+#widget-title, #widget-state {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin: 2px 0;
+  font-size: larger; }
+
+#widget-state {
+  font-size: smaller; }
 
 /*# sourceMappingURL=main.css.map */

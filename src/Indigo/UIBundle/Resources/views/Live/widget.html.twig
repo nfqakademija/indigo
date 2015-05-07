@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="{{ asset('bundles/indigomain/css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/indigoui/css/main.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/indigomain/css/pixel-admin.min.css') }}">
+
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="{{ asset('bundles/indigomain/js/pixel-admin.min.js') }}"></script>
+    <script src="{{ asset('bundles/indigomain/js/bootstrap.min.js') }}"></script>
+
+</head>
+
+<script>
+
+    $(document).ready(function()
+    {
+        setInterval(function () {
+
+            var status = $.get( "/live/status/1", function(data) {
+
+                var json = $.parseJSON(data);
+
+                if(json.isBusy)
+                {
+                    $("#widget-state").html("Table is occupied!");
+                }
+                else
+                {
+                    $("#widget-state").html("Table is free!");
+                }
+
+                $("#widget-score").text(json.teamA.goals + " : " + json.teamB.goals);
+
+                if(json.contest)
+                {
+                    $("#widget-title").text(json.contest.title);
+                }
+                else
+                {
+                    $("#widget-title").text("no title");
+
+                }
+
+            });
+
+        },2000);
+
+    });
+
+</script>
+
+
+<body class="clear">
+
+{#{% block content%}#}
+
+    <div id="widget-container">
+            <div id="widget-left-bar">
+                <span id="widget-score"> </span>
+            </div>
+            <div id="widget-right-bar">
+                <span id="widget-title">  </span>
+                <span id="widget-state">  </span>
+            </div>
+    </div>
+
+</body>
+
+</html>
+
+{#{% endblock %}#}
