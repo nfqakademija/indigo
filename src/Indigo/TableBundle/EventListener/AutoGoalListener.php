@@ -96,6 +96,10 @@ class AutoGoalListener
                     // TODO: pakeist i 10
                     if ($gameEntity->getTeamScore($teamPosition) >= $gameEntity->getContest()->getScoreLimit()) {
 
+                        if ($teamWon = $gameEntity->getTeam($teamPosition)) {
+
+                            $gameEntity->setTeamWon($teamWon);
+                        }
                         $event = new GameFinishEvent();
                         $event->setGame($gameEntity);
                         $event->setTableStatus($tableStatusEntity);

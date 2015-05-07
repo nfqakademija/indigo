@@ -20,7 +20,8 @@ class Game
     const DEFAULT_SCORE = 0;
     const GAME_WITH_STATS = 1;
     const GAME_WITHOUT_STATS = 0;
-
+    const STATE_WIN = 1;
+    const STATE_LOSE = 0;
     /**
      * @var integer
      *
@@ -121,6 +122,13 @@ class Game
      * @ORM\JoinColumn(name="team1_id", referencedColumnName="id")
      */
     private $team1;
+
+    /**
+     * @var \Indigo\GameBundle\Entity\Team
+     * @ORM\ManyToOne(targetEntity="Indigo\GameBundle\Entity\Team")
+     * @ORM\JoinColumn(name="team_won", referencedColumnName="id")
+     */
+    private $teamWon;
 
     /**
      * @var string
@@ -894,6 +902,26 @@ class Game
         $this->isStat = (int)$isStat;
         return $this;
     }
+
+    /**
+     * @return Team
+     */
+    public function getTeamWon()
+    {
+        return $this->teamWon;
+    }
+
+    /**
+     * @param $teamWon
+     * @return $this
+     */
+    public function setTeamWon($teamWon)
+    {
+        $this->teamWon = $teamWon;
+        return $this;
+    }
+
+
 
 
 }

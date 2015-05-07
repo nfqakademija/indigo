@@ -8,7 +8,12 @@ class DashboardViewModel implements \JsonSerializable
     /**
      * @var PlayerStatModel
      */
-    private $playerStat;
+    private $playerTeamsStats;
+
+    /**
+     * @var ContestStatModel
+     */
+    private $contestStat;
 
     /**
      * @var ContestModel
@@ -60,24 +65,25 @@ class DashboardViewModel implements \JsonSerializable
             "isTableBusy" => $this->isTableBusy,
             "teamAScore" => $this->teamAScore,
             "teamBScore" => $this->teamBScore,
-            "playerStat" => $this->getPlayerStat()
+            'playerTeamsStat' => $this->getPlayerTeamsStats(),
+            'contestStat' => $this->getContestStat()
         ];
     }
 
     /**
      * @return mixed
      */
-    public function getPlayerStat()
+    public function getPlayerTeamsStats()
     {
-        return $this->playerStat;
+        return $this->playerTeamsStats;
     }
 
     /**
-     * @param mixed $playerStat
+     * @param \ArrayIterator $stats
      */
-    public function setPlayerStat(PlayerStatModel $playerStat)
+    public function setPlayerTeamsStats(\ArrayIterator $stats)
     {
-        $this->playerStat = $playerStat;
+        $this->playerTeamsStats = $stats;
     }
 
     /**
@@ -174,6 +180,22 @@ class DashboardViewModel implements \JsonSerializable
     public function setNextReservation($nextReservation)
     {
         $this->nextReservation = $nextReservation;
+    }
+
+    /**
+     * @return ContestStatModel
+     */
+    public function getContestStat()
+    {
+        return $this->contestStat;
+    }
+
+    /**
+     * @param ContestStatModel $contestStat
+     */
+    public function setContestStat($contestStat)
+    {
+        $this->contestStat = $contestStat;
     }
 
 }

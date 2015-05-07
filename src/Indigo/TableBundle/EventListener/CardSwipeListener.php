@@ -25,7 +25,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class CardSwipeListener
 {
     const DOUBLE_SWIPE_IN = 5;
-    const DOUBLE_SWIPE_MIN_TS = 1;
+    const DOUBLE_SWIPE_MIN_TS = 2;
     const ANONYMOUS_EMAIL_DOMAIN = 'example.com';
     const ANONYMOUS_USERNAME = 'anonymous';
     const ANONYMOUS_PASSWORD = 'incredibly';

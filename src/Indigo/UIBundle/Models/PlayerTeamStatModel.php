@@ -54,15 +54,19 @@ class PlayerTeamStatModel
      */
     private $pWin;
 
+    /**
+     * @var \ArrayIterrator
+     */
+    private $playersPictures;
 
-    public function getProbabilityOfWin ()
+
+    private function updateProbabilityOfWin()
     {
         if ($this->getTotalGames()) {
 
             $this->setPWin( $this->getWins() / $this->getTotalGames());
         }
     }
-
 
     public function addWins()
     {
@@ -85,6 +89,7 @@ class PlayerTeamStatModel
     private function addTotal()
     {
         $this->totalGames++;
+        $this->updateProbabilityOfWin();
     }
 
     public function addScoredGoals($goals)
@@ -107,6 +112,7 @@ class PlayerTeamStatModel
         $this->setSlowestWinGameTs(0);
         $this->setFastestWinGameTs(0);
         $this->setPWin(self::DEFAULT_PWIN);
+        $this->playersPictures = new \ArrayIterator();
     }
 
     public function jsonSerialize()
@@ -160,6 +166,7 @@ class PlayerTeamStatModel
     public function setTotalGames($totalGames)
     {
         $this->totalGames = (int)$totalGames;
+        $this->updateProbabilityOfWin();
     }
 
     /**
@@ -256,6 +263,29 @@ class PlayerTeamStatModel
     public function setPWin($pWin)
     {
         $this->pWin = $pWin;
+    }
+
+    /**
+     * @return \ArrayIterrator
+     */
+    public function getPictures()
+    {
+        return $this->playersPictures;
+    }
+
+    /**
+     * @param $pictures
+     * @return $this
+     */
+    public function setPictures($pictures)
+    {
+        $this->playersPictures = $pictures;
+        return $this;
+    }
+
+    public function addPicture($picture)
+    {
+        $this->playersPictures->append($picture);
     }
 
 

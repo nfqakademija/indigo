@@ -2,6 +2,7 @@ parameters:
     indigo_ui.live_view_service.class: Indigo\UIBundle\Services\LiveViewService
     indigo_ui.dashboard_view_service.class: Indigo\UIBundle\Services\DashboardViewService
     indigo_ui.player_stat_service.class: Indigo\UIBundle\Services\PlayerStatService
+    indigo_ui.contest_stat_service.class: Indigo\UIBundle\Services\ContestStatService
 
 services:
     indigo_ui.live_view_service:
@@ -11,7 +12,7 @@ services:
 
     indigo_ui.dashboard_view_service:
       class: %indigo_ui.dashboard_view_service.class%
-      arguments: ["@doctrine.orm.entity_manager","@indigo_ui.player_stat.service"]
+      arguments: ["@doctrine.orm.entity_manager","@indigo_ui.player_stat.service", "@indigo_ui.contest_stat.service"]
 
     indigo_ui.player_stat.service:
       class: %indigo_ui.player_stat_service.class%
@@ -21,3 +22,10 @@ services:
       tags:
         - { name: monolog.logger, channel: ui.dashboard_stats }
 
+    indigo_ui.contest_stat.service:
+      class: %indigo_ui.contest_stat_service.class%
+      arguments: ["@doctrine.orm.entity_manager"]
+      calls:
+          - [setLogger, ["@?logger"]]
+      tags:
+        - { name: monolog.logger, channel: ui.dashboard_stats }

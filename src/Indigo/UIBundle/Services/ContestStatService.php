@@ -5,7 +5,7 @@ namespace Indigo\UIBundle\Services;
 
 use Indigo\GameBundle\Entity\PlayerTeamRelation;
 use Indigo\GameBundle\Entity\Team;
-use Indigo\GameBundle\Entity\TeamRepository;
+
 use Indigo\GameBundle\Repository\GameStatusRepository;
 use Indigo\UIBundle\Models\PlayerTeamStatModel;
 use Psr\Log\LoggerAwareInterface;
@@ -18,110 +18,98 @@ use Indigo\UserBundle\Entity\User;
 
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class PlayerStatService implements LoggerAwareInterface
+class ContestStatService implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    const STATE_WIN = 1;
-    const STATE_LOSE = 0;
-    const STATE_DRAW = -1;
     /**
      * @var EntityManagerInterface
      */
     private $em;
 
     /**
-     * @var User
-     */
-    private $userEntity;
-
-    /**
-     * @var Game
-     */
-    private $lastGame;
-
-    /**
      * @param EntityManagerInterface $em
      */
-    public function __construct(EntityManagerInterface $em, TokenStorageInterface $userToken)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
-        $this->userEntity = $userToken->getToken()->getUser();
+
     }
 
     public function getStats($contestId)
     {
         $teamsStats = new \ArrayIterator();
 
-        $qb = $this->em->createQuery('SELECT g
-            FROM Indigo\GameBundle\Entity\Game g
-            WHERE
-            (g.team0Player0Id = :player OR g.team0Player1Id = :player OR g.team1Player0Id = :player OR g.team1Player1Id = :player)
-            AND g.contestId = :contest AND g.status = :status AND g.isStat = :isStat
-            ')->setParameters([
-                'player'=> $this->userEntity->getId(),
+        $qb = $this->em->createQueryBuilder()
+            ->select('COUNT(g.teamWon) as wins, IDENTITY(g.teamWon) as teamId')
+            ->from('Indigo\GameBundle\Entity\Game', 'g')
+            ->groupBy('g.teamWon')
+            ->orderBy('wins', 'DESC')
+            ->where('g.teamWon is not NULL AND g.contestId = :contest AND g.status = :status AND g.isStat = :isStat')
+            ->setMaxResults(3)
+            ->setParameters([
                 'contest' => (int)$contestId,
                 'status' => GameStatusRepository::STATUS_GAME_FINISHED,
                 'isStat' => Game::GAME_WITH_STATS
                 ]);
 
-        $games = $qb->getResult();
+        $games = $qb->getQuery()->getResult();
 
         foreach ($games as $game) {
 
-            /** @var Game $game */
-            $teamEntity = $this->getTeam($game);
-            $teamId = $teamEntity->getId();
-            //$teamsStat
-
-            if (!$teamsStats->offsetExists($teamId)) {
-
-                $teamsStats->offsetSet($teamId,  $this->prepareStatModel($game, $teamEntity));
-            }
-            /** @var PlayerTeamStatModel $teamStat */
-            $teamStat = $teamsStats->offsetGet($teamId);
-            switch ($this->isGameWon($game)) {
-
-                case self::STATE_WIN:
-                    $teamStat->setFastestWinGameTs($this->getFasterGameDuration($teamStat->getFastestWinGameTs(), $game));
-                    $teamStat->setSlowestWinGameTs($this->getSlowerGameDuration($teamStat->getSlowestWinGameTs(), $game));
-                    $teamStat->addWins();
-                    break;
-
-                case self::STATE_LOSE:
-                    $teamStat->addLosses();
-                    break;
-            }
-
-            $teamStat->addScoredGoals($this->getScoredGoals($game));
-            $teamStat->addMissedGoals($this->getMissedGoals($game));
+//            /** @var Game $game */
+//            $team0 = $game->getTeam(0);
+//            $team1 = $game->getTeam(0);
+//            $teamId = $teamEntity->getId();
+//
+//            if (!$teamsStats->offsetExists($teamId)) {
+//
+//                $teamsStats->offsetSet($teamId,  $this->prepareStatModel($game, $teamEntity));
+//            }
+//            /** @var PlayerTeamStatModel $teamStat */
+//            $teamStat = $teamsStats->offsetGet($teamId);
+//            switch ($this->isGameWon($game)) {
+//
+//                case self::STATE_WIN:
+//                    $teamStat->setFastestWinGameTs($this->getFasterGameDuration($teamStat->getFastestWinGameTs(), $game));
+//                    $teamStat->setSlowestWinGameTs($this->getSlowerGameDuration($teamStat->getSlowestWinGameTs(), $game));
+//                    $teamStat->addWins();
+//                    break;
+//
+//                case self::STATE_LOSE:
+//                    $teamStat->addLosses();
+//                    break;
+//            }
+//
+//            $teamStat->addScoredGoals($this->getScoredGoals($game));
+//            $teamStat->addMissedGoals($this->getMissedGoals($game));
         }
 
-        if ($teamsStats->count()) {
-
-            $teamsStats->uasort(array($this,'sortByWins'));
-        } else {
-
-            $qb = $this->em->createQuery('SELECT t
-            FROM Indigo\GameBundle\Entity\Team t
-            LEFT JOIN Indigo\GameBundle\Entity\PlayerTeamRelation pt
-            WITH (t.id = pt.teamId)
-            WHERE t.isSingle = :isSingle AND pt.player = :player
-            ')->setParameters([
-                    'player'=> $this->userEntity->getId(),
-                    'isSingle' => 1
-                ]);
-
-            try {
-
-                /** @var Team $singleTeam */
-                $singleTeam = $qb->getSingleResult();
-                $teamsStats->offsetSet($singleTeam->getId(), $this->prepareSinglePlayerStatModel($contestId, $singleTeam));
-            } catch (NoResultException $e) {
-
-                $this->logger && $this->logger->error('player has no single team!', $e);
-            }
-        }
+//        if ($teamsStats->count()) {
+//
+//            $teamsStats->uasort(array($this,'sortByWins'));
+//        } else {
+//
+//            $qb = $this->em->createQuery('SELECT t
+//            FROM Indigo\GameBundle\Entity\Team t
+//            LEFT JOIN Indigo\GameBundle\Entity\PlayerTeamRelation pt
+//            WITH (t.id = pt.teamId)
+//            WHERE t.isSingle = :isSingle AND pt.player = :player
+//            ')->setParameters([
+//                    'player'=> $this->userEntity->getId(),
+//                    'isSingle' => 1
+//                ]);
+//
+//            try {
+//
+//                /** @var Team $singleTeam */
+//                $singleTeam = $qb->getSingleResult();
+//                $teamsStats->offsetSet($singleTeam->getId(), $this->prepareSinglePlayerStatModel($contestId, $singleTeam));
+//            } catch (NoResultException $e) {
+//
+//                $this->logger && $this->logger->error('player has no single team!', $e);
+//            }
+//        }
         return $teamsStats;
     }
 
