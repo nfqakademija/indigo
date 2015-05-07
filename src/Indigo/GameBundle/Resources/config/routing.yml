@@ -3,21 +3,21 @@ indigo_game_homepage:
     defaults: { _controller: IndigoGameBundle:Default:index }
 
 indigo_time_reservation:
-    path:     /time_reservation/{contest_id}
-    defaults: { _controller: IndigoGameBundle:TimeReservation:index }
+    path:     /time_reservation/{contest_id}/{timestamp}
+    defaults: { _controller: IndigoGameBundle:TimeReservation:index, timestamp: 0}
 
 indigo_get_list_of_dates:
-    path:     /time_reservation/get_list_of_dates/{contest_id}
-    defaults: { _controller: IndigoGameBundle:TimeReservation:getListOfDates }
+    path:     /time_reservation/get_list_of_dates/{contest_id}/{timestamp}
+    defaults: { _controller: IndigoGameBundle:TimeReservation:getListOfDates, timestamp: 0 }
 
 indigo_insert_data_after_time_click:
-    path:     /time_reservation/insert_data_after_time_click/{contest_id}
-    defaults: { _controller: IndigoGameBundle:TimeReservation:insertDataAfterTimeClick }
+    path:     /time_reservation/insert_data_after_time_click/{contest_id}/{timestamp}
+    defaults: { _controller: IndigoGameBundle:TimeReservation:insertDataAfterTimeClick, timestamp: 0 }
 
 indigo_change_action_of_reservation:
-    path:     /time_reservation/change_action_of_reservation/{contest_id}
-    defaults: { _controller: IndigoGameBundle:TimeReservation:changeActionOfReservation }
+    path:     /time_reservation/change_action_of_reservation/{contest_id}/{timestamp}
+    defaults: { _controller: IndigoGameBundle:TimeReservation:changeActionOfReservation, timestamp: 0 }
 
 indigo_get_last_time_cell_date:
-    path:     /time_reservation/get_last_time_cell_date/{contest_id}
-    defaults: { _controller: IndigoGameBundle:TimeReservation:getLastTimeCellDate }
+    path:     /time_reservation/get_last_time_cell_date/{contest_id}/{timestamp}
+    defaults: { _controller: IndigoGameBundle:TimeReservation:getLastTimeCellDate, timestamp: 0 }

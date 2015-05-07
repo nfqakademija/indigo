@@ -17,7 +17,8 @@ class TimeReservationController extends Controller
     /**
      * @Template("IndigoGameBundle:TimeReservation:index.html.twig")
      */
-    public function indexAction($contest_id){
+    public function indexAction($contest_id, $timestamp)
+    {
         $entity = new GameTime();
 
         $form = $this->createFormBuilder($entity)
@@ -29,7 +30,7 @@ class TimeReservationController extends Controller
                     'placeholder' => 'Pasirinkite jums tinkamą laiką'
                 ]
             ])
-            ->add('submit', 'button',[
+            ->add('submit', 'button', [
                     'attr' => [
                         'class' => 'btn btn-success col-sm-12'
                     ]
@@ -37,10 +38,28 @@ class TimeReservationController extends Controller
             )
             ->getForm();
 
+        $datePickerForm = $this->createFormBuilder()
+            ->add('reservationDate', 'datetime', [
+                'label' => false,
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'required' => true,
+                'attr' => [
+                    'class' => 'input-group date',
+                ],
+                'html5' => false
+            ])
+            ->getForm();
+
+        if (!$timestamp || $timestamp < strtotime(date('Y-m-d H:i:s')))
+            $timestamp = strtotime(date('Y-m-d H:i:s'));
+
         return array(
             'contest_id' => $contest_id,
+            'timestampPagination' => $timestamp,
             'user_id' => $this->getUser()->getId(),
             'form' => $form->createView(),
+            'datePickerForm' => $datePickerForm->createView()
         );
     }
 
