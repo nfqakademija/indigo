@@ -11,6 +11,7 @@
     {{ form_row(edit_form.image) }}
     {{ form_row(edit_form.tableName) }}
     {{ form_row(edit_form.contestType) }}
+    {{ form_row(edit_form.scoreLimit, {'attr' : {'data-slider-value' : entity.scoreLimit }}) }}
     <div class="form-group">
         <label class="col-sm-2 control-label required">{{ 'period'|trans }}</label>
         <div class="col-sm-10">

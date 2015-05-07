@@ -4,6 +4,7 @@ namespace Indigo\GameBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Indigo\ContestBundle\Entity\Contest;
 
 /**
  * GameTime
@@ -84,6 +85,7 @@ class GameTime
     public function __construct()
     {
         $this->games = new ArrayCollection();
+        $this->insertionTime = new \DateTime();
     }
 
     /**

@@ -62,7 +62,7 @@ class ContestController extends Controller
 
         $this->setImageUrlGlobal("");
         $this->setPrizeImageUrlGlobal("");
-
+        
         return array(
             'entity' => $entity,
             'form' => $form->createView()

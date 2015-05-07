@@ -165,35 +165,37 @@ class TimeReservationController extends Controller
 
     /**
      * @param $fullDate
+     * @param $contestId
+     * @param $playerId
+     * @return bool
      */
     private function createGameTime($fullDate, $contestId, $playerId)
     {
-        $contestNumberById = $this->checkingIfContestExist($contestId);
+        $contest = $this->checkingIfContestExist($contestId);
 
-         if(!$contestNumberById)
-             $contestId = 1;
+         if(!$contest) {
+             return false;
+         }
 
         $entity = new GameTime();
         $em = $this->getDoctrine()->getManager();
         $entity->setConfirmed(0);
         $entity->setTimeOwner($playerId);
         $entity->setStartAtAndFinishAt($fullDate);
-        $entity->setContestId($contestId);
-        $entity->setInsertionTime(date("Y-m-d H:i:s"));
+        $entity->setContest($contest);
         $em->persist($entity);
         $em->flush();
     }
 
+    /**
+     * @param $contestId
+     * @return Contest
+     */
     private function checkingIfContestExist($contestId){
         $em = $this->getDoctrine()->getManager();
-        $query = $em->createQuery(
-            "SELECT COUNT(cd.id) FROM Indigo\ContestBundle\Entity\Contest cd WHERE cd.id = :contestId"
-        );
-        $query->setParameter('contestId', $contestId);
+        $contest = $em->getRepository('IndigoContestBundle:Contest')->findOneBy(['id' => $contestId]);
 
-        $return = $query->getSingleScalarResult();
-
-        return $return;
+        return $contest;
     }
 
     public function getLastTimeCellDateAction(){

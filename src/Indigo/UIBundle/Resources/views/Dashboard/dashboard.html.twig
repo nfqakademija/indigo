@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -198,9 +199,11 @@
                             <div class="col-xs-12 col-sm-6 col-md-6">
                                 <div class="stat-panel">
                                     <div class="stat-cell bg-green-sl  valign-middle">
+                                        {% if playerStat.totalGames > 0  %}
                                         <span class="text-xlg"><strong>{{ playerStat.wins/(playerStat.wins + playerStat.losses)|number_format(1, '.', '') | round(1) }}</strong></span><br>
                                         <span class="text-bg"> PoF </span><br>
                                         <span class="text-sm">Probability of winning</span>
+                                        {% endif %}
                                     </div> <!-- /.stat-cell -->
                                 </div>
                             </div>

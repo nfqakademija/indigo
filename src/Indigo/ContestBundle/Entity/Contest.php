@@ -135,7 +135,6 @@ class Contest
     /**
      * @var string
      *
-     * @Assert\NotBlank(groups={"Default"})
      * @ORM\Column(name="prize", type="string", length=50, nullable=true)
      */
     private $prize;
