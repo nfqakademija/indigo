@@ -3,9 +3,10 @@
 namespace Indigo\UserBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Indigo\GameBundle\Entity\Team;
 use Indigo\UserBundle\Entity\Role;
 use Indigo\UserBundle\Entity\User;
-use Symfony\Component\Form\Form;
+
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 class Registration
@@ -18,13 +19,16 @@ class Registration
      */
     private $ef;
 
+    private $tService;
+
     /**
      * @param EntityManagerInterface $em
      */
-    public function __construct (EntityManagerInterface $em, EncoderFactoryInterface $ef)
+    public function __construct (EntityManagerInterface $em, EncoderFactoryInterface $ef, TeamCreateService $tService)
     {
         $this->em = $em;
         $this->ef = $ef;
+        $this->tService = $tService;
     }
 
     public function  register(User $userEntity)
@@ -35,6 +39,7 @@ class Registration
         $encoded = $encoder->encodePassword($userEntity->getPassword(), $userEntity->getSalt());
         $userEntity->setPassword($encoded);
 
+        $userEntity->addTeam($this->tService->createSinglePlayerTeam($userEntity));
         $this->setRoles($userEntity);
 
         $this->em->persist($userEntity);

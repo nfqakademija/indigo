@@ -29,8 +29,6 @@ class CardSwipeListener
     const ANONYMOUS_EMAIL_DOMAIN = 'example.com';
     const ANONYMOUS_USERNAME = 'anonymous';
     const ANONYMOUS_PASSWORD = 'incredibly';
-    const SINGLE_PLAYER_TEAM_NAME = 'singlePlayerTeam';
-    const MULTI_PLAYER_TEAM_NAME = 'multiPlayerTeam';
 
     /**
      * @var EntityManager
@@ -171,7 +169,7 @@ class CardSwipeListener
                         $commonTeamId = $this->em->getRepository('IndigoGameBundle:PlayerTeamRelation')->getPlayersCommonTeam($player0, $player1);
                         if (!$commonTeamId) {
 
-                            $teamEntity = $this->createMultiPlayerTeam($player0, $player1, self::MULTI_PLAYER_TEAM_NAME);
+                            $teamEntity = $this->createMultiPlayerTeam($player0, $player1, Team::MULTI_PLAYER_TEAM_NAME);
                             $this->em->flush();
                         } else {
 
@@ -370,11 +368,11 @@ class CardSwipeListener
             // automatiskai priregistruojam anonimini useri
 
             $playerEntity = $this->createPlayer($cardId);
-            $this->createSinglePlayerTeam($playerEntity, self::SINGLE_PLAYER_TEAM_NAME);
+            $this->createSinglePlayerTeam($playerEntity, Team::SINGLE_PLAYER_TEAM_NAME);
             $this->em->flush();
         } elseif ($playerEntity->getTeams()->count() == 0) {
 
-            $this->createSinglePlayerTeam($playerEntity, self::SINGLE_PLAYER_TEAM_NAME);
+            $this->createSinglePlayerTeam($playerEntity, Team::SINGLE_PLAYER_TEAM_NAME);
             $this->em->flush();
         }
         return $playerEntity;

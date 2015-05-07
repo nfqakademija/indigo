@@ -13,6 +13,9 @@ use Indigo\ContestBundle\Entity\Contest;
  */
 class Team
 {
+    const SINGLE_PLAYER_TEAM_NAME = 'singlePlayerTeam';
+    const MULTI_PLAYER_TEAM_NAME = 'multiPlayerTeam';
+
     /**
      * @var integer
      *

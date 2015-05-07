@@ -72,7 +72,7 @@
                             <span class="text-xlg">{{ currentContest.title }} </span></br>
                             <span class="text-bg"> {{ currentContest.dateFrom }} - {{ currentContest.dateTo }} </span></br></br>
                             <span class="text-lg"> {{ currentContest.description }} </span></br>
-                            <button class="bg-green-m"> Table reservation </button>
+                            <a href="{{ url('indigo_time_reservation',{contest_id:1}) }}" class="bg-green-m"> Table reservation </a>
                         </div>
                     </div>
                 </div>

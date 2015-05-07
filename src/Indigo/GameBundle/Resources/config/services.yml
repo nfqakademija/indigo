@@ -1,6 +1,8 @@
 parameters:
     indigo_game.game_finish_listener.class: Indigo\GameBundle\EventListener\GameFinishListener
     game.rating_calculator.class: Indigo\GameBundle\Service\RatingService
+
+
 services:
     game.finish.listener:
       class: %indigo_game.game_finish_listener.class%
@@ -9,11 +11,6 @@ services:
           - { name: kernel.event_listener, event: indigo_game.finish_on_double_swipe, method: onGameFinishDoubleSwipe }
           - { name: kernel.event_listener, event: indigo_game.finish_on_score, method: onGameFinishMaxScoreReached }
           - { name: kernel.event_listener, event: indigo_game.finish_on_timeout, method: onGameFinishTimeout }
-#          - { name: kernel.event_listener, event: indigo_game.calculate_ratings, method: onRatingsCalculate }
-#   indigo_game.example:
-#        class: Indigo\GameBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
-
 
     indigo_game.rating:
       class: %game.rating_calculator.class%
@@ -26,3 +23,4 @@ services:
             - [ setRatingService, ["@indigo_game.rating"] ]
         tags:
             - { name: kernel.event_subscriber }
+

@@ -63,14 +63,14 @@ class ApiManager implements LoggerAwareInterface
      */
     public function getEvents($tableKey, array $query, $tryTestOnFailure = false)
     {
-
+/*
         if ($eventsJSON = $this->getDemoData()) {
 
             $eventList = $this->parseResponseData($eventsJSON);
             $eventList->setTableId(-1); // virtual table
 
             return $eventList;
-        }
+        }*/
 
         try {
             $table = $this->getTable($tableKey);

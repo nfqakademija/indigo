@@ -119,7 +119,7 @@ class PlayerStatService implements LoggerAwareInterface
                 $teamsStats->offsetSet($singleTeam->getId(), $this->prepareSinglePlayerStatModel($contestId, $singleTeam));
             } catch (NoResultException $e) {
 
-                $this->logger && $this->logger->error('player has no single team!', $e);
+                $this->logger && $this->logger->error('player has no single team!'. $e->getMessage());
             }
         }
         return $teamsStats;

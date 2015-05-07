@@ -25,4 +25,10 @@ services:
 
     indigo_user.registration.service:
             class: %indigo_user.registration.service.class%
-            arguments: ["@doctrine.orm.entity_manager", "@security.encoder_factory"]
+            arguments: ["@doctrine.orm.entity_manager", "@security.encoder_factory","@indigo_user.new_team.service"]
+
+
+    indigo_user.new_team.service:
+      class: Indigo\UserBundle\Service\TeamCreateService
+      arguments: ["@doctrine.orm.entity_manager"]
+
