@@ -50,7 +50,7 @@ smart_table: Smart table
 
 #TimeReservation
 time_reservation: Time reservatuin
-  time_reservation.not_selected: You haven't selected reservation time
+time_reservation.not_selected: You haven't selected reservation time
 time_reservation.table_reserved: Table already reserved
 time_reservation.reserving_this_moment: Another player reserving this date. At the moment you can't choose it
 time_reservation.time_passed: You can't reserve this date anymore

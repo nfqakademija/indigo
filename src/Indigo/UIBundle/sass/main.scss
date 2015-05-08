@@ -5,26 +5,21 @@ html, body {
   min-height: 100%;
   height: 100%;
   @include base-font();
-  @include bg-grad();
+  //@include bg-grad();
 }
 
-.clear
-{
-  background: white !important;
-}
-
-.dashboard {
+#wrapper {
   position: relative;
-  @include fill();
-
+  min-width: 100%;
+  min-height: 100%;
   background-color: $bg-color;
   background-image: url($bg-pattern-img);
   background-repeat: repeat;
 }
 
-.container-fluid
+.clear
 {
-
+  background: white !important;
 }
 
 .title{
@@ -487,6 +482,16 @@ html, body {
 .bg-blue-d
 {
   background-color: $color-blue-d;
+}
+
+.bg-white
+{
+  background-color: white;
+}
+
+.text-gray-d
+{
+  color: #272d2f;
 }
 
 .font-blue-l

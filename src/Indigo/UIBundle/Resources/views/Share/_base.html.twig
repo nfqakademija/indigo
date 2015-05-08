@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block head %}
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <link rel="stylesheet" href="{{ asset('bundles/indigomain/css/bootstrap.min.css') }}" />
+        <link rel="stylesheet" href="{{ asset('bundles/indigoui/css/main.css') }}" />
+        <link rel="stylesheet" href="{{ asset('bundles/indigomain/css/pixel-admin.min.css') }}">
+
+        <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+        <script src="{{ asset('bundles/indigomain/js/pixel-admin.min.js') }}"></script>
+        <script src="{{ asset('bundles/indigomain/js/bootstrap.min.js') }}"></script>
+
+        <title>{% block title %}{% endblock %} Indigo </title>
+    {% endblock %}
+</head>
+<body>
+
+<div id="wrapper">
+
+
+<div id="footer">
+
+    <div class="container-fluid">
+        <div class="row padding-sm valign-middle">
+            <div class=" col-sm-6 col-md-4 col-lg-4 col-sm-offset-2 col-md-offset-2 col-lg-offset-2">
+                <img src="{{ asset('bundles/indigoui/images/bilas.png') }}" class="img-circle icon-sm border-wide icon-narrow">
+
+                <div class="btn-group btn-group-lg" style="left: 10px;">
+                    <button type="button" class="btn btn-contest-select">Open league</button>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-contest-select dropdown-toggle" data-toggle="dropdown">Dropdown&nbsp;<i class="fa fa-caret-down"></i></button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">NFQ contest</a></li>
+                            <li><a href="#">Speed contest</a></li>
+                            <li><a href="#">Speed contest</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="col-sm-2 col-md-3 col-lg-1 col-lg-offset-1" style="text-align: center">
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="content">{% block content %}{% endblock %}</div>
+<div id="footer">
+    {% block footer %}
+        </br>Indigo team.
+    {% endblock %}
+</div>
+
+</div>
+{% block style %} {% endblock %}
+{% block script %} {% endblock %}
+
+</body>
+</html>
