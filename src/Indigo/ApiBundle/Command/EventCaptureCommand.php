@@ -2,6 +2,7 @@
 
 namespace Indigo\ApiBundle\Command;
 
+use Indigo\GameBundle\Entity\TableStatus;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,6 +32,7 @@ class EventCaptureCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+
         $tableKey = 1;
         $query = ['rows' => $input->getArgument('rows')];
         if ($input->getArgument('from-id') == 'last') {
@@ -40,6 +42,7 @@ class EventCaptureCommand extends ContainerAwareCommand
             $er = $em->getRepository('IndigoGameBundle:TableStatus');
             $tableStatus = $er->findOneByTableId($tableKey);
 
+            /** @var TableStatus $tableStatus */
             if ($tableStatus !== null) {
 
                 $query['from-id'] = $tableStatus->getLastApiRecordId();
@@ -61,7 +64,6 @@ class EventCaptureCommand extends ContainerAwareCommand
         $manager = $this->getContainer()->get('indigo_api.connection_manager');
 
         try {
-            $isDevEnv = ($this->getContainer()->getParameter('kernel.environment') == 'dev');
 
             $eventList = $manager->getEvents(
                 $tableKey,
@@ -87,10 +89,10 @@ class EventCaptureCommand extends ContainerAwareCommand
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
         $table = $em->getRepository('IndigoGameBundle:TableStatus')->findOneById($tableKey);
 
-//        if ($table !== null) {
-//
-//            $timeoutManager = $this->getContainer()->get('indigo_table.timeout_manager');
-//            $timeoutManager->check($table);
-//        }
+        if ($table !== null) {
+
+            $timeoutManager = $this->getContainer()->get('indigo_table.timeout_manager');
+            $timeoutManager->check($table);
+        }
     }
 }
