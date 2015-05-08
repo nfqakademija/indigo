@@ -304,13 +304,12 @@ class CardSwipeListener
             // automatiskai priregistruojam anonimini useri
 
             $playerEntity = $this->createPlayer($cardId);
-            $this->createSinglePlayerTeam($playerEntity, Team::SINGLE_PLAYER_TEAM_NAME);
-            $this->em->flush();
+            $this->teamCreateService->createSinglePlayerTeam($playerEntity);
         } elseif ($playerEntity->getTeams()->count() == 0) {
 
-            $this->createSinglePlayerTeam($playerEntity, Team::SINGLE_PLAYER_TEAM_NAME);
-            $this->em->flush();
+            $this->teamCreateService->createSinglePlayerTeam($playerEntity);
         }
+        $this->em->flush();
         return $playerEntity;
     }
 
