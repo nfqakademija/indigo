@@ -1,8 +1,9 @@
-{% extends "IndigoMainBundle:Pixel:base.html.twig" %}
+{% extends "IndigoMainBundle:Pixel:pvz.html.twig" %}
 
 {% block title %}{{ 'time_reservation'|trans }}{% endblock %}
 
 {% block stylesheets %}
+    {{ parent() }}
     <link href="{{ asset('bundles/indigomain/bower_components/eternicode-bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" type="text/css"/>
     <style>
         #timeReservationTable tr td{
