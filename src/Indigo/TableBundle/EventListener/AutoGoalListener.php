@@ -94,13 +94,17 @@ class AutoGoalListener
 
                     $gameEntity->addTeamScore($teamPosition);
                     // TODO: pakeist i 10
-                    if ($gameEntity->getTeamScore($teamPosition) >= self::MAX_SCORES) {
+                    if ($gameEntity->getTeamScore($teamPosition) >= $gameEntity->getContest()->getScoreLimit()) {
 
+                        if ($teamWon = $gameEntity->getTeam($teamPosition)) {
+
+                            $gameEntity->setTeamWon($teamWon);
+                        }
                         $event = new GameFinishEvent();
                         $event->setGame($gameEntity);
                         $event->setTableStatus($tableStatusEntity);
                         $this->ed->dispatch(GameEvents::GAME_FINISH_ON_SCORE, $event);
-                        printf("-------------------- dublicate GAME(on scoreFINISH: %u) ----------------- \n", self::MAX_SCORES);
+                        printf("-------------------- dublicate GAME(on scoreFINISH: %u) ----------------- \n", $gameEntity->getContest()->getScoreLimit());
 
                         $newGameEntity = new Game();
 

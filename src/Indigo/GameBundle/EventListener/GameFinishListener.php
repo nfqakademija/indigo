@@ -5,6 +5,7 @@ namespace Indigo\GameBundle\EventListener;
 use Doctrine\ORM\EntityManagerInterface;
 use Indigo\GameBundle\Event\GameFinishEvent;
 use Indigo\GameBundle\Repository\GameStatusRepository;
+use Indigo\GameBundle\Repository\GameTypeRepository;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -42,6 +43,16 @@ class GameFinishListener {
     public function onGameFinishMaxScoreReached(GameFinishEvent $event)
     {
         $gameEntity = $this->closeGame($event);
+        if ($gameEntity->isInGameBothTeams()) {
+
+            if ($gameEntity->getMatchType() == GameTypeRepository::TYPE_GAME_MATCH
+                && !$gameEntity->isEvenPlayersCount()) {
+
+            } else {
+
+                $gameEntity->setIsStat(1);
+            }
+        }
         $this->em->persist($gameEntity);
 
         $this->em->flush();
@@ -52,10 +63,11 @@ class GameFinishListener {
      */
     public function onGameFinishTimeout(GameFinishEvent $event)
     {
+        print("game finish on timeout\n");
         $gameEntity = $this->closeGame($event);
         $this->em->persist($gameEntity);
-
         $this->em->flush();
+
     }
 
     /**

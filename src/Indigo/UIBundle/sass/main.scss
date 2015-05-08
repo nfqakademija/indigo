@@ -1,36 +1,29 @@
 
 @import "base";
 
-body {
+html, body {
   min-height: 100%;
   height: 100%;
   @include base-font();
-  @include bg-grad();
+  //@include bg-grad();
 }
 
-.dashboard {
+#wrapper {
   position: relative;
-  @include fill();
-
+  min-width: 100%;
+  min-height: 100%;
   background-color: $bg-color;
   background-image: url($bg-pattern-img);
   background-repeat: repeat;
 }
 
-.container-fluid
+.clear
 {
-
+  background: white !important;
 }
 
 .title{
   padding-bottom: 30px;
-}
-
-/* Field style */
-
-.field
-{
-  position: relative;
 }
 
 .table-status
@@ -42,7 +35,7 @@ body {
   margin: 2px 0;
 
   color: $color-silver-l;
-  font-size: 2.5em;
+  font-size: 2em;
   line-height: 40px;
 
   @include border-radius(2px)
@@ -50,7 +43,7 @@ body {
 
 .busy
 {
-  color: $color-red-l;
+  color: $color-orange-l;
 }
 
 .score
@@ -60,11 +53,19 @@ body {
   min-width: 100px;
   width: 12%;
   background-color: rgba(0,0,0,0.4);
-  font-family: Impact;
   font-size: 5em;
   @include border-radius(2px);
+}
 
-  bottom: -40px;
+.score-font
+{
+  font-family: Impact;
+}
+
+
+.img-round {
+  @include border-radius(50%);
+  border: solid white 2px;
 }
 
 .status-message
@@ -77,6 +78,8 @@ body {
 
 .field {
   position: relative;
+  top: -20px;
+
     .player {
       width: 120px;
       height: 155px;
@@ -147,7 +150,8 @@ body {
 
 .time-text
 {
-  font-size: xx-large;
+  font-size: x-large;
+
 }
 
 @media screen  and (max-width: 400px) {
@@ -191,6 +195,7 @@ body {
 
 
   .field {
+    top: 0;
     .bg {
       max-width: 400px;
       margin: 0 auto;
@@ -216,6 +221,7 @@ body {
 @media screen  and (min-width: 601px) and (max-width: 799px){
 
   .field {
+    top: 0;
     .bg {
       max-width: 600px;
       margin: 0 auto;
@@ -478,6 +484,16 @@ body {
   background-color: $color-blue-d;
 }
 
+.bg-white
+{
+  background-color: white;
+}
+
+.text-gray-d
+{
+  color: #272d2f;
+}
+
 .font-blue-l
 {
   color: $color-blue-l;
@@ -495,14 +511,51 @@ body {
 
 .bg-color-reserved
 {
-  background-color: $color-reserved
+  background-color: $color-reserved;
+}
+
+.bg-color-free
+{
+  background-color: $color-green-l !important;
 }
 
 .bg-color-not-reserved
 {
-  background-color: $color-not-reserved
+  background-color: $color-not-reserved;
 }
 
+.text-xxl
+{
+  font-size: xx-large;
+}
+
+.text-xl
+{
+  font-size: x-large;
+}
+
+.text-ul
+{
+  font-size: 250%;
+}
+
+.text-uxl
+{
+  font-size: 5em;
+}
+
+.text-uxxl
+{
+  font-size: 10em;
+}
+
+
+.title
+{
+  font-size: 5em;
+  margin: 10px 0;
+
+}
 
 .b-color-selected
 {
@@ -634,8 +687,11 @@ a:hover{
 #not-wrapper {
   display: none;
   position: absolute;
-  @include fill();
-  background-color: rgba(0, 0, 0, 0.8);
+  width: 100%;
+  height: 100%;
+  padding: 10%;
+ // @include fill();
+  background-color: rgba(0, 0, 0, 0.9);
   z-index: 100;
   text-align: center;
 }
@@ -643,19 +699,99 @@ a:hover{
 #not-goal-msg,
 #not-end-msg {
   display: none;
-  position: absolute;
-  width: 50%;
-  height: 50%;
+  position: relative;
   margin: auto;
-  font-size: 1000%;
-  @include fill();
 }
-#not-end-msg {
-  font-size: 500%;
+
+#info-message
+{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 20px;
+}
+
+.bg-semi-we
+{
+  background-color: rgba(255, 255, 255, 0.51);
+}
+
+#player-images {
+  position: relative;
 }
 
 
 .btn-contest-select
 {
   background-color: rgba(19, 19, 19, 0.62);
+}
+
+
+.padding-md
+{
+  margin: 5px;
+}
+
+
+.fill{
+  width:100%;
+  height:100%;
+  min-height:100%;
+}
+
+
+/* widget */
+
+#widget-container
+{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -90px;
+  margin-top: -25px;
+  width: 180px;
+  height: 50px;
+  border: solid #fc8404 1px;
+}
+
+#widget-left-bar
+ {
+   float: left;
+   width: 50%;
+   height: 100%;
+  background-color: white;
+  color: #fc8404;
+ }
+
+#widget-right-bar
+{
+  float: right;
+  width: 50%;
+  height: 100%;
+  background-color: #fc8404;
+}
+
+#widget-score
+{
+  height: 50px;
+  display: block;
+  line-height: 50px;
+  font-size: 2em;
+  font-family: Impact;
+  text-align: center;
+  vertical-align: middle;
+}
+
+#widget-title, #widget-state
+{
+  display: block;
+  width: 100%;
+  text-align:center;
+  margin: 2px 0;
+  font-size: larger;
+}
+
+#widget-state
+{
+  font-size: smaller;
 }

@@ -1,8 +1,9 @@
-{% extends 'IndigoMainBundle:Pixel:pages-create-contest.html.twig' %}
+{% extends 'IndigoMainBundle:Pixel:base.html.twig' %}
 
 {% block title %}{{ 'create_contest.form.contest_creation'|trans }}{% endblock %}
 
 {% block body -%}
+    <div class="col-sm-10 col-sm-offset-1">
     <h1>
         {{ 'contest_list'|trans }}
 
@@ -23,7 +24,6 @@
                 <th class="text-center">{{ 'creator'|trans }}</th>
                 <th class="text-center">{{ 'create_contest.form.contest_title'|trans|capitalize }}</th>
                 <th class="text-center">{{ 'create_contest.form.contest_logo'|trans }}</th>
-                <th class="text-center">{{ 'create_contest.form.table_name'|trans }}</th>
                 <th class="text-center">{{ 'contest_privacy'|trans }}</th>
                 <th class="text-center">{{ 'create_contest.form.contest_type'|trans }}</th>
                 <th class="text-center">{{ 'create_contest.form.contest_starting_date'|trans }}</th>
@@ -45,7 +45,6 @@
 
                     <img src="{{ asset('uploads/contest/') }}{{ pathForImage }}" alt="*" width="100" title="{{ entity.contestTitle|capitalize }}"/>
                 </td>
-                <td class="text-center">{{ entity.tableName|capitalize }}</td>
                 <td class="text-center">
                     {% if entity.contestPrivacy %}
                         {{ 'create_contest.success.privacy.yes'|trans|capitalize }}
@@ -82,4 +81,5 @@
     <a href="{{ path('contest_new') }}" title="{{ 'create_new_contest'|trans }}" class="pull-right btn btn-success btn-lg">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{ 'create_new_contest'|trans }}
     </a>
+    </div>
 {% endblock %}

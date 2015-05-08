@@ -1,67 +1,11 @@
 
-<!DOCTYPE html>
-<html>
-<head>
+{% extends 'IndigoUIBundle:Share:_base.html.twig' %}
 
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <link rel="stylesheet" href="{{ asset('bundles/indigomain/css/bootstrap.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('bundles/indigoui/css/main.css') }}" />
-    <link rel="stylesheet" href="{{ asset('bundles/indigomain/css/pixel-admin.min.css') }}">
+{% block title %} Indigo - Dashboard {% endblock %}
 
-    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
-    <script src="{{ asset('bundles/indigomain/js/pixel-admin.min.js') }}"></script>
-    <script src="{{ asset('bundles/indigomain/js/bootstrap.min.js') }}"></script>
-
-</head>
-
-
-<body>
-<div class="dashboard">
+{% block content %}
 
     <div class="container-fluid">
-
-        <div class="row padding-sm valign-middle">
-
-            <div class=" col-sm-6 col-md-4 col-lg-4 col-sm-offset-2 col-md-offset-2 col-lg-offset-2">
-                <img src="{{ asset('bundles/indigoui/images/bilas.png') }}" class="img-circle icon-sm border-wide icon-narrow">
-
-                <div class="btn-group btn-group-lg" style="left: 10px;">
-                    <button type="button" class="btn btn-contest-select">Open league</button>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-contest-select dropdown-toggle" data-toggle="dropdown">Dropdown&nbsp;<i class="fa fa-caret-down"></i></button>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">NFQ contest</a></li>
-                            <li><a href="#">Speed contest</a></li>
-                            <li><a href="#">Speed contest</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-            </div>
-
-
-            <div class="col-sm-2 col-md-3 col-lg-1 col-lg-offset-1" style="text-align: center">
-
-                <a href="{{ path('indigo_ui_live', {'id' : 0}) }}">
-                    <div class="counter-separated counter-lg">
-                        <span> {{ teamAScore }} </span>
-                        <span> {{ teamBScore }}</span>
-                    </div>
-                    </br>
-                    <span class="text-bg">
-
-                    {% if isTableBusy %}
-                       <span class="text-sm"> Table is occupied </span>
-                    {% else %}
-                        <span class="text-sm"> Table is available </span>
-                    {% endif %}
-
-
-                    </span>
-                </a>
-            </div>
-
-        </div>
 
         <div class="row">
             <div class="col-sm-8 col-md-8 col-lg-8 col-sm-offset-2  col-md-offset-2  col-lg-offset-2" >
@@ -72,7 +16,7 @@
                             <span class="text-xlg">{{ currentContest.title }} </span></br>
                             <span class="text-bg"> {{ currentContest.dateFrom }} - {{ currentContest.dateTo }} </span></br></br>
                             <span class="text-lg"> {{ currentContest.description }} </span></br>
-                            <button class="bg-green-m"> Table reservation </button>
+                            <a href="{{ url('indigo_time_reservation',{contest_id:1}) }}" class="bg-green-m"> Table reservation </a>
                         </div>
                     </div>
                 </div>
@@ -100,13 +44,19 @@
                             </div>
                         {% endif %}
 
+
+                        {%  for playerStat in playerTeamsStat %}
+
                         <div class="stat-panel" style="height: 211px;">
                             <div class="stat-row">
                                 <div class="stat-cell bg-green-l darker">
 
                                     <span>
-                                    <img src="{{ asset('bundles/indigoui/images/bilas.png') }}" class="img-circle icon-sm border-wide icon-narrow">
-                                    <img src="{{ asset('bundles/indigoui/images/clinton.png') }}" class="img-circle icon-sm border-wide icon-narrow">
+                                        {% for picture in playerStat.getPictures %}
+                                            {% if picture != null %}
+                                                <img src="{{ asset(picture) }}" class="img-circle icon-sm border-wide icon-narrow" />
+                                            {% endif %}
+                                        {% endfor %}
                                     </span><br>
 
                                     <i class="fa fa-trophy bg-icon" style="font-size:60px;line-height:80px;height:80px;"></i>
@@ -118,17 +68,17 @@
 
                                     <div class="stat-counters bg-green-m no-border-b no-padding text-center">
                                          <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
-                                        <span class="text-bg"><strong>12</strong></span><br>
+                                        <span class="text-bg"><strong>{{ playerStat.wins }}</strong></span><br>
                                          <span class="text-xs">Wins</span>
                                     </div>
 
                                     <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
-                                        <span class="text-bg"><strong>17</strong></span><br>
+                                        <span class="text-bg"><strong>{{ playerStat.losses }}</strong></span><br>
                                          <span class="text-xs">Loses</span>
                                     </div>
 
                                     <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
-                                        <span class="text-bg"><strong>49</strong></span><br>
+                                        <span class="text-bg"><strong>{{ playerStat.totalGames }}</strong></span><br>
                                         <span class="text-xs">Total</span>
                                     </div>
 
@@ -138,12 +88,12 @@
 
                                 <div class="stat-counters bg-green-m no-border-b no-padding text-center">
                                     <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
-                                        <span class="text-bg"><strong>203</strong></span><br>
+                                        <span class="text-bg"><strong>{{ playerStat.scoredGoals }}</strong></span><br>
                                         <span class="text-xs">Goals</span>
                                     </div>
 
                                     <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
-                                        <span class="text-bg"><strong>1056</strong></span><br>
+                                        <span class="text-bg"><strong>{{ playerStat.missedGoals }}</strong></span><br>
                                         <span class="text-xs">Missed</span>
                                     </div>
 
@@ -161,9 +111,9 @@
                             <div class="col-xs-12 col-sm-6 col-md-6">
                                 <div class="stat-panel">
                                     <div class="stat-cell bg-green-sl valign-middle">
-                                        <span class="text-xlg"><strong>4 sec.</strong></span><br>
-                                        <span class="text-bg">Fastest Goal</span><br>
-                                        <span class="text-sm">Wow! This is amazing!</span>
+                                        <span class="text-xlg"><strong>{{ playerStat.slowestWinGameTs|date("i : s") }} </strong></span><br>
+                                        <span class="text-bg">Longest game</span><br>
+                                        <span class="text-sm">Hard work pays off!</span>
                                     </div> <!-- /.stat-cell -->
                                 </div>
                             </div>
@@ -171,7 +121,7 @@
                             <div class="col-xs-12 col-sm-6 col-md-6">
                                 <div class="stat-panel">
                                     <div class="stat-cell bg-green-sl  valign-middle">
-                                        <span class="text-xlg"><strong>1240</strong></span><br>
+                                        <span class="text-xlg"><strong>{{ playerStat.teamRating }}</strong></span><br>
                                         <span class="text-bg">Team rating</span><br>
                                         <span class="text-sm">You can do better!</span>
                                     </div> <!-- /.stat-cell -->
@@ -188,7 +138,8 @@
                             <div class="col-xs-12 col-sm-6 col-md-6">
                                 <div class="stat-panel">
                                     <div class="stat-cell bg-green-sl  valign-middle">
-                                        <span class="text-xlg"><strong>4 sec.</strong></span><br>
+
+                                        <span class="text-xlg"><strong>{{ playerStat.fastestWinGameTs|date("i : s") }}</strong></span><br>
                                         <span class="text-bg">Fastest win</span><br>
                                         <span class="text-sm">Wow! This is amazing!</span>
                                     </div> <!-- /.stat-cell -->
@@ -198,7 +149,7 @@
                             <div class="col-xs-12 col-sm-6 col-md-6">
                                 <div class="stat-panel">
                                     <div class="stat-cell bg-green-sl  valign-middle">
-                                        <span class="text-xlg"><strong>0.4</strong></span><br>
+                                        <span class="text-xlg"><strong>{{ playerStat.getProbabilityOfWin|number_format(1, '.', '') | round(1) }}</strong></span><br>
                                         <span class="text-bg"> PoF </span><br>
                                         <span class="text-sm">Probability of winning</span>
                                     </div> <!-- /.stat-cell -->
@@ -206,7 +157,7 @@
                             </div>
 
                         </div>
-
+                        {%  endfor  %}
                     </div>
 
                     {# Right bar #}
@@ -228,11 +179,15 @@
                             <div class="stat-cell bg-blue-d valign-middle">
                                 <div class="medal gold-medal-icon"></div>
                                  <span>
-                                    <img src="{{ asset('bundles/indigoui/images/bilas.png') }}" class="img-circle icon-md border-wide icon-narrow">
-                                    <img src="{{ asset('bundles/indigoui/images/clinton.png') }}" class="img-circle icon-md border-wide icon-narrow">
+                                       {% set team=contestStat.getTopTeam(1) %}
+                                       {% for picture in team.getPictures %}
+                                           {% if picture != null %}
+                                               <img src="{{ asset(picture) }}" class="img-circle icon-sm border-wide icon-narrow" />
+                                           {% endif %}
+                                       {% endfor %}
                                 </span><br>
                                 <span class="text-lg"> Contest leaders </span><br>
-                                <span class="text-bg"> 1250 pts. </span>
+                                <span class="text-bg">With {{ team.wins }} win and {{ team.teamRating }} pts. </span>
                             </div>
                         </div>
 
@@ -246,12 +201,16 @@
                                         <div class="medal silver-medal-icon"></div>
 
                                         <span class="text-xlg">
-                                            <img src="{{ asset('bundles/indigoui/images/bilas.png') }}" class="img-circle border-thin icon-sm icon-narrow">
-                                            <img src="{{ asset('bundles/indigoui/images/clinton.png') }}" class="img-circle border-thin icon-sm icon-narrow">
+                                            {% set team=contestStat.getTopTeam(2) %}
+                                            {% for picture in team.getPictures %}
+                                                {% if picture != null %}
+                                                    <img src="{{ asset(picture) }}" class="img-circle icon-sm border-thin icon-narrow" />
+                                                {% endif %}
+                                            {% endfor %}
                                         </span><br>
 
 
-                                        <span class="text-bg">1250 pts.</span>
+                                        <span class="text-bg">With {{ team.wins }} win and {{ team.teamRating }} pts..</span>
                                     </div> <!-- /.stat-cell -->
                                 </div>
                             </div>
@@ -263,12 +222,17 @@
                                         <div class="medal bronze-medal-icon"></div>
 
                                         <span class="text-xlg">
-                                            <img src="{{ asset('bundles/indigoui/images/bilas.png') }}" class="img-circle icon-sm border-thin icon-narrow ">
-                                            <img src="{{ asset('bundles/indigoui/images/clinton.png') }}" class="img-circle icon-sm border-thin icon-narrow ">
+                                            {% set team=contestStat.getTopTeam(3) %}
+                                            {% for picture in team.getPictures %}
+                                                {% if picture != null %}
+                                                    <img src="{{ asset(picture) }}" class="img-circle icon-sm border-thin icon-narrow" />
+                                                {% endif %}
+                                            {% endfor %}
                                         </span><br>
 
 
-                                        <span class="text-bg">1250 pts.</span>
+
+                                        <span class="text-bg">With {{ team.wins }} win and {{ team.teamRating }} pts.</span>
 
                                     </div> <!-- /.stat-cell -->
                                 </div>
@@ -289,18 +253,18 @@
 
                                 <div class="stat-counters bg-blue-m no-border-b no-padding text-center">
                                     <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
-                                        <span class="text-bg"><strong>12</strong></span><br>
-                                        <span class="text-xs">Wins</span>
+                                        <span class="text-bg"><strong>{{ contestStat.totalGames }}</strong></span><br>
+                                        <span class="text-xs">Games</span>
                                     </div>
 
                                     <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
-                                        <span class="text-bg"><strong>17</strong></span><br>
-                                        <span class="text-xs">Loses</span>
+                                        <span class="text-bg"><strong>{{ contestStat.totalTeams }}</strong></span><br>
+                                        <span class="text-xs">Teams</span>
                                     </div>
 
                                     <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
-                                        <span class="text-bg"><strong>49</strong></span><br>
-                                        <span class="text-xs">Total</span>
+                                        <span class="text-bg"><strong>{{ contestStat.totalGoals }}</strong></span><br>
+                                        <span class="text-xs">Goals</span>
                                     </div>
 
                                 </div> <!-- /.stat-counters -->
@@ -309,13 +273,13 @@
 
                                 <div class="stat-counters bg-blue-m no-border-b no-padding text-center">
                                     <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
-                                        <span class="text-bg"><strong>203</strong></span><br>
-                                        <span class="text-xs">Goals</span>
+                                        <span class="text-bg"><strong>{{ contestStat.fastestGameDuration|date("i : s") }}</strong></span><br>
+                                        <span class="text-xs">Fastest game</span>
                                     </div>
 
                                     <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
-                                        <span class="text-bg"><strong>1056</strong></span><br>
-                                        <span class="text-xs">Missed</span>
+                                        <span class="text-bg"><strong>{{ contestStat.slowestGameDuration|date("i : s") }}</strong></span><br>
+                                        <span class="text-xs">Slowest game</span>
                                     </div>
 
                                     <a href="#" class="stat-cell col-xs-4 bg-blue-m padding-sm no-padding-hr valign-middle">
@@ -348,13 +312,5 @@
 
         </div>
         </div>
-    </div>
 
-</div>
-</body>
-</html>
-
-
-
-
-
+{% endblock %}

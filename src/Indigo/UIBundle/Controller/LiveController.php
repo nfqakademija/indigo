@@ -37,8 +37,21 @@ class LiveController extends Controller
         return new Response(json_encode( $model ));
     }
 
+    /**
+     * @param int
+     * @return array
+     */
+    public function widgetAction($id)
+    {
+        return $this->render('IndigoUIBundle:Live:widget.html.twig',[] );
+        //$model = $this->getIndigoStatsService()->getTableStatus(1);
+        //return new Response(json_encode( $model ));
+    }
+
     private function getIndigoStatsService()
     {
         return $this->get('indigo_ui.live_view_service');
     }
+
+
 }

@@ -1,41 +1,25 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: TSU
- * Date: 2015.04.25
- * Time: 14:16
- */
 
 namespace Indigo\UIBundle\Models;
 use JsonSerializable;
 
-class DashboardViewModel implements \JsonSerializable {
-
-    public function __construct()
-    {
-        $this->currentContest = new ContestModel();
-        $this->nextContest = new ContestModel();
-    }
+class DashboardViewModel implements \JsonSerializable
+{
+    /**
+     * @var PlayerStatModel
+     */
+    private $playerTeamsStats;
 
     /**
-     * @return array
+     * @var ContestStatModel
      */
-    public function jsonSerialize() {
-        return [
-            "currentContest" => $this->currentContest,
-            "nextContest" => $this->nextContest,
-            "nextReservation" => $this->nextReservation,
-            "isTableBusy" => $this->isTableBusy,
-            "teamAScore" => $this->teamAScore,
-            "teamBScore" => $this->teamBScore
-        ];
-    }
-
+    private $contestStat;
 
     /**
      * @var ContestModel
      */
     private $currentContest;
+
     /**
      * @var ContestModel
      */
@@ -60,6 +44,47 @@ class DashboardViewModel implements \JsonSerializable {
      * @var boolean
      */
     private $isTableBusy;
+
+    public function __construct()
+    {
+
+        $this->currentContest = new ContestModel();
+        $this->nextContest = new ContestModel();
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+
+        return [
+            "currentContest" => $this->currentContest,
+            "nextContest" => $this->nextContest,
+            "nextReservation" => $this->nextReservation,
+            "isTableBusy" => $this->isTableBusy,
+            "teamAScore" => $this->teamAScore,
+            "teamBScore" => $this->teamBScore,
+            'playerTeamsStat' => $this->getPlayerTeamsStats(),
+            'contestStat' => $this->getContestStat()
+        ];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlayerTeamsStats()
+    {
+        return $this->playerTeamsStats;
+    }
+
+    /**
+     * @param \ArrayIterator $stats
+     */
+    public function setPlayerTeamsStats(\ArrayIterator $stats)
+    {
+        $this->playerTeamsStats = $stats;
+    }
 
     /**
      * @return boolean
@@ -155,6 +180,22 @@ class DashboardViewModel implements \JsonSerializable {
     public function setNextReservation($nextReservation)
     {
         $this->nextReservation = $nextReservation;
+    }
+
+    /**
+     * @return ContestStatModel
+     */
+    public function getContestStat()
+    {
+        return $this->contestStat;
+    }
+
+    /**
+     * @param ContestStatModel $contestStat
+     */
+    public function setContestStat($contestStat)
+    {
+        $this->contestStat = $contestStat;
     }
 
 }

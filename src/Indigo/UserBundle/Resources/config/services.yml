@@ -25,4 +25,4 @@ services:
 
     indigo_user.registration.service:
             class: %indigo_user.registration.service.class%
-            arguments: ["@doctrine.orm.entity_manager", "@security.encoder_factory"]
+            arguments: ["@doctrine.orm.entity_manager", "@security.encoder_factory","@indigo_game.team.service"]

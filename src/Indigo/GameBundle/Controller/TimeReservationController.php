@@ -17,7 +17,14 @@ class TimeReservationController extends Controller
     /**
      * @Template("IndigoGameBundle:TimeReservation:index.html.twig")
      */
-    public function indexAction($contest_id){
+    public function indexAction($contest_id, $timestamp)
+    {
+        $errorMsg = false;
+        if(!$this->checkingIfContestExist($contest_id)) {
+            $this->addFlash('danger', 'time_reservation.doesnt_exist');
+            $errorMsg = true;
+        }
+
         $entity = new GameTime();
 
         $form = $this->createFormBuilder($entity)
@@ -26,10 +33,11 @@ class TimeReservationController extends Controller
                 //'widget' => 'single_text',
                 'read_only' => true,
                 'attr' => [
-                    'placeholder' => 'Pasirinkite jums tinkamą laiką'
+                    'placeholder' => 'time_reservation.choose_time'
                 ]
             ])
-            ->add('submit', 'button',[
+            ->add('submit', 'button', [
+                    'label' => 'confirm',
                     'attr' => [
                         'class' => 'btn btn-success col-sm-12'
                     ]
@@ -37,10 +45,29 @@ class TimeReservationController extends Controller
             )
             ->getForm();
 
+        $datePickerForm = $this->createFormBuilder()
+            ->add('reservationDate', 'datetime', [
+                'label' => false,
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'required' => true,
+                'attr' => [
+                    'class' => 'input-group date',
+                ],
+                'html5' => false
+            ])
+            ->getForm();
+
+        if (!$timestamp || $timestamp < strtotime(date('Y-m-d H:i:s')))
+            $timestamp = strtotime(date('Y-m-d H:i:s'));
+
         return array(
+            'errorMsg' => $errorMsg,
             'contest_id' => $contest_id,
+            'timestampPagination' => $timestamp,
             'user_id' => $this->getUser()->getId(),
             'form' => $form->createView(),
+            'datePickerForm' => $datePickerForm->createView()
         );
     }
 
@@ -165,35 +192,36 @@ class TimeReservationController extends Controller
 
     /**
      * @param $fullDate
+     * @param $contestId
+     * @param $playerId
+     * @return bool
      */
     private function createGameTime($fullDate, $contestId, $playerId)
     {
-        $contestNumberById = $this->checkingIfContestExist($contestId);
+        $contest = $this->checkingIfContestExist($contestId);
 
-         if(!$contestNumberById)
-             $contestId = null;
+         if(!$contest)
+             return false;
 
         $entity = new GameTime();
         $em = $this->getDoctrine()->getManager();
         $entity->setConfirmed(0);
         $entity->setTimeOwner($playerId);
         $entity->setStartAtAndFinishAt($fullDate);
-        $entity->setContestId($contestId);
-        $entity->setInsertionTime(date("Y-m-d H:i:s"));
+        $entity->setContest($contest);
         $em->persist($entity);
         $em->flush();
     }
 
+    /**
+     * @param $contestId
+     * @return Contest
+     */
     private function checkingIfContestExist($contestId){
         $em = $this->getDoctrine()->getManager();
-        $query = $em->createQuery(
-            "SELECT COUNT(cd.id) FROM Indigo\ContestBundle\Entity\Contest cd WHERE cd.id = :contestId"
-        );
-        $query->setParameter('contestId', $contestId);
+        $contest = $em->getRepository('IndigoContestBundle:Contest')->findOneBy(['id' => $contestId]);
 
-        $return = $query->getSingleScalarResult();
-
-        return $return;
+        return $contest;
     }
 
     public function getLastTimeCellDateAction(){

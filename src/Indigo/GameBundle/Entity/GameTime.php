@@ -4,6 +4,7 @@ namespace Indigo\GameBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Indigo\ContestBundle\Entity\Contest;
 
 /**
  * GameTime
@@ -75,7 +76,7 @@ class GameTime
     private $contest;
 
     /**
-     * @ORM\Column(name="contest_id", type="integer", nullable=true, options={"unsigned":true})
+     * @ORM\Column(name="contest_id", type="integer", nullable=false, options={"unsigned":true})
      */
     private $contestId;
 
@@ -84,6 +85,7 @@ class GameTime
     public function __construct()
     {
         $this->games = new ArrayCollection();
+        $this->insertionTime = new \DateTime();
     }
 
     /**
@@ -113,24 +115,6 @@ class GameTime
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @return Game
-     */
-    public function getGame()
-    {
-        return $this->game;
-    }
-
-    /**
-     * @param $game
-     * @return $this
-     */
-    public function setGame($game)
-    {
-        $this->game = $game;
-        return $this;
     }
 
     /**
@@ -270,7 +254,7 @@ class GameTime
      * @param Contest $contest
      * @return $this
      */
-    public function setContest($contest)
+    public function setContest(Contest $contest)
     {
         $this->contest = $contest;
         return $this;
