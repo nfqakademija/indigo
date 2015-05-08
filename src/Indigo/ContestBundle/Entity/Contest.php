@@ -169,6 +169,7 @@ class Contest
         $this->contestCreationDate = new \DateTime();
         $this->games = new ArrayCollection();
         $this->gameTimes = new ArrayCollection();
+        $this->setTableName(1);
         $this->contestType = true;
         $this->contestStartingDate = new \DateTime();
         $this->contestEndDate = new \DateTime('+1 days');
@@ -313,7 +314,7 @@ class Contest
      */
     public function getTableName()
     {
-        return $this->tableName;
+        //return $this->tableName;
     }
 
     /**

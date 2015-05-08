@@ -33,7 +33,11 @@ class ContestType extends AbstractType
         ])
         ->add('tableName', 'text', [
             'label' => 'create_contest.form.table_name',
-            'required' => true
+            'required' => false,
+            'disabled' => true,
+            'attr' => [
+                'placeholder' => 'smart_table'
+            ]
         ])
         ->add('contestType', 'choice', [
             'label' => 'create_contest.form.contest_type',

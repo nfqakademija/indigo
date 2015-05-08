@@ -46,6 +46,7 @@ add_prize: Pridėti prizą
 no_prize_photo: Šiam prizui nėra įkeltos foto
 no_prize: Prizas nenurodytas
 confirm: Patvirtinti
+smart_table: Nekvailas stalas
 
 #TimeReservation
 time_reservation: Laiko rezervacija

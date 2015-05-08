@@ -46,6 +46,7 @@ add_prize: Add prize
 no_prize_photo: No uploaded photo for this prize
 no_prize: Prize not specified
 confirm: Confirm
+smart_table: Smart table
 
 #TimeReservation
 time_reservation: Time reservatuin

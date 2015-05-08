@@ -24,7 +24,6 @@
                 <th class="text-center">{{ 'creator'|trans }}</th>
                 <th class="text-center">{{ 'create_contest.form.contest_title'|trans|capitalize }}</th>
                 <th class="text-center">{{ 'create_contest.form.contest_logo'|trans }}</th>
-                <th class="text-center">{{ 'create_contest.form.table_name'|trans }}</th>
                 <th class="text-center">{{ 'contest_privacy'|trans }}</th>
                 <th class="text-center">{{ 'create_contest.form.contest_type'|trans }}</th>
                 <th class="text-center">{{ 'create_contest.form.contest_starting_date'|trans }}</th>
@@ -46,7 +45,6 @@
 
                     <img src="{{ asset('uploads/contest/') }}{{ pathForImage }}" alt="*" width="100" title="{{ entity.contestTitle|capitalize }}"/>
                 </td>
-                <td class="text-center">{{ entity.tableName|capitalize }}</td>
                 <td class="text-center">
                     {% if entity.contestPrivacy %}
                         {{ 'create_contest.success.privacy.yes'|trans|capitalize }}
