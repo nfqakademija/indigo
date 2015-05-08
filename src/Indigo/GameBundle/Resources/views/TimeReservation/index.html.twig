@@ -3,6 +3,14 @@
 {% block title %}Time Reservation{% endblock %}
 
 {% block body %}
+    <div class="form-group col-sm-8 col-sm-offset-2">
+        {% for flashMessage in app.session.flashbag.get('danger') %}
+            <div class="flash-danger alert alert-danger" role="alert">
+                <strong>{{ flashMessage }}</strong>
+            </div>
+        {% endfor %}
+    </div>
+
     <link href="{{ asset('bundles/indigomain/bower_components/eternicode-bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" type="text/css"/>
     <style>
         #timeReservationTable tr td{
@@ -15,6 +23,7 @@
         }
     </style>
 
+    {% if not errorMsg %}
     <h1 class="col-sm-8 col-sm-offset-2">{{ 'Laiko rezervacija' }}</h1>
 
     <div class="form-group col-sm-8 col-sm-offset-2">
@@ -66,6 +75,7 @@
             {% endfor %}
         </table>
     </div>
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}
@@ -173,9 +183,12 @@
                     var action = dataArray[i]['confirmed'];
 
                     if (fieldDate == finishAtStringToNumberFromArray && action == 1) {
-                        if (dataArray[i]['timeOwner'] == {{ user_id }})
-                            $(this).addClass('bg-success').attr({'title': 'Jūsų užrezervuotas laikas.'});
-                        else
+                        if (dataArray[i]['timeOwner'] == {{ user_id }}) {
+                            if(dataArray[i]['contestId'] == {{ contest_id }})
+                                $(this).addClass('bg-success').attr({'title': 'Jūsų užrezervuotas laikas.'});
+                            else
+                                $(this).addClass('bg-danger').attr({'title': 'Tokiu pat laiku kitose varžybose jūs jau esate užsakęs laiką.'});
+                        }else
                             $(this).addClass('bg-danger').attr({'title': 'Nebegalima rezervuoti šios datos.'});
                     }else if(fieldDate == finishAtStringToNumberFromArray && action == 0){
                         $(this).removeClass('bg-success bg-danger').attr({'title': ''});

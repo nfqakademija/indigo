@@ -19,6 +19,12 @@ class TimeReservationController extends Controller
      */
     public function indexAction($contest_id, $timestamp)
     {
+        $errorMsg = false;
+        if(!$this->checkingIfContestExist($contest_id)) {
+            $this->addFlash('danger', 'Tokių varžybų nėra !');
+            $errorMsg = true;
+        }
+
         $entity = new GameTime();
 
         $form = $this->createFormBuilder($entity)
@@ -55,6 +61,7 @@ class TimeReservationController extends Controller
             $timestamp = strtotime(date('Y-m-d H:i:s'));
 
         return array(
+            'errorMsg' => $errorMsg,
             'contest_id' => $contest_id,
             'timestampPagination' => $timestamp,
             'user_id' => $this->getUser()->getId(),
@@ -192,9 +199,8 @@ class TimeReservationController extends Controller
     {
         $contest = $this->checkingIfContestExist($contestId);
 
-         if(!$contest) {
+         if(!$contest)
              return false;
-         }
 
         $entity = new GameTime();
         $em = $this->getDoctrine()->getManager();
