@@ -41,9 +41,9 @@ class DashboardViewService
         $contestEntity = $this->em->getRepository('IndigoContestBundle:Contest')->findOneById((int)$contestId);
         if ($contestEntity == null) {
             $contestId = Contest::OPEN_CONTEST_ID;
-
+            $contestEntity = $this->em->getRepository('IndigoContestBundle:Contest')->findOneById((int)$contestId);
         }
-
+        /** @var Contest $contestEntity */
 
         $tableId = 1;
         $tableStatus = $this->em->getRepository('IndigoGameBundle:TableStatus')->findOneById($tableId);
@@ -65,11 +65,11 @@ class DashboardViewService
         }
 
 
-        $model->getCurrentContest()->setTitle("Super turnyras");
+        $model->getCurrentContest()->setTitle($contestEntity->getContestTitle());
         $model->getCurrentContest()->setDescription("Kelionė dviems į saulėtąją Turkiją.");
-        $model->getCurrentContest()->setImageUrl('/bundles/indigoui/images/content-box.png');
-        $model->getCurrentContest()->setDateFrom("2015-01-02");
-        $model->getCurrentContest()->setDateTo("2015-02-02");
+        $model->getCurrentContest()->setImageUrl($contestEntity->getPathForImage());
+        $model->getCurrentContest()->setDateFrom($contestEntity->getContestStartingDate()->format("Y-m-d"));
+        $model->getCurrentContest()->setDateTo($contestEntity->getContestEndDate()->format("Y-m-d"));
 
         $model->getNextContest()->setTitle("Greičio turnyras");
         $model->getNextContest()->setDescription("Adrenalino pilnas pasivažinėjimas kartingais.");
