@@ -1,8 +1,10 @@
-{% extends "IndigoMainBundle:Pixel:base.html.twig" %}
+{% extends "IndigoMainBundle:Pixel:pvz.html.twig" %}
 
-{% block title %}Time Reservation{% endblock %}
+{% block title %}{{ 'time_reservation'|trans }}{% endblock %}
 
-{% block body %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('bundles/indigomain/bower_components/eternicode-bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" type="text/css"/>
     <style>
         #timeReservationTable tr td{
             cursor:pointer;
@@ -13,8 +15,19 @@
             color:#fff;
         }
     </style>
+{% endblock %}
 
-    <h1 class="col-sm-8 col-sm-offset-2">{{ 'Laiko rezervacija' }}</h1>
+{% block body %}
+    <div class="form-group col-sm-8 col-sm-offset-2">
+        {% for flashMessage in app.session.flashbag.get('danger') %}
+            <div class="flash-danger alert alert-danger" role="alert">
+                <strong>{{ flashMessage }}</strong>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if not errorMsg %}
+    <h1 class="col-sm-8 col-sm-offset-2">{{ 'time_reservation'|trans }}</h1>
 
     <div class="form-group col-sm-8 col-sm-offset-2">
         {{ form_start(form) }}
@@ -25,6 +38,11 @@
             {{ form_widget(form.submit) }}
         </div>
         {{ form_end(form) }}
+        {{ form_start(datePickerForm) }}
+        <div class="form-group col-sm-12">
+            {{ form_widget(datePickerForm.reservationDate, {'attr' : {'placeholder' : timestampPagination|date("Y-m-d")}}) }}
+        </div>
+        {{ form_end(datePickerForm) }}
     </div>
 
     {% set time_interval = constant('Indigo\\GameBundle\\Entity\\GameTimeRepository::TIME_INTERVAL') %} {# laiko intervalas 15 minuciu #}
@@ -52,7 +70,7 @@
                             {% set i_second = i+1 %}
                         {% endif %}
 
-                        <td id="{{ i }}" data-time="{{ date( i ~ ':' ~ first_interval_number).timestamp }}">
+                        <td id="{{ i }}" data-time="{{ date(timestampPagination|date("Y-m-d") ~ i ~ ':' ~ first_interval_number).timestamp }}">
                             {{ i }}:{{ first_interval_number }} - {{ i_second }}:{{ second_interval_numberCorrected }}
                         </td>
                     {% endfor %}
@@ -60,6 +78,7 @@
             {% endfor %}
         </table>
     </div>
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}
@@ -68,7 +87,22 @@
 
     {{ parent() }}
 
+    <script src="{{ asset('bundles/indigomain/bower_components/eternicode-bootstrap-datepicker/js/bootstrap-datepicker.js') }}"></script>
+    <script src="{{ asset('bundles/indigomain/bower_components/eternicode-bootstrap-datepicker/js/locales/bootstrap-datepicker.') }}{{ app.request.getLocale() }}.js"></script>
+
     <script>
+        $('#form_reservationDate').datepicker({
+         todayHighlight: true,
+         autoclose: false,
+         language: '{{ app.request.getLocale() }}',
+         startDate: new Date()
+         }).on('changeDate', function(ev){
+            //alert(JSON.stringify(ev));
+            //alert(new Date(ev.date).getTime()/1000);
+            var timestampPagination = new Date(ev.date).getTime()/1000+39600; //+11 hour
+            location.href = '{{ url('indigo_time_reservation', {'contest_id' : contest_id}) }}/'+timestampPagination;
+        });
+
         var lastClickedTime;
         $('#timeReservationTable tr td').click(function() {
             if($(this).is(':not(.bg-success)') && $(this).is(':not(.bg-danger)') && $(this).is(':not(.reserving)')){
@@ -76,7 +110,7 @@
                 $.ajax({
                     type: 'GET',
                     data: {time : $(this).data('time')},
-                    url: '{{ url('indigo_insert_data_after_time_click', {'contest_id' : contest_id}) }}',
+                    url: '{{ url('indigo_insert_data_after_time_click', {'contest_id' : contest_id, 'timestamp' : timestampPagination}) }}',
                     success: function(response) {
                         if (!response.success) {
                             //ERROR
@@ -99,7 +133,7 @@
                 var dataArray = new Array();
                 $.ajax({
                     type: 'GET',
-                    url: '{{ url('indigo_get_list_of_dates', {'contest_id' : contest_id}) }}',
+                    url: '{{ url('indigo_get_list_of_dates', {'contest_id' : contest_id, 'timestamp' : timestampPagination}) }}',
                     dataType: 'json',
                     async: false,
                     cache: false,
@@ -121,7 +155,7 @@
                 var responseArray = new Array();
                 $.ajax({
                     type: 'GET',
-                    url: '{{ url('indigo_get_last_time_cell_date', {'contest_id' : contest_id}) }}',
+                    url: '{{ url('indigo_get_last_time_cell_date', {'contest_id' : contest_id, 'timestamp' : timestampPagination}) }}',
                     dataType: 'json',
                     async: false,
                     cache: false,
@@ -142,7 +176,7 @@
 
                 /*Disable button if time now are bigger than past time.*/
                 if(dateNow > fieldDate)
-                 $(this).addClass('bg-danger').attr({'title' : 'Nebegalima rezervuoti šios datos.'});
+                 $(this).addClass('bg-danger').attr({'title' : '{{ 'time_reservation.time_passed'|trans }}'});
 
                 for (var i = 0; i < dataArray.length; i++) {
                     var finishAtStringFromArraySplit = dataArray[i]['finishAt']['date'].split('.');
@@ -152,10 +186,13 @@
                     var action = dataArray[i]['confirmed'];
 
                     if (fieldDate == finishAtStringToNumberFromArray && action == 1) {
-                        if (dataArray[i]['timeOwner'] == {{ user_id }})
-                            $(this).addClass('bg-success').attr({'title': 'Jūsų užrezervuotas laikas.'});
-                        else
-                            $(this).addClass('bg-danger').attr({'title': 'Nebegalima rezervuoti šios datos.'});
+                        if (dataArray[i]['timeOwner'] == {{ user_id }}) {
+                            if(dataArray[i]['contestId'] == {{ contest_id }})
+                                $(this).addClass('bg-success').attr({'title': '{{ 'time_reservation.your_time'|trans }}'});
+                            else
+                                $(this).addClass('bg-danger').attr({'title': '{{ 'time_reservation.same_time'|trans }}'});
+                        }else
+                            $(this).addClass('bg-danger').attr({'title': '{{ 'time_reservation.time_passed'|trans }}'});
                     }else if(fieldDate == finishAtStringToNumberFromArray && action == 0){
                         $(this).removeClass('bg-success bg-danger').attr({'title': ''});
                     }
@@ -169,7 +206,7 @@
                     var responseInsertionTime = (new Date(responseArray[i]['insertionTime'].replace(/-/g, '/')).getTime() / 1000) + {{ interval_for_next_click }} * 60;
 
                     if (fieldDate == finishAtStringToNumberFromArray && dateNow < responseInsertionTime && action == 0 && timeOwner != {{ user_id }})
-                        $(this).addClass('bg-warning reserving').click(false).attr({'title': 'Šią datą rezervuoja kitas žaidėjas. Šiuo metu jos rinktis negalima.'});
+                        $(this).addClass('bg-warning reserving').click(false).attr({'title': '{{ 'time_reservation.reserving_this_moment'|trans }}'});
                     else if(fieldDate == finishAtStringToNumberFromArray && dateNow >= responseInsertionTime && action == 0 && timeOwner != {{ user_id }})
                         $(this).removeClass('bg-warning reserving').click(true).attr({'title': ''});
                 }
@@ -179,26 +216,29 @@
         refreshingTimeReservationData();
         setInterval(function(){
             refreshingTimeReservationData()
-        }, 3000);
+        }, 15000);
 
         $('#form_submit').click(function(){
-            $.ajax({
-                type: 'GET',
-                url: '{{ url('indigo_change_action_of_reservation', {'contest_id' : contest_id}) }}',
-                dataType : 'json',
-                data: {time : $('#form_startAt').data('time')},
-                async: false,
-                cache: false,
-                success: function(response){
-                    if(response.success){
-                        location.reload();
-                        //$('#timeReservationTable tr td[data-time='+$('#form_startAt').data('time')+']').removeClass('bg-warning').addClass('bg-danger');
-                    }else{
-                        alert("Stalas jau užrezervuotas.");
-                        location.reload();
+            if($("#form_startAt").val()) {
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ url('indigo_change_action_of_reservation', {'contest_id' : contest_id, 'timestamp' : timestampPagination}) }}',
+                    dataType: 'json',
+                    data: {time: $('#form_startAt').data('time')},
+                    async: false,
+                    cache: false,
+                    success: function (response) {
+                        if (response.success) {
+                            location.reload();
+                        } else {
+                            alert('{{ 'time_reservation.table_reserved'|trans }}');
+                            location.reload();
+                        }
                     }
-                }
-            });
+                });
+            }else{
+                alert('{{ 'time_reservation.not_selected'|trans }}');
+            }
         });
     </script>
 {% endblock %}
