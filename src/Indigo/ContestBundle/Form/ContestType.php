@@ -33,7 +33,11 @@ class ContestType extends AbstractType
         ])
         ->add('tableName', 'text', [
             'label' => 'create_contest.form.table_name',
-            'required' => true
+            'required' => false,
+            'disabled' => true,
+            'attr' => [
+                'placeholder' => 'smart_table'
+            ]
         ])
         ->add('contestType', 'choice', [
             'label' => 'create_contest.form.contest_type',
@@ -44,6 +48,17 @@ class ContestType extends AbstractType
                 0 => 'create_contest.form.contest_type.single'
             ],
             'required' => true
+        ])
+        ->add('scoreLimit', 'number', [
+            'label' => 'create_contest.form.scoreLimit',
+            'required' => true,
+            'attr' => [
+                'data-slider-id' => 'scoreLimitSeekbar',
+                'data-slider-min' => 5,
+                'data-slider-max' => 10,
+                'data-slider-step' => 1,
+                'data-slider-value' => 10
+            ]
         ])
         ->add('contestStartingDate', 'datetime', [
             'label' => 'create_contest.form.contest_starting_date',

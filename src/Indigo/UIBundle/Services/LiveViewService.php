@@ -12,12 +12,15 @@ namespace Indigo\UIBundle\Services;
 
 use Indigo\GameBundle\Entity\Game;
 use Indigo\GameBundle\Entity\Contest;
+use Indigo\GameBundle\Entity\GameTimeRepository;
 use Indigo\UIBundle\Models\ContestModel;
 use Indigo\UIBundle\Models\DashboardViewModel;
 use Indigo\UIBundle\Models\LiveViewModel;
 use Indigo\UIBundle\Models\PlayerModel;
 use Indigo\UIBundle\Models\TeamModel;
+use Indigo\UIBundle\Models\WinnerTeamModel;
 use Symfony\Component\Security\Acl\Exception\Exception;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 
 /**
@@ -28,6 +31,7 @@ use Symfony\Component\Security\Acl\Exception\Exception;
 
 class LiveViewService
 {
+    private $defRegistrationTimeInterval = 15;
     private $defaultProfilePic = '';
 
     private $em;
@@ -77,6 +81,15 @@ class LiveViewService
 
         $model->setStatusMessage("Sveiki!");
 
+        $lastWinner = $this->getLastWinnerModel(60);
+        if($lastWinner)
+        {
+            $model->setShowGreetingMessage(true);
+            $model->setLastWinnerTeam($lastWinner);
+        }
+
+       // $model->setShowGreetingMessage( $this->doWeHaveWinner(10) );
+
         $tableStatus = $this->em->getRepository('IndigoGameBundle:TableStatus')->findOneById($tableId);
 
         if($tableStatus)
@@ -86,7 +99,8 @@ class LiveViewService
             {
                 if($tableStatus->getGame() && ($tableStatus->getGame()->getStatus() == "started" || $tableStatus->getGame()->getStatus() == "waiting" || $tableStatus->getGame()->getStatus() == "ready"))
                 {
-                    $contestEntity = $this->em->getRepository('IndigoContestBundle:Contest')->findOneById($tableStatus->getGame()->getContestId());
+                    $contestEntity = $tableStatus->getGame()->getContest();
+                    //$this->em->getRepository('IndigoContestBundle:Contest')->findOneById($tableStatus->getGame()->getContestId());
 
                     if($contestEntity)
                     {
@@ -153,6 +167,10 @@ class LiveViewService
         return $model;
     }
 
+
+
+
+
     /**
      * @param int
      * @param int
@@ -160,29 +178,48 @@ class LiveViewService
      */
     public function getLastReservations()
     {
+        $segment = floor( date("i") / $this->defRegistrationTimeInterval);
+        $dateFrom = new \DateTime(date("Y-m-d H:0:0"));
+        $dateFrom->add(new \DateInterval('PT' . $segment * $this->defRegistrationTimeInterval. 'M'));
+        $dateTo = new \DateTime($dateFrom->format('Y-m-d H:i:s'));
+        $dateTo->add(new \DateInterval('PT' . $this->defRegistrationTimeInterval . 'M'));
+
+        $now =  new \DateTime(date("Y-m-d H:00:00"));
+        $now->add(new \DateInterval('PT' . $segment * $this->defRegistrationTimeInterval . 'M'));
         $reservations = array();
 
-                $reservations [] = [
-                  "time" => "12:00 - 12:15",
-                  "status" => "Free",
-                  "whoIsReservedName" => null,
-                  "whoIsReservedImageUrl" => null
-                ];
+                for($i = 0; $i < 3; $i++ )
+                {
+                    $reservation = $this->getReservation($now);
 
-                $reservations [] = [
-                    "time" => "12:15 - 12:30",
-                    "status" => "Reserved",
-                    "whoIsReservedName" => "Tadas",
-                    "whoIsReservedImageUrl" => "/bundles/indigoui/images/tadas_surgailis.png"
-                ];
+                    if($reservation)
+                    {
+                        $id = $reservation[0]["timeOwner"];
+                        $user = $this->getUserById($id);
 
-                $reservations [] = [
-                    "time" => "12:30 - 12:45",
-                    "status" => "Free",
-                    "whoIsReservedName" => null,
-                    "whoIsReservedImageUrl" => null
-                ];
+                        $reservations [] = [
+                            "time" => $dateFrom->format('H:i') .'-'. $dateTo->format('H:i'),
+                            "status" => "Reserved",
+                            "whoIsReservedName" => $user != null ? $user->getUsername() : null,
+                            "whoIsReservedImageUrl" => $user != null ? $user->getPicture() : null
+                        ];
+                    }
+                    else
+                    {
+                        $reservations [] = [
+                            "time" => $dateFrom->format('H:i') .'-'. $dateTo->format('H:i'),
+                            "status" => "Free",
+                            "whoIsReservedName" => null,
+                            "whoIsReservedImageUrl" => null
+                        ];
+                    }
 
+                    $now->add(new \DateInterval('PT' . $this->defRegistrationTimeInterval . 'M'));
+
+                    $dateFrom = $dateTo;
+                    $dateTo = new \DateTime($dateTo->format('Y-m-d H:i:s'));
+                    $dateTo->add(new \DateInterval('PT' . $this->defRegistrationTimeInterval . 'M'));
+                }
         return $reservations;
     }
 
@@ -190,4 +227,97 @@ class LiveViewService
     {
         return new Exception("This method is not implemented");
     }
+
+    /**
+     * @param $time
+     * @return array
+     */
+    public function getReservation($time)
+    {
+        $qb = $this->em->getRepository('IndigoGameBundle:GameTime')->createQueryBuilder('p');
+        $qb->where('p.startAt = :time')
+            ->andWhere('p.finishAt >  :time')
+            ->setParameter('time', $time)
+            ->orderBy('p.finishAt', 'DESC');
+
+        return $qb->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @param int
+     * @return \Indigo\UserBundle\Entity\User
+     */
+    public function getUserById($userId)
+    {
+        return $this->em->getRepository('IndigoUserBundle:User')->findOneById($userId);
+    }
+
+
+    /**
+     * @param $range
+     * @return \Indigo\UserBundle\Entity\Game
+     */
+    public function doWeHaveWinner($range)
+    {
+        $topScore = 10;
+        $tableId = 1;
+
+        $tableStatus = $this->em->getRepository('IndigoGameBundle:TableStatus')->findOneById($tableId);
+
+        if($tableStatus) {
+
+            $qb2 = $this->em->getRepository('IndigoGameBundle:Game')->createQueryBuilder('p');
+            $qb2->where("p.id = :gameId")
+                ->andWhere('p.team0Score > :zero OR p.team1Score > :zero OR p.team0Player0Id IS NOT NULL OR p.team0Player1Id IS NOT NULL OR p.team1Player0Id IS NOT NULL OR p.team1Player1Id IS NOT NULL')
+                ->setParameter('gameId', $tableStatus->getGameId())
+                ->setParameter('zero', 0);
+
+            if (!$qb2->getQuery()->getResult()) {
+                $date = new \DateTime(date("Y-m-d H:i:s"));
+                $date = $date->sub(new \DateInterval('PT' . $range . 'S'));
+
+                $qb = $this->em->getRepository('IndigoGameBundle:Game')->createQueryBuilder('p');
+                $qb->where("p.status = 'finished'")
+                    //->andWhere('p.finishedAt >  :time')
+                    ->andWhere('p.team0Score = :topScore OR p.team1Score = :topScore')
+                    ->addOrderBy('p.finishedAt', 'DESC')
+                    //->setParameter('time', $date)
+                    ->setParameter('topScore', $topScore);
+                //return $qb->getQuery()->getResult() != null ? true : false;
+                return $qb->getQuery()->getResult()[0];
+            }
+        }
+        return null;
+    }
+
+    public function getLastWinnerModel($range)
+    {
+        $game = $this->doWeHaveWinner($range);
+
+        if($game) {
+            $model = new WinnerTeamModel();
+            $model->setScore($game->getTeam0Score() . "-" . $game->getTeam1Score());
+
+            if ($game->getTeam0Score() > $game->getTeam1Score()) {
+                if ($game->getTeam0Player0Id()) {
+                    $model->getPlayer1()->setImageUrl($game->getTeam0Player0Id()->getPicture());
+                }
+                if ($game->getTeam0Player1Id()) {
+                    $model->getPlayer2()->setImageUrl($game->getTeam0Player1Id()->getPicture());
+                }
+            } else {
+
+                if ($game->getTeam1Player0Id()) {
+                    $model->getPlayer1()->setImageUrl($game->getTeam1Player0Id()->getPicture());
+                }
+                if ($game->getTeam1Player1Id()) {
+                    $model->getPlayer2()->setImageUrl($game->getTeam1Player1Id()->getPicture());
+                }
+            }
+            return $model;
+        }
+        return null;
+    }
+
+
 }

@@ -3,6 +3,10 @@ indigo_ui_live:
     defaults: { _controller: IndigoUIBundle:Live:live, id:0 }
 
 
+indigo_ui_live_widget:
+    path:     /live/widget/{id}
+    defaults: { _controller: IndigoUIBundle:Live:widget, id:0 }
+
 indigo_ui_table_status:
         path:     /live/status/{id}
         defaults: { _controller: IndigoUIBundle:Live:status, id:0 }

@@ -1,67 +1,11 @@
 
-<!DOCTYPE html>
-<html>
-<head>
+{% extends 'IndigoUIBundle:Share:_base.html.twig' %}
 
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <link rel="stylesheet" href="{{ asset('bundles/indigomain/css/bootstrap.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('bundles/indigoui/css/main.css') }}" />
-    <link rel="stylesheet" href="{{ asset('bundles/indigomain/css/pixel-admin.min.css') }}">
+{% block title %} Indigo - Dashboard {% endblock %}
 
-    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
-    <script src="{{ asset('bundles/indigomain/js/pixel-admin.min.js') }}"></script>
-    <script src="{{ asset('bundles/indigomain/js/bootstrap.min.js') }}"></script>
-
-</head>
-
-
-<body>
-<div class="dashboard">
+{% block content %}
 
     <div class="container-fluid">
-
-        <div class="row padding-sm valign-middle">
-
-            <div class=" col-sm-6 col-md-4 col-lg-4 col-sm-offset-2 col-md-offset-2 col-lg-offset-2">
-                <img src="{{ asset('bundles/indigoui/images/bilas.png') }}" class="img-circle icon-sm border-wide icon-narrow">
-
-                <div class="btn-group btn-group-lg" style="left: 10px;">
-                    <button type="button" class="btn btn-contest-select">Open league</button>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-contest-select dropdown-toggle" data-toggle="dropdown">Dropdown&nbsp;<i class="fa fa-caret-down"></i></button>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">NFQ contest</a></li>
-                            <li><a href="#">Speed contest</a></li>
-                            <li><a href="#">Speed contest</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-            </div>
-
-
-            <div class="col-sm-2 col-md-3 col-lg-1 col-lg-offset-1" style="text-align: center">
-
-                <a href="{{ path('indigo_ui_live', {'id' : 0}) }}">
-                    <div class="counter-separated counter-lg">
-                        <span> {{ teamAScore }} </span>
-                        <span> {{ teamBScore }}</span>
-                    </div>
-                    </br>
-                    <span class="text-bg">
-
-                    {% if isTableBusy %}
-                       <span class="text-sm"> Table is occupied </span>
-                    {% else %}
-                        <span class="text-sm"> Table is available </span>
-                    {% endif %}
-
-
-                    </span>
-                </a>
-            </div>
-
-        </div>
 
         <div class="row">
             <div class="col-sm-8 col-md-8 col-lg-8 col-sm-offset-2  col-md-offset-2  col-lg-offset-2" >
@@ -368,13 +312,5 @@
 
         </div>
         </div>
-    </div>
 
-</div>
-</body>
-</html>
-
-
-
-
-
+{% endblock %}

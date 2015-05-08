@@ -85,6 +85,7 @@ class GameTime
     public function __construct()
     {
         $this->games = new ArrayCollection();
+        $this->insertionTime = new \DateTime();
     }
 
     /**

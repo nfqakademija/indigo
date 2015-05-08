@@ -57,13 +57,12 @@ class ContestController extends Controller
             $entity->uploadPrizeImage();
             $em->persist($entity);
             $em->flush();
-
             return $this->redirect($this->generateUrl('contest_show', array('id' => $entity->getId())));
         }
 
         $this->setImageUrlGlobal("");
         $this->setPrizeImageUrlGlobal("");
-
+        
         return array(
             'entity' => $entity,
             'form' => $form->createView()

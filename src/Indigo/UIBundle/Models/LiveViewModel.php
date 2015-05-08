@@ -41,6 +41,17 @@ class LiveViewModel implements \JsonSerializable
      */
     private $reservations = array();
 
+    /**
+     * @var boolean
+     */
+    private $showGreetingMessage;
+
+    /**
+     * @var WinnerTeamModel
+     */
+    private $lastWinnerTeam;
+
+
     public function __construct()
     {
         $this->isTableBusy = false;
@@ -59,7 +70,9 @@ class LiveViewModel implements \JsonSerializable
             "contest" => $this->contest,
             "teamA" => $this->teamA,
             "teamB" => $this->teamB,
-            "reservations" => $this->reservations
+            "reservations" => $this->reservations,
+            "showGreetingMessage" => $this->showGreetingMessage,
+            "lastWinnerTeam" => $this->lastWinnerTeam
         ];
     }
 
@@ -157,6 +170,38 @@ class LiveViewModel implements \JsonSerializable
     public function setStatusMessage($statusMessage)
     {
         $this->statusMessage = $statusMessage;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isShowGreetingMessage()
+    {
+        return $this->showGreetingMessage;
+    }
+
+    /**
+     * @param boolean $showGreetingMessage
+     */
+    public function setShowGreetingMessage($showGreetingMessage)
+    {
+        $this->showGreetingMessage = $showGreetingMessage;
+    }
+
+    /**
+     * @return WinnerTeamModel
+     */
+    public function getLastWinnerTeam()
+    {
+        return $this->lastWinnerTeam;
+    }
+
+    /**
+     * @param WinnerTeamModel $lastWinnerTeam
+     */
+    public function setLastWinnerTeam($lastWinnerTeam)
+    {
+        $this->lastWinnerTeam = $lastWinnerTeam;
     }
 
 }

@@ -135,7 +135,6 @@ class Contest
     /**
      * @var string
      *
-     * @Assert\NotBlank(groups={"Default"})
      * @ORM\Column(name="prize", type="string", length=50, nullable=true)
      */
     private $prize;
@@ -170,6 +169,7 @@ class Contest
         $this->contestCreationDate = new \DateTime();
         $this->games = new ArrayCollection();
         $this->gameTimes = new ArrayCollection();
+        $this->setTableName(1);
         $this->contestType = true;
         $this->contestStartingDate = new \DateTime();
         $this->contestEndDate = new \DateTime('+1 days');
@@ -314,7 +314,7 @@ class Contest
      */
     public function getTableName()
     {
-        return $this->tableName;
+        //return $this->tableName;
     }
 
     /**
@@ -529,27 +529,21 @@ class Contest
 
         return $this;
     }
+
     /**
      * @return string
      */
-//    public function uploadPriseImages()
-//    {
-//        if (null === $this->getPriseImages()) {
-//            return;
-//        }
-//
-//        $this->changePriseImagesNames();
-//
-//        while (is_file($this->getAbsolutePath($this->pathForPriseImages)))
-//            $this->changePriseImagesNames();
-//
-//        $this->getPriseImages()->move(
-//            $this->getUploadRootDir(),
-//            $this->pathForPriseImages
-//        );
-//
-//        $this->image = null;
-//    }
+    public function getPrize()
+    {
+        return $this->prize;
+    }
 
+    /**
+     * @param string $prize
+     */
+    public function setPrize($prize)
+    {
+        $this->prize = $prize;
+    }
 
 }
