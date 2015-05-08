@@ -16,7 +16,7 @@ class DashboardController extends Controller {
      */
     public function dashboardAction($id)
     {
-        $model = $this->getDashboardViewService()->getDashboardViewModel(Contest::OPEN_CONTEST_ID);
+        $model = $this->getDashboardViewService()->getDashboardViewModel($id);
         return $this->render('IndigoUIBundle:Dashboard:dashboard.html.twig', $model->jsonSerialize() );
     }
 

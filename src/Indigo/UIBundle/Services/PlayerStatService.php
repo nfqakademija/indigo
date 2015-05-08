@@ -5,7 +5,6 @@ namespace Indigo\UIBundle\Services;
 
 use Indigo\GameBundle\Entity\PlayerTeamRelation;
 use Indigo\GameBundle\Entity\Team;
-use Indigo\GameBundle\Entity\TeamRepository;
 use Indigo\GameBundle\Repository\GameStatusRepository;
 use Indigo\UIBundle\Models\PlayerTeamStatModel;
 use Psr\Log\LoggerAwareInterface;

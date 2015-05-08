@@ -5,15 +5,6 @@ namespace Indigo\UIBundle\Models;
 
 class ContestStatModel implements \JsonSerializable
 {
-    /**
-     * @var integer
-     */
-    private $wins;
-
-    /**
-     * @var integer
-     */
-    private $losses;
 
     /**
      * @var integer
@@ -23,50 +14,85 @@ class ContestStatModel implements \JsonSerializable
     /**
      * @var integer
      */
-    private $scoredGoals;
+    private $totalGoals;
 
     /**
      * @var integer
      */
-    private $missedGoals;
+    private $totalTeams;
+
+    /**
+     * @var integer
+     */
+    private $fastestGameDuration;
+
+    /**
+     * @var integer
+     */
+    private $slowestGameDuration;
+
+    /**
+     * @var \ArrayIterator
+     */
+    private $topTeams;
 
 
 
-    public function jsonSerialize()
+
+
+    public function __construct()
     {
+        $this->topTeams = new \ArrayIterator();
+    }
+
+    /**
+     * @param TeamViewModel $topTeam
+     * @param $position
+     * @return $this
+     */
+    public function addTopTeam(TeamViewModel $topTeam, $position)
+    {
+        $this->topTeams->offsetSet((int)$position, $topTeam);
+
         return $this;
     }
 
     /**
-     * @return int
+     * @param $goals
+     * @return $this
      */
-    public function getWins()
+    public function incTotalGoals($goals)
     {
-        return $this->wins;
+        $this->setTotalGoals($this->getTotalGoals() + (int)$goals);
+
+        return $this;
     }
 
     /**
-     * @param mixed $wins
+     * @return $this
      */
-    public function setWins($wins)
+    public function incTotalGames()
     {
-        $this->wins = (int)$wins;
+        $this->setTotalGames($this->getTotalGames()+1);
+        return $this;
     }
 
     /**
-     * @return int
+     * @return $this
      */
-    public function getLosses()
+    public function incUniqTeams()
     {
-        return $this->losses;
+        $this->setTotalTeams($this->getTotalTeams()+1);
+        return $this;
     }
 
+
     /**
-     * @param $losses
+     * @return $this
      */
-    public function setLosses($losses)
+    public function jsonSerialize()
     {
-        $this->losses = (int)$losses;
+        return $this;
     }
 
     /**
@@ -85,35 +111,107 @@ class ContestStatModel implements \JsonSerializable
         $this->totalGames = (int)$totalGames;
     }
 
+
+    /**
+     * @return \ArrayIterator
+     */
+    public function getTopTeams()
+    {
+        return $this->topTeams;
+    }
+
+    /**
+     * @param \ArrayIterator $topTeams
+     */
+    public function setTopTeams(\ArrayIterator $topTeams)
+    {
+        $this->topTeams = $topTeams;
+    }
+
+
+    /**
+     * @param $position
+     * @return mixed
+     */
+    public function getTopTeam($position)
+    {
+        if ($this->topTeams->offsetExists((int)$position)) {
+
+            return $this->topTeams->offsetGet((int)$position);
+        }
+
+        return null;
+    }
+
     /**
      * @return int
      */
-    public function getScoredGoals()
+    public function getTotalGoals()
     {
-        return $this->scoredGoals;
+        return $this->totalGoals;
     }
 
     /**
-     * @param $scoredGoals
+     * @param int $totalGoals
      */
-    public function setScoredGoals($scoredGoals)
+    public function setTotalGoals($totalGoals)
     {
-        $this->scoredGoals = (int)$scoredGoals;
+        $this->totalGoals = $totalGoals;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTotalTeams()
+    {
+        return $this->totalTeams;
+    }
+
+    /**
+     * @param mixed $totalTeams
+     */
+    public function setTotalTeams($totalTeams)
+    {
+        $this->totalTeams = $totalTeams;
     }
 
     /**
      * @return int
      */
-    public function getMissedGoals()
+    public function getFastestGameDuration()
     {
-        return $this->missedGoals;
+        return $this->fastestGameDuration;
     }
 
     /**
-     * @param $missedGoals
+     * @param $fastestGameDuration
+     * @return $this
      */
-    public function setMissedGoals($missedGoals)
+    public function setFastestGameDuration($fastestGameDuration)
     {
-        $this->missedGoals = (int)$missedGoals;
+        $this->fastestGameDuration = (int)$fastestGameDuration;
+
+        return $this;
     }
+
+    /**
+     * @return int
+     */
+    public function getSlowestGameDuration()
+    {
+        return $this->slowestGameDuration;
+    }
+
+    /**
+     * @param $slowestGameDuration
+     * @return $this
+     */
+    public function setSlowestGameDuration($slowestGameDuration)
+    {
+        $this->slowestGameDuration = (int)$slowestGameDuration;
+
+        return $this;
+    }
+
+
 }

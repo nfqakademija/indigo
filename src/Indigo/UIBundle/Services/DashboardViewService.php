@@ -2,7 +2,7 @@
 
 namespace Indigo\UIBundle\Services;
 
-
+use Indigo\ContestBundle\Entity\Contest;
 use Indigo\UIBundle\Models\DashboardViewModel;
 use Indigo\UIBundle\Models\PlayerStatModel;
 use Indigo\UIBundle\Models\ReservationModel;
@@ -38,6 +38,13 @@ class DashboardViewService
 
     public function getDashboardViewModel($contestId)
     {
+        $contestEntity = $this->em->getRepository('IndigoContestBundle:Contest')->findOneById((int)$contestId);
+        if ($contestEntity == null) {
+            $contestId = Contest::OPEN_CONTEST_ID;
+
+        }
+
+
         $tableId = 1;
         $tableStatus = $this->em->getRepository('IndigoGameBundle:TableStatus')->findOneById($tableId);
 
@@ -75,7 +82,7 @@ class DashboardViewService
         $model->getNextReservation()->setDateStart("2012-02-01 15:00");
 
         $model->setPlayerTeamsStats($this->playerStatService->getStats($contestId));
-        //$model->setContestStat($this->contestStatService->getStats($contestId));
+        $model->setContestStat($this->contestStatService->getStats($contestId));
 
         return $model;
     }
