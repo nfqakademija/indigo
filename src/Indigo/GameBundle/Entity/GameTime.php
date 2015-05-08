@@ -4,6 +4,7 @@ namespace Indigo\GameBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Indigo\ContestBundle\Entity\Contest;
 
 /**
  * GameTime
@@ -113,24 +114,6 @@ class GameTime
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @return Game
-     */
-    public function getGame()
-    {
-        return $this->game;
-    }
-
-    /**
-     * @param $game
-     * @return $this
-     */
-    public function setGame($game)
-    {
-        $this->game = $game;
-        return $this;
     }
 
     /**

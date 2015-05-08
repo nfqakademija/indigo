@@ -912,6 +912,19 @@ class Game
     }
 
     /**
+     * @return Team
+     */
+    public function getTeamLoss()
+    {
+        if ($this->getTeam0() == $this->getTeamWon()) {
+
+            return $this->getTeam0;
+        }
+
+        return $this->getTeam1;
+    }
+
+    /**
      * @param $teamWon
      * @return $this
      */
