@@ -19,6 +19,9 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class Contest
 {
 
+    const OPEN_CONTEST_ID = 1;
+    const DEFAULT_SCORE_LIMIT = 10;
+
     /**
      * @var int
      *
@@ -153,6 +156,11 @@ class Contest
     private $gameTimes;
 
     /**
+     * @ORM\Column(name="score_limit", type="smallint", length=2)
+     */
+    private $scoreLimit;
+
+    /**
      * @param \Datetime $contest_creation_date
      * set value to param $contestCreationDate
      * set value to param $contestType
@@ -165,6 +173,7 @@ class Contest
         $this->contestType = true;
         $this->contestStartingDate = new \DateTime();
         $this->contestEndDate = new \DateTime('+1 days');
+        $this->setScoreLimit(self::DEFAULT_SCORE_LIMIT);
     }
 
     /**
@@ -490,6 +499,37 @@ class Contest
     }
 
     /**
+     * @return bool
+     */
+    public function isContestOpen()
+    {
+        if ($this->getId() == self::OPEN_CONTEST_ID) {
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getScoreLimit()
+    {
+        return $this->scoreLimit;
+    }
+
+    /**
+     * @param $scoreLimit
+     * @return $this
+     */
+    public function setScoreLimit($scoreLimit)
+    {
+        $this->scoreLimit = (int)$scoreLimit;
+
+        return $this;
+    }
+    /**
      * @return string
      */
 //    public function uploadPriseImages()
@@ -510,5 +550,6 @@ class Contest
 //
 //        $this->image = null;
 //    }
+
 
 }

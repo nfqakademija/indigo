@@ -45,15 +45,18 @@ class TableShakeListener {
         if (!$this->accepts($tableEventModel)) {
             return;
         }
-
-        printf (" - TableShake!! event: %d\n", $tableEventModel->getId());
+        
+        printf (" - TableShake!! event: %d, on table: %u\n", $tableEventModel->getId(), $tableEventModel->getTableId());
         $tableStatusEntity = $this->em->getRepository('IndigoGameBundle:TableStatus')
             ->findOneById($tableEventModel->getTableId());
         if ($tableStatusEntity) {
 
-            $tableStatusEntity->setLastTableShakeTs($tableEventModel->getTimeSec());
+            $tableStatusEntity->setLastTableShakeTs((new \DateTime())->getTimestamp());
             $this->em->persist($tableStatusEntity);
             $this->em->flush();
+        } else {
+
+            printf("nerastas stalas!\n");
         }
     }
 }

@@ -22,6 +22,12 @@ use Doctrine\Common\Collections\Criteria;
  */
 class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface, \Serializable
 {
+
+    const ANONYMOUS_EMAIL_DOMAIN = 'example.com';
+    const ANONYMOUS_USERNAME = 'anonymous';
+    const ANONYMOUS_PASSWORD = 'incredibly';
+    const ANONYMOUS_FACE = '/bundles/indigoui/images/anonymous.png';
+    const NO_FACE = '/bundles/indigoui/images/empty.png';
     /**
      * @var integer
      *
@@ -120,7 +126,7 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
         $this->roles = new ArrayCollection();
         $this->teams = new ArrayCollection();
         $this->registrationDate = new \DateTime('now');
-        $this->picture = "/bundles/indigoui/images/anonymous.png";
+        $this->picture = self::ANONYMOUS_FACE;
     }
 
     public function __toString()

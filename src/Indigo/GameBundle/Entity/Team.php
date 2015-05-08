@@ -4,7 +4,7 @@ namespace Indigo\GameBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-
+use Indigo\ContestBundle\Entity\Contest;
 /**
  * Team
  *
@@ -13,6 +13,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Team
 {
+    const SINGLE_PLAYER_TEAM_NAME = 'singlePlayerTeam';
+    const MULTI_PLAYER_TEAM_NAME = 'multiPlayerTeam';
+
+    const SINGLE_PLAYER_TYPE = 1;
+    const MULTI_PLAYER_TYPE = 0;
     /**
      * @var integer
      *
@@ -198,5 +203,18 @@ class Team
         return $this;
     }
 
+    /**
+     * @param $contestId
+     * @return mixed
+     */
+    public function getTeamRatings($contestId)
+    {
+        if ((int) $contestId == Contest::OPEN_CONTEST_ID) {
+
+            return $this->getOpenRating();
+        }
+
+        return $this->getContestRating();
+    }
 
 }

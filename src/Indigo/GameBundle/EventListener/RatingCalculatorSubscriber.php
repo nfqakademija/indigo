@@ -16,11 +16,6 @@ class RatingCalculatorSubscriber extends Container implements EventSubscriberInt
      */
     private $ratingService;
 
-/*    public function __construct($ratingService)
-    {
-        $this->ratingService = $service;
-    }*/
-
     /**
      * @return array
      */
@@ -38,13 +33,11 @@ class RatingCalculatorSubscriber extends Container implements EventSubscriberInt
     public function calculateRatings(GameFinishEvent $event)
     {
         $gameEntity = $event->getGame();
-        if ($gameEntity->getPlayersCountInTeam(0) > 0 &&
-            $gameEntity->getPlayersCountInTeam(0) == $gameEntity->getPlayersCountInTeam(1)) {
+        if ($gameEntity->getIsStat()) {
 
             /** @var \Indigo\GameBundle\Service\RatingService */
             $this->ratingService->updateRatings($gameEntity);
         }
-
     }
 
     public function setRatingService ($service)

@@ -1,8 +1,3 @@
-indigo_ui_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: IndigoUIBundle:Default:index }
-
-
 indigo_ui_live:
     path:     /live/{id}
     defaults: { _controller: IndigoUIBundle:Live:live, id:0 }
@@ -18,9 +13,10 @@ indigo_ui_table_status:
         requirements:
                 _method: POST|GET
 
-
 indigo_ui_dashboard:
     path:     /dashboard/{id}
     defaults: { _controller: IndigoUIBundle:Dashboard:dashboard, id:0 }
+    requirements:
+            _method: GET
 
 
