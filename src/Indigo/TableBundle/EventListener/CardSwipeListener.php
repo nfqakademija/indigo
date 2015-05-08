@@ -4,21 +4,22 @@ namespace Indigo\TableBundle\EventListener;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Indigo\ContestBundle\IndigoContestBundle;
 use Indigo\GameBundle\Entity\Game;
 use Indigo\GameBundle\Entity\GameTime;
 use Indigo\GameBundle\Entity\PlayerTeamRelation;
 use Indigo\GameBundle\Entity\TableStatus;
+use Indigo\GameBundle\Entity\TableStatusRepository;
 use Indigo\GameBundle\Entity\Team;
 use Indigo\GameBundle\Event\GameEvents;
 use Indigo\GameBundle\Event\GameFinishEvent;
 use Indigo\GameBundle\Repository\GameStatusRepository;
 use Indigo\GameBundle\Repository\GameTypeRepository;
+use Indigo\GameBundle\Service\TeamCreate;
 use Indigo\TableBundle\Event\TableEvent;
 use Indigo\TableBundle\Model\CardSwipeModel;
 use Indigo\TableBundle\Model\TableActionInterface;
-use Indigo\GameBundle\Entity\TableStatusRepository;
 use Indigo\UserBundle\Entity\User as Player;
+use Indigo\UserBundle\Service\Registration;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -26,9 +27,6 @@ class CardSwipeListener
 {
     const DOUBLE_SWIPE_IN = 5;
     const DOUBLE_SWIPE_MIN_TS = 2;
-    const ANONYMOUS_EMAIL_DOMAIN = 'example.com';
-    const ANONYMOUS_USERNAME = 'anonymous';
-    const ANONYMOUS_PASSWORD = 'incredibly';
 
     /**
      * @var EntityManager
@@ -41,13 +39,25 @@ class CardSwipeListener
     private $ed;
 
     /**
+     * @var TeamCreate
+     */
+    private $teamCreateService;
+
+    /**
+     * @var Registration
+     */
+    private $userRegistrationService;
+
+    /**
      * @param EntityManagerInterface $em
      * @param EventDispatcherInterface $ed
      */
-    public function __construct(EntityManagerInterface $em, EventDispatcherInterface $ed)
+    public function __construct(EntityManagerInterface $em, EventDispatcherInterface $ed, TeamCreate $teamCreateService, Registration $userRegistrationService)
     {
         $this->em = $em;
         $this->ed = $ed;
+        $this->teamCreateService = $teamCreateService;
+        $this->userRegistrationService = $userRegistrationService;
     }
 
     /**
@@ -169,7 +179,7 @@ class CardSwipeListener
                         $commonTeamId = $this->em->getRepository('IndigoGameBundle:PlayerTeamRelation')->getPlayersCommonTeam($player0, $player1);
                         if (!$commonTeamId) {
 
-                            $teamEntity = $this->createMultiPlayerTeam($player0, $player1, Team::MULTI_PLAYER_TEAM_NAME);
+                            $teamEntity =  $this->teamCreateService->createMultiPlayerTeam($player0, $player1);
                             $this->em->flush();
                         } else {
 
@@ -232,7 +242,8 @@ class CardSwipeListener
 
         $teamEntity =  $this->em->getRepository('IndigoGameBundle:PlayerTeamRelation')->getPlayerSingleTeam($playerEntity);
         if (!$teamEntity) {
-            $teamEntity  = $this->createSinglePlayerTeam($playerEntity);
+
+            $teamEntity =  $this->teamCreateService->createSinglePlayerTeam($playerEntity);
         }
 
         return $teamEntity;
@@ -246,14 +257,10 @@ class CardSwipeListener
      */
     private function createGame(TableStatus $tableStatusEntity)
     {
-
-        //$gameEntity->setTableStatus($tableStatusEntity);
-        //$gameEntity->setGameTime(new GameTime());
-        //$this->em->persist($gameEntity);
-
         $tableStatusEntity->setGame(new Game ());
         $this->em->persist($tableStatusEntity);
         $this->em->flush();
+
         return $tableStatusEntity->getGame();
     }
 
@@ -265,72 +272,12 @@ class CardSwipeListener
     {
         $playerEntity = new Player();
         $playerEntity->setCardId($cardId);
-        $playerEntity->setUsername(sprintf('%s%d', self::ANONYMOUS_USERNAME, $cardId));
-        $playerEntity->setEmail(sprintf('%s@%s', $playerEntity->getUsername(), self::ANONYMOUS_EMAIL_DOMAIN));
-        $playerEntity->setPassword(self::ANONYMOUS_PASSWORD);
-        $this->em->persist($playerEntity);
-        $this->em->flush($playerEntity);
+        $playerEntity->setUsername(sprintf('%s%d', Player::ANONYMOUS_USERNAME, $cardId));
+        $playerEntity->setEmail(sprintf('%s@%s', $playerEntity->getUsername(), Player::ANONYMOUS_EMAIL_DOMAIN));
+        $playerEntity->setPassword(Player::ANONYMOUS_PASSWORD);
+        $this->userRegistrationService->register($playerEntity);
 
         return $playerEntity;
-    }
-
-    /**
-     * @param string $name
-     * @return Team
-     */
-    private function createMultiPlayerTeam(Player $player0, Player $player1, $name = "Broliai Aliukai") {
-
-        $teamEntity = $this->createTeam(false, $name);
-
-        $playerToTeamRelation1 = $this->createPlayerTeamRelation($player0, $teamEntity);
-        $playerToTeamRelation2 = $this->createPlayerTeamRelation($player1, $teamEntity);
-        $this->em->persist($playerToTeamRelation1);
-        $this->em->persist($playerToTeamRelation2);
-
-        return $teamEntity;
-    }
-
-    /**
-     * @param Player $player
-     * @param string $name
-     * @return Team
-     */
-    private function createSinglePlayerTeam(Player $player, $name='SingleTeam')
-    {
-        $teamEntity = $this->createTeam(true, $name);
-        $playerToTeamRelation = $this->createPlayerTeamRelation($player, $teamEntity);
-        $this->em->persist($playerToTeamRelation);
-
-        return $teamEntity;
-    }
-
-    /**
-     * @param $single
-     * @param $name
-     * @return Team
-     */
-    private function createTeam($single, $name)
-    {
-        $teamEntity = new Team();
-        $teamEntity->setIsSingle((bool) $single);
-        $teamEntity->setName($name);
-
-        return $teamEntity;
-    }
-
-    /**
-     * @param Player $player
-     * @param Team $team
-     * @return PlayerTeamRelation
-     */
-    private function createPlayerTeamRelation(Player $player, Team $team)
-    {
-        $playerTeamRelationEntity = new PlayerTeamRelation();
-        $playerTeamRelationEntity
-            ->setPlayer($player)
-            ->setTeam($team);
-
-        return $playerTeamRelationEntity;
     }
 
     /**
@@ -344,17 +291,6 @@ class CardSwipeListener
         return (bool) ($tableEventModel->getCardId() == $tableStatusEntity->getLastSwipedCardId() &&
             $timeBetweenSwipes <= self::DOUBLE_SWIPE_IN &&
             $timeBetweenSwipes >= self::DOUBLE_SWIPE_MIN_TS);
-    }
-
-    /**
-     * @param Game $game
-     * @return bool
-     */
-    private function isGameStartedOrFinished(Game $game) {
-        return (
-            ($game->getStatus() == GameStatusRepository::STATUS_GAME_STARTED) ||
-            ($game->getStatus() == GameStatusRepository::STATUS_GAME_FINISHED)
-        );
     }
 
     /**

@@ -16,6 +16,8 @@ class Team
     const SINGLE_PLAYER_TEAM_NAME = 'singlePlayerTeam';
     const MULTI_PLAYER_TEAM_NAME = 'multiPlayerTeam';
 
+    const SINGLE_PLAYER_TYPE = 1;
+    const MULTI_PLAYER_TYPE = 0;
     /**
      * @var integer
      *
