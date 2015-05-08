@@ -1,0 +1,46 @@
+{% extends 'IndigoMainBundle:Pixel:pages-create-contest.html.twig' %}
+
+{% block title %}{{ 'create_contest.form.contest_creation'|trans }}{% endblock %}
+
+{% block body -%}
+    <h1>{{ 'create_contest.form.contest_creation'|trans }}</h1>
+    {{ form_start(form) }}
+    {{ form_row(form.user) }}
+    {{ form_row(form.contestTitle) }}
+    {{ form_row(form.image) }}
+    {{ form_row(form.tableName) }}
+    {{ form_row(form.contestType) }}
+    <div class="form-group">
+        <label class="col-sm-2 control-label required">{{ 'period'|trans }}</label>
+        <div class="col-sm-10">
+            <div class="input-daterange input-group date" id="datepicker">
+                {{ form_widget(form.contestStartingDate) }}
+                <span class="input-group-addon">{{ 'to'|trans|lower }}</span>
+                {{ form_widget(form.contestEndDate) }}
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label required">{{ 'create_contest.form.contest_privacy'|trans }}</label>
+        <div class="col-sm-10">
+            {{ form_widget(form.contestPrivacy, {'attr' : {'data-on-text' : 'yes'|trans, 'data-off-text' : 'no'|trans}}) }}
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label required"></label>
+        <div class="col-sm-10">
+            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#optionalPrize">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{ 'add_prize'|trans }} ({{ 'optional'|trans }})
+            </button>
+        </div>
+    </div>
+    <div id="optionalPrize" class="collapse">
+        {{ form_row(form.prize) }}
+        {{ form_row(form.prizeImage) }}
+    </div>
+    {{ form_end(form) }}
+    <a href="{{ path('contest', { 'id': entity.id }) }}" title="{{ 'show'|trans }}" class="btn btn-default">
+            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> {{ 'back_to_the_list'|trans }}
+    </a>
+{% endblock %}
+

@@ -214,6 +214,18 @@
         },
         {
             "name": "doctrine/common",
+<<<<<<< HEAD
+            "version": "v2.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/common.git",
+                "reference": "cd8daf2501e10c63dced7b8b9b905844316ae9d3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/common/zipball/cd8daf2501e10c63dced7b8b9b905844316ae9d3",
+                "reference": "cd8daf2501e10c63dced7b8b9b905844316ae9d3",
+=======
             "version": "v2.4.2",
             "source": {
                 "type": "git",
@@ -224,6 +236,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/doctrine/common/zipball/5db6ab40e4c531f14dad4ca96a394dfce5d4255b",
                 "reference": "5db6ab40e4c531f14dad4ca96a394dfce5d4255b",
+>>>>>>> origin/clear
                 "shasum": ""
             },
             "require": {
@@ -240,7 +253,11 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
+<<<<<<< HEAD
+                    "dev-master": "2.6.x-dev"
+=======
                     "dev-master": "2.4.x-dev"
+>>>>>>> origin/clear
                 }
             },
             "autoload": {

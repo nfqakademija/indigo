@@ -1,0 +1,27 @@
+parameters:
+    indigo_api.connection_manager.class: Indigo\ApiBundle\Service\Manager\ApiManager
+    indigo_api.success_event_listener.class: Indigo\ApiBundle\EventListener\ApiSuccessListener
+
+
+
+
+services:
+    indigo_api.connection_manager:
+        class: %indigo_api.connection_manager.class%
+        arguments: ["@event_dispatcher"]
+        calls:
+            - [setOptions, ["%api_config%"]]
+            - [setLogger, ["@?logger"]]
+        tags:
+            - { name: monolog.logger, channel: api.events }
+
+    indigo_api.listener.api_success_listener:
+        class: %indigo_api.success_event_listener.class%
+        arguments: ["@doctrine.orm.entity_manager"]
+        calls:
+            - [setLogger, ["@?logger"]]
+        tags:
+            - { name: kernel.event_listener, event: indigo_api.success, method: onResponseSuccess }
+            - { name: monolog.logger, channel: api.events }
+
+

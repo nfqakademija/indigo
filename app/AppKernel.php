@@ -16,12 +16,17 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            new AppBundle\AppBundle(),
+            new Indigo\MainBundle\IndigoMainBundle(),
+            new Indigo\UserBundle\IndigoUserBundle(),
+            new Indigo\GameBundle\IndigoGameBundle(),
+            new Indigo\UIBundle\IndigoUIBundle(),
+            new Indigo\ApiBundle\IndigoApiBundle(),
+            new Indigo\ContestBundle\IndigoContestBundle(),
+            new Indigo\TableBundle\IndigoTableBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
-            $bundles[] = new Acme\DemoBundle\AcmeDemoBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();

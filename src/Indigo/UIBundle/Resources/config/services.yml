@@ -1,0 +1,14 @@
+parameters:
+    indigo_ui.live_view_service.class: Indigo\UIBundle\Services\LiveViewService
+    indigo_ui.dashboard_view_service.class: Indigo\UIBundle\Services\DashboardViewService
+
+services:
+    indigo_ui.live_view_service:
+      class: %indigo_ui.live_view_service.class%
+      arguments: ["@doctrine.orm.entity_manager"]
+
+
+    indigo_ui.dashboard_view_service:
+      class: %indigo_ui.dashboard_view_service.class%
+      arguments: ["@doctrine.orm.entity_manager"]
+

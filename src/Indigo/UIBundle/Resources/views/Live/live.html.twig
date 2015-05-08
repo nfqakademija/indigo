@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="{{ asset('bundles/indigomain/css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/indigoui/css/main.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/indigomain/css/pixel-admin.min.css') }}">
+
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="{{ asset('bundles/indigomain/js/pixel-admin.min.js') }}"></script>
+    <script src="{{ asset('bundles/indigomain/js/bootstrap.min.js') }}"></script>
+
+
+
+</head>
+
+<script>
+
+    var _lastScoreTeamA = 0;
+    var _lastScoreTeamB = 0;
+    var _firstTime = true;
+
+    $(document).ready(function()
+    {
+        setInterval(function () {
+
+            var status = $.get( "/live/status/1", function(data) {
+
+                var json = $.parseJSON(data);
+
+                if(json.isBusy)
+                {
+                    $("#ajax-table-status").html("Stalas UŽIMTAS!");
+                    $("#ajax-table-status").addClass('busy');
+                }
+                else
+                {
+                    $("#ajax-table-status").html("Stalas LAISVAS!");
+                    $("#ajax-table-status").removeClass('busy');
+                }
+
+                $("#contest-title").html(json.contest.title);
+
+
+                if( json.teamA.goals == 0 && json.teamB.goals == 0 && (_lastScoreTeamA == 9 || _lastScoreTeamB == 9) )
+                {
+                    $('#not-goal-msg').hide();
+
+                        $("#not-wrapper").show().fadeIn(2000, function () {
+                            $('#not-end-msg').show().fadeIn(2000).delay(5000)
+                        });
+                }
+                else
+                {
+                    $("#not-wrapper").hide().fadeOut(2000, function(){
+                        $('#not-end-msg').hide().fadeOut(2000);
+                    });
+
+                    $("#scoreA").html(json.teamA.goals);
+                    $("#scoreB").html(json.teamB.goals);
+                    $("#player1-img").attr("src", json.teamA.player1.imageUrl + "?" + new Date().getTime());
+                    $("#player2-img").attr("src", json.teamA.player2.imageUrl + "?" + new Date().getTime());
+                    $("#player3-img").attr("src", json.teamB.player1.imageUrl + "?" + new Date().getTime());
+                    $("#player4-img").attr("src", json.teamB.player2.imageUrl + "?" + new Date().getTime());
+                }
+
+                if(_firstTime)
+                {
+                    _lastScoreTeamA = json.teamA.goals;
+                    _lastScoreTeamB = json.teamB.goals;
+                    _firstTime = false;
+                }
+                else if(!(json.teamA.goals == 0 && json.teamB.goals == 0))
+                {
+                    if(json.teamA.goals > _lastScoreTeamA || json.teamB.goals > _lastScoreTeamB)
+                    {
+                        $("#not-wrapper").show().fadeIn(2000, function(){
+                            $('#not-goal-msg').show().fadeIn(2000).delay(4000).fadeOut(2000);
+                        }).fadeOut(2000);
+                    }
+                    _lastScoreTeamA = json.teamA.goals;
+                    _lastScoreTeamB = json.teamB.goals;
+                }
+            });
+
+        },2000);
+
+    });
+
+</script>
+
+
+<body>
+
+{#{% block content%}#}
+
+<div id="not-wrapper">
+    <span id="not-goal-msg"> GOAL! </span>
+    <span id="not-end-msg"> GAME OVER </br> Kick to start new game </span>
+</div>
+
+    <div class="container-fluid">
+        <div class="row padding-sm">
+
+            <div class=" col-xs-12 col-sm-12 col-md-10 col-lg-10 col-md-offset-1 col-lg-offset-1 content">
+
+
+                <div class="title">
+                    <h1 id="contest-title"> {{ contest.title}} </h1>
+                </div>
+
+
+                <div class="row top-space" >
+                    <div class="col-xs-12">
+                       <span id="ajax-table-status" class="table-status">  </span>
+                    </div>
+                </div>
+
+                <div id="scoreA"  class="score" > {{ teamA.goals }}  </div>
+
+                <div id="scoreB" class="score" >  {{ teamB.goals }} </div>
+
+
+                <div class="field">
+
+                    <img class="bg" src="{{ asset('bundles/indigoui/images/field2.png') }}"/>
+
+                        <div id="player1" class="player left-top">
+                            <img id="player1-img" src="{{ teamA.player1.imageUrl }}"/>
+                        </div>
+
+                        <div class="player left-bottom">
+                               <img id="player2-img" src="{{ teamA.player2.imageUrl }}"/>
+                        </div>
+
+
+                    <div class="player right-top">
+                        {% if teamB.player1 != null %}
+                            <img id="player3-img" src="{{ teamB.player1.imageUrl }}"/>
+                        {% endif %}
+                        {#<p> {{ player1.name }} </p>#}
+                    </div>
+
+                    <div class="player right-bottom">
+                            <img id="player4-img" src="{{ teamB.player2.imageUrl }}"/>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row padding-sm">
+
+            <div class=" col-xs-4 col-sm-3 col-md-2 col-sm-offset-1 col-md-offset-3 " style="top: -40px">
+
+                <div class="stat-panel text-center border-thin b-color-selected" style="height: 200px;">
+                    <div class="stat-cell {% if reservations[0].status == "Reserved" %} bg-color-reserved {% else %} bg-color-not-reserved {% endif %}">
+                        <span class="text-md"> Now </span></br>
+                        <span class="time-text"> {{ reservations[0].time }} </span><br>
+                        <span class="text-md"> {% if reservations[0].status == "Reserved" %} Table is reserved {% else %} Table is not reserved {% endif %} </span></br></br>
+                        <span style="height: 100px">
+                            {% if reservations[0].whoIsReservedImageUrl != null %}
+                                <img src="{{ reservations[0].whoIsReservedImageUrl }}" class="img-circle icon-sm border-wide icon-narrow">
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-xs-4 col-sm-3 col-md-2" style="top: -40px">
+
+                <div class="stat-panel text-center" style="height: 200px;">
+                    <div class="stat-cell {% if reservations[1].status == "Reserved" %} bg-color-reserved {% else %} bg-color-not-reserved {% endif %}">
+                        <span class="text-md"> Next </span></br>
+                        <span class="time-text"> {{ reservations[1].time }} </span><br>
+                        <span class="text-md"> {% if reservations[1].status == "Reserved" %} Table is reserved {% else %} Table is not reserved {% endif %} </span></br></br>
+                        <span style="height: 100px">
+                             {% if reservations[1].whoIsReservedImageUrl != null %}
+                                 <img src="{{ reservations[1].whoIsReservedImageUrl }}" class="img-circle icon-sm border-wide icon-narrow">
+                             {% endif %}
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-xs-4 col-sm-3 col-md-2" style="top: -40px">
+
+                <div class="stat-panel text-center" style="height: 200px;">
+                    <div class="stat-cell {% if reservations[2].status == "Reserved" %} bg-color-reserved {% else %} bg-color-not-reserved {% endif %} ">
+                        <span class="text-md"> Later </span></br>
+                        <span class="time-text"> {{ reservations[2].time }} </span><br>
+                        <span class="text-md"> {% if reservations[2].status == "Reserved" %} Table is reserved {% else %} Table is not reserved {% endif %} </span></br></br>
+                        <span style="height: 100px">
+
+                            {% if reservations[2].whoIsReservedImageUrl != null %}
+                                <img src="{{ reservations[2].whoIsReservedImageUrl }}" class="img-circle icon-sm border-wide icon-narrow">
+                            {% endif %}
+
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
+
+{#{% endblock %}#}
