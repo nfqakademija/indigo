@@ -1,14 +1,15 @@
 <?php
 
-namespace Indigo\UserBundle\Service;
+namespace Indigo\GameBundle\Service;
 
 
 use Doctrine\ORM\EntityManagerInterface;
+use Indigo\GameBundle\Entity\PlayerTeamRelation;
 use Indigo\GameBundle\Entity\Team;
 use Indigo\UserBundle\Entity\User;
-use Proxies\__CG__\Indigo\GameBundle\Entity\PlayerTeamRelation;
 
-class TeamCreateService
+
+class TeamCreate
 {
     /**
      * @var EntityManagerInterface
@@ -30,11 +31,14 @@ class TeamCreateService
      */
     public function createMultiPlayerTeam(User $player0, User $player1)
     {
-        $teamEntity = $this->createTeam(false, Team::MULTI_PLAYER_TEAM_NAME);
-        $playerToTeamRelation1 = $this->createPlayerTeamRelation($player0, $teamEntity);
-        $playerToTeamRelation2 = $this->createPlayerTeamRelation($player1, $teamEntity);
+        $teamEntity = $this->createTeam(Team::MULTI_PLAYER_TYPE, Team::MULTI_PLAYER_TEAM_NAME);
+        $playerToTeamRelation0 = $this->createPlayerTeamRelation($player0, $teamEntity);
+        $playerToTeamRelation1 = $this->createPlayerTeamRelation($player1, $teamEntity);
+        $player0->addTeam($playerToTeamRelation0);
+        $player1->addTeam($playerToTeamRelation1);
+
+        $this->em->persist($playerToTeamRelation0);
         $this->em->persist($playerToTeamRelation1);
-        $this->em->persist($playerToTeamRelation2);
 
         return $teamEntity;
     }
@@ -45,11 +49,12 @@ class TeamCreateService
      */
     public function createSinglePlayerTeam(User $player)
     {
-        $teamEntity = $this->createTeam(true, Team::SINGLE_PLAYER_TEAM_NAME);
+        $teamEntity = $this->createTeam(Team::SINGLE_PLAYER_TYPE, Team::SINGLE_PLAYER_TEAM_NAME);
         $playerToTeamRelation = $this->createPlayerTeamRelation($player, $teamEntity);
+        $player->addTeam($playerToTeamRelation);
         $this->em->persist($playerToTeamRelation);
 
-        return $playerToTeamRelation;
+        return $teamEntity;
     }
 
     /**

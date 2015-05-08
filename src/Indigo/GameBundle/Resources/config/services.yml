@@ -1,7 +1,7 @@
 parameters:
     indigo_game.game_finish_listener.class: Indigo\GameBundle\EventListener\GameFinishListener
     game.rating_calculator.class: Indigo\GameBundle\Service\RatingService
-
+    indigo_game.team.service.class: Indigo\GameBundle\Service\TeamCreate
 
 services:
     game.finish.listener:
@@ -16,7 +16,6 @@ services:
       class: %game.rating_calculator.class%
       arguments: ["@doctrine.orm.entity_manager"]
 
-
     indigo_game.rating.subscriber:
         class: Indigo\GameBundle\EventListener\RatingCalculatorSubscriber
         calls:
@@ -24,3 +23,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    indigo_game.team.service:
+      class: %indigo_game.team.service.class%
+      arguments: ["@doctrine.orm.entity_manager"]

@@ -20,7 +20,7 @@ services:
 
     indigo_table.card_swipe_listener:
         class: %indigo_table.card_swipe_listener.class%
-        arguments: ["@doctrine.orm.entity_manager", "@event_dispatcher"]
+        arguments: ["@doctrine.orm.entity_manager", "@event_dispatcher", "@?indigo_game.team.service", "@?indigo_user.registration.service"]
         tags:
             - { name: kernel.event_listener, event: indigo_table.new_event, method: onEvent }
 
