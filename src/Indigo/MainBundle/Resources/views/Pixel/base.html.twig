@@ -15,11 +15,13 @@
         <link href="{{ asset('bundles/indigomain/css/google.css') }}" rel="stylesheet" type="text/css">
 
         <!-- Pixel Admin's stylesheets -->
-        <link href="{{ asset('bundles/indigomain/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+
         <link href="{{ asset('bundles/indigomain/css/pixel-admin.min.css') }}" rel="stylesheet" type="text/css">
         <link href="{{ asset('bundles/indigomain/css/pages.min.css') }}" rel="stylesheet" type="text/css">
         <link href="{{ asset('bundles/indigomain/css/rtl.min.css') }}" rel="stylesheet" type="text/css">
         <link href="{{ asset('bundles/indigomain/css/themes.min.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('bundles/indigomain/bower_components/bootstrap-lightbox/bootstrap-lightbox.min.css') }}" rel="stylesheet" type="text/css"/>
     {% endblock %}
 </head>
 <body class="{% block body_class %}{% endblock %}">
@@ -52,6 +54,7 @@
     <!-- Pixel Admin's javascripts -->
     <script src="{{ asset('bundles/indigomain/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('bundles/indigomain/js/pixel-admin.min.js') }}"></script>
+    <script src="{{ asset('bundles/indigomain/bower_components/bootstrap-lightbox/bootstrap-lightbox.min.js') }}"></script>
 {% endblock %}
 </body>
 </html>

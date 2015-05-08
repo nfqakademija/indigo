@@ -1,8 +1,9 @@
-{% extends 'IndigoMainBundle:Pixel:pages-create-contest.html.twig' %}
+{% extends 'IndigoMainBundle:Pixel:base.html.twig' %}
 
 {% block title %}{{ 'create_contest.form.contest_creation'|trans }}{% endblock %}
 
 {% block body -%}
+    <div class="col-sm-10 col-sm-offset-1">
     <h1>
         {{ 'contest_list'|trans }}
 
@@ -82,4 +83,5 @@
     <a href="{{ path('contest_new') }}" title="{{ 'create_new_contest'|trans }}" class="pull-right btn btn-success btn-lg">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{ 'create_new_contest'|trans }}
     </a>
+    </div>
 {% endblock %}

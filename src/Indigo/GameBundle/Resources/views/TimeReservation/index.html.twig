@@ -1,16 +1,8 @@
 {% extends "IndigoMainBundle:Pixel:base.html.twig" %}
 
-{% block title %}Time Reservation{% endblock %}
+{% block title %}{{ 'time_reservation'|trans }}{% endblock %}
 
-{% block body %}
-    <div class="form-group col-sm-8 col-sm-offset-2">
-        {% for flashMessage in app.session.flashbag.get('danger') %}
-            <div class="flash-danger alert alert-danger" role="alert">
-                <strong>{{ flashMessage }}</strong>
-            </div>
-        {% endfor %}
-    </div>
-
+{% block stylesheets %}
     <link href="{{ asset('bundles/indigomain/bower_components/eternicode-bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" type="text/css"/>
     <style>
         #timeReservationTable tr td{
@@ -22,9 +14,19 @@
             color:#fff;
         }
     </style>
+{% endblock %}
+
+{% block body %}
+    <div class="form-group col-sm-8 col-sm-offset-2">
+        {% for flashMessage in app.session.flashbag.get('danger') %}
+            <div class="flash-danger alert alert-danger" role="alert">
+                <strong>{{ flashMessage }}</strong>
+            </div>
+        {% endfor %}
+    </div>
 
     {% if not errorMsg %}
-    <h1 class="col-sm-8 col-sm-offset-2">{{ 'Laiko rezervacija' }}</h1>
+    <h1 class="col-sm-8 col-sm-offset-2">{{ 'time_reservation'|trans }}</h1>
 
     <div class="form-group col-sm-8 col-sm-offset-2">
         {{ form_start(form) }}
@@ -173,7 +175,7 @@
 
                 /*Disable button if time now are bigger than past time.*/
                 if(dateNow > fieldDate)
-                 $(this).addClass('bg-danger').attr({'title' : 'Nebegalima rezervuoti šios datos.'});
+                 $(this).addClass('bg-danger').attr({'title' : '{{ 'time_reservation.time_passed'|trans }}'});
 
                 for (var i = 0; i < dataArray.length; i++) {
                     var finishAtStringFromArraySplit = dataArray[i]['finishAt']['date'].split('.');
@@ -185,11 +187,11 @@
                     if (fieldDate == finishAtStringToNumberFromArray && action == 1) {
                         if (dataArray[i]['timeOwner'] == {{ user_id }}) {
                             if(dataArray[i]['contestId'] == {{ contest_id }})
-                                $(this).addClass('bg-success').attr({'title': 'Jūsų užrezervuotas laikas.'});
+                                $(this).addClass('bg-success').attr({'title': '{{ 'time_reservation.your_time'|trans }}'});
                             else
-                                $(this).addClass('bg-danger').attr({'title': 'Tokiu pat laiku kitose varžybose jūs jau esate užsakęs laiką.'});
+                                $(this).addClass('bg-danger').attr({'title': '{{ 'time_reservation.same_time'|trans }}'});
                         }else
-                            $(this).addClass('bg-danger').attr({'title': 'Nebegalima rezervuoti šios datos.'});
+                            $(this).addClass('bg-danger').attr({'title': '{{ 'time_reservation.time_passed'|trans }}'});
                     }else if(fieldDate == finishAtStringToNumberFromArray && action == 0){
                         $(this).removeClass('bg-success bg-danger').attr({'title': ''});
                     }
@@ -203,7 +205,7 @@
                     var responseInsertionTime = (new Date(responseArray[i]['insertionTime'].replace(/-/g, '/')).getTime() / 1000) + {{ interval_for_next_click }} * 60;
 
                     if (fieldDate == finishAtStringToNumberFromArray && dateNow < responseInsertionTime && action == 0 && timeOwner != {{ user_id }})
-                        $(this).addClass('bg-warning reserving').click(false).attr({'title': 'Šią datą rezervuoja kitas žaidėjas. Šiuo metu jos rinktis negalima.'});
+                        $(this).addClass('bg-warning reserving').click(false).attr({'title': '{{ 'time_reservation.reserving_this_moment'|trans }}'});
                     else if(fieldDate == finishAtStringToNumberFromArray && dateNow >= responseInsertionTime && action == 0 && timeOwner != {{ user_id }})
                         $(this).removeClass('bg-warning reserving').click(true).attr({'title': ''});
                 }
@@ -227,15 +229,14 @@
                     success: function (response) {
                         if (response.success) {
                             location.reload();
-                            //$('#timeReservationTable tr td[data-time='+$('#form_startAt').data('time')+']').removeClass('bg-warning').addClass('bg-danger');
                         } else {
-                            alert("Stalas jau užrezervuotas.");
+                            alert('{{ 'time_reservation.table_reserved'|trans }}');
                             location.reload();
                         }
                     }
                 });
             }else{
-                alert("Nepasirinkote rezervacijos laiko.");
+                alert('{{ 'time_reservation.not_selected'|trans }}');
             }
         });
     </script>

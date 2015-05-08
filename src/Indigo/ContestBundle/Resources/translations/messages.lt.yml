@@ -45,3 +45,15 @@ optional: nebūtina
 add_prize: Pridėti prizą
 no_prize_photo: Šiam prizui nėra įkeltos foto
 no_prize: Prizas nenurodytas
+confirm: Patvirtinti
+
+#TimeReservation
+time_reservation: Laiko rezervacija
+time_reservation.not_selected: Nepasirinkote rezervacijos laiko
+time_reservation.table_reserved: Stalas jau užrezervuotas
+time_reservation.reserving_this_moment: Šią datą rezervuoja kitas žaidėjas. Šiuo metu jos rinktis negalima
+time_reservation.time_passed: Nebegalima rezervuoti šios datos
+time_reservation.same_time: Tokiu pat laiku kitose varžybose jūs jau esate užsakęs laiką
+time_reservation.your_time: Jūsų užrezervuotas laikas
+time_reservation.choose_time: Pasirinkite jums tinkamą laiką
+time_reservation.doesnt_exist: Tokių varžybų nėra !

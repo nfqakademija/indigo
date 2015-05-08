@@ -45,3 +45,15 @@ optiona: optional
 add_prize: Add prize
 no_prize_photo: No uploaded photo for this prize
 no_prize: Prize not specified
+confirm: Confirm
+
+#TimeReservation
+time_reservation: Time reservatuin
+  time_reservation.not_selected: You haven't selected reservation time
+time_reservation.table_reserved: Table already reserved
+time_reservation.reserving_this_moment: Another player reserving this date. At the moment you can't choose it
+time_reservation.time_passed: You can't reserve this date anymore
+time_reservation.same_time: In the same time in other contest you already have reserved time.
+time_reservation.your_time: You had booked this time
+time_reservation.choose_time: Select your preferred time
+time_reservation.doesnt_exist: Contest doesn't exist !

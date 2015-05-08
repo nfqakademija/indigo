@@ -21,7 +21,7 @@ class TimeReservationController extends Controller
     {
         $errorMsg = false;
         if(!$this->checkingIfContestExist($contest_id)) {
-            $this->addFlash('danger', 'Tokių varžybų nėra !');
+            $this->addFlash('danger', 'time_reservation.doesnt_exist');
             $errorMsg = true;
         }
 
@@ -33,10 +33,11 @@ class TimeReservationController extends Controller
                 //'widget' => 'single_text',
                 'read_only' => true,
                 'attr' => [
-                    'placeholder' => 'Pasirinkite jums tinkamą laiką'
+                    'placeholder' => 'time_reservation.choose_time'
                 ]
             ])
             ->add('submit', 'button', [
+                    'label' => 'confirm',
                     'attr' => [
                         'class' => 'btn btn-success col-sm-12'
                     ]
