@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Indigo\ContestBundle\Entity\Contest;
 use Indigo\ContestBundle\Form\ContestType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/contest")
@@ -304,5 +305,31 @@ class ContestController extends Controller
 
         $em->remove($entity);
         $em->flush();
+    }
+
+    /**
+     * @Route("/list/", name="contest_list")
+     * @Method({"GET"})
+     * @return array
+     */
+    public function listAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $contests = $em->getRepository('IndigoContestBundle:Contest')->findAll();
+
+        if($contests)
+        {
+            $list = array();
+            for($i = 1; $i < count($contests); $i++ )
+            {
+                $list [] = [
+                    "id" => $contests[$i]->getId(),
+                    "title" => $contests[$i]->getContestTitle()
+                ];
+            }
+        }
+
+        $json = json_encode($list);
+        return new Response($json);
     }
 }

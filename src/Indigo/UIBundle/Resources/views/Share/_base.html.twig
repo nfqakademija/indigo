@@ -1,48 +1,63 @@
 <!DOCTYPE html>
 <html>
 <head>
-    {% block head %}
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <link rel="stylesheet" href="{{ asset('bundles/indigomain/css/bootstrap.min.css') }}" />
-        <link rel="stylesheet" href="{{ asset('bundles/indigoui/css/main.css') }}" />
-        <link rel="stylesheet" href="{{ asset('bundles/indigomain/css/pixel-admin.min.css') }}">
 
-        <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
-        <script src="{{ asset('bundles/indigomain/js/pixel-admin.min.js') }}"></script>
-        <script src="{{ asset('bundles/indigomain/js/bootstrap.min.js') }}"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
-        <title>{% block title %}{% endblock %} Indigo </title>
+    {% block style %}
+        <link href="{{ asset('bundles/indigomain/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('bundles/indigoui/css/main.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('bundles/indigomain/css/pixel-admin.min.css') }}" rel="stylesheet" type="text/css">
     {% endblock %}
+
+    <title>{% block title %}{% endblock %} Indigo </title>
+
 </head>
 <body>
 
 <div id="wrapper">
 
 
-<div id="footer">
+<div id="header">
 
     <div class="container-fluid">
         <div class="row padding-sm valign-middle">
-            <div class=" col-sm-6 col-md-4 col-lg-4 col-sm-offset-2 col-md-offset-2 col-lg-offset-2">
-                <img src="{{ asset('bundles/indigoui/images/bilas.png') }}" class="img-circle icon-sm border-wide icon-narrow">
 
-                <div class="btn-group btn-group-lg" style="left: 10px;">
-                    <button type="button" class="btn btn-contest-select">Open league</button>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-contest-select dropdown-toggle" data-toggle="dropdown">Dropdown&nbsp;<i class="fa fa-caret-down"></i></button>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">NFQ contest</a></li>
-                            <li><a href="#">Speed contest</a></li>
-                            <li><a href="#">Speed contest</a></li>
-                        </ul>
+            <div class=" col-sm-12 col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2" style="min-width: 500px">
+
+                <div class="nav-left">
+
+                    <div class="btn-group btn-group-lg" style="top: 5px;">
+                        <button type="button" class="btn btn-contest-select">
+                            <a class="text-dark-gray" href="{{ url('indigo_ui_dashboard', {id : 1})  }}">Open contest</a>
+                        </button>
+
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-contest-select dropdown-toggle" data-toggle="dropdown">
+                                <img id="preloader" src="{{ asset('bundles/indigoui/images/preloader.gif') }}" style="width: 15px; height: 15px; margin-left: -5px; margin-right: 5px;">
+                                Select other contest &nbsp;<i class="fa fa-caret-down"></i></button>
+                            <ul class="dropdown-menu">
+
+                            </ul>
+                        </div>
                     </div>
+
                 </div>
 
-            </div>
+                <div class="nav-right">
 
+                    <span class="nav-user-icon">
+                        <a href="{{ url('user_edit',{id: app.security.getToken().getUser().getId() }) }}" >
+                            <img src="{{ asset(app.security.getToken().getUser().getPicture()) }}" class="img-circle icon-xs border-thin icon-narrow">
+                        </a>
+                    </span>
 
-            <div class="col-sm-2 col-md-3 col-lg-1 col-lg-offset-1" style="text-align: center">
+                    <span class="nav-user-info">
+                        <span class="text-sm">{{ app.security.getToken().getUser().getUsername() }} </span></br>
+                        <a class="text-sm nav-logout" href="{{ url('logout_action') }}"> Logout </a>  </span>
+                    </span>
 
+                </div>
 
             </div>
         </div>
@@ -50,7 +65,10 @@
 
 </div>
 
-<div id="content">{% block content %}{% endblock %}</div>
+<div id="content">
+    {% block content %}{% endblock %}
+</div>
+
 <div id="footer">
     {% block footer %}
         </br>Indigo team.
@@ -58,8 +76,39 @@
 </div>
 
 </div>
-{% block style %} {% endblock %}
-{% block script %} {% endblock %}
+
+{% block script %}
+
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="{{ asset('bundles/indigomain/js/pixel-admin.min.js') }}"></script>
+    <script src="{{ asset('bundles/indigomain/js/bootstrap.min.js') }}"></script>
+
+    <script type="text/javascript">
+
+        var status = $.get( "{{ url('contest_list') }}", function(data) {
+
+            var json = $.parseJSON(data);
+
+            $(".dropdown-menu").html("");
+
+            if(json)
+            {
+                for(i = 0; i < json.length; i++)
+                {
+                    var url = '{{ url('indigo_ui_dashboard', {id : '_id' }) }}';
+                    url = url.replace('_id', json[i].id);
+
+                    item =  "<li><a href='"+ url +"'> " + json[i].title + " </a></li>"
+                    $(".dropdown-menu").append(item);
+                }
+            }
+
+            $("#preloader").hide();
+        });
+
+    </script>
+
+{% endblock %}
 
 </body>
 </html>

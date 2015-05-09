@@ -15,8 +15,12 @@ indigo_ui_table_status:
 
 indigo_ui_dashboard:
     path:     /dashboard/{id}
-    defaults: { _controller: IndigoUIBundle:Dashboard:dashboard, id:0 }
+    defaults: { _controller: IndigoUIBundle:Dashboard:dashboard, id:1 }
     requirements:
             _method: GET
 
-
+indigo_ui_get_contest_list:
+    path:     /dashboard/contest/list{id}
+    defaults: { _controller: IndigoUIBundle:Dashboard:dashboard, id:1 }
+    requirements:
+            _method: GET

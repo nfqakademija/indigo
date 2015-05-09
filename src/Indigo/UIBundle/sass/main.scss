@@ -344,12 +344,54 @@ html, body {
 .nav
 {
   height: 100px;
+  //
 }
+
+.nav-left, .nav-right
+{
+  position: relative;
+  display: inline-block;
+}
+
+.nav-right
+{
+  float: right;
+}
+
+.nav-user-icon
+{
+  float: right;
+  margin: 0 5px;
+}
+
+.nav-user-info
+{
+  display: inline-block;
+  float: right;
+  text-align: right;
+  padding: 10px;
+}
+
+.nav-logout
+{
+  a:hover
+  {
+    font-weight: bold;
+  }
+
+  a:visited
+  {
+    text-decoration: none;
+    color: white;
+  }
+}
+
+
 
 /* Image styles  */
 .icon-xs
 {
-  @include size(40px, 40px);
+  @include size(50px, 50px);
 }
 
 /* Image styles  */
