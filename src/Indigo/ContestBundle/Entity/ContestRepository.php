@@ -1,29 +1,34 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Tadas
- * Date: 2015-04-01
- * Time: 16:34
- */
 
 namespace Indigo\ContestBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NoResultException;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
-class ContestRepository extends EntityRepository{
+class ContestRepository extends EntityRepository implements LoggerAwareInterface
+{
+    use LoggerAwareTrait;
 
-    /**
-     * @return array
-     */
-    public function getLastContest(){
-        $builder= $this->_em->createQueryBuilder();
-
-        $builder->select('c')
+    public function getNextContest()
+    {
+        try {
+            
+            $qb = $this->_em->createQueryBuilder();
+            $qb->select('c')
                 ->from('IndigoContestBundle:Contest', 'c')
-                ->orderBy('c.id', 'DESC');
+                ->where('c.contestStartingDate > :date')
+                ->orderBy('c.contestStartingDate', 'ASC')
+                ->setMaxResults(1)
+                ->setParameter('date', new \DateTime());
 
-        $return = $builder->getQuery();
+            return  $qb->getQuery()->getSingleResult();
+        } catch (NoResultException $e) {
 
-        return $return->setMaxResults(1)->getResult();
+            $this->logger && $this->logger->warning('no next constest' . $e->getMessage());
+        }
+
+        return null;
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Indigo\UIBundle\Controller;
 
-use Indigo\ContestBundle\Entity\Contest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;

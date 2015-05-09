@@ -63,5 +63,5 @@ security:
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         - { path: "^/(login|login_modal|register|remind_password|password_recovery)", roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: "^/(logout|profile)", roles: IS_AUTHENTICATED_FULLY }
-        - { path: "^/dashboard", roles: ROLE_USER }
+        - { path: "^/(dashboard|game-history)", roles: ROLE_USER }
         - { path: "/", roles: IS_AUTHENTICATED_ANONYMOUSLY }

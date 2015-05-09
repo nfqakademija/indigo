@@ -13,3 +13,9 @@ services:
         factory_method: getRepository
         arguments:
             - Indigo\ContestBundle\Entity\Data
+        calls:
+            - [ setLogger, ["@?logger"] ]
+        tags:
+            - { name: monolog.logger, channel: contest.flow }
+
+
