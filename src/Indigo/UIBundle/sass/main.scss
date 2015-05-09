@@ -8,6 +8,7 @@ html, body {
   //@include bg-grad();
 }
 
+
 #wrapper {
   position: relative;
   min-width: 100%;
@@ -15,6 +16,14 @@ html, body {
   background-color: $bg-color;
   background-image: url($bg-pattern-img);
   background-repeat: repeat;
+}
+
+#history-wrapper
+{
+  position: relative;
+  min-width: 100%;
+  min-height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 .clear
@@ -836,4 +845,16 @@ a:hover{
 #widget-state
 {
   font-size: smaller;
+}
+
+
+.score-table
+{
+  th {
+    font-size: 1.1em;
+    color: #363436;
+    text-align: center;
+  }
+
+
 }

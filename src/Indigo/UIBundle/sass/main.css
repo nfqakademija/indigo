@@ -16,6 +16,12 @@ html, body {
   background-image: url("../images/tile.gif");
   background-repeat: repeat; }
 
+#history-wrapper {
+  position: relative;
+  min-width: 100%;
+  min-height: 100%;
+  background-color: rgba(255, 255, 255, 0.8); }
+
 .clear {
   background: white !important; }
 
@@ -581,5 +587,10 @@ a:hover {
 
 #widget-state {
   font-size: smaller; }
+
+.score-table th {
+  font-size: 1.1em;
+  color: #363436;
+  text-align: center; }
 
 /*# sourceMappingURL=main.css.map */

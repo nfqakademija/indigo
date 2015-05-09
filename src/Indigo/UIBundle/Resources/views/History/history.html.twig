@@ -1,0 +1,78 @@
+{% extends 'IndigoUIBundle:Share:_base.html.twig' %}
+
+{% block title %} Indigo - Dashboard {% endblock %}
+
+{% block content %}
+
+    <div id="history-wrapper" >
+        <div class="container-fluid">
+
+            <div class="row">
+
+                <div class="col-sm-8 col-md-8 col-lg-8 col-sm-offset-2  col-md-offset-2  col-lg-offset-2">
+
+                    <table class="table score-table" width="100%" style="text-align: center">
+                        <col width="250">
+                        <col>
+                        <col width="100">
+                        <col width="100">
+
+                        <tr>
+                            <th class="text-xl" style="text-align: center"> Teams </th>
+                            <th> </th>
+                            <th> Time </th>
+                            <th> Score </th>
+                        </tr>
+
+                    {% for game in games %}
+
+                            <tr style="padding: 10px;">
+
+                                <td>
+                                    <div style="display: inline-block" >
+                                        {% for picture in game.team0playersPictures %}
+                                            {%  if picture != null %}
+                                                <img src="{{ asset(picture) }}" class="img-circle icon-xs border-wide icon-narrow" />
+                                            {%  endif %}
+                                        {% endfor %}
+                                    </div>
+
+                                    <span class="text-lg text-dark-gray" style="display: inline-block"> VS </span>
+
+                                    <div style="display: inline-block">
+                                        {% for picture in game.team1playersPictures %}
+                                            {%  if picture != null %}
+                                                <img src="{{ asset(picture) }}" class="img-circle icon-xs border-wide icon-narrow" />
+                                            {%  endif %}
+                                        {% endfor %}
+                                    </div>
+
+                                </td>
+
+                                <td> </td>
+
+                                <td>
+                                    <span class="text-xl text-dark-gray"> {{ game.gameDuration|date("i : s")  }}</span>
+
+                                </td>
+
+                                <td>
+                                    <span class="text-xl text-dark-gray"> {{ game.team0Score }} : {{ game.team1Score }} </span></br>
+                                </td>
+
+                            </tr>
+                    {%  endfor %}
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+{% endblock %}
