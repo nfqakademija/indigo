@@ -87,6 +87,7 @@ class DashboardViewService
         $model->setPlayerTeamsStats($this->playerStatService->getStats($contestId));
         $model->setContestStat($this->contestStatService->getStats($contestId));
 
+
         return $model;
     }
 
