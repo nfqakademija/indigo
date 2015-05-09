@@ -43,6 +43,7 @@ class DashboardViewService
             $contestId = Contest::OPEN_CONTEST_ID;
             $contestEntity = $this->em->getRepository('IndigoContestBundle:Contest')->findOneById((int)$contestId);
         }
+        $nextContest = $this->em->getRepository('IndigoContestBundle:Contest')->getNextContest();
         /** @var Contest $contestEntity */
 
         $tableId = 1;
@@ -66,17 +67,19 @@ class DashboardViewService
 
 
         $model->getCurrentContest()->setTitle($contestEntity->getContestTitle());
-        $model->getCurrentContest()->setDescription("Kelionė dviems į saulėtąją Turkiją.");
+        $model->getCurrentContest()->setDescription($contestEntity->getPrize());
         $model->getCurrentContest()->setImageUrl($contestEntity->getPathForImage());
         $model->getCurrentContest()->setDateFrom($contestEntity->getContestStartingDate()->format("Y-m-d"));
         $model->getCurrentContest()->setDateTo($contestEntity->getContestEndDate()->format("Y-m-d"));
 
-        $model->getNextContest()->setTitle("Greičio turnyras");
-        $model->getNextContest()->setDescription("Adrenalino pilnas pasivažinėjimas kartingais.");
-        $model->getNextContest()->setImageUrl('/bundles/indigoui/images/content-box-2.png');
-        $model->getNextContest()->setDateFrom("2015-02-02");
-        $model->getNextContest()->setDateTo("2015-03-02");
 
+        if ($nextContest) {
+            $model->getNextContest()->setTitle($nextContest->getContestTitle());
+            $model->getNextContest()->setDescription($nextContest->getPrize());
+            $model->getNextContest()->setImageUrl($nextContest->getPathForImage());
+            $model->getNextContest()->setDateFrom($nextContest->getContestStartingDate()->format("Y-m-d"));
+            $model->getNextContest()->setDateTo($nextContest->getContestEndDate()->format("Y-m-d"));
+        }
 
         $model->setNextReservation(new ReservationModel());
         $model->getNextReservation()->setDateStart("2012-02-01 15:00");
