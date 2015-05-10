@@ -35,7 +35,6 @@ class DashboardViewService
         $this->contestStatService = $contestStatService;
     }
 
-
     public function getDashboardViewModel($contestId)
     {
         $contestEntity = $this->em->getRepository('IndigoContestBundle:Contest')->findOneById((int)$contestId);
@@ -62,16 +61,14 @@ class DashboardViewService
                 $model->setTeamAScore($game->getTeam0Score());
                 $model->setTeamBScore($game->getTeam1Score());
             }
-
         }
 
-
+        $model->getCurrentContest()->setId($contestEntity->getId());
         $model->getCurrentContest()->setTitle($contestEntity->getContestTitle());
         $model->getCurrentContest()->setDescription($contestEntity->getPrize());
         $model->getCurrentContest()->setImageUrl($contestEntity->getPathForImage());
         $model->getCurrentContest()->setDateFrom($contestEntity->getContestStartingDate()->format("Y-m-d"));
         $model->getCurrentContest()->setDateTo($contestEntity->getContestEndDate()->format("Y-m-d"));
-
 
         if ($nextContest) {
             $model->getNextContest()->setTitle($nextContest->getContestTitle());
@@ -86,7 +83,6 @@ class DashboardViewService
 
         $model->setPlayerTeamsStats($this->playerStatService->getStats($contestId));
         $model->setContestStat($this->contestStatService->getStats($contestId));
-
 
         return $model;
     }

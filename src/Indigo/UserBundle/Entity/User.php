@@ -424,8 +424,7 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
      */
     public function getRoles()
     {
-        return array('ROLE_USER');
-        //return $this->roles->toArray();
+        return $this->roles->toArray();
     }
 
     /**
