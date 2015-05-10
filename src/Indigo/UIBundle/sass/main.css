@@ -6,7 +6,8 @@ html, body {
   min-height: 100%;
   height: 100%;
   font-family: Candara;
-  color: white; }
+  color: white;
+  background-color: #1f1d1f; }
 
 #wrapper {
   position: relative;
@@ -230,9 +231,9 @@ html, body {
     font-size: 1.8em;
     margin: 10px auto; }
   .reservation-item .res-button {
+    position: relative;
     width: 80%;
     height: 40px;
-    margin: 10px auto;
     font-size: 1.4em;
     background-color: transparent;
     border: solid 1px #dbdbdb; }
