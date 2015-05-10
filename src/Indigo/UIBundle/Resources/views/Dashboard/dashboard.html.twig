@@ -11,7 +11,7 @@
             <div class="col-sm-8 col-md-8 col-lg-8 col-sm-offset-2  col-md-offset-2  col-lg-offset-2" >
 
                 <div class="row no-gutter">
-                    <div class="contest-block" style="background: url({{ currentContest.imageUrl }}) no-repeat center;  background-size: cover;">
+                    <div class="contest-block" style="background: url({{ asset('uploads/contest/' ~ currentContest.imageUrl) }}) no-repeat center;  background-size: cover;">
                         <div class="info-box" >
                             <span class="text-xlg">{{ currentContest.title }} </span></br>
                             <span class="text-bg"> {{ currentContest.dateFrom }} - {{ currentContest.dateTo }} </span></br></br>
@@ -301,7 +301,7 @@
                     <div class="contest-block" style="background: url({{ nextContest.imageUrl }}) no-repeat center;  background-size: cover;">
                         <div class="info-box" >
                             <h1> {{ nextContest.Title }} </h1>
-                            {#<h3> {{ nextContest.Description }} </h3>#}
+                            <h3> {{ nextContest.description }} </h3>
                             <label > Jau greitai!!! </label>
                         </div>
                     </div>

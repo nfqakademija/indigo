@@ -170,6 +170,7 @@ class Contest
         $this->games = new ArrayCollection();
         $this->gameTimes = new ArrayCollection();
         $this->setTableName(1);
+        $this->setContestPrivacy(0);
         $this->contestType = true;
         $this->contestStartingDate = new \DateTime();
         $this->contestEndDate = new \DateTime('+1 days');

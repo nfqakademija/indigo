@@ -15,24 +15,48 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('isActive', 'checkbox', [
+            /*->add('isActive', 'checkbox', [
                 'required' => false,
             ])
             ->add('isLocked', 'checkbox', [
                 'required' => false,
-            ])
-            ->add('username')
-            ->add('email', 'email')
-            ->add('picture', 'file', [
+            ])*/
+            ->add('cardId', 'number', [
+                'label' => 'user.user_cardid',
                 'required' => false,
+                'attr' => [
+                    'placeholder' => 'user.input_your_cardid'
+                ]
             ])
-            ->add('registrationDate', 'date', [
+            ->add('username', 'text', [
+                'label' => 'user.user_username',
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'user.input_your_username'
+                ]
+            ])
+            ->add('name', 'text', [
+                'label' => 'user.user_name',
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'user.input_your_name'
+                ]
+            ])
+            /*->add('email', 'email')*/
+            ->add('picture', 'file', [
+                'label' => 'user.profile_picture',
+                'required' => false,
+                'attr' => [
+                    'class' => 'file profilePicture'
+                ]
+            ])
+            /*->add('registrationDate', 'date', [
                 'attr' => [
                     'class' => 'datepicker',
                 ],
                 'widget' => 'single_text',
                 'html5' => false,
-            ])
+            ])*/
 //            ->add('roles')
         ;
     }

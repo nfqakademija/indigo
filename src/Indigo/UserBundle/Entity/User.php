@@ -5,6 +5,7 @@ namespace Indigo\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Indigo\GameBundle\Entity\PlayerTeamRelation;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
@@ -52,7 +53,7 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=25, unique=true)
+     * @ORM\Column(type="string", length=25, unique=true, nullable=true)
      */
     private $username;
 
@@ -92,9 +93,24 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
     private $reset_password_hash;
 
     /**
+     * @var string
      *
      * @ORM\Column(name="picture", type="string", length=255, nullable=true)
      */
+    protected $pathForPicture;
+
+    /**
+     * @Assert\File(maxSize="3M", mimeTypes={"image/jpg", "image/jpeg", "image/gif", "image/png"})
+     * @Assert\Image(
+     *  minWidth = 100,
+     *  maxWidth = 1024,
+     *  minHeight = 100,
+     *  maxHeight = 1024,
+     *  allowLandscape = true,
+     *  allowPortrait = true,
+     *  allowSquare = true)
+     */
+
     private $picture;
 
 
@@ -104,7 +120,8 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
     private $registrationDate;
 
     /**
-     * @ORM\Column(name="card_id", type="integer", nullable=true, options={"unsigned":true})
+     * @ORM\Column(name="card_id", type="integer", length=7, nullable=true, options={"unsigned":true})
+     * @Assert\Length(min=7, minMessage="user.min_cardid_length", max=7, maxMessage="user.max_cardid_length");
      */
     private $cardId;
 
@@ -114,8 +131,11 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
      */
     private $teams;
 
-
-
+    /**
+     *
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
+     */
+    private $name;
 
 
     public function __construct()
@@ -351,28 +371,22 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
     }
 
     /**
-     * Set picture
-     *
-     * @param string $picture
-     * @return User
-     */
-    public function setPicture($picture)
-    {
-        $this->picture = $picture;
-
-        return $this;
-    }
-
-    /**
-     * Get picture
-     *
-     * @return string
+     * @return UploadedFile
      */
     public function getPicture()
     {
         return $this->picture;
     }
 
+    /**
+     * @param UploadedFile $picture
+     */
+    public function setPicture(UploadedFile $picture = null)
+    {
+        $this->picture = $picture;
+
+        return $this;
+    }
 
     /**
      * (PHP 5 &gt;= 5.1.0)<br/>
@@ -563,6 +577,90 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
     public function setResetPasswordHash($reset_password_hash)
     {
         $this->reset_password_hash = $reset_password_hash;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPathForPicture()
+    {
+        return $this->pathForPicture;
+    }
+
+    /**
+     * @param string $pathForPicture
+     */
+    public function setPathForPicture($pathForPicture)
+    {
+        $this->pathForPicture = $pathForPicture;
+    }
+
+    /**
+     * @return string
+     */
+
+    public function getAbsolutePath($imagePath, $dir)
+    {
+        return null === $imagePath ? null : $this->getUploadRootDir($dir) . '/' . $imagePath;
+    }
+
+    public function getWebPath($imagePath, $dir)
+    {
+        return null === $imagePath ? null : $this->getUploadDir($dir) . '/' . $imagePath;
+    }
+
+    protected function getUploadRootDir($dir)
+    {
+        return __DIR__ . '/../../../../web/' . $this->getUploadDir($dir);
+    }
+
+    protected function getUploadDir($dir)
+    {
+        return 'uploads/'.$dir;
+    }
+
+    public function changePictureName()
+    {
+        $filename = sha1(uniqid(mt_rand() * mt_rand(), true));
+        $this->pathForPicture = $filename . '.' . $this->getPicture()->guessExtension();
+    }
+
+    /**
+     * function upload contest image
+     */
+    public function uploadPicture()
+    {
+        if (null === $this->getPicture()) {
+            return;
+        }
+
+        $this->changePictureName();
+
+        while (is_file($this->getAbsolutePath($this->pathForPicture, "profiles_pictures")))
+            $this->changePictureName();
+
+        $this->getPicture()->move(
+            $this->getUploadRootDir("profiles_pictures"),
+            $this->pathForPicture
+        );
+
+        $this->picture = null;
     }
 
 

@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+        <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+        <script src="{{ asset('bundles/indigomain/js/pixel-admin.min.js') }}"></script>
+        <script src="{{ asset('bundles/indigomain/js/bootstrap.min.js') }}"></script>
 
     {% block style %}
         <link href="{{ asset('bundles/indigomain/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
@@ -65,10 +68,7 @@
 
 </div>
 
-<div id="content">
-    {% block content %}{% endblock %}
-</div>
-
+<div id="content">{% block content %}{% endblock %}</div>
 <div id="footer">
     {% block footer %}
         </br>Indigo team.

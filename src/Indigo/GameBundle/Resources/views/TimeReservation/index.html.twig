@@ -14,74 +14,93 @@
             background-color:#5EBD5E;
             color:#fff;
         }
+        .panel{
+            color:#555;
+        }
+        .panel label{
+            padding-right:5px;
+        }
     </style>
 {% endblock %}
 
 {% block content %}
 
-    <div class="container-fluid bg-white">
-
-        <div class="form-group col-sm-8 col-sm-offset-2">
-            {% for flashMessage in app.session.flashbag.get('danger') %}
-                <div class="flash-danger alert alert-danger" role="alert">
-                    <strong>{{ flashMessage }}</strong>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-2">
+            <h1>{{ 'time_reservation'|trans }}</h1>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><strong>{{ contest_title|capitalize }}</strong></h3>
                 </div>
-            {% endfor %}
-        </div>
-
-        {% if not errorMsg %}
-        <h1 class="col-sm-8 col-sm-offset-2 text-gray-d">{{ 'time_reservation'|trans }}</h1>
-
-        <div class="form-group col-sm-8 col-sm-offset-2">
-            {{ form_start(form) }}
-            <div class="form-group col-sm-10">
-                {{ form_widget(form.startAt) }}
-            </div>
-            <div class="form-group pull-right col-sm-2">
-                {{ form_widget(form.submit) }}
-            </div>
-            {{ form_end(form) }}
-            {{ form_start(datePickerForm) }}
-            <div class="form-group col-sm-12">
-                {{ form_widget(datePickerForm.reservationDate, {'attr' : {'placeholder' : timestampPagination|date("Y-m-d")}}) }}
-            </div>
-            {{ form_end(datePickerForm) }}
-        </div>
-
-        {% set time_interval = constant('Indigo\\GameBundle\\Entity\\GameTimeRepository::TIME_INTERVAL') %} {# laiko intervalas 15 minuciu #}
-
-        <div class="table-responsive col-sm-8 col-sm-offset-2">
-            <table class="table table-bordered" id="timeReservationTable">
-                {% for i in 8..21 %}
-                    <tr>
-                        {% for x in 1..4 %}
-                            {% set first_interval_number = x*time_interval-time_interval %}
-                            {% set second_interval_number = x*time_interval %}
-
-                            {% if not first_interval_number %}
-                                {% set first_interval_number = '00' %}
-                            {% endif %}
-
-                            {% set second_interval_numberCorrected = second_interval_number %}
-
-                            {% if second_interval_number == 60 %}
-                                {% set second_interval_numberCorrected = '00' %}
-                            {% endif %}
-
-                            {% set i_second = i %}
-                            {% if x == 4 %}
-                                {% set i_second = i+1 %}
-                            {% endif %}
-
-                            <td id="{{ i }}" data-time="{{ date(timestampPagination|date("Y-m-d") ~ i ~ ':' ~ first_interval_number).timestamp }}">
-                                {{ i }}:{{ first_interval_number }} - {{ i_second }}:{{ second_interval_numberCorrected }}
-                            </td>
+                <div class="panel-body">
+                    <div class="form-group col-sm-12">
+                        {% for flashMessage in app.session.flashbag.get('danger') %}
+                            <div class="flash-danger alert alert-danger" role="alert">
+                                <strong>{{ flashMessage }}</strong>
+                            </div>
                         {% endfor %}
-                    </tr>
-                {% endfor %}
-            </table>
+                    </div>
+
+                    {% if not errorMsg %}
+
+                    <div class="col-sm-12">
+                        {{ form_start(form) }}
+                        <div class="form-group">
+                            <div class="col-sm-10">
+                                {{ form_widget(form.startAt) }}
+                            </div>
+                            <div class="col-sm-2">
+                                {{ form_widget(form.submit) }}
+                            </div>
+                        </div>
+                        {{ form_end(form) }}
+                        {{ form_start(datePickerForm) }}
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                {{ form_widget(datePickerForm.reservationDate, {'attr' : {'placeholder' : timestampPagination|date("Y-m-d")}}) }}
+                            </div>
+                        </div>
+                        {{ form_end(datePickerForm) }}
+                    </div>
+
+                    {% set time_interval = constant('Indigo\\GameBundle\\Entity\\GameTimeRepository::TIME_INTERVAL') %} {# laiko intervalas 15 minuciu #}
+
+                    <div class="table-responsive col-sm-12">
+                        <table class="table table-bordered" id="timeReservationTable">
+                            {% for i in 8..21 %}
+                                <tr>
+                                    {% for x in 1..4 %}
+                                        {% set first_interval_number = x*time_interval-time_interval %}
+                                        {% set second_interval_number = x*time_interval %}
+
+                                        {% if not first_interval_number %}
+                                            {% set first_interval_number = '00' %}
+                                        {% endif %}
+
+                                        {% set second_interval_numberCorrected = second_interval_number %}
+
+                                        {% if second_interval_number == 60 %}
+                                            {% set second_interval_numberCorrected = '00' %}
+                                        {% endif %}
+
+                                        {% set i_second = i %}
+                                        {% if x == 4 %}
+                                            {% set i_second = i+1 %}
+                                        {% endif %}
+
+                                        <td id="{{ i }}" data-time="{{ date(timestampPagination|date("Y-m-d") ~ i ~ ':' ~ first_interval_number).timestamp }}">
+                                            {{ i }}:{{ first_interval_number }} - {{ i_second }}:{{ second_interval_numberCorrected }}
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
         </div>
-        {% endif %}
     </div>
 {% endblock %}
 
@@ -186,20 +205,21 @@
                 for (var i = 0; i < dataArray.length; i++) {
                     var finishAtStringFromArraySplit = dataArray[i]['finishAt']['date'].split('.');
                     var finishAtStringToNumberFromArray = (new Date(finishAtStringFromArraySplit[0].replace(/-/g, '/')).getTime() / 1000);
-                    var insertionTimeStringFromArraySplit = dataArray[i]['finishAt']['date'].split('.');
-                    var insertionTimeStringToNumberFromArray = (new Date(insertionTimeStringFromArraySplit[0].replace(/-/g, '/')).getTime() / 1000);
-                    var action = dataArray[i]['confirmed'];
+                    var action = dataArray[i]['action'];
 
-                    if (fieldDate == finishAtStringToNumberFromArray && action == 1) {
-                        if (dataArray[i]['timeOwner'] == {{ user_id }}) {
-                            if(dataArray[i]['contestId'] == {{ contest_id }})
-                                $(this).addClass('bg-success').attr({'title': '{{ 'time_reservation.your_time'|trans }}'});
-                            else
-                                $(this).addClass('bg-danger').attr({'title': '{{ 'time_reservation.same_time'|trans }}'});
-                        }else
-                            $(this).addClass('bg-danger').attr({'title': '{{ 'time_reservation.time_passed'|trans }}'});
-                    }else if(fieldDate == finishAtStringToNumberFromArray && action == 0){
-                        $(this).removeClass('bg-success bg-danger').attr({'title': ''});
+                    if(fieldDate > dateNow) {
+                        if (fieldDate == finishAtStringToNumberFromArray && action == 1) {
+                            if (dataArray[i]['timeOwner'] == {{ user_id }}) {
+                                if (dataArray[i]['contestId'] == {{ contest_id }})
+                                    $(this).addClass('bg-success').attr({'title': '{{ 'time_reservation.your_time'|trans }}'});
+                                else
+                                    $(this).addClass('bg-danger').attr({'title': '{{ 'time_reservation.same_time'|trans }}'});
+                            }
+                        } else if (fieldDate == finishAtStringToNumberFromArray && action == 0) {
+                            $(this).removeClass('bg-success bg-danger').attr({'title': ''});
+                        }
+                    }else{
+                        $(this).addClass('bg-danger').attr({'title': '{{ 'time_reservation.time_passed'|trans }}'});
                     }
                 }
 

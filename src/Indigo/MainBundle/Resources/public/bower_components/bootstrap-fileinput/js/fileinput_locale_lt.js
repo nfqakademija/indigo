@@ -14,7 +14,7 @@
     $.fn.fileinput.locales._lt = {
         fileSingle: 'failas',
         filePlural: 'failai',
-        browseLabel: ' Pasirinkite logotipą',
+        browseLabel: ' Pasirinkite failą',
         removeLabel: ' Pašalinti',
         removeTitle: 'Ištrinti pasirinktus failus',
         cancelLabel: 'Atšaukti',
