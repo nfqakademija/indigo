@@ -209,7 +209,7 @@
                                 if (dataArray[i]['contestId'] == {{ contest_id }})
                                     $(this).addClass('bg-success').attr({'title': '{{ 'time_reservation.your_time'|trans }}'});
                                 else
-                                    $(this).addClass('bg-danger').attr({'title': '{{ 'time_reservation.same_time'|trans }}'});
+                                    $(this).addClass('bg-success').attr({'title': '{{ 'time_reservation.same_time'|trans }}'});
                             }
                         } else if (fieldDate == finishAtStringToNumberFromArray && action == 0) {
                             $(this).removeClass('bg-success bg-danger').attr({'title': ''});

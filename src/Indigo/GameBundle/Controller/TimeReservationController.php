@@ -209,7 +209,7 @@ class TimeReservationController extends Controller
 
         $entity = new GameTime();
         $em = $this->getDoctrine()->getManager();
-        //$entity->setAction(0);
+        $entity->setAction(0);
         $entity->setTimeOwner($playerId);
         $entity->setStartAtAndFinishAt($fullDate);
         $entity->setContest($contest);
