@@ -97,7 +97,7 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
      *
      * @ORM\Column(name="picture", type="string", length=255, nullable=true)
      */
-    protected $pathForPicture;
+    protected $picture;
 
     /**
      * @Assert\File(maxSize="3M", mimeTypes={"image/jpg", "image/jpeg", "image/gif", "image/png"})
@@ -111,7 +111,7 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
      *  allowSquare = true)
      */
 
-    private $picture;
+    private $pictureFile;
 
 
     /**
@@ -371,7 +371,7 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
     }
 
     /**
-     * @return UploadedFile
+     * @return string
      */
     public function getPicture()
     {
@@ -379,9 +379,9 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
     }
 
     /**
-     * @param UploadedFile $picture
+     * @param string $picture
      */
-    public function setPicture(UploadedFile $picture = null)
+    public function setPicture($picture)
     {
         $this->picture = $picture;
 
@@ -596,19 +596,19 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
     }
 
     /**
-     * @return string
+     * @return UploadedFile
      */
-    public function getPathForPicture()
+    public function getPictureFile()
     {
-        return $this->pathForPicture;
+        return $this->pictureFile;
     }
 
     /**
-     * @param string $pathForPicture
+     * @param UploadedFile $pictureFile
      */
-    public function setPathForPicture($pathForPicture)
+    public function setPictureFile(UploadedFile $pictureFile)
     {
-        $this->pathForPicture = $pathForPicture;
+        $this->pictureFile = $pictureFile;
     }
 
     /**
@@ -638,7 +638,7 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
     public function changePictureName()
     {
         $filename = sha1(uniqid(mt_rand() * mt_rand(), true));
-        $this->pathForPicture = $filename . '.' . $this->getPicture()->guessExtension();
+        return $filename . '.' . $this->getPictureFile()->guessExtension();
     }
 
     /**
@@ -650,17 +650,17 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
             return;
         }
 
-        $this->changePictureName();
-
-        while (is_file($this->getAbsolutePath($this->pathForPicture, "profiles_pictures")))
+        $pictureName = $this->changePictureName();
+        while (is_file($this->getAbsolutePath($pictureName, "profiles_pictures")))
             $this->changePictureName();
 
-        $this->getPicture()->move(
+        $this->getPictureFile()->move(
             $this->getUploadRootDir("profiles_pictures"),
-            $this->pathForPicture
+            $pictureName
         );
 
-        $this->picture = null;
+        $this->pictureFile = null;
+        $this->setPicture('/' . $this->getWebPath($pictureName, "profiles_pictures"));
     }
 
 

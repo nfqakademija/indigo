@@ -73,9 +73,9 @@
                         <tr>
                             <th>{{ 'user.profile_picture'|trans }}</th>
                             <td>
-                                {% if entity.pathForPicture %}
-                                <a data-toggle="lightbox" data-title="{{ 'user.profile'|trans }} | {{ entity.username }}" href="{{ asset('uploads/profiles_pictures/') }}{{ entity.pathForPicture }}">
-                                    <img src="{{ asset('uploads/profiles_pictures/') }}{{ entity.pathForPicture }}" alt="*" width="100px" title="{{ 'user.profile'|trans }} | {{ entity.username }}"/>
+                                {% if entity.pictureFile %}
+                                <a data-toggle="lightbox" data-title="{{ 'user.profile'|trans }} | {{ entity.username }}" href="{{ asset('uploads/profiles_pictures/') }}{{ entity.pictureFile }}">
+                                    <img src="{{ asset('uploads/profiles_pictures/') }}{{ entity.pictureFile }}" alt="*" width="100px" title="{{ 'user.profile'|trans }} | {{ entity.username }}"/>
                                 </a>
                                 {% else %}
                                     {{ 'user.no_picture'|trans }}

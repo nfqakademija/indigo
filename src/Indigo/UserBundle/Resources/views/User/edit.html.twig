@@ -72,9 +72,9 @@
             showUpload: false,
             allowedFileExtensions: ["jpg", "gif", "png", "jpeg"],
             overwriteInitial: true,
-            {% if entity.pathForPicture %}
+            {% if entity.picture %}
             initialPreview: [
-                "<img src='{{ asset('uploads/profiles_pictures/') }}{{ entity.pathForPicture }}' class='file-preview-image' alt='*'>"
+                '<img src="{{ entity.picture }}" class="file-preview-image" alt="*"/>'
             ],
             {% endif %}
             maxFileSize: 3000
