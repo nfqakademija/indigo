@@ -4,7 +4,7 @@
  */
 
 ;(function($){
-    $.fn.datepicker.dates['lt'] = {
+    $.fn.datepicker.dates['lt_LT'] = {
         days: ["Sekmadienis", "Pirmadienis", "Antradienis", "Trečiadienis", "Ketvirtadienis", "Penktadienis", "Šeštadienis"],
         daysShort: ["S", "Pr", "A", "T", "K", "Pn", "Š"],
         daysMin: ["Sk", "Pr", "An", "Tr", "Ke", "Pn", "Št"],
