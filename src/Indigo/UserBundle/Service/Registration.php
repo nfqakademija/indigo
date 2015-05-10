@@ -39,7 +39,10 @@ class Registration
 
     public function register(User $userEntity)
     {
-        $userEntity->setUsername($userEntity->getEmail());
+        if (!$userEntity->getUsername()) {
+            
+            $userEntity->setUsername($userEntity->getEmail());
+        }
 
         $encoder = $this->ef->getEncoder($userEntity);
         $encoded = $encoder->encodePassword($userEntity->getPassword(), $userEntity->getSalt());
@@ -51,6 +54,8 @@ class Registration
         $this->em->persist($userEntity);
         $this->em->flush();
     }
+
+
 
     /**
      * @param User $user

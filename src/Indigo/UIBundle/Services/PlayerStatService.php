@@ -13,8 +13,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NoResultException;
 use Indigo\GameBundle\Entity\Game;
 use Indigo\UserBundle\Entity\User;
-
-
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class PlayerStatService implements LoggerAwareInterface
@@ -48,6 +46,11 @@ class PlayerStatService implements LoggerAwareInterface
         $this->userEntity = $userToken->getToken()->getUser();
     }
 
+    /**
+     * @param $contestId
+     * @return \ArrayIterator
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function getStats($contestId)
     {
         $teamsStats = new \ArrayIterator();
@@ -263,6 +266,7 @@ class PlayerStatService implements LoggerAwareInterface
     {
         $model =  new PlayerTeamStatModel();
         $model->setTeamRating($teamEntity->getTeamRatings($contestId));
+        $model->setTeamId($teamEntity->getId());
         $teamPlayerRelations = $teamEntity->getPlayers();
         foreach ($teamPlayerRelations as $teamPlayerRelation) {
 
