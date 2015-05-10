@@ -64,4 +64,6 @@ security:
         - { path: "^/(login|login_modal|register|remind_password|password_recovery)", roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: "^/(logout|profile)", roles: IS_AUTHENTICATED_FULLY }
         - { path: "^/(dashboard|game-history)", roles: ROLE_USER }
+        - { path: "^/user/(edit|user_update)/*", roles: ROLE_USER }
+        - { path: "^/user/*", roles: ROLE_ADMIN }
         - { path: "/", roles: IS_AUTHENTICATED_ANONYMOUSLY }
