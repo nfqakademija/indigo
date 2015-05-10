@@ -20,19 +20,19 @@ class LoginType extends AbstractType
         $builder
             ->add('username','text', [
                 'attr' => [
-                    'placeholder' => 'user.form.enter_username_or_email',
+                    'placeholder' => 'user.your_mail',
                 ]
             ])
             ->add('password','password',[
                 'attr' => [
-                    'placeholder' => 'user.form.enter_password',
+                    'placeholder' => 'user.password',
                 ]
             ])
             ->add(
                 'signin',
                 'submit',
                 [
-                    'label' => 'user.form.login'
+                    'label' => 'user.sign_in'
                 ]
             );
     }

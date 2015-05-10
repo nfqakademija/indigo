@@ -808,7 +808,6 @@ a:hover{
   margin-top: -25px;
   width: 180px;
   height: 50px;
-  border: solid #fc8404 1px;
 }
 
 #widget-left-bar
@@ -846,6 +845,11 @@ a:hover{
   text-align:center;
   margin: 2px 0;
   font-size: medium;
+}
+
+#widget-title
+{
+  color: #fc8404;
 }
 
 #widget-state

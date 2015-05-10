@@ -28,7 +28,7 @@ class TimeReservationController extends Controller
         $entity = new GameTime();
 
         $form = $this->createFormBuilder($entity)
-            ->add('startAt', 'text', [
+            ->add('startAt', 'hidden', [
                 'label' => false,
                 //'widget' => 'single_text',
                 'read_only' => true,
@@ -209,7 +209,7 @@ class TimeReservationController extends Controller
 
         $entity = new GameTime();
         $em = $this->getDoctrine()->getManager();
-        //$entity->setAction(0);
+        $entity->setAction(0);
         $entity->setTimeOwner($playerId);
         $entity->setStartAtAndFinishAt($fullDate);
         $entity->setContest($contest);

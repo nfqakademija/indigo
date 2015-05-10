@@ -1,6 +1,6 @@
 {% extends 'IndigoMainBundle:Pixel:base.html.twig' %}
 
-{% block title %}user.title.register{% endblock %}
+{% block title %}{{ 'user.sign_up'|trans }}{% endblock %}
 
 {% block body_class %}theme-default page-signup{% endblock %}
 
@@ -27,17 +27,17 @@
 			<form action="{{ path('register_action') }}"  method="post" id="signup-form_id">
 				
 				<div class="signup-text">
-					<span>Create an account</span>
+					<span>{{ 'user.create_acc'|trans }}</span>
 				</div>
 
 				<div class="form-group w-icon">
-					{{ form_widget(form.email, {'attr': {'class': 'form-control input-lg', 'id': 'email_id', placeholder: 'Your email'} }) }}
+					{{ form_widget(form.email, {'attr': {'class': 'form-control input-lg', 'id': 'email_id', placeholder: 'user.your_mail'|trans} }) }}
 					<span class="fa fa-envelope signup-form-icon"></span>
 
 				</div>
 
 				<div class="form-group w-icon">
-					{{ form_widget(form.password, {'attr': {'class': 'form-control input-lg', 'id': 'password_id', placeholder: 'Password'} }) }}
+					{{ form_widget(form.password, {'attr': {'class': 'form-control input-lg', 'id': 'password_id', placeholder: 'user.password'|trans} }) }}
 					<span class="fa fa-lock signup-form-icon"></span>
 				</div>
 
@@ -72,17 +72,18 @@
 			<!-- / Form -->
 
 			<!-- "Sign In with" block -->
-			<div class="signup-with">
-				<!-- Facebook -->
+            <!-- Facebook -->
+			{#<div class="signup-with">
+
 				<a href="index.html" class="signup-with-btn" style="background:#4f6faa;background:rgba(79, 111, 170, .8);">Sign Up with <span>Facebook</span></a>
-			</div>
+			</div>#}
 			<!-- / "Sign In with" block -->
 		</div>
 		<!-- Right side -->
 	</div>
 
 		<div class="have-account">
-		Already have an account? <a href="{{ path('login_action') }}">Sign In</a>
+		{{ 'user.have_acc'|trans }} <a href="{{ path('login_action') }}">{{ 'user.sign_in'|trans }}</a>
 	</div>
 {% endblock %}
 

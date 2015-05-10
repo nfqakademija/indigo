@@ -259,33 +259,32 @@ class LiveViewService
      */
     public function doWeHaveWinner($range)
     {
-        $topScore = 10;
+        $topScore = 2;
         $tableId = 1;
 
         $tableStatus = $this->em->getRepository('IndigoGameBundle:TableStatus')->findOneById($tableId);
+
+        $getLastGame = false;
 
         if($tableStatus && $tableStatus->getGameId()) {
 
             $qb2 = $this->em->getRepository('IndigoGameBundle:Game')->createQueryBuilder('p');
             $qb2->where("p.id = :gameId")
-                ->andWhere('p.team0Score > :zero OR p.team1Score > :zero OR p.team0Player0Id IS NOT NULL OR p.team0Player1Id IS NOT NULL OR p.team1Player0Id IS NOT NULL OR p.team1Player1Id IS NOT NULL')
+                ->andWhere('p.status=:started AND p.team0Score=:zero AND p.team1Score=:zero')
                 ->setParameter('gameId', $tableStatus->getGameId())
+                ->setParameter('started', 'started')
                 ->setParameter('zero', 0);
 
-            if (!$qb2->getQuery()->getResult()) {
-                $date = new \DateTime(date("Y-m-d H:i:s"));
-                $date = $date->sub(new \DateInterval('PT' . $range . 'S'));
+            if ($qb2->getQuery()->getResult()) {
+                //$date = new \DateTime(date("Y-m-d H:i:s"));
+                //$date = $date->sub(new \DateInterval('PT' . $range . 'S'));
 
                 $qb = $this->em->getRepository('IndigoGameBundle:Game')->createQueryBuilder('p');
-                $qb->where("p.status = 'finished'")
-                    //->andWhere('p.finishedAt >  :time')
-                    //->andWhere('p.team0Score = :topScore OR p.team1Score = :topScore')
-                    //->andWhere('p.team0Score = :topScore OR p.team1Score = :topScore')
-                    ->addOrderBy('p.finishedAt', 'DESC');
-                    //->setParameter('time', $date)
-                   // ->setParameter('topScore', $topScore);
-                //return $qb->getQuery()->getResult() != null ? true : false;
-                return $qb->getQuery()->getResult()[0];
+                $qb->where("p.status = 'finished'")->addOrderBy('p.finishedAt', 'DESC');
+
+                if ($qb->getQuery()->getResult()) {
+                    return $qb->getQuery()->getResult()[0];
+                }
             }
         }
         return null;

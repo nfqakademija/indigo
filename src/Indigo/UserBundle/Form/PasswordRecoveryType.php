@@ -30,7 +30,7 @@ class PasswordRecoveryType extends AbstractType
                 'invalid_message' => 'user.error.password_mismatch',
             ])
             ->add( 'change', 'submit', [
-                    'label' => 'user.form.change_password',
+                    'label' => 'user.form.title.change_password',
                     'attr' => [
                         'class' => 'signin-btn bg-primary'
                     ]
