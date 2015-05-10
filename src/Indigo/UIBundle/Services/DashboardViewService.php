@@ -3,9 +3,12 @@
 namespace Indigo\UIBundle\Services;
 
 use Indigo\ContestBundle\Entity\Contest;
+use Indigo\GameBundle\Entity\GameTime;
 use Indigo\UIBundle\Models\DashboardViewModel;
 use Indigo\UIBundle\Models\PlayerStatModel;
 use Indigo\UIBundle\Models\ReservationModel;
+use Indigo\UserBundle\Entity\User;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class DashboardViewService
 {
@@ -26,11 +29,17 @@ class DashboardViewService
     private $contestStatService;
 
     /**
+     * @var User
+     */
+    private $userEntity;
+
+    /**
      * @param \Doctrine\ORM\EntityManager $em
      */
-    function __construct(\Doctrine\ORM\EntityManager $em, PlayerStatService $playerStatService, ContestStatService $contestStatService)
+    function __construct(\Doctrine\ORM\EntityManager $em, TokenStorageInterface $userToken, PlayerStatService $playerStatService, ContestStatService $contestStatService)
     {
         $this->em = $em;
+        $this->userEntity = $userToken->getToken()->getUser();
         $this->playerStatService = $playerStatService;
         $this->contestStatService = $contestStatService;
     }
@@ -78,8 +87,12 @@ class DashboardViewService
             $model->getNextContest()->setDateTo($nextContest->getContestEndDate()->format("Y-m-d"));
         }
 
-        $model->setNextReservation(new ReservationModel());
-        $model->getNextReservation()->setDateStart("2012-02-01 15:00");
+
+        if ($reservation = $this->em->getRepository('IndigoGameBundle:GameTime')->getMyNextReservation($this->userEntity)) {
+            $model->setNextReservation(new ReservationModel());
+            /** @var GameTime $reservation */
+            $model->getNextReservation()->setDateStart($reservation->getStartAt()->format("Y-m-d H:i"));
+        }
 
         $model->setPlayerTeamsStats($this->playerStatService->getStats($contestId));
         $model->setContestStat($this->contestStatService->getStats($contestId));

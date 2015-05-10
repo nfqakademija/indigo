@@ -11,6 +11,11 @@ class PlayerTeamStatModel extends TeamViewModel
     /**
      * @var integer
      */
+    private $teamId;
+
+    /**
+     * @var integer
+     */
     private $fastestWinGameTs;
 
     /**
@@ -71,5 +76,21 @@ class PlayerTeamStatModel extends TeamViewModel
     public function setSlowestWinGameTs($slowestWinGameTs)
     {
         $this->slowestWinGameTs = $slowestWinGameTs;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTeamId()
+    {
+        return $this->teamId;
+    }
+
+    /**
+     * @param int $teamId
+     */
+    public function setTeamId($teamId)
+    {
+        $this->teamId = $teamId;
     }
 }

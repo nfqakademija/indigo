@@ -14,7 +14,7 @@ services:
 
     indigo_ui.dashboard_view_service:
       class: %indigo_ui.dashboard_view_service.class%
-      arguments: ["@doctrine.orm.entity_manager","@indigo_ui.player_stat.service", "@indigo_ui.contest_stat.service"]
+      arguments: ["@doctrine.orm.entity_manager", "@security.token_storage", "@indigo_ui.player_stat.service", "@indigo_ui.contest_stat.service"]
 
     indigo_ui.player_stat.service:
       class: %indigo_ui.player_stat.service.class%

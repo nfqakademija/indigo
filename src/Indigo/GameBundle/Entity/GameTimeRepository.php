@@ -3,6 +3,8 @@
 namespace Indigo\GameBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NoResultException;
+use Indigo\UserBundle\Entity\User;
 
 
 /**
@@ -53,4 +55,46 @@ class GameTimeRepository extends EntityRepository
         }
         return $reservation;
     }
+
+
+    /**
+     * @param User $player
+     * @return mixed|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+     public function getMyNextReservation(User $player)
+    {
+        if ($playerId = $player->getId()) {
+            try {
+
+
+                $qb = $this->_em->createQuery("
+                    SELECT gt
+                     FROM Indigo\GameBundle\Entity\GameTime gt
+                    WHERE
+                    gt.timeOwner = :playerId
+                        AND gt.confirmed = :ack
+                        AND (gt.finishAt > CURRENT_TIMESTAMP())
+                    ORDER BY gt.startAt ASC
+
+                    ")->setMaxResults(1)
+                    ->setParameters([
+                        'ack' => 0,
+                        'playerId' => $playerId,
+                    ]);
+
+
+                $reservation = $qb->getSingleResult();
+
+            } catch (NoResultException $e) {
+
+                return null;
+            }
+
+            return $reservation;
+        }
+
+        return null;
+    }
+
 }

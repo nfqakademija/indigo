@@ -156,7 +156,7 @@
                                         <span class="text-xs">Missed</span>
                                     </div>
 
-                                    <a href="#" class="stat-cell col-xs-4 bg-green-m padding-sm no-padding-hr valign-middle">
+                                    <a href="{{ path('indigo_ui_history',{'contestId': currentContest.id, 'teamId': playerStat.teamId}) }}" class="stat-cell col-xs-4 bg-green-m padding-sm no-padding-hr valign-middle">
                                         <span class="text-xs font-green-l">MORE&nbsp;&nbsp;<i class="fa fa-caret-right"></i></span>
                                     </a>
 
@@ -209,7 +209,7 @@
                                 <div class="stat-panel">
                                     <div class="stat-cell bg-green-sl  valign-middle">
                                         <span class="text-xlg"><strong>{{ playerStat.getProbabilityOfWin|number_format(1, '.', '') | round(1) }}</strong></span><br>
-                                        <span class="text-bg"> POV </span><br>
+                                        <span class="text-bg"> PoW </span><br>
                                         <span class="text-sm">Probability of winning</span>
                                     </div> <!-- /.stat-cell -->
                                 </div>

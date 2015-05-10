@@ -26,7 +26,7 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
 
     const ANONYMOUS_EMAIL_DOMAIN = 'example.com';
     const ANONYMOUS_USERNAME = 'anonymous';
-    const ANONYMOUS_PASSWORD = 'incredibly';
+    const ANONYMOUS_PASSWORD = 'indigo';
     const ANONYMOUS_FACE = '/bundles/indigoui/images/anonymous.png';
     const NO_FACE = '/bundles/indigoui/images/empty.png';
     /**
