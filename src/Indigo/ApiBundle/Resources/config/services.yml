@@ -2,9 +2,6 @@ parameters:
     indigo_api.connection_manager.class: Indigo\ApiBundle\Service\Manager\ApiManager
     indigo_api.success_event_listener.class: Indigo\ApiBundle\EventListener\ApiSuccessListener
 
-
-
-
 services:
     indigo_api.connection_manager:
         class: %indigo_api.connection_manager.class%

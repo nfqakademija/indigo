@@ -85,6 +85,11 @@ class TableStatus
     private $lastTableshakeTs;
 
     /**
+     * @ORM\Column(name="last_update_ts", type="integer", options={"unsigned"=true})
+     */
+    private $lastUpdateTs;
+
+    /**
      * @var string
      * @ORM\Column(name="url", type="string")
      */
@@ -356,7 +361,7 @@ class TableStatus
 
     public function hasTimeout()
     {
-        return  (bool) ($this->getLastTableshakeTs() + TableStatusRepository::TIMEOUT < time());
+        return  (bool) ($this->getLastUpdateTs() + TableStatusRepository::TIMEOUT < time());
     }
 
     /**
@@ -391,7 +396,19 @@ class TableStatus
         $this->currentGame = $currentGame;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getLastUpdateTs()
+    {
+        return $this->lastUpdateTs;
+    }
 
-
-
+    /**
+     * @param mixed $lastUpdateTs
+     */
+    public function setLastUpdateTs($lastUpdateTs)
+    {
+        $this->lastUpdateTs = $lastUpdateTs;
+    }
 }

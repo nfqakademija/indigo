@@ -82,7 +82,12 @@ class EventCaptureCommand extends ContainerAwareCommand
 
         } catch (\Exception $e) {
 
-            $logger->addError(sprintf('Failed API response: %s, in: %s:%u ', $e->getMessage(),$e->getFile(), $e->getLine()));
+            $logger->addError(sprintf('Failed API response: %s, in: %s:%u, %s',
+                $e->getMessage(),
+                $e->getFile(),
+                $e->getLine(),
+                $e->getTraceAsString())
+            );
             exit(1);
         }
 

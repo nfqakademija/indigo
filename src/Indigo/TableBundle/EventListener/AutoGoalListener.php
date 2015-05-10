@@ -56,7 +56,11 @@ class AutoGoalListener
 
             return;
         }
-        printf ( "AutoGoal!!!! teamScores: %u\n",  $tableEventModel->getTeam());
+        printf ( "AutoGoal!!!! teamScores: %u [id: %d, ts:%d, ]\n",
+            $tableEventModel->getTeam(),
+            $tableEventModel->getId(),
+            $tableEventModel->getTimeSec()
+        );
         $this->analyzeAutoGoal($tableEventModel, $tableEventModel->getTableId());
 
     }

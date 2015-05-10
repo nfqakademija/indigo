@@ -49,6 +49,8 @@ class ApiSuccessListener implements LoggerAwareInterface
 
             $tableStatusEntity->setLastApiRecordTs($lastTableEvent->getTimeSec());
             $tableStatusEntity->setLastApiRecordId($lastTableEvent->getId());
+            $tableStatusEntity->setLastUpdateTs(time());
+            printf ("setting last update ts: %d\n", time());
             $this->em->persist($tableStatusEntity);
             $this->em->flush();
             $this->logger && $this->logger->debug('EVENT DUMP SUCCESSFUL', ['last_event_id' => $lastTableEvent->getId()]);

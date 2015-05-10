@@ -264,7 +264,7 @@ class LiveViewService
 
         $tableStatus = $this->em->getRepository('IndigoGameBundle:TableStatus')->findOneById($tableId);
 
-        if($tableStatus) {
+        if($tableStatus && $tableStatus->getGameId()) {
 
             $qb2 = $this->em->getRepository('IndigoGameBundle:Game')->createQueryBuilder('p');
             $qb2->where("p.id = :gameId")
