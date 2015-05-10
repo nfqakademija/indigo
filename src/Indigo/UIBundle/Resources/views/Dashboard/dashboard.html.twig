@@ -3,6 +3,8 @@
 
 {% block title %} Indigo - Dashboard {% endblock %}
 
+{% block style %} {{ parent() }} {% endblock %}
+
 {% block script %}
 
     {{ parent() }}
@@ -64,7 +66,7 @@
         <div class="row">
             <div class="col-sm-8 col-md-8 col-lg-8 col-sm-offset-2  col-md-offset-2  col-lg-offset-2" >
 
-                <div class="row">
+                <div class="row padding-t-b-md" style="padding: 5px 2px;" >
                     <div class="contest-block" style="background: url({{ currentContest.imageUrl }}) no-repeat center;  background-size: cover;">
                         <div class="info-box reservation-item" >
                             <span class="text-xlg">{{ currentContest.title }} </span></br>

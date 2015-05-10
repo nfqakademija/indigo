@@ -3,10 +3,6 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
-        <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
-        <script src="{{ asset('bundles/indigomain/js/pixel-admin.min.js') }}"></script>
-        <script src="{{ asset('bundles/indigomain/js/bootstrap.min.js') }}"></script>
-
     {% block style %}
         <link href="{{ asset('bundles/indigomain/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
         <link href="{{ asset('bundles/indigoui/css/main.css') }}" rel="stylesheet" type="text/css">
@@ -83,26 +79,31 @@
 
     <script type="text/javascript">
 
-        var status = $.get( "{{ url('contest_list') }}", function(data) {
+        $(document).ready(function()
+        {
+            var status = $.get( "{{ url('contest_list') }}", function(data) {
 
-            var json = $.parseJSON(data);
+                var json = $.parseJSON(data);
 
-            $(".dropdown-menu").html("");
+                $(".dropdown-menu").html("");
 
-            if(json)
-            {
-                for(i = 0; i < json.length; i++)
+                if(json)
                 {
-                    var url = '{{ url('indigo_ui_dashboard', {id : '_id' }) }}';
-                    url = url.replace('_id', json[i].id);
+                    for(i = 0; i < json.length; i++)
+                    {
+                        var url = '{{ url('indigo_ui_dashboard', {id : '_id' }) }}';
+                        url = url.replace('_id', json[i].id);
 
-                    item =  "<li><a href='"+ url +"'> " + json[i].title + " </a></li>"
-                    $(".dropdown-menu").append(item);
+                        item =  "<li><a href='"+ url +"'> " + json[i].title + " </a></li>"
+                        $(".dropdown-menu").append(item);
+                    }
                 }
-            }
 
-            $("#preloader").hide();
+                $("#preloader").hide();
+            });
         });
+
+
 
     </script>
 
