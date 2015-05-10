@@ -106,11 +106,13 @@ class CardSwipeListener
         //jei playerio nera, sukuriamas ir grazinamas jo Entity
         $playerEntity = $this->getPlayerEntityByCardId($cardId);
         printf(
-            " * CardSwipe  cardid: %d, team/player position: %d/%d, PLAYER: %u \n",
+            " * CardSwipe  cardid: %d, team/player position: %d/%d, PLAYER: %u [id: %d, ts:%d]\n",
             $cardId,
             $teamPosition,
             $playerPosition,
-            $playerEntity->getId()
+            $playerEntity->getId(),
+            $tableEventModel->getId(),
+            $tableEventModel->getTimeSec()
         );
 
 
@@ -304,7 +306,6 @@ class CardSwipeListener
             // automatiskai priregistruojam anonimini useri
 
             $playerEntity = $this->createPlayer($cardId);
-            $this->teamCreateService->createSinglePlayerTeam($playerEntity);
         } elseif ($playerEntity->getTeams()->count() == 0) {
 
             $this->teamCreateService->createSinglePlayerTeam($playerEntity);

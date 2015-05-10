@@ -135,8 +135,10 @@ class ApiManager implements LoggerAwareInterface
         foreach ($data->records as $d) {
 
             if (strlen($d->data) > 2) {
+
                 $d->data = json_decode($d->data);
             } else {
+
                 $d->data = new \stdClass();
             }
 

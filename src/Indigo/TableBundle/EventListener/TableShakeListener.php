@@ -46,7 +46,11 @@ class TableShakeListener {
             return;
         }
         
-        printf (" - TableShake!! event: %d, on table: %u\n", $tableEventModel->getId(), $tableEventModel->getTableId());
+        printf (" - TableShake!! table: %u [id: %d, ts:%d]\n",
+            $tableEventModel->getTableId(),
+            $tableEventModel->getId(),
+            $tableEventModel->getTimeSec()
+        );
         $tableStatusEntity = $this->em->getRepository('IndigoGameBundle:TableStatus')
             ->findOneById($tableEventModel->getTableId());
         if ($tableStatusEntity) {
