@@ -23,7 +23,7 @@ class RegisterType extends AbstractType
                 'signup',
                 'submit',
                 [
-                    'label' => 'user.form.registersignup'
+                    'label' => 'user.sign_up'
                 ]
             );
     }

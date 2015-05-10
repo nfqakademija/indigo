@@ -72,7 +72,7 @@
 
 				<div class="form-actions">
 					{{ form_widget(form_login.signin, {'attr': {'class': 'signin-btn bg-primary'} }) }}
-					<a href="#" class="forgot-password" id="forgot-password-link">Forgot your password?</a>
+					<a href="#" class="forgot-password" id="forgot-password-link">{{ 'user.form.password_reset'|trans }}</a>
 				</div> <!-- / .form-actions -->
 
 				{{ form_end(form_login) }}
@@ -106,7 +106,7 @@
 	<!-- / Container -->
 
 	<div class="not-a-member">
-		Not a member? <a href="{{ path('register_action') }}">Sign up now</a>
+		{{ 'user.not_member'|trans }} <a href="{{ path('register_action') }}">{{ 'user.sign_up_now'|trans }}</a>
 	</div>
 {% endblock %}
 
