@@ -61,12 +61,16 @@ class TimeReservationController extends Controller
         if (!$timestamp || $timestamp < strtotime(date('Y-m-d H:i:s')))
             $timestamp = strtotime(date('Y-m-d H:i:s'));
 
+        $contest = $this->getDoctrine()->getManager()->getRepository('IndigoContestBundle:Contest')->findById($contest_id);
+        $contest_title = $contest[0]->getContestTitle();
+
         return array(
             'errorMsg' => $errorMsg,
             'contest_id' => $contest_id,
             'timestampPagination' => $timestamp,
             'user_id' => $this->getUser()->getId(),
             'form' => $form->createView(),
+            'contest_title' => $contest_title,
             'datePickerForm' => $datePickerForm->createView()
         );
     }
@@ -74,7 +78,7 @@ class TimeReservationController extends Controller
     private function updateActionOfReservation($fullDate){
         $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery(
-            "UPDATE Indigo\GameBundle\Entity\GameTime gt SET gt.confirmed = 1 WHERE gt.startAt = :startAt"
+            "UPDATE Indigo\GameBundle\Entity\GameTime gt SET gt.action = 1 WHERE gt.startAt = :startAt"
         );
 
         $query->setParameter('startAt', $fullDate);
@@ -85,7 +89,7 @@ class TimeReservationController extends Controller
     private function checkIfReservationNotOccupied($fullDate){
         $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery(
-            "SELECT COUNT(gt.id) FROM Indigo\GameBundle\Entity\GameTime gt WHERE gt.startAt = :startAt AND gt.confirmed = 1"
+            "SELECT COUNT(gt.id) FROM Indigo\GameBundle\Entity\GameTime gt WHERE gt.startAt = :startAt AND gt.action = 1"
         );
 
         $query->setParameter('startAt', $fullDate);
@@ -181,7 +185,7 @@ class TimeReservationController extends Controller
         $date = date("Y-m-d H:i:s");
         $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery(
-            "DELETE FROM Indigo\GameBundle\Entity\GameTime gt WHERE gt.insertionTime < :insertionTime AND gt.timeOwner = :timeOwner AND gt.confirmed = 0"
+            "DELETE FROM Indigo\GameBundle\Entity\GameTime gt WHERE gt.insertionTime < :insertionTime AND gt.timeOwner = :timeOwner AND gt.action = 0"
         );
 
         $query->setParameter('timeOwner', $playerId);
@@ -205,7 +209,7 @@ class TimeReservationController extends Controller
 
         $entity = new GameTime();
         $em = $this->getDoctrine()->getManager();
-        $entity->setConfirmed(0);
+        //$entity->setAction(0);
         $entity->setTimeOwner($playerId);
         $entity->setStartAtAndFinishAt($fullDate);
         $entity->setContest($contest);
@@ -230,7 +234,7 @@ class TimeReservationController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery(
-            "SELECT gt.finishAt, MAX(gt.insertionTime) AS insertionTime, gt.timeOwner, gt.confirmed FROM Indigo\GameBundle\Entity\GameTime gt WHERE gt.startAt > :startAt AND gt.timeOwner != :timeOwner  GROUP BY gt.finishAt"
+            "SELECT gt.finishAt, MAX(gt.insertionTime) AS insertionTime, gt.timeOwner, gt.action FROM Indigo\GameBundle\Entity\GameTime gt WHERE gt.startAt > :startAt AND gt.timeOwner != :timeOwner  GROUP BY gt.finishAt"
         );
 
         $query->setParameter('startAt', $date);

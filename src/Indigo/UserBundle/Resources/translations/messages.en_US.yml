@@ -1,11 +1,10 @@
 mail.sender_domain: indigo.dev
 mail.from: info@sender_domain
-mail.subject: laiškas nuo sender_domain;
-mail.footer_plain:    ----------
-                sender_domain komanda
+mail.subject: laiškas nuo sender_domain
+mail.footer_plain: sender_domain komanda
 
 user.title.change_password: Pasikeiskite slaptažodį
-user.title.login: Prisijunkite
+user.title.login: Prisijunkite prie savo paskyros
 user.title.register: Registruotis
 
 user.form.enter_username_or_email: Jūsų prisijungimo vardas ar e-pašto adresas
@@ -14,6 +13,7 @@ user.form.title.change_password: Change your password
 user.form.change_password: user.form.change_password
 user.form.repeat_password: Repeat Password
 user.form.password: Password
+user.form.password_reset: Pamiršau slaptažodį
 
 
 user.form.register.submit: Registruotis

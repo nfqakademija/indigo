@@ -1,6 +1,6 @@
 {% extends 'IndigoMainBundle:Pixel:base.html.twig' %}
 
-{% block title %}user.title.login{% endblock %}
+{% block title %}{{ 'user.title.login'|trans() }}{% endblock %}
 
 {% block body_class %}theme-default page-signin{% endblock %}
 
@@ -29,7 +29,7 @@
 		<div class="signin-form">
 			{{ form_start(form_login) }}
 				<div class="signin-text">
-					<span>Sign In to your account</span>
+					<span>{{ 'user.title.login'|trans }}</span>
 				</div>
 
 				<div class="form-group w-icon">
@@ -77,18 +77,12 @@
 
 				{{ form_end(form_login) }}
 			<!-- / Form -->
-			<!-- "Sign In with" block -->
-			<div class="signin-with">
-				<!-- Facebook -->
-				<a href="index.html" class="signin-with-btn" style="background:#4f6faa;background:rgba(79, 111, 170, .8);">Sign In with <span>Facebook</span></a>
-			</div>
-			<!-- / "Sign In with" block -->
 
 			<!-- Password reset form -->
 			<div class="password-reset-form" id="password-reset-form">
 				<div class="header">
 					<div class="signin-text">
-						<span>Password reset</span>
+						<span>{{ 'user.form.password_reset'|trans }}</span>
 						<div class="close">&times;</div>
 					</div> <!-- / .signin-text -->
 				</div> <!-- / .header -->

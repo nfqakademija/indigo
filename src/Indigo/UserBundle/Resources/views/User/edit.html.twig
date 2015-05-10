@@ -1,16 +1,83 @@
-{% extends 'IndigoMainBundle:Pixel:base.html.twig' %}
+{% extends 'IndigoUIBundle:Share:_base.html.twig' %}
+
+{% block title %}{{ 'user.user_edit'|trans }}{% endblock %}
+
+{% block style %}
+    {{ parent() }}
+
+    <link href="{{ asset('bundles/indigomain/bower_components/bootstrap-fileinput/css/fileinput.min.css') }}" media="all" rel="stylesheet" type="text/css" />
+
+    <style>
+        .panel{
+            color:#555;
+        }
+        table tbody tr td{
+            background: none repeat scroll 0 0 #FAFAFA;
+        }
+        table tbody tr td.text-center, table thead tr th.text-center{
+            vertical-align: middle !important;
+        }
+    </style>
+{% endblock %}
 
 {% block content %}
-    <h1>User edit</h1>
-    {% form_theme edit_form 'bootstrap_3_horizontal_layout.html.twig' %}
-    {{ form(edit_form) }}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-2">
+            <h1>{{ 'user.user_edit'|trans }}</h1>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><strong>{{ entity.email ~ ' | ' ~ 'user.user_edit'|trans }}</strong></h3>
+                </div>
+                <div class="panel-body">
+                    {{ form(edit_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('user') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+{% block script %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/indigomain/bower_components/bootstrap-fileinput/js/fileinput.min.js') }}"></script>
+    <script src="{{ asset('bundles/indigomain/bower_components/bootstrap-fileinput/js/fileinput_locale_') }}{{ app.request.getLocale() }}.js"></script>
+
+    <script>
+        /* Initialize your widget via javascript as follows */
+        $(".profilePicture").fileinput({
+            previewFileType: "image",
+            browseClass: "btn btn-success",
+
+            browseIcon: '<i class="glyphicon glyphicon-picture"></i>',
+            removeClass: "btn btn-danger",
+
+            removeIcon: '<i class="glyphicon glyphicon-trash"></i>',
+            uploadClass: "btn btn-info",
+
+            uploadIcon: '<i class="glyphicon glyphicon-upload"></i>',
+            layoutTemplates: {
+                main1: "{preview}\n" +
+                "<div class=\'input-group {class}\'>\n" +
+                "   <div class=\'input-group-btn\'>\n" +
+                "       {browse}\n" +
+                "       {upload}\n" +
+                "       {remove}\n" +
+                "   </div>\n" +
+                "   {caption}\n" +
+                "</div>"
+            },
+            showCaption: false,
+            showRemove: true,
+            showUpload: false,
+            allowedFileExtensions: ["jpg", "gif", "png", "jpeg"],
+            overwriteInitial: true,
+            {% if entity.pathForPicture %}
+            initialPreview: [
+                "<img src='{{ asset('uploads/profiles_pictures/') }}{{ entity.pathForPicture }}' class='file-preview-image' alt='*'>"
+            ],
+            {% endif %}
+            maxFileSize: 3000
+        });
+    </script>
 {% endblock %}

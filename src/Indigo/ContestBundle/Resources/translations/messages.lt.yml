@@ -13,9 +13,6 @@ create_contest.form.contest_starting_date: Startavimo data
 create_contest.form.contest_end_date: Pabaigos data
 create_contest.form.submit_create: Kurti turnyrą
 
-#Contest creation form - errors
-create_contest.error.no_contest: Šiuo metu nėra sukurtų turnyrų
-
 #Successful creation form
 create_contest.success.privacy.yes: privatus
 create_contest.success.privacy.no: viešas
@@ -47,6 +44,7 @@ no_prize_photo: Šiam prizui nėra įkeltos foto
 no_prize: Prizas nenurodytas
 confirm: Patvirtinti
 smart_table: Nekvailas stalas
+ask_for_delete: Ar tikrai norite ištrinti ?
 
 #TimeReservation
 time_reservation: Laiko rezervacija
@@ -58,3 +56,25 @@ time_reservation.same_time: Tokiu pat laiku kitose varžybose jūs jau esate už
 time_reservation.your_time: Jūsų užrezervuotas laikas
 time_reservation.choose_time: Pasirinkite jums tinkamą laiką
 time_reservation.doesnt_exist: Tokių varžybų nėra !
+
+#User
+user.user_edit: Profilio redagavimas
+user.user_username: Slapyvardis
+user.user_cardid: Kortelės ID
+user.user_name: Vardas
+user.profile_picture: Nuotrauka
+user.input_your_name: Įveskite savo vardą
+user.input_your_username: Įveskite savo slapyvardį
+user.input_your_cardid: Įveskite savo kortelės ID
+user.profile: Profilis
+user.email: El.pašto adresas
+user.reg_date: Registracijos data
+user.no_picture: Nuotrauka neįkelta
+user.no_name: Vardas nenurodytas
+user.no_username: Slapyvardis nenurodytas
+user.no_cardid: Koretelės ID nenurodytas
+
+#Errors
+create_contest.error.no_contest: Šiuo metu nėra sukurtų turnyrų
+user.min_cardid_length: Kortelės ID privalo sudaryti 7 skaičiai
+user.max_cardid_length: Kortelės ID privalo sudaryti 7 skaičiai

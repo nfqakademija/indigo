@@ -23,7 +23,7 @@ class UserController extends Controller
      *
      * @Route("/", name="user")
      * @Method("GET")
-     * @Template()
+     * @Template("IndigoUserBundle:User:index.html.twig")
      */
     public function indexAction()
     {
@@ -102,7 +102,7 @@ class UserController extends Controller
     /**
      * Finds and displays a User entity.
      *
-     * @Route("/{id}", name="user_show")
+     * @Route("/view/{id}", name="user_show")
      * @Method("GET")
      * @Template()
      */
@@ -119,7 +119,8 @@ class UserController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
+            'entity'  => $entity,
+            'user_id' => $id,
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -127,7 +128,7 @@ class UserController extends Controller
     /**
      * Displays a form to edit an existing User entity.
      *
-     * @Route("/{id}/edit", name="user_edit")
+     * @Route("/edit/{id}", name="user_edit")
      * @Method("GET")
      * @Template()
      */
@@ -165,15 +166,19 @@ class UserController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', array(
+            'label' => 'update',
+            'attr' => [
+                'class' => 'btn btn-success'
+            ]));
 
         return $form;
     }
     /**
      * Edits an existing User entity.
      *
-     * @Route("/{id}", name="user_update")
-     * @Method("PUT")
+     * @Route("/user_update/{id}", name="user_update")
+     * @Method({"PUT", "GET"})
      * @Template("IndigoUserBundle:User:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
@@ -191,6 +196,7 @@ class UserController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+            $entity->uploadPicture();
             $em->flush();
 
             return $this->redirect($this->generateUrl('user_edit', array('id' => $id)));
