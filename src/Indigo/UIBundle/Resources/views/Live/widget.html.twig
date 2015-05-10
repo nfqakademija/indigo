@@ -25,13 +25,21 @@
 
                 if(json.isBusy)
                 {
-                    $("#widget-state").html("Table is occupied!").show();
+                    $("#widget-state").html("Occupied!").show();
+
+                }
+                else
+                {
+                    $("#widget-state").html("Free").show();
+                }
+
+                if(json.contest.title)
+                {
                     $("#widget-title").text(json.contest.title);
                 }
                 else
                 {
-                    $("#widget-title").text("TABLE IS FREE!");
-                    $("#widget-state").hide();
+                    $("#widget-title").text("");
                 }
 
                 $("#widget-score").text(json.teamA.goals + " : " + json.teamB.goals);
@@ -53,14 +61,15 @@
 
 {#{% block content%}#}
 
-    <div id="widget-container">
-            <div id="widget-left-bar">
+    <div  id="widget-container" style=" border: none;" >
+            <span id="widget-title" style="display: none; color: #fc8404;">  </span>
+            <div id="widget-left-bar" style=" border: solid #fc8404 1px;">
                 <span id="widget-score"> 0 : 0 </span>
             </div>
             <div id="widget-right-bar">
                 <span id="widget-preloader" style="position: absolute; width: 50%; height: 100%; background: url({{ asset('bundles/indigoui/images/preloader-rect.gif') }}) no-repeat center"> </span>
-                <span id="widget-title" style="display: none">  </span>
-                <span id="widget-state" style="display: none">  </span>
+
+                <span id="widget-state" class="text-xlg" style="display: none; line-height: 40px">  </span>
             </div>
     </div>
 
