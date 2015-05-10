@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ContestController extends Controller
 {
-
     /**
      * Lists all Contest entities.
      *
@@ -227,7 +226,7 @@ class ContestController extends Controller
             $entity->uploadPrizeImage();
             $em->flush();
 
-            return $this->redirect($this->generateUrl('contest_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('contest'));
         }
 
         return array(
@@ -245,15 +244,17 @@ class ContestController extends Controller
      */
     public function deleteAction(Request $request, $id)
     {
-        if ($request->isMethod("DELETE")) {
-            $form = $this->createDeleteForm($id);
-            $form->handleRequest($request);
+        if (Contest::OPEN_CONTEST_ID != $id){
+            if ($request->isMethod("DELETE")) {
+                $form = $this->createDeleteForm($id);
+                $form->handleRequest($request);
 
-            if ($form->isValid()) {
+                if ($form->isValid()) {
+                    $this->deleteItem($id);
+                }
+            } else {
                 $this->deleteItem($id);
             }
-        } else {
-            $this->deleteItem($id);
         }
 
         return $this->redirect($this->generateUrl('contest'));

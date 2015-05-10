@@ -80,7 +80,7 @@ class ContestType extends AbstractType
             ],
             'html5' => false
         ])
-        ->add('contestPrivacy', 'checkbox', [
+        /*->add('contestPrivacy', 'checkbox', [
             'label' => false,
             'required' => false,
             'attr' => [
@@ -90,7 +90,7 @@ class ContestType extends AbstractType
                 'data-on-color' => 'success',
                 'data-handle-width' => 50,
             ],
-        ])
+        ])*/
         ->add('prize', 'text', [
             'label' => 'prize',
             'required' => false

@@ -13,9 +13,6 @@ create_contest.form.contest_starting_date: Starting date
 create_contest.form.contest_end_date: End date
 create_contest.form.submit_create: Create contest
 
-#Contest creation form - errors
-create_contest.error.no_contest: There are no contests created.
-
 #Successful creation form
 create_contest.success.privacy.yes: private
 create_contest.success.privacy.no: public
@@ -47,9 +44,10 @@ no_prize_photo: No uploaded photo for this prize
 no_prize: Prize not specified
 confirm: Confirm
 smart_table: Smart table
+ask_for_delete: Are you sure want to delete it?
 
 #TimeReservation
-time_reservation: Time reservatuin
+time_reservation: Time reservation
 time_reservation.not_selected: You haven't selected reservation time
 time_reservation.table_reserved: Table already reserved
 time_reservation.reserving_this_moment: Another player reserving this date. At the moment you can't choose it
@@ -58,3 +56,25 @@ time_reservation.same_time: In the same time in other contest you already have r
 time_reservation.your_time: You had booked this time
 time_reservation.choose_time: Select your preferred time
 time_reservation.doesnt_exist: Contest doesn't exist !
+
+#User
+user.user_edit: Profile edit
+user.user_username: Username
+user.user_cardid: Card ID
+user.user_name: Name
+user.profile_picture: Photo
+user.input_your_name: Input your name
+user.input_your_username: Input your username
+user.input_your_cardid: Input your card ID
+user.profile: Profile
+user.email: E-mail address
+user.reg_date: Registration date
+user.no_picture: No picture uploaded
+user.no_name: Name not available
+user.no_username: Username not available
+user.no_cardid: Card ID not available
+
+#Errors
+create_contest.error.no_contest: There are no contests created.
+user.min_cardid_length: This value should have exactly 7 characters.
+user.max_cardid_length: This value should have exactly 7 characters.

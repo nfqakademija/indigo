@@ -104,15 +104,15 @@ class ContestModel implements \JsonSerializable{
      */
     public function getDescription()
     {
-        return $this->Description;
+        return $this->description;
     }
 
     /**
      * @param mixed $Description
      */
-    public function setDescription($Description)
+    public function setDescription($description)
     {
-        $this->Description = $Description;
+        $this->description = $description;
     }
 
     /**

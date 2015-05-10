@@ -279,10 +279,11 @@ class LiveViewService
                 $qb = $this->em->getRepository('IndigoGameBundle:Game')->createQueryBuilder('p');
                 $qb->where("p.status = 'finished'")
                     //->andWhere('p.finishedAt >  :time')
-                    ->andWhere('p.team0Score = :topScore OR p.team1Score = :topScore')
-                    ->addOrderBy('p.finishedAt', 'DESC')
+                    //->andWhere('p.team0Score = :topScore OR p.team1Score = :topScore')
+                    //->andWhere('p.team0Score = :topScore OR p.team1Score = :topScore')
+                    ->addOrderBy('p.finishedAt', 'DESC');
                     //->setParameter('time', $date)
-                    ->setParameter('topScore', $topScore);
+                   // ->setParameter('topScore', $topScore);
                 //return $qb->getQuery()->getResult() != null ? true : false;
                 return $qb->getQuery()->getResult()[0];
             }

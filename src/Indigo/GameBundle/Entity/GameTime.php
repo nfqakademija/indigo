@@ -70,6 +70,14 @@ class GameTime
     private $confirmed;
 
     /**
+     *
+     * @var integer
+     *
+     * @ORM\Column(name="action", type="smallint")
+     */
+    private $action;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Indigo\ContestBundle\Entity\Contest", inversedBy="gameTimes")
      * @ORM\JoinColumn(name="contest_id", referencedColumnName="id")
      */
@@ -98,13 +106,14 @@ class GameTime
             $this->setFinishAt(new \DateTime('+15 minutes'));
         }
 
-        if ($this->getTimeOwner() === null) {
+        if ($this->getTimeOwner() === null)
             $this->setTimeOwner(0);
-        }
 
-        if ($this->getConfirmed() === null) {
+        if ($this->getConfirmed() === null)
             $this->setConfirmed(0);
-        }
+
+        if ($this->getAction() === null)
+            $this->setAction(0);
     }
 
     /**
@@ -292,5 +301,19 @@ class GameTime
         $this->insertionTime = new \Datetime($insertionTime);
     }
 
+    /**
+     * @return int
+     */
+    public function getAction()
+    {
+        return $this->action;
+    }
 
+    /**
+     * @param int $action
+     */
+    public function setAction($action)
+    {
+        $this->action = $action;
+    }
 }

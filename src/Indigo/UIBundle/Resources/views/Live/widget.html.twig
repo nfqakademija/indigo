@@ -14,9 +14,9 @@
 </head>
 
 <script>
-
     $(document).ready(function()
     {
+
         setInterval(function () {
 
             var status = $.get( "/live/status/1", function(data) {
@@ -36,6 +36,10 @@
 
                 $("#widget-score").text(json.teamA.goals + " : " + json.teamB.goals);
 
+                $('#widget-preloader').hide();
+                $('#widget-title').show();
+                $('#widget-state').show();
+
             });
 
         },2000);
@@ -54,8 +58,9 @@
                 <span id="widget-score"> 0 : 0 </span>
             </div>
             <div id="widget-right-bar">
-                <span id="widget-title"> Hi! </span>
-                <span id="widget-state">  </span>
+                <span id="widget-preloader" style="position: absolute; width: 50%; height: 100%; background: url({{ asset('bundles/indigoui/images/preloader-rect.gif') }}) no-repeat center"> </span>
+                <span id="widget-title" style="display: none">  </span>
+                <span id="widget-state" style="display: none">  </span>
             </div>
     </div>
 
