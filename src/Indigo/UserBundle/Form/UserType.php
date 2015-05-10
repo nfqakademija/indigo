@@ -43,7 +43,7 @@ class UserType extends AbstractType
                 ]
             ])
             /*->add('email', 'email')*/
-            ->add('picture', 'file', [
+            ->add('pictureFile', 'file', [
                 'label' => 'user.profile_picture',
                 'required' => false,
                 'attr' => [
