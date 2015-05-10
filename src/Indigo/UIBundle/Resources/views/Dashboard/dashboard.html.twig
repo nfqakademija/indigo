@@ -3,6 +3,60 @@
 
 {% block title %} Indigo - Dashboard {% endblock %}
 
+{% block script %}
+
+    {{ parent() }}
+
+    <script>
+        $(document).ready(function()
+        {
+
+            var first = true;
+
+            setInterval(function () {
+
+                var status = $.get( "/live/status/1", function(data) {
+
+                    var json = $.parseJSON(data);
+
+                    if(json.isBusy)
+                    {
+                        $("#widget-state").html("Table is occupied!");
+                        $("#widget-title").text(json.contest.title);
+                    }
+                    else
+                    {
+                        $("#widget-title").text("TABLE IS FREE!");
+                    }
+
+                    if(json.teamA && json.teamB)
+                    {
+                        $("#widget-score").text(json.teamA.goals + " : " + json.teamB.goals);
+                    }
+                    else
+                    {
+                        $("#widget-score").text("0 : 0");
+                    }
+
+
+                    if(first)
+                    {
+                        first = false;
+                        $('#widget-preloader').hide();
+                        $('#widget-score').show();
+                        $('#widget-state').show();
+                    }
+                });
+
+            },2000);
+
+        });
+
+    </script>
+
+
+{% endblock %}
+
 {% block content %}
 
     <div class="container-fluid">
@@ -10,13 +64,15 @@
         <div class="row">
             <div class="col-sm-8 col-md-8 col-lg-8 col-sm-offset-2  col-md-offset-2  col-lg-offset-2" >
 
-                <div class="row no-gutter">
+                <div class="row">
                     <div class="contest-block" style="background: url({{ currentContest.imageUrl }}) no-repeat center;  background-size: cover;">
-                        <div class="info-box" >
+                        <div class="info-box reservation-item" >
                             <span class="text-xlg">{{ currentContest.title }} </span></br>
                             <span class="text-bg"> {{ currentContest.dateFrom }} - {{ currentContest.dateTo }} </span></br></br>
                             <span class="text-lg"> {{ currentContest.description }} </span></br>
-                            <a href="{{ url('indigo_time_reservation',{contest_id:1}) }}" class="bg-green-m"> Table reservation </a>
+                            <a href="{{ url('indigo_time_reservation',{contest_id:1}) }}" >
+                                <span class="res-button bg-green-m" >Table reservation </span>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -26,19 +82,20 @@
 
                     <div class="col-md-6 col-xs-12 col-sm-12" style="text-align: center">
 
-                        <div class="stat-panel" style="height: 80px;">
-                            <div class="stat-cell bg-green-sl valign-middle">
-                                <span class="text-lg"> {{ nextReservation.dateStart}} </span></br>
-                                <span class="text-center-md"> Next reserved table </span>
+                        <a href="{{ url('indigo_ui_live') }}">
+                            <div class="stat-panel">
+                                <div class="stat-cell bg-orange-m valign-middle">
+                                    <span id="widget-preloader" style="position: absolute; width: 24px; height: 24px; background: url({{ asset('bundles/indigoui/images/preloader-rect.gif') }}) no-repeat center"> </span>
+                                    <span id="widget-score" class="text-bg" style="display:none"> 0 : 0 </span><br/>
+                                    <span id="widget-state" class="text-center-md text-sm" style="display:none"> Table is free </span>
+                                </div>
                             </div>
-                        </div>
-
-
+                        </a>
 
                         {% if nextReservation != null %}
                             <div class="stat-panel" style="height: 80px;">
                                 <div class="stat-cell bg-green-sl valign-middle">
-                                    <span class="text-lg"> {{ nextReservation.dateStart}} </span></br>
+                                    <span class="text-lg"> {{ nextReservation.dateStart}} </span><br/>
                                     <span class="text-center-md"> Next reserved table </span>
                                 </div>
                             </div>
@@ -297,6 +354,8 @@
 
                 </div>
 
+                {% if nextContest.imageUrl != null %}
+
                 <div class="row no-gutter">
                     <div class="contest-block" style="background: url({{ nextContest.imageUrl }}) no-repeat center;  background-size: cover;">
                         <div class="info-box" >
@@ -307,6 +366,7 @@
                     </div>
                 </div>
 
+                {% endif %}
 
             </div>
 
