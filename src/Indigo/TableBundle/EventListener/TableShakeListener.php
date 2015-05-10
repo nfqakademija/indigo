@@ -6,6 +6,7 @@ namespace Indigo\TableBundle\EventListener;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Indigo\GameBundle\Entity\TableStatus;
+use Indigo\GameBundle\Entity\TableStatusRepository;
 use Indigo\TableBundle\Event\TableEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -56,6 +57,7 @@ class TableShakeListener {
         if ($tableStatusEntity) {
 
             $tableStatusEntity->setLastTableShakeTs((new \DateTime())->getTimestamp());
+            $tableStatusEntity->setBusy(TableStatusRepository::STATUS_BUSY);
             $this->em->persist($tableStatusEntity);
             $this->em->flush();
         } else {

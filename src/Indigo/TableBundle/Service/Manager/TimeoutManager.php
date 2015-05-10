@@ -38,7 +38,11 @@ class TimeoutManager
             /** @var TableStatus $tableStatusEntity */
             if ($tableStatusEntity->hasTimeout())  {
 
-                $tableStatusEntity->setBusy(TableStatusRepository::STATUS_IDLE);
+                if ($tableStatusEntity->getBusy() != TableStatusRepository::STATUS_IDLE) {
+
+                    printf ("Timeout has occured! table_id: %d ", $tableStatusEntity->getTableId());
+                    $tableStatusEntity->setBusy(TableStatusRepository::STATUS_IDLE);
+                }
                 if ($gameEntity = $tableStatusEntity->getGame()) {
 
                     $event = new GameFinishEvent();
