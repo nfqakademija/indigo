@@ -158,7 +158,7 @@ class AuthController extends Controller
                      $resetPassword = new ResetPassword();
                      $resetPassword->setHash($newHash);
                      $resetPassword->setActive(1);
-                     $resetPassword->setUser($user->getId());
+                     $resetPassword->setUser($user);
                      $em->persist($resetPassword);
                      $em->flush();
                  } else {
