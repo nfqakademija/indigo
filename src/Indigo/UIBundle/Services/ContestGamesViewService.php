@@ -37,10 +37,10 @@ class ContestGamesViewService implements LoggerAwareInterface
     }
 
     /**
-     * @param integer $contestId
+     * @param $contestId
      * @return ContestGamesViewModel
      */
-    public function getViewModel($contestId)
+    public function getGamesQuery($contestId)
     {
         if (!(int)$contestId) {
 
@@ -54,8 +54,6 @@ class ContestGamesViewService implements LoggerAwareInterface
             throw new NotFoundHttpException();
         }
 
-        $model = new ContestGamesViewModel();
-
         $qb = $this->em->createQueryBuilder();
         $qb ->select('g, r, t0, t1')
             ->from('IndigoGameBundle:Game', 'g')
@@ -65,7 +63,6 @@ class ContestGamesViewService implements LoggerAwareInterface
             ->where('g.contest = :contestId')
             ->andWhere('g.status = :gameStatus')
             ->orderBy('g.startedAt', 'DESC')
-            ->setMaxResults(50)
             ->setParameters(
                 [
                     'contestId' => $contestId,
@@ -73,18 +70,6 @@ class ContestGamesViewService implements LoggerAwareInterface
                 ]);
 
 
-        $games = $qb->getQuery()->getResult();
-        foreach ($games as $game) {
-
-            $gameModel = $this->gameModelService->getModel($contestId, $game);
-            if ($gameModel !== null) {
-
-                $model->addGame($gameModel);
-            }
-        }
-
-
-        return $model;
+        return $qb->getQuery();
     }
-
-};
+}

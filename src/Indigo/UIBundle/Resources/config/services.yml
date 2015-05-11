@@ -53,3 +53,10 @@ services:
     indigo_ui.game_model.service:
       class: %indigo_ui.game_model.service.class%
       arguments: ["@doctrine.orm.entity_manager"]
+
+
+    indigo_ui.contest_pagination:
+      class: Indigo\UIBundle\EventListener\PaginationSubscriber
+      arguments: ["@indigo_ui.game_model.service"]
+      tags:
+        - { name: kernel.event_subscriber }
