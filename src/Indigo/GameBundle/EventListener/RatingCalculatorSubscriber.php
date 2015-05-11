@@ -22,8 +22,8 @@ class RatingCalculatorSubscriber extends Container implements EventSubscriberInt
     public static function getSubscribedEvents()
     {
         return [
-            GameEvents::GAME_FINISH_ON_DOUBLE_SWIPE => ['calculateRatings', 1],
-            GameEvents::GAME_FINISH_ON_SCORE => ['calculateRatings', 1]
+            GameEvents::GAME_FINISH_ON_DOUBLE_SWIPE => ['calculateRatings', -50],
+            GameEvents::GAME_FINISH_ON_SCORE => ['calculateRatings', -50]
         ];
     }
 
