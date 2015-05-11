@@ -20,8 +20,14 @@ indigo_ui_dashboard:
             _method: GET
 
 indigo_ui_history:
-    path: /history/{contestId}/{teamId}
-    defaults: { _controller: IndigoUIBundle:History:history }
+    path: /player_games/{contestId}/{teamId}
+    defaults: { _controller: IndigoUIBundle:PlayerGamesHistory:history }
     requirements:
             contestId: \d+
             teamId: \d+
+
+indigo_ui_contest_games:
+    path: /contest_games/{contestId}
+    defaults: { _controller: IndigoUIBundle:ContestGamesHistory:history }
+    requirements:
+            contestId: \d+

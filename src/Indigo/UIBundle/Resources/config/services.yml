@@ -2,9 +2,11 @@ parameters:
     indigo_ui.live_view_service.class: Indigo\UIBundle\Services\LiveViewService
     indigo_ui.dashboard_view_service.class: Indigo\UIBundle\Services\DashboardViewService
 
+    indigo_ui.contest_games_history.service.class: Indigo\UIBundle\Services\ContestGamesViewService
     indigo_ui.player_stat.service.class: Indigo\UIBundle\Services\PlayerStatService
     indigo_ui.contest_stat.service.class: Indigo\UIBundle\Services\ContestStatService
     indigo_ui.game_history.service.class: Indigo\UIBundle\Services\GameHistoryViewService
+    indigo_ui.game_model.service.class: Indigo\UIBundle\Services\GameModelService
 
 services:
     indigo_ui.live_view_service:
@@ -34,8 +36,20 @@ services:
 
     indigo_ui.game_history.service:
       class: %indigo_ui.game_history.service.class%
-      arguments: ["@doctrine.orm.entity_manager"]
+      arguments: ["@doctrine.orm.entity_manager", "@indigo_ui.game_model.service"]
       calls:
           - [setLogger, ["@?logger"]]
       tags:
         - { name: monolog.logger, channel: ui.dashboard_stats }
+
+    indigo_ui.contest_games_history.service:
+      class: %indigo_ui.contest_games_history.service.class%
+      arguments: ["@doctrine.orm.entity_manager", "@indigo_ui.game_model.service"]
+      calls:
+          - [setLogger, ["@?logger"]]
+      tags:
+        - { name: monolog.logger, channel: ui.contest_games_history }
+
+    indigo_ui.game_model.service:
+      class: %indigo_ui.game_model.service.class%
+      arguments: ["@doctrine.orm.entity_manager"]

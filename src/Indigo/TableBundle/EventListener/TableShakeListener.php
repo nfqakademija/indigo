@@ -15,7 +15,7 @@ use Indigo\TableBundle\Model\TableShakeModel;
 class TableShakeListener {
 
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     private $em;
 

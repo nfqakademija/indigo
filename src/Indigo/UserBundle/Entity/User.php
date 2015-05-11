@@ -53,14 +53,14 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=25, unique=true, nullable=true)
+     * @ORM\Column(type="string", length=64, unique=true, nullable=true)
      */
     private $username;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=60, unique=true)
+     * @ORM\Column(type="string", length=32, unique=true)
      * @Assert\Email(groups={"Default", "Profile"}, checkMX="true", message="user.error.username_must_be_email")
      */
     private $email;
@@ -75,7 +75,7 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
 
     /**
      *
-     * @ORM\Column(type="string", length=64)
+     * @ORM\Column(type="string", length=32)
      */
     private $salt;
 
@@ -133,7 +133,7 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
 
     /**
      *
-     * @ORM\Column(name="name", type="string", length=255, nullable=true)
+     * @ORM\Column(name="name", type="string", length=32, nullable=true)
      */
     private $name;
 
