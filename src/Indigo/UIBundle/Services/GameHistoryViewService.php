@@ -79,7 +79,7 @@ class GameHistoryViewService implements LoggerAwareInterface
             $gameModel = $this->gameModelService->getModel($contestId, $game);
             if ($gameModel !== null) {
 
-                $model->addGame($game);
+                $model->addGame($gameModel);
             }
 
         }

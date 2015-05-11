@@ -29,7 +29,7 @@
 
                         {% for game in games %}
 
-                                <tr>
+                                <tr {% if game.isStat == false %} style="background-color: rgba(255, 103, 95, 0.60);" {%  endif %} >
                                     <td>
                                         <div style="display: inline-block" >
                                             {% for picture in game.team0playersPictures %}
