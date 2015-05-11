@@ -53,7 +53,7 @@ class AuthController extends Controller
             $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
             if ($error) {
 
-                $error = 'user.error.bad_credentials';
+                $error = $this->get('translator')->trans('user.error.bad_credentials');
             }
             $session->remove(SecurityContext::AUTHENTICATION_ERROR);
         }
@@ -188,7 +188,7 @@ class AuthController extends Controller
                      ->addPart($mail_text, 'text/plain');
                  $mailer->send($message);
 
-                 $this->get('session')->getFlashBag()->add('notice', 'user.notice.reset_password_sent');
+                 $this->get('session')->getFlashBag()->add('notice', $this->get('translator')->trans('user.notice.reset_password_sent'));
              }
          }
         return $this->redirectToRoute('login_action');
@@ -207,7 +207,7 @@ class AuthController extends Controller
         ]);
 
         if (is_null($resetPasswordEntity)) {
-            $this->get('session')->getFlashBag()->add('notice','user.error.password_recovery.invalid_hash');
+            $this->get('session')->getFlashBag()->add('notice', $this->get('translator')->trans('user.error.password_recovery.invalid_hash'));
             return $this->redirectToRoute('login_action');
         }
 
@@ -231,7 +231,7 @@ class AuthController extends Controller
                 $resetPasswordEntity->setActive(0);
                 $em->persist($resetPasswordEntity);
                 $em->flush();
-                $this->get('session')->getFlashBag()->add('success','user.form.password_recovery.success');
+                $this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('user.form.password_recovery.success'));
                 return $this->redirectToRoute('login_action');
             }
         }

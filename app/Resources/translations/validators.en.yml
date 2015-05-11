@@ -1,0 +1,6 @@
+user:
+  error:
+    username_must_be_email: Wrong email adress!
+    password_to_short: Password to short!
+    min_cardid_length: This value should have exactly 7 characters.
+    max_cardid_length: This value should have exactly 7 characters.

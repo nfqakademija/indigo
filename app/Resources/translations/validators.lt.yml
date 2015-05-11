@@ -1,0 +1,6 @@
+user:
+  error:
+    username_must_be_email: Blogas el.pašto adresas!
+    password_to_short: Slaptažodis per trumpas!
+    min_cardid_length: Kortelės ID privalo būti 7 sudaryta iš 7 skaičių.
+    max_cardid_length: Kortelės ID privalo būti 7 sudaryta iš 7 skaičių.
