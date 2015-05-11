@@ -27,6 +27,12 @@ html, body {
   background-color: rgba(255, 255, 255, 0.8);
 }
 
+#footer
+{
+  padding: 20px 0;
+  text-align: center;
+}
+
 .clear
 {
   background: white !important;
@@ -328,17 +334,26 @@ html, body {
     font-size: 1.8em;
     margin: 10px auto;
   }
+
   .res-button {
     position: relative;
-    width: 80%;
-    height: 40px;
-    //padding: 10px auto;
-    font-size: 1.4em;
-    background-color: transparent;
-    border: solid 1px $color-silver-l;
+    display: block;
+    width: 60%;
+    height: 60px;
+    line-height: 60px;
+    margin: 40px auto;
+    font-size: 1.5em;
+    background-color: rgba(150, 195, 0, 0.81);
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: $color-green-l;
+    }
+    &:visited,
+    &:link,
+    &:active
+    {
+      color: white;
+      text-decoration: none;
     }
   }
 }
@@ -696,8 +711,7 @@ a:hover{
   line-height: 50px;
   font-size: 1.4em;
   margin-top: 15%;
-  background-color: $color-green-l;
-  border: none;
+  background-color: rgba(150, 195, 0, 0.81);
 }
 
 .info-box label {
