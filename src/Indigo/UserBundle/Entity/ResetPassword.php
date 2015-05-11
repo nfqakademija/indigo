@@ -33,7 +33,7 @@ class ResetPassword
     /**
      * @var string
      *
-     * @ORM\Column(name="hash", type="string", length=50)
+     * @ORM\Column(name="hash", type="string", length=32)
      */
     private $hash;
 
