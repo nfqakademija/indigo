@@ -65,6 +65,8 @@ html, body {
   background-color: rgba(0,0,0,0.4);
   font-size: 5em;
   @include border-radius(2px);
+
+  box-shadow: 0 0 15px -2px white;
 }
 
 .score-font
@@ -109,10 +111,12 @@ html, body {
         color: $color-silver-l;
       }
     }
+
 .player {
   img {
     width: 100%;
-    height: auto;
+    height: 78%;
+    //height: auto;
     border-radius: 50%;
     background: url($icon-empty) no-repeat center;
     border: solid white 4px;
@@ -205,8 +209,8 @@ html, body {
 
 
   .field {
-    top: 0;
-    .bg {
+
+   .bg {
       max-width: 400px;
       margin: 0 auto;
     }
@@ -231,7 +235,6 @@ html, body {
 @media screen  and (min-width: 601px) and (max-width: 799px){
 
   .field {
-    top: 0;
     .bg {
       max-width: 600px;
       margin: 0 auto;
@@ -654,6 +657,14 @@ a:hover{
 .stat-panel {
   background: transparent !important;
   margin-bottom: 4px !important;
+
+  .stat-panel-item
+  {
+    height: 100%;
+    padding: 10px;
+
+  }
+
 }
 
 .contest-block {
@@ -743,15 +754,27 @@ a:hover{
   width: 100%;
   height: 100%;
   padding: 10%;
- // @include fill();
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(0,0, 0, 0.9);
   z-index: 100;
   text-align: center;
 }
 
-#not-goal-msg,
+#not-goal-msg
+{
+  display: block;
+  position: relative;
+  width: 400px;
+  height: 200px;
+  top: 50%;
+  left: 50%;
+  margin-left: -200px;
+  margin-top: -100px;
+  background: url($goal-image) no-repeat center;
+  z-index: 1000;
+}
+
+
 #not-end-msg {
-  display: none;
   position: relative;
   margin: auto;
 }
