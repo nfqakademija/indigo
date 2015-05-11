@@ -14,8 +14,8 @@ class ContestGamesViewModel implements \JsonSerializable
         $this->games = new \ArrayIterator();
     }
 
-    public function jsonSerialize() {
-
+    public function jsonSerialize()
+    {
         return ['contest' => $this];
     }
 
@@ -38,7 +38,6 @@ class ContestGamesViewModel implements \JsonSerializable
 
     public function addGame(GameModel $game)
     {
-
         $this->games->append($game);
     }
 }

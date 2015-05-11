@@ -16,14 +16,24 @@ class ContestGamesHistoryController extends Controller
      */
     public function historyAction($contestId)
     {
-        $model = $this
-                    ->getHistoryService()
-                    ->getViewModel($contestId);
-        return $this->render('IndigoUIBundle:History:contest_games.html.twig', $model->jsonSerialize());
+        $gamesQuery = $this
+            ->getHistoryService()
+            ->getGamesQuery($contestId);
+
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $gamesQuery,
+            $this->get('request')->query->get('page', 1),
+            50
+        );
+
+        return $this->render('IndigoUIBundle:History:contest_games.html.twig',
+            ['pagination' => $pagination]
+        );
     }
 
     /**
-     * @return object
+     * @return \Indigo\UIBundle\Services\ContestGamesViewService
      */
     private function getHistoryService()
     {
