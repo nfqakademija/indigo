@@ -11,7 +11,7 @@
         table tbody tr td.text-center, table thead tr th.text-center{
             vertical-align: middle !important;
         }
-        table tbody tr td, .bootbox-body{
+        table tbody tr td, .bootbox-body, h4.modal-title{
             color:#555;
         }
     </style>
@@ -67,7 +67,9 @@
                                 {% set pathForImage = "contest-logo.jpg" %}
                             {% endif %}
 
-                            <img src="{{ asset('uploads/contest/') }}{{ pathForImage }}" alt="*" width="100" title="{{ entity.contestTitle|capitalize }}"/>
+                            <a data-toggle="lightbox" data-title="{{ 'create_contest.form.contest_logo'|trans }} | {{ entity.contestTitle|capitalize }}" href="{{ asset(pathForImage) }}">
+                                <img src="{{ asset(pathForImage) }}" alt="*" width="100px" title="{{ entity.contestTitle|capitalize }}"/>
+                            </a>
                         </td>
                         {#<td class="text-center">
                             {% if entity.contestPrivacy %}
@@ -125,7 +127,9 @@
 
 {% block script %}
     {{ parent() }}
+    <script src="{{ asset('bundles/indigomain/bower_components/bootstrap-lightbox/bootstrap-lightbox.min.js') }}"></script>
     <script src="{{ asset('bundles/indigomain/js/bootbox.min.js') }}"></script>
+
     <script>
         $(document).ready(function() {
             $('.delete-button').click(function (e) {
@@ -152,6 +156,11 @@
 
                 return false;
             });
+        });
+
+        $(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
+            event.preventDefault();
+            $(this).ekkoLightbox();
         });
     </script>
 {% endblock %}

@@ -21,6 +21,7 @@ class Contest
 
     const OPEN_CONTEST_ID = 1;
     const DEFAULT_SCORE_LIMIT = 10;
+    const DEFAULT_CONTEST_URL = 'bundles/indigocontest/images/contest-logo.jpg';
 
     /**
      * @var int
@@ -159,6 +160,14 @@ class Contest
      */
     private $scoreLimit;
 
+    /*
+     * @var string
+     * renamed image filename
+     */
+
+    private $renamedImageFilename;
+
+
     /**
      * @param \Datetime $contest_creation_date
      * set value to param $contestCreationDate
@@ -265,10 +274,12 @@ class Contest
         $this->image = $image;
     }
 
-    public function changeImageName()
+    public function changeImageName($uploadPath)
     {
         $filename = sha1(uniqid(mt_rand() * mt_rand(), true));
-        $this->pathForImage = $filename . '.' . $this->getImage()->guessExtension();
+        $full_filename = $filename . '.' . $this->getImage()->guessExtension();
+        $this->setPathForImage($uploadPath.'/'.$full_filename);
+        $this->renamedImageFilename = $full_filename;
     }
 
     /**
@@ -280,14 +291,16 @@ class Contest
             return;
         }
 
-        $this->changeImageName();
+        $uploadPath = $this->getUploadDir('contest');
 
-        while (is_file($this->getAbsolutePath($this->pathForImage, "contest")))
-            $this->changeImageName();
+        $this->changeImageName($uploadPath);
+
+        while (is_file($this->getAbsolutePath($this->renamedImageFilename, "contest")))
+            $this->changeImageName($uploadPath);
 
         $this->getImage()->move(
             $this->getUploadRootDir("contest"),
-            $this->pathForImage
+            $this->renamedImageFilename
         );
 
         $this->image = null;
@@ -438,10 +451,12 @@ class Contest
         $this->prizeImage = $prizeImage;
     }
 
-    public function changePrizeImageName()
+    public function changePrizeImageName($uploadPath)
     {
         $filename = sha1(uniqid(mt_rand() * mt_rand(), true));
-        $this->pathForPrizeImage = $filename . '.' . $this->getPrizeImage()->guessExtension();
+        $full_filename = $filename . '.' . $this->getPrizeImage()->guessExtension();
+        $this->setPathForPrizeImage($uploadPath.'/'.$full_filename);
+        $this->renamedImageFilename = $full_filename;
     }
 
     /**
@@ -486,14 +501,16 @@ class Contest
             return;
         }
 
-        $this->changePrizeImageName();
+        $uploadPath = $this->getUploadDir('prizes');
 
-        while (is_file($this->getAbsolutePath($this->pathForPrizeImage, "prizes")))
-            $this->changePrizeImageName();
+        $this->changePrizeImageName($uploadPath);
+
+        while (is_file($this->getAbsolutePath($this->renamedImageFilename, "prizes")))
+            $this->changePrizeImageName($uploadPath);
 
         $this->getPrizeImage()->move(
             $this->getUploadRootDir("prizes"),
-            $this->pathForPrizeImage
+            $this->renamedImageFilename
         );
 
         $this->prizeImage = null;
