@@ -54,6 +54,11 @@ class GameModel
      */
     private $team1playersPictures;
 
+    /**
+     * @var integer
+     */
+    private $isStat;
+
     public function __construct()
     {
         $this->team0playersPictures = new \ArrayIterator();
@@ -262,4 +267,22 @@ class GameModel
         return $this;
     }
 
+    /**
+     * @return int
+     */
+    public function getIsStat()
+    {
+        return $this->isStat;
+    }
+
+    /**
+     * @param $isStat
+     * @return $this
+     */
+    public function setIsStat($isStat)
+    {
+        $this->isStat = $isStat;
+
+        return $this;
+    }
 }

@@ -1,18 +1,14 @@
 <?php
+
 namespace Indigo\UIBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
-use Indigo\UIBundle\Models\GameHistoryViewModel;
-use Indigo\UIBundle\Services\GameHistoryViewService;
 
 
-class HistoryController extends Controller {
-
-    public function __construct()
-    {
-    }
+class PlayerGamesHistoryController extends Controller
+{
 
     /**
      * @Template()
@@ -22,9 +18,9 @@ class HistoryController extends Controller {
     {
         $gs= $this->getGameHistoryViewService();
         $model = $gs->getViewModel($contestId, $teamId);
-        return $this->render('IndigoUIBundle:History:history.html.twig', $model->jsonSerialize() );
-    }
 
+        return $this->render('IndigoUIBundle:History:player_games.html.twig', $model->jsonSerialize() );
+    }
 
     private function getGameHistoryViewService()
     {
