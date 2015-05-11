@@ -18,7 +18,8 @@
                         <col width="100">
 
                         <tr>
-                            <th class="text-xl" style="text-align: center"> Teams </th>
+                            <th class="text-xl" style="text-align: center"> Started </th>
+                            <th> Teams </th>
                             <th> </th>
                             <th> Time </th>
                             <th> Score </th>
@@ -27,7 +28,9 @@
                     {% for game in games %}
 
                             <tr style="padding: 10px;">
-
+                                <td>
+                                    {{ game.startedAt|date("m.d. H : i ")}}
+                                </td>
                                 <td>
                                     <div style="display: inline-block" >
                                         {% for picture in game.team0playersPictures %}
@@ -49,7 +52,7 @@
 
                                 </td>
 
-                                <td> </td>
+                                <td> {{ game.team0RatingDiff }}  vs {{ game.team1RatingDiff }}</td>
 
                                 <td>
                                     <span class="text-xl text-dark-gray"> {{ game.gameDuration|date("i : s")  }}</span>

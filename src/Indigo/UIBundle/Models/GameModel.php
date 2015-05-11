@@ -20,6 +20,21 @@ class GameModel
     private $gameDuration;
 
     /**
+     * @var Datetime
+     */
+    private $startedAt;
+
+    /**
+     * @var integer
+     */
+    private $team0RatingDiff;
+
+    /**
+     * @var integer
+     */
+    private $team1RatingDiff;
+
+    /**
      * @var integer
      */
     private $team0Rating;
@@ -188,6 +203,63 @@ class GameModel
     public function setTeam1playersPictures($team1playersPictures)
     {
         $this->team1playersPictures = $team1playersPictures;
+    }
+
+    /**
+     * @return Datetime
+     */
+    public function getStartedAt()
+    {
+        return $this->startedAt;
+    }
+
+    /**
+     * @param $startedAt
+     * @return $this
+     */
+    public function setStartedAt($startedAt)
+    {
+        $this->startedAt = $startedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTeam0RatingDiff()
+    {
+        return $this->team0RatingDiff;
+    }
+
+    /**
+     * @param $team0RatingDiff
+     * @return $this
+     */
+    public function setTeam0RatingDiff($team0RatingDiff)
+    {
+        $this->team0RatingDiff = $team0RatingDiff;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTeam1RatingDiff()
+    {
+        return $this->team1RatingDiff;
+    }
+
+    /**
+     * @param $team1RatingDiff
+     * @return $this
+     */
+    public function setTeam1RatingDiff($team1RatingDiff)
+    {
+        $this->team1RatingDiff = $team1RatingDiff;
+
+        return $this;
     }
 
 }
