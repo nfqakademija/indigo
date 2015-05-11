@@ -282,7 +282,8 @@ class ContestController extends Controller
 
     private function setImageUrlGlobal($url)
     {
-        $imageName = $url ? $url : "contest-logo.jpg";
+        $contest = new Contest();
+        $imageName = $url ? $url : $contest::DEFAULT_CONTEST_URL;
         $this->get('twig')->addGlobal('imagePath', $imageName);
     }
 

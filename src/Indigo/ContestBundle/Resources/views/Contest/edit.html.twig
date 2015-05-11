@@ -152,7 +152,7 @@
             allowedFileExtensions: ["jpg", "gif", "png", "jpeg"],
             overwriteInitial: true,
             initialPreview: [
-                "<img src='{{ asset('uploads/contest/') }}{{ imagePath }}' class='file-preview-image' alt='*'>"
+                "<img src='{{ asset(imagePath) }}' class='file-preview-image' alt='*'>"
             ],
             maxFileSize: 3000
         });
@@ -186,7 +186,7 @@
             overwriteInitial: true,
             {% if prizeImagePath %}
             initialPreview: [
-                "<img src='{{ asset('uploads/prizes/') }}{{ prizeImagePath }}' class='file-preview-image' alt='*'>"
+                "<img src='{{ asset(prizeImagePath) }}{{ prizeImagePath }}' class='file-preview-image' alt='*'>"
             ],
             {% endif %}
             maxFileSize: 3000

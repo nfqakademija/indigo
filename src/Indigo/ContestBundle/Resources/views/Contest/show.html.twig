@@ -46,11 +46,11 @@
                                 {% if entity.pathForImage %}
                                     {% set pathForImage = entity.pathForImage %}
                                 {% else %}
-                                    {% set pathForImage = "contest-logo.jpg" %}
+                                    {% set pathForImage = constant('Indigo\\ContestBundle\\Entity\\Contest::DEFAULT_CONTEST_URL') %}
                                 {% endif %}
 
-                                <a data-toggle="lightbox" data-title="{{ 'create_contest.form.contest_logo'|trans }} | {{ entity.contestTitle|capitalize }}" href="{{ asset('uploads/contest/') }}{{ pathForImage }}">
-                                    <img src="{{ asset('uploads/contest/') }}{{ pathForImage }}" alt="*" width="100px" title="{{ entity.contestTitle|capitalize }}"/>
+                                <a data-toggle="lightbox" data-title="{{ 'create_contest.form.contest_logo'|trans }} | {{ entity.contestTitle|capitalize }}" href="{{ asset(pathForImage) }}">
+                                    <img src="{{ asset(pathForImage) }}" alt="*" width="100px" title="{{ entity.contestTitle|capitalize }}"/>
                                 </a>
                             </td>
                         </tr>
@@ -100,8 +100,8 @@
                             <th class="vertical-center">{{ 'prize_photo'|trans }}</th>
                             <td>
                                 {% if entity.pathForPrizeImage %}
-                                    <a data-toggle="lightbox" data-title="{{ 'prize_photo'|trans }} | {{ entity.contestTitle|capitalize }}" href="{{ asset('uploads/prizes/') }}{{ entity.pathForPrizeImage }}">
-                                        <img src="{{ asset('uploads/prizes/') }}{{ entity.pathForPrizeImage }}" alt="*" width="100px" title="{{ entity.contestTitle|capitalize }}"/>
+                                    <a data-toggle="lightbox" data-title="{{ 'prize_photo'|trans }} | {{ entity.contestTitle|capitalize }}" href="{{ asset(entity.pathForPrizeImage) }}">
+                                        <img src="{{ asset(entity.pathForPrizeImage) }}" alt="*" width="100px" title="{{ entity.contestTitle|capitalize }}"/>
                                     </a>
                                 {% else %}
                                     {{ 'no_prize_photo'|trans }}
