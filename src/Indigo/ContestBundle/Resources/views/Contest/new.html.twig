@@ -19,7 +19,7 @@
     </style>
 {% endblock %}
 
-{% block content -%}
+{% block content %}
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-8 col-sm-offset-2">
@@ -118,7 +118,7 @@
             allowedFileExtensions: ["jpg", "gif", "png", "jpeg"],
             overwriteInitial: true,
             initialPreview: [
-                "<img src='{{ asset('uploads/contest/') }}{{ imagePath }}' class='file-preview-image' alt='*'>"
+                "<img src='{{ asset(imagePath) }}' class='file-preview-image' alt='*'>"
             ],
             maxFileSize: 1000
         });
@@ -152,7 +152,7 @@
             overwriteInitial: true,
             {% if prizeImagePath %}
             initialPreview: [
-                "<img src='{{ asset('uploads/prizes/') }}{{ prizeImagePath }}' class='file-preview-image' alt='*'>"
+                "<img src='{{ asset(prizeImagePath) }}' class='file-preview-image' alt='*'>"
             ],
             {% endif %}
             maxFileSize: 3000
