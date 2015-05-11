@@ -274,7 +274,7 @@ class CardSwipeListener
     {
         $playerEntity = new Player();
         $playerEntity->setCardId($cardId);
-        $playerEntity->setUsername(sprintf('%s%d', Player::ANONYMOUS_USERNAME, $cardId));
+        $playerEntity->setUsername($cardId);
         $playerEntity->setEmail(sprintf('%s@%s', $playerEntity->getUsername(), Player::ANONYMOUS_EMAIL_DOMAIN));
         $playerEntity->setPassword(Player::ANONYMOUS_PASSWORD);
         $this->userRegistrationService->register($playerEntity);
