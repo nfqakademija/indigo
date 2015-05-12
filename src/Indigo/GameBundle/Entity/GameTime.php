@@ -25,7 +25,7 @@ class GameTime
     private $id;
 
     /**
-     * @var \Indigo\GameBundle\Entity\Game
+     * @var ArrayCollection
      * @ORM\OneToMany(targetEntity="Indigo\GameBundle\Entity\Game", mappedBy="gameTime")
      * @ORM\JoinColumn(name="game_id", referencedColumnName="id")
      */

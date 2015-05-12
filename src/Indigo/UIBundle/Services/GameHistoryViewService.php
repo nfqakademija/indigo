@@ -2,6 +2,7 @@
 
 namespace Indigo\UIBundle\Services;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Indigo\ContestBundle\Entity\Contest;
 use Indigo\GameBundle\Entity\Game;
 use Indigo\GameBundle\Repository\GameStatusRepository;
@@ -16,8 +17,9 @@ class GameHistoryViewService implements LoggerAwareInterface
 {
 
     use LoggerAwareTrait;
+
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManagerInterface
      */
     private $em;
 
@@ -26,10 +28,11 @@ class GameHistoryViewService implements LoggerAwareInterface
      */
     private $gameModelService;
 
-     /**
-     * @param \Doctrine\ORM\EntityManager $em
+    /**
+     * @param EntityManagerInterface $em
+     * @param GameModelService $gameModelService
      */
-    function __construct(\Doctrine\ORM\EntityManager $em, GameModelService $gameModelService)
+    function __construct(EntityManagerInterface $em, GameModelService $gameModelService)
     {
         $this->em = $em;
         $this->gameModelService = $gameModelService;

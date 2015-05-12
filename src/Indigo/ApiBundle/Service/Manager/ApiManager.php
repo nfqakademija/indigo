@@ -42,14 +42,14 @@ class ApiManager implements LoggerAwareInterface
     private $client;
 
     /**
-     * @var EventDispatcher
+     * @var EventDispatcherInterface
      */
     private $ed;
 
     /**
      * @param EventDispatcherInterface $ed
      */
-    function __construct(EventDispatcherInterface $ed)
+    public function __construct(EventDispatcherInterface $ed)
     {
         $this->ed = $ed;
     }
@@ -61,18 +61,22 @@ class ApiManager implements LoggerAwareInterface
      * @return \ArrayIterator|bool|TableEventList
      * @throws \Exception
      */
-    public function getEvents($tableKey, array $query, $tryTestOnFailure = false)
+    public function getEvents($tableKey, array $query, $provideDemoEvents = false)
     {
-/*
-        if ($eventsJSON = $this->getDemoData()) {
 
-            $eventList = $this->parseResponseData($eventsJSON);
-            $eventList->setTableId(-1); // virtual table
+        if ($provideDemoEvents === true) {
 
-            return $eventList;
-        }*/
+            if ($eventsJSON = $this->getDemoData()) {
+
+                $eventList = $this->parseResponseData($eventsJSON);
+                $eventList->setTableId(-1); // virtual table
+
+                return $eventList;
+            }
+        }
 
         try {
+
             $table = $this->getTable($tableKey);
 
             $query = [
@@ -127,7 +131,6 @@ class ApiManager implements LoggerAwareInterface
      */
     public function parseResponseData(\stdClass $data)
     {
-        $TableShakeModel = null;
         $lastTableShakeIndex = -1;
         $eventList = new TableEventList();
         $i = 0;
@@ -164,11 +167,12 @@ class ApiManager implements LoggerAwareInterface
     }
 
     /**
-     * @return GuzzleHttp\Client;
+     * @return GuzzleHttp\Client
      */
     protected function getClient()
     {
         if (!$this->client) {
+
             $this->client = new GuzzleHttp\Client();
         }
 
@@ -182,6 +186,7 @@ class ApiManager implements LoggerAwareInterface
     private function getTable($tableId)
     {
         if (isset($this->tables[$tableId])) {
+
             return  $this->tables[$tableId];
         }
 
@@ -231,14 +236,19 @@ class ApiManager implements LoggerAwareInterface
     private function getDemoData() {
       return  json_decode('{"status":"ok","records":[
       {"id":"96115","timeSec":"1425520557","usec":"485733","type":"CardSwipe","data":"{\u0022team\u0022:1,\u0022player\u0022:1,\u0022card_id\u0022:8462951}"},
+      {"id":"96115","timeSec":"1425520558","usec":"485733","type":"CardSwipe","data":"{\u0022team\u0022:1,\u0022player\u0022:1,\u0022card_id\u0022:8462951}"},
+
       {"id":"96115","timeSec":"1425520558","usec":"485733","type":"CardSwipe","data":"{\u0022team\u0022:0,\u0022player\u0022:1,\u0022card_id\u0022:8461951}"},
       {"id":"96115","timeSec":"1425520560","usec":"485733","type":"CardSwipe","data":"{\u0022team\u0022:1,\u0022player\u0022:1,\u0022card_id\u0022:8462952}"},
       {"id":"96215","timeSec":"1425522560","usec":"485733","type":"CardSwipe","data":"{\u0022team\u0022:0,\u0022player\u0022:0,\u0022card_id\u0022:8463953}"},
       {"id":"96315","timeSec":"1425523560","usec":"485733","type":"CardSwipe","data":"{\u0022team\u0022:1,\u0022player\u0022:0,\u0022card_id\u0022:8464954}"},
       {"id":"96511","timeSec":"1425543550","usec":"93454","type":"TableShake","data":"[]"},
       {"id":"96512","timeSec":"1425543551","usec":"169652","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
+      {"id":"96315","timeSec":"1425543571","usec":"485733","type":"CardSwipe","data":"{\u0022team\u0022:1,\u0022player\u0022:0,\u0022card_id\u0022:8464954}"},
+      {"id":"96315","timeSec":"1425543579","usec":"485733","type":"CardSwipe","data":"{\u0022team\u0022:1,\u0022player\u0022:0,\u0022card_id\u0022:8464954}"},
       {"id":"96512","timeSec":"1425543551","usec":"169652","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
       {"id":"96512","timeSec":"1425543551","usec":"169652","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
+      {"id":"96315","timeSec":"1425543587","usec":"485733","type":"CardSwipe","data":"{\u0022team\u0022:1,\u0022player\u0022:0,\u0022card_id\u0022:8464954}"},
       {"id":"96512","timeSec":"1425543551","usec":"169652","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
       {"id":"96512","timeSec":"1425543551","usec":"169652","type":"AutoGoal","data":"{\u0022team\u0022:1}"},
       {"id":"96512","timeSec":"1425543551","usec":"169652","type":"AutoGoal","data":"{\u0022team\u0022:1}"},

@@ -16,9 +16,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
 
-
-
-
 class AuthController extends Controller
 {
     /**
@@ -32,7 +29,7 @@ class AuthController extends Controller
      * @Route("/login", name="login_action")
      * @Template()
      */
-    public function loginAction(Request $request)
+    public function loginAction()
     {
         if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
 
@@ -127,10 +124,7 @@ class AuthController extends Controller
             }
         }
 
-        return [
-            'form' => $form->createView(),
-            'error_message' => (isset($result['error_message']) ? $result['error_message'] : ''),
-        ];
+        return [ 'form' => $form->createView() ];
     }
 
     /**
@@ -141,7 +135,6 @@ class AuthController extends Controller
     {
         $form= $this->createForm(new RemindPasswordType(), new User ());
         $form->handleRequest($request);
-        // TODO: kodel nevalid?
          if ($form->isSubmitted()) {
 
              $remindTo = $form->get('email')->getData();
@@ -149,12 +142,13 @@ class AuthController extends Controller
 
              $user = $em->getRepository('IndigoUserBundle:User')->findOneBy(['email' => $remindTo]);
 
-             if (is_null($user)) {
-             } else {
+             if (!is_null($user)) {
+
                  $newHash = $this->generatePasswordResetHash($remindTo);
                  $currentResetPassword = $em->getRepository('IndigoUserBundle:ResetPassword')->findOneByUser($user->getId());
 
                  if (is_null($currentResetPassword)) {
+
                      $resetPassword = new ResetPassword();
                      $resetPassword->setHash($newHash);
                      $resetPassword->setActive(1);
@@ -162,6 +156,7 @@ class AuthController extends Controller
                      $em->persist($resetPassword);
                      $em->flush();
                  } else {
+
                      $currentResetPassword->setHash($newHash);
                      $em->flush();
                  }
@@ -191,6 +186,7 @@ class AuthController extends Controller
                  $this->get('session')->getFlashBag()->add('notice', $this->get('translator')->trans('user.notice.reset_password_sent'));
              }
          }
+
         return $this->redirectToRoute('login_action');
     }
 
@@ -222,9 +218,8 @@ class AuthController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $userEntity = $em->getRepository('IndigoUserBundle:User')->findOneById($resetPasswordEntity->getUser());
-            if (is_null($userEntity)) {
+            if (!is_null($userEntity)) {
 
-            } else {
                 $encoder = $this->container->get('security.encoder_factory')->getEncoder($userEntity);
                 $userEntity->setPassword($encoder->encodePassword($form->get('password')->getData(), $userEntity->getSalt()));
                 $em->persist($userEntity);
@@ -235,13 +230,20 @@ class AuthController extends Controller
                 return $this->redirectToRoute('login_action');
             }
         }
+
         return $this->render('IndigoUserBundle:Auth:passwordRecovery.html.twig', [
             'form' => $form->createView(),
             'hash' => $hash
         ]);
     }
 
-    private function generatePasswordResetHash($key = null) {
+    /**
+     * @param null $key
+     * @return string
+     */
+    private function generatePasswordResetHash($key = null)
+    {
+
         return md5($key . uniqid() . time());
     }
 }

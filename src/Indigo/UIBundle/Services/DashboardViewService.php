@@ -2,6 +2,7 @@
 
 namespace Indigo\UIBundle\Services;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Indigo\ContestBundle\Entity\Contest;
 use Indigo\GameBundle\Entity\GameTime;
 use Indigo\UIBundle\Models\DashboardViewModel;
@@ -14,7 +15,7 @@ class DashboardViewService
 {
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManagerInterface
      */
     private $em;
 
@@ -34,9 +35,12 @@ class DashboardViewService
     private $userEntity;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $em
+     * @param EntityManagerInterface $em
+     * @param TokenStorageInterface $userToken
+     * @param PlayerStatService $playerStatService
+     * @param ContestStatService $contestStatService
      */
-    function __construct(\Doctrine\ORM\EntityManager $em, TokenStorageInterface $userToken, PlayerStatService $playerStatService, ContestStatService $contestStatService)
+    function __construct(EntityManagerInterface $em, TokenStorageInterface $userToken, PlayerStatService $playerStatService, ContestStatService $contestStatService)
     {
         $this->em = $em;
         $this->userEntity = $userToken->getToken()->getUser();
@@ -44,6 +48,10 @@ class DashboardViewService
         $this->contestStatService = $contestStatService;
     }
 
+    /**
+     * @param integer $contestId
+     * @return DashboardViewModel
+     */
     public function getDashboardViewModel($contestId)
     {
         $contestEntity = $this->em->getRepository('IndigoContestBundle:Contest')->findOneById((int)$contestId);

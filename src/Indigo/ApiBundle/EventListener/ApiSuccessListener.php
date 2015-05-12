@@ -3,6 +3,7 @@
 namespace Indigo\ApiBundle\EventListener;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Indigo\ApiBundle\Event\ApiEvent;
 use Indigo\GameBundle\Entity\TableStatus;
 use Psr\Log\LoggerAwareInterface;
@@ -14,14 +15,14 @@ class ApiSuccessListener implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     /**
-     * @var EntityManager
+     * @var EntityManager|EntityManagerInterface
      */
     private $em;
 
     /**
-     * @param EntityManager $em
+     * @param EntityManagerInterface $em
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }
@@ -31,7 +32,7 @@ class ApiSuccessListener implements LoggerAwareInterface
      */
     public function onResponseSuccess(ApiEvent $event)
     {
-        if ($count = $event->getData()->count()) {
+        if ($event->getData() && ($count = $event->getData()->count())) {
 
             $event->getData()->seek($count - 1);
             $lastTableEvent = $event->getData()->current();

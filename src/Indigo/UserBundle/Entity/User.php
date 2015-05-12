@@ -29,6 +29,7 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
     const ANONYMOUS_PASSWORD = 'indigo';
     const ANONYMOUS_FACE = '/bundles/indigoui/images/anonymous.png';
     const NO_FACE = '/bundles/indigoui/images/empty.png';
+
     /**
      * @var integer
      *
@@ -84,7 +85,6 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
      * @ORM\JoinTable(name="user_role",)
      */
     private $roles;
-
 
     /**
     * @ORM\OneToOne(targetEntity="ResetPassword", mappedBy="user")
@@ -220,11 +220,11 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
     }
 
     /**
-     *
+     * @return bool
      */
     public function isEnabled()
     {
-        return $this->getIsActive();
+        return (bool)$this->getIsActive();
     }
 
     /**
@@ -420,7 +420,7 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
     }
 
     /**
-
+     * @return array
      */
     public function getRoles()
     {
@@ -463,19 +463,6 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
     {
         // TODO: Implement eraseCredentials() method.
     }
-    /**
-     * Set role
-     *
-     * @param string $role
-     * @return User
-     */
-    public function setRole($role)
-    {
-        $this->role = $role;
-
-        return $this;
-    }
-
 
     /**
      * Check is user has administrative roles

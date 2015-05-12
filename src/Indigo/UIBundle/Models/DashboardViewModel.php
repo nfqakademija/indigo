@@ -6,7 +6,7 @@ use JsonSerializable;
 class DashboardViewModel implements \JsonSerializable
 {
     /**
-     * @var PlayerStatModel
+     * @var ArrayIterator
      */
     private $playerTeamsStats;
 

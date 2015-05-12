@@ -68,8 +68,9 @@ class EventCaptureCommand extends ContainerAwareCommand
             $eventList = $manager->getEvents(
                 $tableKey,
                 $query,
-                false
+                ($input->getArgument('from-id') == 0 ? true : false)
             );
+
             if ($eventList) {
 
                 $eventLogicManager = $this->getContainer()->get('indigo_table.logic_manager');
@@ -88,7 +89,7 @@ class EventCaptureCommand extends ContainerAwareCommand
                 $e->getLine(),
                 $e->getTraceAsString())
             );
-            exit(1);
+            exit(1); 
         }
 
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');

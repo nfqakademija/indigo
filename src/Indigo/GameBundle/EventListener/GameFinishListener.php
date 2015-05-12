@@ -12,7 +12,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class GameFinishListener {
 
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     private $em;
 
@@ -45,10 +45,8 @@ class GameFinishListener {
         $gameEntity = $this->closeGame($event);
         if ($gameEntity->isInGameBothTeams()) {
 
-            if ($gameEntity->getMatchType() == GameTypeRepository::TYPE_GAME_MATCH
-                && !$gameEntity->isEvenPlayersCount()) {
-
-            } else {
+            if (!($gameEntity->getMatchType() == GameTypeRepository::TYPE_GAME_MATCH
+                && !$gameEntity->isEvenPlayersCount())) {
 
                 $gameEntity->setIsStat(1);
             }

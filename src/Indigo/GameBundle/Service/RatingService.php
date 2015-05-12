@@ -106,36 +106,35 @@ class RatingService
      */
     private function save(Game $gameEntity, $ratings)
     {
+        $this->saveGameDiffRatings(0, $gameEntity, $ratings); // team0
+        $this->saveGameDiffRatings(1, $gameEntity, $ratings); // team1
 
-        $ratingEntity = new Rating();
-        $teamEntity = $gameEntity->getTeam0();
-        $ratingEntity->setGame($gameEntity);
-        if ($gameEntity->getMatchType() == GameTypeRepository::TYPE_GAME_OPEN) {
-
-            $teamEntity->setOpenRating($ratings[0]['rating']);
-        } else {
-
-            $teamEntity->setContestRating($ratings[0]['rating']);
-        }
-        $ratingEntity->setTeam($teamEntity);
-        $ratingEntity->setRating($ratings[0]['diff']);
-
-        $this->em->persist($ratingEntity);
-
-        $ratingEntity = new Rating();
-        $teamEntity = $gameEntity->getTeam1();
-        $ratingEntity->setGame($gameEntity);
-        if ($gameEntity->getMatchType() == GameTypeRepository::TYPE_GAME_OPEN) {
-
-            $teamEntity->setOpenRating($ratings[1]['rating']);
-        } else {
-
-            $teamEntity->setContestRating($ratings[1]['rating']);
-        }
-        $ratingEntity->setTeam($teamEntity);
-        $ratingEntity->setRating($ratings[1]['diff']);
-
-        $this->em->persist($ratingEntity);
         $this->em->flush();
+    }
+
+    /**
+     * @param integer $teamPosition
+     * @param Game $gameEntity
+     * @param $ratings
+     * @return bool
+     */
+    private function saveGameDiffRatings($teamPosition, Game $gameEntity, $ratings)
+    {
+        $ratingEntity = new Rating();
+        $teamEntity = $gameEntity->getTeam($teamPosition);
+        $ratingEntity->setGame($gameEntity);
+        if ($gameEntity->getMatchType() == GameTypeRepository::TYPE_GAME_OPEN) {
+
+            $teamEntity->setOpenRating($ratings[$teamPosition]['rating']);
+        } else {
+
+            $teamEntity->setContestRating($ratings[$teamPosition]['rating']);
+        }
+        $ratingEntity->setTeam($teamEntity);
+        $ratingEntity->setRating($ratings[$teamPosition]['diff']);
+
+        $this->em->persist($ratingEntity);
+
+        return true;
     }
 }

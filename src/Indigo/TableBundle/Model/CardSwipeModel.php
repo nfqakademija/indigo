@@ -78,10 +78,4 @@ class CardSwipeModel extends TableActionModel implements TableActionInterface
         $this->setPlayer($data->player);
         $this->setCardId($data->card_id);
     }
-
-    /*
-            {"id":"96515","timeSec":"1425543560","usec":"485733","type":"CardSwipe",
-                "data":"{\u0022team\u0022:0,\u0022player\u0022:1,\u0022card_id\u0022:8469951}"},
-    */
-
 }

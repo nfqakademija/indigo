@@ -16,30 +16,11 @@ use Doctrine\ORM\NoResultException;
  */
 class UserRepository extends EntityRepository implements UserProviderInterface
 {
-
-/*    public function getPlayerWithTeamsByCardId($cardId)
-    {
-        $playerEntity = null;
-
-        try {
-            $qb = $this->_em->createQueryBuilder();
-            $qb
-                ->select('u, partial t.{id}')
-                ->from('IndigoUserBundle:User', 'u')
-                ->join('y u.teams', 't')
-                ->andWhere('u.cardId = :cid')
-                ->setParameter('cid', $cardId);
-
-            $playerEntity = $qb->getQuery()->getSingleResult();
-        } catch (NoResultException $ex) {
-
-            return false;
-        }
-
-        return $playerEntity;
-    }*/
-
-
+    /**
+     * @param string $username
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function loadUserByUsername($username)
     {
         $q = $this
@@ -50,10 +31,12 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->getQuery();
 
         try {
+
             // The Query::getSingleResult() method throws an exception
             // if there is no record matching the criteria.
             $user = $q->getSingleResult();
         } catch (NoResultException $e) {
+
             $message = sprintf(
                 'Unable to find an active IndigoUserBundle:User object identified by "%s".',
                 $username
@@ -64,10 +47,15 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         return $user;
     }
 
+    /**
+     * @param UserInterface $user
+     * @return null|object
+     */
     public function refreshUser(UserInterface $user)
     {
         $class = get_class($user);
         if (!$this->supportsClass($class)) {
+
             throw new UnsupportedUserException(
                 sprintf(
                     'Instances of "%s" are not supported.',
@@ -84,45 +72,5 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         return $this->getEntityName() === $class
         || is_subclass_of($class, $this->getEntityName());
     }
-//
-//    /**
-//     * @return array
-//     */
-//    public function getUser($email, $password)
-//    {
-//        $qb = $this->_em->createQueryBuilder();
-//        //createQuery("SELECT `id` FROM IndigoUserBundle:User WHERE `email`=")
-//        $qb
-//            ->select('u.id')
-//            ->from('IndigoUserBundle:User','u')
-//            ->where("u.email= :email")
-//            ->andWhere("u.password = :password")
-//            ->setParameters([
-//                    'email' => $email,
-//                    'password' => md5($password)
-//            ]);
-//
-//
-//        $query = $qb->getQuery();
-//
-//        return $query->getArrayResult();
-//    }
-//
-//
-//    /**
-//     * @return array
-//     */
-//    public function userExists($email)
-//    {
-//        $qb = $this->_em->createQueryBuilder();
-//
-//        $qb
-//            ->select('u.id')
-//            ->from('IndigoUserBundle:User','u')
-//            ->where("u.email= :email")
-//            ->setParameter('email', $email );
-//        $query = $qb->getQuery();
-//
-//        return $query->getArrayResult();
-//    }
+
 }
