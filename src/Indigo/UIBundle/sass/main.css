@@ -18,10 +18,12 @@ html, body {
   background-repeat: repeat; }
 
 #history-wrapper {
-  position: relative;
-  min-width: 100%;
-  min-height: 100%;
-  background-color: rgba(255, 255, 255, 0.8); }
+  padding: 10px 0;
+  background-color: white; }
+
+#footer {
+  padding: 20px 0;
+  text-align: center; }
 
 .clear {
   background: white !important; }
@@ -54,7 +56,8 @@ html, body {
   font-size: 5em;
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
-  border-radius: 2px; }
+  border-radius: 2px;
+  box-shadow: 0 0 15px -2px white; }
 
 .score-font {
   font-family: Impact; }
@@ -92,7 +95,7 @@ html, body {
 
 .player img {
   width: 100%;
-  height: auto;
+  height: 78%;
   border-radius: 50%;
   background: url("../images/empty-thumbnail.png") no-repeat center;
   border: solid white 4px;
@@ -151,14 +154,12 @@ html, body {
   .time-text {
     font-size: large; } }
 @media screen and (max-width: 600px) {
-  .field {
-    top: 0; }
-    .field .bg {
-      max-width: 400px;
-      margin: 0 auto; }
-    .field .player {
-      width: 60px;
-      height: 75px; }
+  .field .bg {
+    max-width: 400px;
+    margin: 0 auto; }
+  .field .player {
+    width: 60px;
+    height: 75px; }
 
   .table-status {
     font-size: 2em; }
@@ -166,14 +167,12 @@ html, body {
   .time-text {
     font-size: large; } }
 @media screen and (min-width: 601px) and (max-width: 799px) {
-  .field {
-    top: 0; }
-    .field .bg {
-      max-width: 600px;
-      margin: 0 auto; }
-    .field .player {
-      width: 80px;
-      height: 100px; }
+  .field .bg {
+    max-width: 600px;
+    margin: 0 auto; }
+  .field .player {
+    width: 80px;
+    height: 100px; }
 
   .table-status {
     font-size: 2em; }
@@ -232,13 +231,18 @@ html, body {
     margin: 10px auto; }
   .reservation-item .res-button {
     position: relative;
-    width: 80%;
-    height: 40px;
-    font-size: 1.4em;
-    background-color: transparent;
-    border: solid 1px #dbdbdb; }
+    display: block;
+    width: 60%;
+    height: 60px;
+    line-height: 60px;
+    margin: 40px auto;
+    font-size: 1.5em;
+    background-color: rgba(150, 195, 0, 0.81); }
     .reservation-item .res-button:hover {
-      background-color: rgba(255, 255, 255, 0.1); }
+      background-color: #6f8f00; }
+    .reservation-item .res-button:visited, .reservation-item .res-button:link, .reservation-item .res-button:active {
+      color: white;
+      text-decoration: none; }
 
 .booked {
   background-color: rgba(96, 31, 30, 0.8); }
@@ -443,6 +447,9 @@ a:hover {
 .stat-panel {
   background: transparent !important;
   margin-bottom: 4px !important; }
+  .stat-panel .stat-panel-item {
+    height: 100%;
+    padding: 10px; }
 
 .contest-block {
   height: 300px;
@@ -469,8 +476,7 @@ a:hover {
   line-height: 50px;
   font-size: 1.4em;
   margin-top: 15%;
-  background-color: #6f8f00;
-  border: none; }
+  background-color: rgba(150, 195, 0, 0.81); }
 
 .info-box label {
   font-weight: normal; }
@@ -517,9 +523,19 @@ a:hover {
   z-index: 100;
   text-align: center; }
 
-#not-goal-msg,
+#not-goal-msg {
+  display: block;
+  position: relative;
+  width: 400px;
+  height: 200px;
+  top: 50%;
+  left: 50%;
+  margin-left: -200px;
+  margin-top: -100px;
+  background: url("../images/goal.png") no-repeat center;
+  z-index: 1000; }
+
 #not-end-msg {
-  display: none;
   position: relative;
   margin: auto; }
 

@@ -20,6 +20,21 @@ class GameModel
     private $gameDuration;
 
     /**
+     * @var Datetime
+     */
+    private $startedAt;
+
+    /**
+     * @var integer
+     */
+    private $team0RatingDiff;
+
+    /**
+     * @var integer
+     */
+    private $team1RatingDiff;
+
+    /**
      * @var integer
      */
     private $team0Rating;
@@ -38,6 +53,11 @@ class GameModel
      * @var \ArrayIterator
      */
     private $team1playersPictures;
+
+    /**
+     * @var integer
+     */
+    private $isStat;
 
     public function __construct()
     {
@@ -190,4 +210,79 @@ class GameModel
         $this->team1playersPictures = $team1playersPictures;
     }
 
+    /**
+     * @return Datetime
+     */
+    public function getStartedAt()
+    {
+        return $this->startedAt;
+    }
+
+    /**
+     * @param $startedAt
+     * @return $this
+     */
+    public function setStartedAt($startedAt)
+    {
+        $this->startedAt = $startedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTeam0RatingDiff()
+    {
+        return $this->team0RatingDiff;
+    }
+
+    /**
+     * @param $team0RatingDiff
+     * @return $this
+     */
+    public function setTeam0RatingDiff($team0RatingDiff)
+    {
+        $this->team0RatingDiff = $team0RatingDiff;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTeam1RatingDiff()
+    {
+        return $this->team1RatingDiff;
+    }
+
+    /**
+     * @param $team1RatingDiff
+     * @return $this
+     */
+    public function setTeam1RatingDiff($team1RatingDiff)
+    {
+        $this->team1RatingDiff = $team1RatingDiff;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getIsStat()
+    {
+        return $this->isStat;
+    }
+
+    /**
+     * @param $isStat
+     * @return $this
+     */
+    public function setIsStat($isStat)
+    {
+        $this->isStat = $isStat;
+
+        return $this;
+    }
 }

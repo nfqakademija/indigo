@@ -1,0 +1,124 @@
+mail:
+  sender_domain: indigo.dev
+  from: info@sender_domain
+  subject: message from sender_domain
+  footer_plain: sender_domain team
+
+user:
+  #User edit
+  user_edit: Profile edit
+  user_username: Username
+  user_cardid: Card ID
+  user_name: Name
+  profile_picture: Photo
+  input_your_name: Input your name
+  input_your_username: Input your username
+  input_your_cardid: Input your card ID
+  profile: Profile
+  email: E-mail address
+  reg_date: Registration date
+  no_picture: No picture uploaded
+  no_name: Name not available
+  no_username: Username not available
+  no_cardid: Card ID not available
+  support: Support
+
+  #Login
+  your_mail: Your email adress
+  password: Password
+  have_acc: Already have an account?
+  sign_in: Sign in
+  sign_up: Sign up
+  sign_up_now: Sign up now
+  not_member: Not a member?
+  title:
+    change_password: Change your password
+    login: Login to account
+    create_acc: Create an account
+  form:
+    enter_username_or_email: Your username or email adress
+    password_recovery.success: You successfully changed password
+    repeat_password: Repeat password
+    password: Password
+    password_reset: Forgot your password ?
+    send_password_reset_link: Reset your password
+  error:
+    password_mismatch: The password fields must match.
+    password_recovery.invalid_hash: This link has expired
+    bad_credentials: Login incorrect!
+  notice:
+    reset_password_sent: Password has been sent successfully
+    password_reminder: Password reminder
+    change_your_password: Change your password
+    request: Your account has sent a request for password reset. If not, please ignor this message.
+
+#Contest creation form
+create_contest:
+  form:
+    user: User
+    contest_creation: Contest creation
+    contest_title: Title
+    contest_logo: Logo
+    contest_privacy: Privacy contest (only with invitation)
+    contest_type: Type
+    contest_type.team: Team contest
+    contest_type.single: Single player contest
+    scoreLimit: Score limit
+    table_name: Table
+    contest_starting_date: Starting date
+    contest_end_date: End date
+    submit_create: Create contest
+  error:
+    no_contest: There are no contests created.
+  success:
+      privacy.yes: private
+      success.privacy.no: public
+      success.created: Contest created successfully!
+
+#TimeReservation
+time_reservation: Time reservation
+  not_selected: You haven't selected reservation time
+  table_reserved: Table already reserved
+  reserving_this_moment: Another player reserving this date. At the moment you can't choose it
+  time_passed: You can't reserve this date anymore
+  same_time: In the same time in other contest you already have reserved time.
+  your_time: You had booked this time
+  choose_time: Select your preferred time
+  doesnt_exist: Contest doesn't exist!
+  success: You have reserved time!
+  deleted: Time reservation was deleted
+  not_deleted: Time reservation wasn't deleted
+
+
+#Global
+yes: Yes
+no: No
+contest: Contest
+delete: Delete
+edit: Edit
+back_to_the_list: Back to the list
+update: Update
+create_new_contest: Create a new entry
+creator: Creator
+actions: Actions
+contest_privacy: Contest privacy
+contest_list: Contest list
+show: Show
+period: Period
+to: To
+contest_edit: Contest edit
+more_information: More information
+prize: Prize
+prize_photo: Prize photo
+optiona: optional
+add_prize: Add prize
+no_prize_photo: No uploaded photo for this prize
+no_prize: Prize not specified
+confirm: Confirm
+smart_table: Smart table
+ask_for_delete: Are you sure want to delete it?
+change: Change
+hello: hello
+error: Error!
+notice: Notice!
+warning: Warning!

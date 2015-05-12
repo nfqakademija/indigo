@@ -1,0 +1,123 @@
+mail:
+  sender_domain: indigo.dev
+  from: info@sender_domain
+  subject: pranešimas nuo sender_domain
+  footer_plain: sender_domain komanda
+
+user:
+  #User edit
+  user_edit: Profilio redagavimas
+  user_username: Slapyvardis
+  user_cardid: Kortelės ID
+  user_name: Vardas
+  profile_picture: Nuotrauka
+  input_your_name: Įveskite savo vardą
+  input_your_username: Įveskite savo slapyvardį
+  input_your_cardid: Įveskite savo kortelės ID
+  profile: Profilis
+  email: El.pašto adresas
+  reg_date: Registracijos data
+  no_picture: Nuotrauka neįkelta
+  no_name: Vardas nenurodytas
+  no_username: Slapyvardis nenurodytas
+  no_cardid: Koretelės ID nenurodytas
+  support: Pagalba
+
+#Login
+  your_mail: Jūsų el.pašto adresas
+  password: Slaptažodis
+  have_acc: Jau esate prisiregistravęs ?
+  sign_in: Prisijungti
+  sign_up: Registruotis
+  sign_up_now: Padaryk tai dabar
+  not_member: Dar neužsiregistravęs ?
+  title:
+    change_password: Pakeisti slaptažodį
+    login: Prisijungti
+    create_acc: Sukurti naują paskyrą
+  form:
+    enter_username_or_email: Jūsų slapyvardis arba el.pašto adresas
+    password_recovery.success: Jūs sėkmingai pakeitėte slaptažodį
+    repeat_password: Pakartokite slaptažodį
+    password: Slaptažodis
+    password_reset: Užmiršai slaptažodį ?
+    send_password_reset_link: Nustatykite iš naujo slaptažodį
+  error:
+    password_mismatch: Slaptažodžių laukeliai privalo sutapti
+    password_recovery.invalid_hash: Šios nuorodas galiojimas jau pasibaigęs
+    bad_credentials: Blogi prisijungimo duomenys!
+  notice:
+    reset_password_sent: Slaptažodis išsiųstas sėkmingai
+    password_reminder: Slaptažodžio priminimas
+    change_your_password: Pasikeiskite savo slaptažodį
+    request: Iš jūsų paskyros buvo išsiųstas slaptažodžio atnaujinimo prašymas. Jei ne, prašome ignoruoti šį laišką.
+
+#Contest creation form
+create_contest:
+  form:
+    user: Vartotojas
+    contest_creation: Turnyro kūrimas
+    contest_title: Pavadinimas
+    contest_logo: Logotipas
+    contest_privacy: Privatus turnyras (tik su kvietimais)
+    contest_type: Tipas
+    contest_type.team: Komandinis turnyras
+    contest_type.single: Pavienis turnyras
+    scoreLimit: Taškų limitas
+    table_name: Stalas
+    contest_starting_date: Startavimo data
+    contest_end_date: Pabaigos data
+    submit_create: Kurti turnyrą
+  error:
+    no_contest: Šiuo metu nėra sukurtų turnyrų
+  success:
+    privacy.yes: privatus
+    privacy.no: viešas
+    created: Turnyras sukurtas sėkmingai!
+
+#TimeReservation
+time_reservation: Laiko rezervacija
+  not_selected: Nepasirinkote rezervacijos laiko
+  table_reserved: Stalas jau užrezervuotas
+  reserving_this_moment: Šią datą rezervuoja kitas žaidėjas. Šiuo metu jos rinktis negalima
+  time_passed: Nebegalima rezervuoti šios datos
+  same_time: Tokiu pat laiku kitose varžybose jūs jau esate užsakęs laiką
+  your_time: Jūsų užrezervuotas laikas
+  choose_time: Pasirinkite jums tinkamą laiką
+  doesnt_exist: Tokių varžybų nėra!
+  success: Jūs užsirezervavote laiką!
+  deleted: Laiko rezervacija buvo pašalinta
+  not_deleted: Laiko rezervacija nebuvo pašalinta
+
+#Global
+yes: Taip
+no: Ne
+contest: Turnyras
+delete: Trinti
+edit: Redaguoti
+back_to_the_list: Grįžti į sąrašą
+update: Atnaujinti
+create_new_contest: Sukurti naujas varžybas
+creator: Kūrėjas
+actions: Veiksmai
+contest_privacy: Privatumas
+contest_list: Turnyrų sąrašas
+show: Rodyti
+period: Laikotarpis
+to: Iki
+contest_edit: Turnyro redagavimas
+more_information: Daugiau informacijos
+prize: Prizas
+prize_photo: Prizo nuotrauka
+optional: nebūtina
+add_prize: Pridėti prizą
+no_prize_photo: Šiam prizui nėra įkeltos foto
+no_prize: Prizas nenurodytas
+confirm: Patvirtinti
+smart_table: Nekvailas stalas
+ask_for_delete: Ar tikrai norite ištrinti ?
+change: Keisti
+hello: Sveiki
+error: Klaida!
+notice: Pranešimas!
+warning: Įspėjimas!

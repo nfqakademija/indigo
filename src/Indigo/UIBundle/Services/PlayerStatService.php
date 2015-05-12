@@ -253,6 +253,7 @@ class PlayerStatService implements LoggerAwareInterface
     {
         $model =  new PlayerTeamStatModel();
         $model->setTeamRating($teamEntity->getTeamRatings($game->getContestId()));
+        $model->setTeamId($teamEntity->getId());
         $teamPlayerRelations = $teamEntity->getPlayers();
         foreach ($teamPlayerRelations as $teamPlayerRelation) {
 

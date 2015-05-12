@@ -20,12 +20,12 @@ class AutoGoalListener
 {
     const MAX_SCORES = 10;
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     private $em;
 
     /**
-     * @var EventDispatcher
+     * @var EventDispatcherInterface
      */
     private $ed;
 

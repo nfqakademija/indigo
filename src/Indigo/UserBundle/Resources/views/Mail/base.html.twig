@@ -1,31 +1,14 @@
-{% block subject %}mail.subject{% endblock %}
-
-
-
-
-
-{% block body_text %}
-Sveiki,
-----
-{% block mail_text '' %}
-mail.footer_plain
-{% endblock %}
-
-
-
+{% block mail_subject %}mail.subject{% endblock %}
 
 {% block body_html %}
-<html>
-<style>
-</style>
-<body>
-<h1>swx,</h1>
-{% block mail_html '' %}
-    <p align="center" >
-        <a class="small links" href="{{ path('login_action') }}" alt="">user.login</a> |
-        <a class="small links" href="{{ path('login_action') }}" alt="rašyti užklausą">user.support-keistiURL</a>
-    </p>
-</body>
-</html>
+    <html>
+        <body>
+        {% block mail_text %}
+            <p align="center" >
+                <a class="small links" href="{{ path('login_action') }}">{{ 'user.sign_in'|trans }}</a> |
+                <a class="small links" href="{{ path('login_action') }}">{{ 'user.support'|trans }}</a>
+            </p>
+        {% endblock %}
+        </body>
+    </html>
 {% endblock %}
-

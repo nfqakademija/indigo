@@ -69,10 +69,10 @@
                 <div class="row padding-t-b-md" style="padding: 5px 2px;" >
                     <div class="contest-block" style="background: url({{ currentContest.imageUrl }}) no-repeat center;  background-size: cover;">
                         <div class="info-box reservation-item" >
-                            <span class="text-xlg">{{ currentContest.title }} </span></br>
+                            <span class="text-xlg">{{ currentContest.title }} </span><br />
                             <span class="text-bg"> {{ currentContest.dateFrom }} - {{ currentContest.dateTo }} </span></br></br>
-                            <span class="text-lg"> {{ currentContest.description }} </span></br>
-                            <a href="{{ url('indigo_time_reservation',{contest_id: currentContest.id}) }}" class="btn btn-default" >
+                            <span class="text-lg"> {{ currentContest.description }} </span><br />
+                            <a href="{{ url('indigo_time_reservation',{contest_id: currentContest.id}) }}" class="res-button" >
                                 Table reservation
                             </a>
                         </div>
@@ -88,7 +88,7 @@
                             <div class="stat-panel">
                                 <div class="stat-cell bg-orange-m valign-middle">
                                     <span id="widget-preloader" style="position: absolute; width: 24px; height: 24px; background: url({{ asset('bundles/indigoui/images/preloader-rect.gif') }}) no-repeat center"> </span>
-                                    <span id="widget-score" class="text-bg" style="display:none"> 0 : 0 </span><br/>
+                                    <span id="widget-score" class="text-bg" style="display:none"> 0 : 0 </span><br />
                                     <span id="widget-state" class="text-center-md text-sm" style="display:none"> Table is free </span>
                                 </div>
                             </div>
@@ -120,24 +120,24 @@
 
                                     <i class="fa fa-trophy bg-icon" style="font-size:60px;line-height:80px;height:80px;"></i>
                                     <span class="text-lg">Overview</span><br>
-                                    <span class="text-sm">Your games statistics</span><br>
+                                    <span class="text-sm">Your games statistics</span><br/>
                                 </div>
                             </div> <!-- /.stat-row -->
                             <div class="stat-row">
 
                                     <div class="stat-counters bg-green-m no-border-b no-padding text-center">
                                          <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
-                                        <span class="text-bg"><strong>{{ playerStat.wins }}</strong></span><br>
+                                        <span class="text-bg"><strong>{{ playerStat.wins }}</strong></span><br/>
                                          <span class="text-xs">Wins</span>
                                     </div>
 
                                     <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
-                                        <span class="text-bg"><strong>{{ playerStat.losses }}</strong></span><br>
+                                        <span class="text-bg"><strong>{{ playerStat.losses }}</strong></span><br/>
                                          <span class="text-xs">Loses</span>
                                     </div>
 
                                     <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
-                                        <span class="text-bg"><strong>{{ playerStat.totalGames }}</strong></span><br>
+                                        <span class="text-bg"><strong>{{ playerStat.totalGames }}</strong></span><br/>
                                         <span class="text-xs">Total</span>
                                     </div>
 
@@ -147,17 +147,17 @@
 
                                 <div class="stat-counters bg-green-m no-border-b no-padding text-center">
                                     <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
-                                        <span class="text-bg"><strong>{{ playerStat.scoredGoals }}</strong></span><br>
+                                        <span class="text-bg"><strong>{{ playerStat.scoredGoals }}</strong></span><br/>
                                         <span class="text-xs">Goals</span>
                                     </div>
 
                                     <div class="stat-cell col-xs-4 padding-sm no-padding-hr">
-                                        <span class="text-bg"><strong>{{ playerStat.missedGoals }}</strong></span><br>
+                                        <span class="text-bg"><strong>{{ playerStat.missedGoals }}</strong></span><br/>
                                         <span class="text-xs">Missed</span>
                                     </div>
 
                                     <a href="{{ path('indigo_ui_history',{'contestId': currentContest.id, 'teamId': playerStat.teamId}) }}" class="stat-cell col-xs-4 bg-green-m padding-sm no-padding-hr valign-middle">
-                                        <span class="text-xs font-green-l">MORE&nbsp;&nbsp;<i class="fa fa-caret-right"></i></span>
+                                        <span class="text-xs ">MORE&nbsp;&nbsp;<i class="fa fa-caret-right"></i></span>
                                     </a>
 
                                 </div> <!-- /.stat-counters -->
@@ -170,8 +170,8 @@
                             <div class="col-xs-12 col-sm-6 col-md-6">
                                 <div class="stat-panel">
                                     <div class="stat-cell bg-green-sl valign-middle">
-                                        <span class="text-xlg"><strong>{{ playerStat.slowestWinGameTs|date("i : s") }} </strong></span><br>
-                                        <span class="text-bg">Longest game</span><br>
+                                        <span class="text-xlg"><strong>{{ playerStat.slowestWinGameTs|date("i : s") }} </strong></span><br/>
+                                        <span class="text-bg">Longest game</span><br/>
                                         <span class="text-sm">Hard work pays off!</span>
                                     </div> <!-- /.stat-cell -->
                                 </div>
@@ -180,7 +180,7 @@
                             <div class="col-xs-12 col-sm-6 col-md-6">
                                 <div class="stat-panel">
                                     <div class="stat-cell bg-green-sl  valign-middle">
-                                        <span class="text-xlg"><strong>{{ playerStat.teamRating }}</strong></span><br>
+                                        <span class="text-xlg"><strong>{{ playerStat.teamRating }}</strong></span><br/>
                                         <span class="text-bg">Team rating</span><br>
                                         <span class="text-sm">You can do better!</span>
                                     </div> <!-- /.stat-cell -->
@@ -341,8 +341,8 @@
                                         <span class="text-xs">Slowest game</span>
                                     </div>
 
-                                    <a href="#" class="stat-cell col-xs-4 bg-blue-m padding-sm no-padding-hr valign-middle">
-                                        <span class="text-xs font-blue-l">MORE&nbsp;&nbsp;<i class="fa fa-caret-right"></i></span>
+                                    <a  href="{{ path('indigo_ui_contest_games',{'contestId': currentContest.id}) }}" class="stat-cell col-xs-4 bg-blue-m padding-sm no-padding-hr valign-middle">
+                                        <span class="text-xs">MORE&nbsp;&nbsp;<i class="fa fa-caret-right"></i></span>
                                     </a>
 
                                 </div> <!-- /.stat-counters -->

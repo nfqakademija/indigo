@@ -26,15 +26,15 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class CardSwipeListener
 {
     const DOUBLE_SWIPE_IN = 5;
-    const DOUBLE_SWIPE_MIN_TS = 2;
+    const DOUBLE_SWIPE_MIN_TS = 1;
 
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     private $em;
 
     /**
-     * @var EventDispatcher
+     * @var EventDispatcherInterface
      */
     private $ed;
 
@@ -274,7 +274,7 @@ class CardSwipeListener
     {
         $playerEntity = new Player();
         $playerEntity->setCardId($cardId);
-        $playerEntity->setUsername(sprintf('%s%d', Player::ANONYMOUS_USERNAME, $cardId));
+        $playerEntity->setUsername($cardId);
         $playerEntity->setEmail(sprintf('%s@%s', $playerEntity->getUsername(), Player::ANONYMOUS_EMAIL_DOMAIN));
         $playerEntity->setPassword(Player::ANONYMOUS_PASSWORD);
         $this->userRegistrationService->register($playerEntity);

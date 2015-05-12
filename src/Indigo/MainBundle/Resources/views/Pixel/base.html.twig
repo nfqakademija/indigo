@@ -22,6 +22,12 @@
         <link href="{{ asset('bundles/indigomain/css/rtl.min.css') }}" rel="stylesheet" type="text/css">
         <link href="{{ asset('bundles/indigomain/css/themes.min.css') }}" rel="stylesheet" type="text/css">
         <link href="{{ asset('bundles/indigomain/bower_components/bootstrap-lightbox/bootstrap-lightbox.min.css') }}" rel="stylesheet" type="text/css"/>
+
+        <style>
+            #page-signin-bg, #page-signup-bg{
+                background:url('{{ asset("bundles/indigouser/images/login_background.jpg") }}') no-repeat scroll center center transparent !important;
+            }
+        </style>
     {% endblock %}
 </head>
 <body class="{% block body_class %}{% endblock %}">

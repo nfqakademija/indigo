@@ -5,14 +5,14 @@ namespace Indigo\UIBundle\Services;
 use Indigo\ContestBundle\Entity\Contest;
 use Indigo\GameBundle\Entity\Game;
 use Indigo\GameBundle\Repository\GameStatusRepository;
-use Indigo\UIBundle\Models\GameHistoryViewModel;
+use Indigo\UIBundle\Models\ContestGamesViewModel;
 use Indigo\UIBundle\Models\PlayerStatModel;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
-class GameHistoryViewService implements LoggerAwareInterface
+class ContestGamesViewService implements LoggerAwareInterface
 {
 
     use LoggerAwareTrait;
@@ -33,58 +33,43 @@ class GameHistoryViewService implements LoggerAwareInterface
     {
         $this->em = $em;
         $this->gameModelService = $gameModelService;
+
     }
 
-
-    public function getViewModel($contestId, $teamId)
+    /**
+     * @param $contestId
+     * @return ContestGamesViewModel
+     */
+    public function getGamesQuery($contestId)
     {
-        if (!(int)$contestId || !(int)$teamId) {
+        if (!(int)$contestId) {
 
             throw new NotFoundHttpException();
         }
+
 
         $contestEntity = $this->em->getRepository('IndigoContestBundle:Contest')->findOneById((int)$contestId);
         if ($contestEntity == null) {
 
             throw new NotFoundHttpException();
         }
-        $teamEntity  = $this->em->getRepository('IndigoGameBundle:Team')->findOneById($teamId);
-        if ($teamEntity == null) {
-
-            throw new NotFoundHttpException();
-        }
 
         $qb = $this->em->createQueryBuilder();
-        $qb
-            ->select('g')
+        $qb ->select('g, r, t0, t1')
             ->from('IndigoGameBundle:Game', 'g')
-            ->where('(g.team0 = :team OR g.team1 = :team)')
-            ->andWhere('g.contestId = :contestId')
-            ->andWhere('g.status = :status')
+            ->leftJoin('g.ratings', 'r')
+            ->leftJoin('g.team0', 't0')
+            ->leftJoin('g.team1', 't1')
+            ->where('g.contest = :contestId')
+            ->andWhere('g.status = :gameStatus')
             ->orderBy('g.startedAt', 'DESC')
             ->setParameters(
                 [
-                    'status' => GameStatusRepository::STATUS_GAME_FINISHED,
-                    'team' => $teamEntity,
                     'contestId' => $contestId,
-                ]
-            );
+                    'gameStatus' => GameStatusRepository::STATUS_GAME_FINISHED
+                ]);
 
-        $teamGames = $qb->getQuery()->getResult();
 
-        /** @var Contest $contestEntity */
-        $model =  new GameHistoryViewModel();
-        foreach ($teamGames as $game) {
-
-            $gameModel = $this->gameModelService->getModel($contestId, $game);
-            if ($gameModel !== null) {
-
-                $model->addGame($gameModel);
-            }
-
-        }
-
-        return $model;
+        return $qb->getQuery();
     }
-
-};
+}
