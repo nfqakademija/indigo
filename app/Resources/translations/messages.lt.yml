@@ -21,6 +21,7 @@ user:
   no_name: Vardas nenurodytas
   no_username: Slapyvardis nenurodytas
   no_cardid: Koretelės ID nenurodytas
+  support: Pagalba
 
 #Login
   your_mail: Jūsų el.pašto adresas
@@ -47,6 +48,9 @@ user:
     bad_credentials: Blogi prisijungimo duomenys!
   notice:
     reset_password_sent: Slaptažodis išsiųstas sėkmingai
+    password_reminder: Slaptažodžio priminimas
+    change_your_password: Pasikeiskite savo slaptažodį
+    request: Iš jūsų paskyros buvo išsiųstas slaptažodžio atnaujinimo prašymas. Jei ne, prašome ignoruoti šį laišką.
 
 #Contest creation form
 create_contest:
@@ -109,3 +113,5 @@ no_prize: Prizas nenurodytas
 confirm: Patvirtinti
 smart_table: Nekvailas stalas
 ask_for_delete: Ar tikrai norite ištrinti ?
+change: Keisti
+hello: Sveiki

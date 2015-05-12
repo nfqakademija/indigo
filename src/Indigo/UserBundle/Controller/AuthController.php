@@ -175,7 +175,7 @@ class AuthController extends Controller
                  $template = $this->get('twig')->loadTemplate('IndigoUserBundle:Mail:passwordRecovery.html.twig');
 
 
-                 $subject = $template->renderBlock('subject', []);
+                 $subject = $template->renderBlock('mail_subject', []);
                  $mail_text = $template->renderBlock('mail_text', ['link' => $link]);
                  $body_html = $template->renderBlock('body_html', ['link' => $link]);
 

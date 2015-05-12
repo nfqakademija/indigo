@@ -21,6 +21,7 @@ user:
   no_name: Name not available
   no_username: Username not available
   no_cardid: Card ID not available
+  support: Support
 
   #Login
   your_mail: Your email adress
@@ -47,6 +48,9 @@ user:
     bad_credentials: Login incorrect!
   notice:
     reset_password_sent: Password has been sent successfully
+    password_reminder: Password reminder
+    change_your_password: Change your password
+    request: Your account has sent a request for password reset. If not, please ignor this message.
 
 #Contest creation form
 create_contest:
@@ -109,3 +113,5 @@ no_prize: Prize not specified
 confirm: Confirm
 smart_table: Smart table
 ask_for_delete: Are you sure want to delete it?
+change: Change
+hello: hello
