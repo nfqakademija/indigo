@@ -845,20 +845,23 @@ a:hover{
   height: 50px;
 }
 
+#widget-left-bar, #widget-right-bar
+{
+  float: left;
+  width: 88px;
+  height: 50px;
+  border: solid 1px #fc8404;
+  overflow: hidden;
+}
+
 #widget-left-bar
  {
-   float: left;
-   width: 50%;
-   height: 100%;
   background-color: white;
   color: #fc8404;
  }
 
 #widget-right-bar
 {
-  float: right;
-  width: 50%;
-  height: 100%;
   background-color: #fc8404;
 }
 
