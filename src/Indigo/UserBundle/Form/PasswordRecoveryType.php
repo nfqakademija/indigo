@@ -26,8 +26,7 @@ class PasswordRecoveryType extends AbstractType
                     ]
                 ],
                 'first_options'  => array('label' => 'user.form.password'),
-                'second_options' => array('label' => 'user.form.repeat_password'),
-                'invalid_message' => 'user.error.password_mismatch',
+                'second_options' => array('label' => 'user.form.repeat_password')
             ])
             ->add( 'change', 'submit', [
                     'label' => 'user.form.title.change_password',
