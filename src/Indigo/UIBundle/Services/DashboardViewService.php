@@ -48,6 +48,10 @@ class DashboardViewService
         $this->contestStatService = $contestStatService;
     }
 
+    /**
+     * @param integer $contestId
+     * @return DashboardViewModel
+     */
     public function getDashboardViewModel($contestId)
     {
         $contestEntity = $this->em->getRepository('IndigoContestBundle:Contest')->findOneById((int)$contestId);

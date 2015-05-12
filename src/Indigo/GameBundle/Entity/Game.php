@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Indigo\ContestBundle\Entity\Contest;
 use Indigo\GameBundle\Repository\GameStatusRepository;
 use Indigo\GameBundle\Repository\GameTypeRepository;
+use Indigo\UserBundle\Entity\User;
 
 /**
  * Game
@@ -934,7 +935,39 @@ class Game
         return $this;
     }
 
+    /**
+     * @param User $userEntity
+     * @return int
+     */
+    public function getPlayerTeamPosition(User $userEntity)
+    {
+        if ($this->getTeam0Player0Id() == $userEntity ||
+            $this->getTeam0Player1Id() == $userEntity) {
 
+            return 0;
+        }
 
+        return 1;
+    }
 
+    /**
+     * @param $teamPosition
+     * @param int $byScore
+     */
+    public function addTeamScores($teamPosition, $byScore = 1)
+    {
+        if ($teamPosition) {
+
+            if ($this->getTeam1Score()) {
+
+                $this->setTeam1Score($this->getTeam1Score() + $byScore);
+            }
+        } else {
+
+            if ($this->getTeam0Score()) {
+
+                $this->setTeam0Score($this->getTeam0Score() + $byScore);
+            }
+        }
+    }
 }

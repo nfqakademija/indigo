@@ -22,6 +22,7 @@ class PlayerStatService implements LoggerAwareInterface
     const STATE_WIN = 1;
     const STATE_LOSE = 0;
     const STATE_DRAW = -1;
+
     /**
      * @var EntityManagerInterface
      */
@@ -182,7 +183,6 @@ class PlayerStatService implements LoggerAwareInterface
 
                 return -1;
             }
-
         } elseif ($a->getWins() > $b->getWins()) {
 
             return -1;
@@ -196,13 +196,7 @@ class PlayerStatService implements LoggerAwareInterface
      */
     private function getPlayerTeamPosition(Game $game)
     {
-        if ($game->getTeam0Player0Id() == $this->userEntity ||
-            $game->getTeam0Player1Id() == $this->userEntity) {
-
-            return 0;
-        }
-
-        return 1;
+        return $game->getPlayerTeamPosition($this->userEntity);
     }
 
 
@@ -243,6 +237,11 @@ class PlayerStatService implements LoggerAwareInterface
         return (int)$game->getTeamScore( (1 - $this->getPlayerTeamPosition($game)));
     }
 
+    /**
+     * @param Game $game
+     * @param Team $teamEntity
+     * @return PlayerTeamStatModel
+     */
     public function prepareStatModel(Game $game, Team $teamEntity)
     {
         $model =  new PlayerTeamStatModel();
@@ -257,6 +256,11 @@ class PlayerStatService implements LoggerAwareInterface
         return $model;
     }
 
+    /**
+     * @param $contestId
+     * @param Team $teamEntity
+     * @return PlayerTeamStatModel
+     */
     public function prepareSinglePlayerStatModel($contestId, Team $teamEntity)
     {
         $model =  new PlayerTeamStatModel();
