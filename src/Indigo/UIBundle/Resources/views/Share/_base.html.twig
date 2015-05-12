@@ -16,7 +16,7 @@
 
 <div id="wrapper">
 
-
+{% block menu %}
 <div id="header">
 
     <div class="container-fluid">
@@ -41,26 +41,29 @@
 
                 </div>
 
-                <div class="nav-right">
+                {% block profile %}
+                    <div class="nav-right">
 
-                    <span class="nav-user-icon">
-                        <a href="{{ url('user_edit',{id: app.security.getToken().getUser().getId() }) }}" >
-                            <img src="{{ asset(app.security.getToken().getUser().getPicture()) }}" class="img-circle icon-xs border-thin icon-narrow">
-                        </a>
-                    </span>
+                        <span class="nav-user-icon">
+                            <a href="{{ url('user_edit',{id: app.security.getToken().getUser().getId() }) }}" >
+                                <img src="{{ asset(app.security.getToken().getUser().getPicture()) }}" class="img-circle icon-xs border-thin icon-narrow">
+                            </a>
+                        </span>
 
-                    <span class="nav-user-info">
-                        <span class="text-sm">{{ app.security.getToken().getUser().getUsername() }} </span></br>
-                        <a class="text-sm nav-logout" href="{{ url('logout_action') }}"> Logout </a>  </span>
-                    </span>
+                        <span class="nav-user-info">
+                            <span class="text-sm">{{ app.security.getToken().getUser().getUsername() }} </span></br>
+                            <a class="text-sm nav-logout" href="{{ url('logout_action') }}"> Logout </a>  </span>
+                        </span>
 
-                </div>
+                    </div>
+                {% endblock %}
 
             </div>
         </div>
     </div>
 
 </div>
+{% endblock %}
 
 <div id="content">{% block content %}{% endblock %}</div>
 <div id="footer">
