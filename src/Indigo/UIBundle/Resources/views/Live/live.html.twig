@@ -10,6 +10,10 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
     <script src="{{ asset('bundles/indigomain/js/bootstrap.min.js') }}"></script>
 
+
+    <script src="{{ asset('bundles/indigoui/js/jquery.transit.min.js') }}"></script>
+
+
 </head>
 
 <script>
@@ -56,15 +60,29 @@
                 }
                 else
                 {
+
                     $("#not-wrapper").fadeOut(2000, function() {
                         $('#not-congrats').hide();
                     });
 
-                    if( json.teamA.goals > _lastScoreTeamA || json.teamB.goals > _lastScoreTeamB ) {
+                    if(json.teamA.goals > _lastScoreTeamA) {
                         $('#not-congrats').hide();
                         $("#not-wrapper").show();
                         $('#not-goal-msg').show().effect("bounce", "fast");
-                        $("#not-wrapper").fadeOut(2000);
+
+                        $("#not-wrapper").fadeOut(2000, function () {
+                            $('.teamA').transition({rotateY: '0deg'});
+                            $('.teamA').transition({rotateY: '360deg'});
+                        });
+                    } else if ( json.teamB.goals > _lastScoreTeamB ) {
+                        $('#not-congrats').hide();
+                        $("#not-wrapper").show();
+                        $('#not-goal-msg').show().effect("bounce", "fast");
+
+                        $("#not-wrapper").fadeOut(2000, function () {
+                            $('.teamB').transition({ rotateY: '0deg' });
+                            $('.teamB').transition({ rotateY: '360deg' });
+                        });
                     }
                 }
 
@@ -173,23 +191,23 @@
 
                     <img class="bg" src="{{ asset('bundles/indigoui/images/field2.png') }}"/>
 
-                        <div id="player1" class="player left-top">
+                        <div id="player1" class="teamA player left-top">
                             <img id="player1-img" src="{{ teamA.player1.imageUrl }}"/>
                         </div>
 
-                        <div class="player left-bottom">
+                        <div class="teamA player left-bottom">
                                <img id="player2-img" src="{{ teamA.player2.imageUrl }}"/>
                         </div>
 
 
-                    <div class="player right-top">
+                    <div class="teamB player right-top">
                         {% if teamB.player1 != null %}
                             <img id="player3-img" src="{{ teamB.player1.imageUrl }}"/>
                         {% endif %}
                         {#<p> {{ player1.name }} </p>#}
                     </div>
 
-                    <div class="player right-bottom">
+                    <div class="teamB player right-bottom">
                             <img id="player4-img" src="{{ teamB.player2.imageUrl }}"/>
                     </div>
 
