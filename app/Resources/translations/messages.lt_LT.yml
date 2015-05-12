@@ -77,6 +77,7 @@ create_contest:
 
 #TimeReservation
 time_reservation: Laiko rezervacija
+  time_reservation: Laiko rezervacija
   not_selected: Nepasirinkote rezervacijos laiko
   table_reserved: Stalas jau užrezervuotas
   reserving_this_moment: Šią datą rezervuoja kitas žaidėjas. Šiuo metu jos rinktis negalima

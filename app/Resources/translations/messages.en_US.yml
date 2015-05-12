@@ -76,7 +76,8 @@ create_contest:
       success.created: Contest created successfully!
 
 #TimeReservation
-time_reservation: Time reservation
+time_reservation:
+  time_reservation: Time reservation
   not_selected: You haven't selected reservation time
   table_reserved: Table already reserved
   reserving_this_moment: Another player reserving this date. At the moment you can't choose it

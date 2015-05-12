@@ -67,7 +67,7 @@
             <div class="col-sm-8 col-md-8 col-lg-8 col-sm-offset-2  col-md-offset-2  col-lg-offset-2" >
 
                 <div class="row padding-t-b-md" style="padding: 5px 2px;" >
-                    <div class="contest-block" style="background: url({{ currentContest.imageUrl }}) no-repeat center;  background-size: cover;">
+                    <div class="contest-block" style="background: url('{{ asset(currentContest.imageUrl) }}') no-repeat center;  background-size: cover;">
                         <div class="info-box reservation-item" >
                             <span class="text-xlg">{{ currentContest.title }} </span><br />
                             <span class="text-bg"> {{ currentContest.dateFrom }} - {{ currentContest.dateTo }} </span></br></br>
@@ -359,7 +359,7 @@
                 {% if nextContest.imageUrl != null %}
 
                 <div class="row no-gutter">
-                    <div class="contest-block" style="background: url({{ nextContest.imageUrl }}) no-repeat center;  background-size: cover;">
+                    <div class="contest-block" style="background: url('{{ asset(nextContest.imageUrl) }}') no-repeat center;  background-size: cover;">
                         <div class="info-box" >
                             <h1> {{ nextContest.Title }} </h1>
                             <h3> {{ nextContest.description }} </h3>
