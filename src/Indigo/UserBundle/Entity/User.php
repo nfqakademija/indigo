@@ -121,7 +121,7 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
 
     /**
      * @ORM\Column(name="card_id", type="integer", length=7, nullable=true, options={"unsigned":true})
-     * @Assert\Length(min=7, minMessage="user.min_cardid_length", max=7, maxMessage="user.max_cardid_length");
+     * @Assert\Length(min=7, minMessage="user.error.min_cardid_length", max=7, maxMessage="user.error.max_cardid_length");
      */
     private $cardId;
 
