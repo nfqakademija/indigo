@@ -33,11 +33,6 @@ class PlayerStatService implements LoggerAwareInterface
     private $userEntity;
 
     /**
-     * @var Game
-     */
-    private $lastGame;
-
-    /**
      * @param EntityManagerInterface $em
      */
     public function __construct(EntityManagerInterface $em, TokenStorageInterface $userToken)
@@ -121,7 +116,7 @@ class PlayerStatService implements LoggerAwareInterface
                 $teamsStats->offsetSet($singleTeam->getId(), $this->prepareSinglePlayerStatModel($contestId, $singleTeam));
             } catch (NoResultException $e) {
 
-                $this->logger && $this->logger->error('player has no single team!'. $e->getMessage());
+                $this->logger && $this->logger->error('player(id:'.$this->userEntity->getId().') has no single team!'. $e->getMessage());
             }
         }
         return $teamsStats;
@@ -188,7 +183,6 @@ class PlayerStatService implements LoggerAwareInterface
                 return -1;
             }
 
-            return 0;
         } elseif ($a->getWins() > $b->getWins()) {
 
             return -1;

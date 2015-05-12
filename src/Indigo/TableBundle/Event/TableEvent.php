@@ -5,14 +5,12 @@ namespace Indigo\TableBundle\Event;
 use Indigo\TableBundle\Model\TableActionInterface;
 use Symfony\Component\EventDispatcher\Event;
 
-class TableEvent  extends Event
+class TableEvent extends Event
 {
-
     /**
      * @var TableActionInterface
      */
     private $model;
-
 
     /**
      * @return TableActionInterface

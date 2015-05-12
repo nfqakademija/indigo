@@ -119,12 +119,6 @@ class CardSwipeListener
         if ($tableId) {
 
             $gameEntity = $tableStatusEntity->getGame();
-/*            (if (!method_exists($gameEntity,'getTableStatus')) {
-
-                $tableStatusEntity->setGame(null);
-            }*/
-
-            //$gameEntity = $tableStatusEntity->getActiveGame();
         }
 
         if ($this->isDoubleSwipe($tableEventModel, $tableStatusEntity)) {
@@ -297,7 +291,7 @@ class CardSwipeListener
 
     /**
      * @param $cardId
-     * @return array
+     * @return Player
      */
     private function getPlayerEntityByCardId($cardId)
     {
@@ -318,8 +312,9 @@ class CardSwipeListener
      * @param TableActionInterface $tableEventModel
      * @param $tableStatusEntity
      */
-    private function setLastSwipe(TableActionInterface $tableEventModel, $tableStatusEntity)
+    private function setLastSwipe(CardSwipeModel $tableEventModel, TableStatus $tableStatusEntity)
     {
+
         $tableStatusEntity->setLastSwipedCardId($tableEventModel->getCardId());
         $tableStatusEntity->setLastSwipeTs($tableEventModel->getTimeSec());
         $this->em->persist($tableStatusEntity);

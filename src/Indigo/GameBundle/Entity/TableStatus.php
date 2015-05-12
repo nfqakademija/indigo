@@ -291,35 +291,6 @@ class TableStatus
         return $this->games;
     }
 
-/*
-    public function getActiveGame()
-    {
-        foreach ($this->games as $game) {
-
-            if (!$game->isGameStatusFinished()) {
-
-                return $game;
-            }
-        }
-        return null;
-    }
-*/
-
-    /**
-     * @return bool
-     */
-    public function hasPlayers() {
-
-        if ($game = $this->getActiveGame()) {
-
-            if ($game->getPlayersCount() >0) {
-
-                return true;
-            }
-        }
-        return false;
-    }
-
     /**
      * @return mixed
      */
@@ -378,22 +349,6 @@ class TableStatus
     public function setGameId($gameId)
     {
         $this->gameId = (int)$gameId;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCurrentGame()
-    {
-        return $this->currentGame;
-    }
-
-    /**
-     * @param mixed $currentGame
-     */
-    public function setCurrentGame($currentGame)
-    {
-        $this->currentGame = $currentGame;
     }
 
     /**

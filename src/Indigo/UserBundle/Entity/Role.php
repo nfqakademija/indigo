@@ -2,7 +2,6 @@
 
 namespace Indigo\UserBundle\Entity;
 
-
 use Symfony\Component\Security\Core\Role\RoleInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="roles")
  * @ORM\Entity(repositoryClass="Indigo\UserBundle\Entity\RoleRepository")
  */
-class Role  implements RoleInterface
+class Role implements RoleInterface
 {
     const ROLE_ADMIN = 'ROLE_ADMIN';
     const ROLE_USER = 'ROLE_USER';

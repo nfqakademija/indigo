@@ -3,16 +3,14 @@
 
 namespace Indigo\TableBundle\EventListener;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Indigo\GameBundle\Entity\TableStatus;
 use Indigo\GameBundle\Entity\TableStatusRepository;
 use Indigo\TableBundle\Event\TableEvent;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Indigo\TableBundle\Model\TableShakeModel;
 
-class TableShakeListener {
+class TableShakeListener
+{
 
     /**
      * @var EntityManagerInterface
