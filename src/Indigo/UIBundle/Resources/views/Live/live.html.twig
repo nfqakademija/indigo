@@ -56,14 +56,16 @@
                 }
                 else
                 {
-                    if( json.teamA.goals > _lastScoreTeamA || json.teamB.goals > _lastScoreTeamB )
-                    {
+                    $("#not-wrapper").fadeOut(2000, function() {
+                        $('#not-congrats').hide();
+                    });
+
+                    if( json.teamA.goals > _lastScoreTeamA || json.teamB.goals > _lastScoreTeamB ) {
                         $('#not-congrats').hide();
                         $("#not-wrapper").show();
-                        $('#not-goal-msg').show().effect( "bounce", "fast");
-                       // $('#not-goal-msg').fadeOut(0);
+                        $('#not-goal-msg').show().effect("bounce", "fast");
                         $("#not-wrapper").fadeOut(2000);
-                        }
+                    }
                 }
 
                 _lastScoreTeamA = json.teamA.goals;
