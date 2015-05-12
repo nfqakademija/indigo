@@ -4,72 +4,75 @@
 
 {% block content %}
 
-    <div id="history-wrapper" >
+
         <div class="container-fluid">
 
             <div class="row">
 
                 <div class="col-sm-8 col-md-8 col-lg-8 col-sm-offset-2  col-md-offset-2  col-lg-offset-2">
 
-                    <table class="table score-table" width="100%" style="text-align: center">
-                        <col width="250">
-                        <col>
-                        <col width="100">
-                        <col width="100">
+                    <div id="history-wrapper" >
 
-                        <tr>
-                            <th class="text-xl" style="text-align: center"> Started </th>
-                            <th> Teams </th>
-                            <th> </th>
-                            <th> Time </th>
-                            <th> Score </th>
-                        </tr>
+                        <table class="table score-table" width="100%" style="text-align: center">
+                            <col width="300">
+                            <col>
+                            <col>
+                            <col>
 
-                    {% for game in games %}
-
-                            <tr style="padding: 10px;">
-                                <td>
-                                    {{ game.startedAt|date("m.d. H : i ")}}
-                                </td>
-                                <td>
-                                    <div style="display: inline-block" >
-                                        {% for picture in game.team0playersPictures %}
-                                            {%  if picture != null %}
-                                                <img src="{{ asset(picture) }}" class="img-circle icon-xs border-wide icon-narrow" />
-                                            {%  endif %}
-                                        {% endfor %}
-                                    </div>
-
-                                    <span class="text-lg text-dark-gray" style="display: inline-block"> VS </span>
-
-                                    <div style="display: inline-block">
-                                        {% for picture in game.team1playersPictures %}
-                                            {%  if picture != null %}
-                                                <img src="{{ asset(picture) }}" class="img-circle icon-xs border-wide icon-narrow" />
-                                            {%  endif %}
-                                        {% endfor %}
-                                    </div>
-
-                                </td>
-
-                                <td> {{ game.team0RatingDiff }}  vs {{ game.team1RatingDiff }}</td>
-
-                                <td>
-                                    <span class="text-xl text-dark-gray"> {{ game.gameDuration|date("i : s")  }}</span>
-
-                                </td>
-
-                                <td>
-                                    <span class="text-xl text-dark-gray"> {{ game.team0Score }} : {{ game.team1Score }} </span></br>
-                                </td>
-
+                            <tr>
+                                <th class="text-xl" style="text-align: center"> Teams and results </th>
+                                <th> Started </th>
+                                <th> Duration </th>
+                                <th> Points </th>
+                                <th> Rating </th>
                             </tr>
-                    {%  endfor %}
-                    </table>
+
+                        {% for game in games %}
+
+                                <tr {% if game.isStat == false %} style="background-color: rgba(255, 103, 95, 0.60);" {%  endif %} >
+                                    <td>
+                                        <div style="display: inline-block" >
+                                            {% for picture in game.team0playersPictures %}
+                                                {%  if picture != null %}
+                                                    <img src="{{ asset(picture) }}" class="img-circle icon-xs icon-narrow" />
+                                                {%  endif %}
+                                            {% endfor %}
+                                        </div>
+
+                                        <span class="text-lg text-dark-gray" style="font-family: Impact; margin:10px">
+                                             {{ game.team0Score }} : {{ game.team1Score }} </span>
+                                        </span>
+
+                                        <div style="display: inline-block">
+                                            {% for picture in game.team1playersPictures %}
+                                                {%  if picture != null %}
+                                                    <img src="{{ asset(picture) }}" class="img-circle icon-xs icon-narrow" />
+                                                {%  endif %}
+                                            {% endfor %}
+                                        </div>
+
+                                    </td>
+
+                                    <td class="text-xl text-dark-gray" style="text-align: center">
+                                        {{ game.startedAt|date("m.d. H : i ")}}
+                                    </td>
+
+                                    <td>
+                                        <span class="text-xl text-dark-gray"> {{ game.gameDuration|date("i : s")  }}</span>
+                                    </td>
+
+                                    <td class="text-xl text-dark-gray" style="text-align: center"> {{ game.team0RatingDiff }} </td>
+
+                                    <td class="text-xl text-dark-gray" style="text-align: center"> {{ game.team0Rating }} </td>
+
+                                </tr>
+                        {%  endfor %}
+                        </table>
+                    </div>
                 </div>
 
             </div>
-        </div>
+
     </div>
 
 
