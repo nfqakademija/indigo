@@ -138,7 +138,7 @@ class UserController extends Controller
 
         $entity = $em->getRepository('IndigoUserBundle:User')->find($id);
 
-        if (!$entity) {
+        if (!$entity || $id != $this->getUser()->getId()) {
             throw $this->createNotFoundException('Unable to find User entity.');
         }
 
