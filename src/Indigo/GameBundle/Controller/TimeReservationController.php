@@ -33,13 +33,14 @@ class TimeReservationController extends Controller
                 //'widget' => 'single_text',
                 'read_only' => true,
                 'attr' => [
-                    'placeholder' => 'time_reservation.choose_time'
+                    'placeholder' => 'time_reservation.choose_time',
+                    'class' => 'btn btn-success col-xs-12'
                 ]
             ])
             ->add('submit', 'button', [
                     'label' => 'confirm',
                     'attr' => [
-                        'class' => 'btn btn-success col-sm-12'
+                        'class' => 'btn btn-success col-xs-12'
                     ]
                 ]
             )
@@ -78,10 +79,11 @@ class TimeReservationController extends Controller
     private function updateActionOfReservation($fullDate){
         $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery(
-            "UPDATE Indigo\GameBundle\Entity\GameTime gt SET gt.action = 1 WHERE gt.startAt = :startAt"
+            "UPDATE Indigo\GameBundle\Entity\GameTime gt SET gt.action = 1 WHERE gt.startAt = :startAt AND gt.timeOwner = :timeOwner"
         );
 
         $query->setParameter('startAt', $fullDate);
+        $query->setParameter('timeOwner', $this->getUser()->getId());
 
         return $query->getResult();
     }
@@ -89,16 +91,19 @@ class TimeReservationController extends Controller
     private function checkIfReservationNotOccupied($fullDate){
         $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery(
-            "SELECT COUNT(gt.id) FROM Indigo\GameBundle\Entity\GameTime gt WHERE gt.startAt = :startAt AND gt.action = 1"
+            "SELECT COUNT(gt.id) FROM Indigo\GameBundle\Entity\GameTime gt WHERE (gt.startAt = :startAt AND gt.action = 1) OR (gt.insertionTime > :insertionTime AND gt.action = 0 AND gt.timeOwner != :timeOwner)"
         );
 
         $query->setParameter('startAt', $fullDate);
+        $query->setParameter('insertionTime', new \Datetime('-1 minutes'));
+        $query->setParameter('timeOwner', $this->getUser()->getId());
 
         return $query->getSingleScalarResult();
     }
 
     public function changeActionOfReservationAction(Request $request){
-        $fullDate = date('Y-m-d H:i:s', $request->get('time'));
+        $time = $request->get('time');
+        $fullDate = date('Y-m-d H:i:s', $time);
 
         $resultCheck = $this->checkIfReservationNotOccupied($fullDate);
 
@@ -136,7 +141,7 @@ class TimeReservationController extends Controller
         return $return;
     }
 
-    public function doesGameTimeExist($startAt, $playerId)
+/*    public function doesGameTimeExist($startAt, $playerId)
     {
         $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery(
@@ -147,41 +152,58 @@ class TimeReservationController extends Controller
         $query->setParameter('playerId', $playerId);
 
         return $query->getSingleScalarResult();
+    }*/
+
+    public function doesAnotherPlayerDoesntClickTime($startAt, $playerId)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery(
+            "SELECT COUNT(gt.id) FROM Indigo\GameBundle\Entity\GameTime gt WHERE gt.startAt = :startAt AND gt.timeOwner != :playerId AND gt.insertionTime > :insertionTime"
+        );
+
+        $query->setParameter('startAt', $startAt);
+        $query->setParameter('playerId', $playerId);
+        $query->setParameter('insertionTime', new \DateTime('-1 minutes'));
+
+        return $query->getSingleScalarResult();
     }
 
     public function insertDataAfterTimeClickAction($contest_id, Request $request)
     {
         $fullDate = date('Y-m-d H:i:s', $request->get('time'));
         $playerId = $this->getUser()->getId();
-        $clickCount = $this->doesGameTimeExist($fullDate, $playerId);
+        //$clickCount = $this->doesGameTimeExist($fullDate, $playerId);
+        $countAnotherPlayerClicks = $this->doesAnotherPlayerDoesntClickTime($fullDate, $playerId);
 
         $success = false;
 
-        if(!$clickCount) {
+        if(!$countAnotherPlayerClicks) {//$this->deletePrevGameTime($playerId);
+            $this->deletePrevGameTime($playerId, $fullDate);
             $this->createGameTime($fullDate, $contest_id, $playerId);
-            $this->deletePrevGameTime($playerId);
             $success = true;
-        }else{
-            $this->updateCreationGameTime($fullDate, $playerId);
-        }
+        }/*else if(!$countAnotherPlayerClicks){
+            $this->updateCreationGameTime($fullDate, $playerId, $contest_id);
+            $success = true;
+        }*/
 
-        return new JsonResponse(['clicks' => $clickCount, 'success' => $success]);
+        return new JsonResponse(['success' => $success]);
     }
 
-    private function updateCreationGameTime($fullDate, $playerId){
+   /* private function updateCreationGameTime($fullDate, $playerId, $contest_id){
         $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery(
-            "UPDATE Indigo\GameBundle\Entity\GameTime gt SET gt.insertionTime = :insertionTime WHERE gt.startAt = :startAt AND gt.timeOwner = :playerId"
+            "UPDATE Indigo\GameBundle\Entity\GameTime gt SET gt.insertionTime = :insertionTime, gt.id = :contestId WHERE gt.startAt = :startAt AND gt.timeOwner = :playerId"
         );
 
         $query->setParameter('playerId', $playerId);
-        $query->setParameter('insertionTime', date("Y-m-d H:i:s"));
+        $query->setParameter('contestId', $contest_id);
+        $query->setParameter('insertionTime', new \Date());
         $query->setParameter('startAt', $fullDate);
 
         return $query->getResult();
-    }
+    }*/
 
-    private function deletePrevGameTime($playerId){
+    private function deletePrevGameTime($playerId, $fullDate){
         $date = date("Y-m-d H:i:s");
         $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery(
@@ -243,6 +265,30 @@ class TimeReservationController extends Controller
         $return = $query->getArrayResult();
 
         return new JsonResponse($return);
+    }
+
+    private function timeReservationDelete($fullDate, $contest_id){
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery(
+            "DELETE FROM Indigo\GameBundle\Entity\GameTime gt WHERE gt.startAt = :startAt AND gt.timeOwner = :timeOwner AND gt.action = 1 AND gt.contestId = :contestId"
+        );
+
+        $query->setParameter('startAt', $fullDate);
+        $query->setParameter('timeOwner', $this->getUser()->getId());
+        $query->setParameter('contestId', $contest_id);
+
+        return $query->getResult();
+    }
+
+    public function deleteTimeReservationAction($contest_id, Request $request){
+        $fullDate = date('Y-m-d H:i:s', $request->get('time'));
+
+        $success = false;
+
+        if($this->timeReservationDelete($fullDate, $contest_id))
+            $success = true;
+
+        return new JsonResponse(['lol'=>$this->timeReservationDelete($fullDate, $contest_id), 'success' => $success]);
     }
 
 }

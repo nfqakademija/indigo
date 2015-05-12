@@ -84,7 +84,11 @@ time_reservation: Time reservation
   same_time: In the same time in other contest you already have reserved time.
   your_time: You had booked this time
   choose_time: Select your preferred time
-  doesnt_exist: Contest doesn't exist !
+  doesnt_exist: Contest doesn't exist!
+  success: You have reserved time!
+  deleted: Time reservation was deleted
+  not_deleted: Time reservation wasn't deleted
+
 
 #Global
 yes: Yes
@@ -115,3 +119,6 @@ smart_table: Smart table
 ask_for_delete: Are you sure want to delete it?
 change: Change
 hello: hello
+error: Error!
+notice: Notice!
+warning: Warning!

@@ -84,7 +84,10 @@ time_reservation: Laiko rezervacija
   same_time: Tokiu pat laiku kitose varžybose jūs jau esate užsakęs laiką
   your_time: Jūsų užrezervuotas laikas
   choose_time: Pasirinkite jums tinkamą laiką
-  doesnt_exist: Tokių varžybų nėra !
+  doesnt_exist: Tokių varžybų nėra!
+  success: Jūs užsirezervavote laiką!
+  deleted: Laiko rezervacija buvo pašalinta
+  not_deleted: Laiko rezervacija nebuvo pašalinta
 
 #Global
 yes: Taip
@@ -115,3 +118,6 @@ smart_table: Nekvailas stalas
 ask_for_delete: Ar tikrai norite ištrinti ?
 change: Keisti
 hello: Sveiki
+error: Klaida!
+notice: Pranešimas!
+warning: Įspėjimas!

@@ -17,3 +17,7 @@ indigo_change_action_of_reservation:
 indigo_get_last_time_cell_date:
     path:     /time_reservation/get_last_time_cell_date/{contest_id}/{timestamp}
     defaults: { _controller: IndigoGameBundle:TimeReservation:getLastTimeCellDate, timestamp: 0 }
+
+indigo_delete_time_reservation:
+    path:     /time_reservation/delete_time_reservation/{contest_id}/{timestamp}
+    defaults: { _controller: IndigoGameBundle:TimeReservation:deleteTimeReservation, timestamp: 0 }
