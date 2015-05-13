@@ -15,10 +15,10 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Indigo\TableBundle\Model\AutoGoalModel;
 
-
 class AutoGoalListener
 {
     const MAX_SCORES = 10;
+
     /**
      * @var EntityManagerInterface
      */

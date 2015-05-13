@@ -27,10 +27,12 @@ class AutoGoalModel extends TableActionModel implements TableActionInterface
 
     /**
      * @param \stdClass $data
+     * @return $this
      */
     public function setData(\stdClass $data)
     {
         $this->setTeam($data->team);
 
+        return $this;
     }
 }

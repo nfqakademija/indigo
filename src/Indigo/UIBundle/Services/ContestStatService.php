@@ -61,7 +61,7 @@ class ContestStatService implements LoggerAwareInterface
             $teamsId[] = $teamId;
 
             $playerTeamRelation = $this->em->getRepository('IndigoGameBundle:PlayerTeamRelation')->findBy(['teamId' =>$teamId]);
-            if ($playerTeamRelation) {
+            if (!empty($playerTeamRelation)) {
 
                 foreach ($playerTeamRelation as $team) {
 

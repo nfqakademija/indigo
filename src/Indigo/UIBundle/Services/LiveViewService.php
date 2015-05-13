@@ -10,9 +10,9 @@
 
 namespace Indigo\UIBundle\Services;
 
-use Indigo\GameBundle\Entity\Game;
+use Doctrine\ORM\EntityManagerInterface;
 use Indigo\GameBundle\Entity\Contest;
-use Indigo\GameBundle\Entity\GameTimeRepository;
+use Indigo\GameBundle\Entity\Game;
 use Indigo\UIBundle\Models\ContestModel;
 use Indigo\UIBundle\Models\DashboardViewModel;
 use Indigo\UIBundle\Models\LiveViewModel;
@@ -20,7 +20,6 @@ use Indigo\UIBundle\Models\PlayerModel;
 use Indigo\UIBundle\Models\TeamModel;
 use Indigo\UIBundle\Models\WinnerTeamModel;
 use Symfony\Component\Security\Acl\Exception\Exception;
-use Symfony\Component\Validator\Constraints\DateTime;
 
 
 /**
@@ -34,12 +33,15 @@ class LiveViewService
     private $defRegistrationTimeInterval = 15;
     private $defaultProfilePic = '';
 
+    /**
+     * @var EntityManagerInterface
+     */
     private $em;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $em
+     * @param EntityManagerInterface $em
      */
-    function __construct(\Doctrine\ORM\EntityManager $em)
+    function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }

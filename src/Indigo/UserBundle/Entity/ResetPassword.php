@@ -4,7 +4,6 @@ namespace Indigo\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-
 /**
  * ResetPassword
  *
@@ -13,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ResetPassword
 {
+
+    const EXPIRE_AFTER_DAYS = 14;
 
     /**
      * @var integer
@@ -53,8 +54,10 @@ class ResetPassword
 
 
 
-    function __construct() {
-        $this->expires = new \DateTime('+14 days');
+    function __construct()
+    {
+
+        $this->expires = new \DateTime(sprintf('+%u days', self::EXPIRE_AFTER_DAYS));
     }
 
 
@@ -69,9 +72,10 @@ class ResetPassword
     }
 
     /**
-     * Set user
+     * @param User $user
+     * @return $this
      */
-    public function setUser($user)
+    public function setUser(User $user)
     {
         $this->user = $user;
 
@@ -79,7 +83,7 @@ class ResetPassword
     }
 
     /**
-     * Get user
+     * @return mixed
      */
     public function getUser()
     {
@@ -87,7 +91,8 @@ class ResetPassword
     }
 
     /**
-     * Set hash
+     * @param string $hash
+     * @return $this
      */
     public function setHash($hash)
     {

@@ -119,12 +119,6 @@ class CardSwipeListener
         if ($tableId) {
 
             $gameEntity = $tableStatusEntity->getGame();
-/*            (if (!method_exists($gameEntity,'getTableStatus')) {
-
-                $tableStatusEntity->setGame(null);
-            }*/
-
-            //$gameEntity = $tableStatusEntity->getActiveGame();
         }
 
         if ($this->isDoubleSwipe($tableEventModel, $tableStatusEntity)) {
@@ -148,20 +142,33 @@ class CardSwipeListener
                 $this->em->flush();
             } else {
 
-                if ($gameEntity->isGameStatusStarted()) {
+                    if ($gameEntity->isPlayerInThisGame($playerEntity->getId()) === true) {
 
-                    printf("CardSwipe IGNORED, game Started! team:%u, position: %u, cardid: %u\n", $tableEventModel->getTeam(), $tableEventModel->getPlayer(), $tableEventModel->getCardId());
+                        if ($gameEntity->isGameStatusStarted()) {
 
-                    return false;
-                }
+                            $gameEntity->addTeamScores($tableEventModel->getTeam(), -1);
+
+                            printf("CardSwipe SCORE CHANGED to team:%u, position: %u, cardid: %u\n",
+                                $tableEventModel->getTeam(), $tableEventModel->getPlayer(),
+                                $tableEventModel->getCardId());
+                            $this->em->persist($gameEntity);
+                            $this->em->flush();
+                        } else {
+
+                            printf("CardSwipe IGNORED, game Started! team:%u, position: %u, cardid: %u\n",
+                                $tableEventModel->getTeam(), $tableEventModel->getPlayer(),
+                                $tableEventModel->getCardId());
+                        }
+                        return false;
+                    }
             }
 
-            if ($gameEntity->isPlayerInThisGame($playerEntity->getId()) === true) {
-
-                // ignore pakartotini cardswipe, jei jis jau "prisidaves", galbut bande double swipint, bet per letai..
-                printf("CardSwipe IGNORED,  player already in game! team:%u, position: %u, cardid: %u\n", $tableEventModel->getTeam(), $tableEventModel->getPlayer(), $tableEventModel->getCardId());
-                return true;
-            } else {
+//            if ($gameEntity->isPlayerInThisGame($playerEntity->getId()) === true) {
+//
+//                // ignore pakartotini cardswipe, jei jis jau "prisidaves", galbut bande double swipint, bet per letai..
+//                printf("CardSwipe IGNORED,  player already in game! team:%u, position: %u, cardid: %u\n", $tableEventModel->getTeam(), $tableEventModel->getPlayer(), $tableEventModel->getCardId());
+//                return true;
+//            } else {
 
                $gameEntity->setPlayer($teamPosition, $playerPosition, $playerEntity);
 
@@ -226,7 +233,7 @@ class CardSwipeListener
                         $this->em->persist($gameEntity);
                     } // jei nera rezervuoto laiko, tai ir paliekam NULL
                 }
-            }
+//            }
 
 
             $tableStatusEntity->setBusy(TableStatusRepository::STATUS_BUSY);
@@ -297,7 +304,7 @@ class CardSwipeListener
 
     /**
      * @param $cardId
-     * @return array
+     * @return Player
      */
     private function getPlayerEntityByCardId($cardId)
     {
@@ -318,8 +325,9 @@ class CardSwipeListener
      * @param TableActionInterface $tableEventModel
      * @param $tableStatusEntity
      */
-    private function setLastSwipe(TableActionInterface $tableEventModel, $tableStatusEntity)
+    private function setLastSwipe(CardSwipeModel $tableEventModel, TableStatus $tableStatusEntity)
     {
+
         $tableStatusEntity->setLastSwipedCardId($tableEventModel->getCardId());
         $tableStatusEntity->setLastSwipeTs($tableEventModel->getTimeSec());
         $this->em->persist($tableStatusEntity);
