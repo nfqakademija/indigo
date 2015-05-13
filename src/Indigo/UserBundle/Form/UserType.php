@@ -50,6 +50,17 @@ class UserType extends AbstractType
                     'class' => 'file profilePicture'
                 ]
             ])
+            ->add('password', 'repeated',[
+                'type' => 'password',
+                'required' => false,
+                'options' => [
+                    'attr' => [
+                        'class' => 'form-control'
+                    ]
+                ],
+                'first_options'  => array('label' => 'user.form.password'),
+                'second_options' => array('label' => 'user.form.repeat_password')
+            ])
             /*->add('registrationDate', 'date', [
                 'attr' => [
                     'class' => 'datepicker',

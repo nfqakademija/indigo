@@ -43,48 +43,49 @@
 
                 $("#contest-title").html(json.contest.title);
 
-                if(json.showGreetingMessage)
-                {
-                    $('#not-goal-msg').hide();
+                if(!_firstTime) {
 
-                    if(json.lastWinnerTeam)
-                    {
-                        $("#win-player-1").attr("src", json.lastWinnerTeam.player1.imageUrl + "?" + new Date().getTime());
-                        $("#win-player-2").attr("src", json.lastWinnerTeam.player2.imageUrl + "?" + new Date().getTime());
-                        $("#win-score").text(json.lastWinnerTeam.score);
-                    }
+                    if (json.showGreetingMessage) {
+                        $('#not-goal-msg').hide();
 
-                    $("#not-wrapper").show().fadeIn(1000, function () {
-                        $('#not-congrats').show().fadeIn(1000)
-                    });
-                }
-                else
-                {
+                        if (json.lastWinnerTeam) {
+                            $("#win-player-1").attr("src", json.lastWinnerTeam.player1.imageUrl + "?" + new Date().getTime());
+                            $("#win-player-2").attr("src", json.lastWinnerTeam.player2.imageUrl + "?" + new Date().getTime());
+                            $("#win-score").text(json.lastWinnerTeam.score);
+                        }
 
-                    $("#not-wrapper").fadeOut(2000, function() {
-                        $('#not-congrats').hide();
-                    });
-
-                    if(json.teamA.goals > _lastScoreTeamA) {
-                        $('#not-congrats').hide();
-                        $("#not-wrapper").show();
-                        $('#not-goal-msg').show().effect("bounce", "fast");
-
-                        $("#not-wrapper").fadeOut(2000, function () {
-                            $('.teamA').transition({rotateY: '0deg'});
-                            $('.teamA').transition({rotateY: '360deg'});
-                        });
-                    } else if ( json.teamB.goals > _lastScoreTeamB ) {
-                        $('#not-congrats').hide();
-                        $("#not-wrapper").show();
-                        $('#not-goal-msg').show().effect("bounce", "fast");
-
-                        $("#not-wrapper").fadeOut(2000, function () {
-                            $('.teamB').transition({ rotateY: '0deg' });
-                            $('.teamB').transition({ rotateY: '360deg' });
+                        $("#not-wrapper").show().fadeIn(1000, function () {
+                            $('#not-congrats').show().fadeIn(1000)
                         });
                     }
+                    else {
+
+                        $("#not-wrapper").fadeOut(2000, function () {
+                            $('#not-congrats').hide();
+                        });
+
+                        if (json.teamA.goals > _lastScoreTeamA) {
+                            $('#not-congrats').hide();
+                            $("#not-wrapper").show();
+                            $('#not-goal-msg').show().effect("bounce", "fast");
+
+                            $("#not-wrapper").fadeOut(2000, function () {
+                                $('.teamA').transition({rotateY: '0deg'});
+                                $('.teamA').transition({rotateY: '360deg'});
+                            });
+                        } else if (json.teamB.goals > _lastScoreTeamB) {
+                            $('#not-congrats').hide();
+                            $("#not-wrapper").show();
+                            $('#not-goal-msg').show().effect("bounce", "fast");
+
+                            $("#not-wrapper").fadeOut(2000, function () {
+                                $('.teamB').transition({rotateY: '0deg'});
+                                $('.teamB').transition({rotateY: '360deg'});
+                            });
+                        }
+                    }
                 }
+                _firstTime = false;
 
                 _lastScoreTeamA = json.teamA.goals;
                 _lastScoreTeamB = json.teamB.goals;
@@ -120,7 +121,7 @@
                             else
                             {
                                 $('#reserv-itm-cont-' + ind).removeClass('bg-color-reserved');
-                                $('#reserv-itm-cont-' + ind).add('bg-color-not-reserved');
+                                $('#reserv-itm-cont-' + ind).addClass('bg-color-not-reserved');
                                 $('#reserv-itm-img-' + ind).attr("src", "#");
                                 $('#reserv-itm-img-' + ind).hide();
                             }
@@ -130,6 +131,10 @@
                             var imgUrl = json.reservations[ind].whoIsReservedImageUrl;
                             $('#reserv-itm-time-' + ind).text( strTime );
                             $('#reserv-itm-status-' + ind).text( strStatus );
+                        }
+                        else
+                        {
+
                         }
                     }
 
@@ -144,29 +149,29 @@
 
 <body>
 
-{#{% block content%}#}
+        <div id="not-wrapper" class="container">
 
-<div id="not-wrapper" class="container">
+        <div id="not-goal-msg"> </div>
 
-    <div class="fill">
+            <span id="not-congrats">
+                    <span id="not-end-msg" class="text-uxl font-orange-l"> CONGRATULATIONS! </span></br>
+                    <span id="player-images">
+                        <img id="win-player-1" class="img-round bg-semi-we padding-md" width="150" src="#"/>
+                        <img id="win-player-2" class="img-round bg-semi-we padding-md" width="150" src="#"/>
+                    </span></br>
+                <span class="text-xl"> Won the fight </span></br>
+                <span id="win-score" class="text-uxxl score-font font-orange-l">  </span></br>
+                <span id="info-message" class="text-xl"> Please double swipe or continue playing new game </span>
+            </span>
 
-    <div id="not-goal-msg"> </div>
 
-        <span id="not-congrats">
-                <span id="not-end-msg" class="text-uxl font-orange-l"> CONGRATULATIONS! </span></br>
-                <span id="player-images">
-                    <img id="win-player-1" class="img-round bg-semi-we padding-md" width="150" src="#"/>
-                    <img id="win-player-2" class="img-round bg-semi-we padding-md" width="150" src="#"/>
-                </span></br>
-            <span class="text-xl"> Won the fight </span></br>
-            <span id="win-score" class="text-uxxl score-font font-orange-l">  </span></br>
-            <span id="info-message" class="text-xl"> Please double swipe or continue playing new game </span>
-        </span>
-
-    </div>
 </div>
 
-    <div class="container-fluid">
+        {% if app.user %}
+            <a href={{ url('indigo_ui_dashboard', {id : 1}) }} class="dashboard-link"> My dashboard </a>
+        {% endif %}
+
+    <div class="container-fluid bg-gradient">
         <div class="row padding-sm">
 
             <div class=" col-xs-12 col-sm-12 col-md-10 col-lg-10 col-md-offset-1 col-lg-offset-1 content">
@@ -220,45 +225,61 @@
 
             <div class=" col-xs-4 col-sm-3 col-md-2 col-sm-offset-2 col-md-offset-3 " style="top: -40px">
 
-                <div class="stat-panel text-center border-thin b-color-selected" style="height: 200px;">
-                    <div id="reserv-itm-cont-0" class="stat-panel-item {% if reservations[0].status == "Reserved" %} bg-color-reserved {% else %} bg-color-not-reserved {% endif %}">
-                        <span class="text-md"> Now </span></br>
-                        <span id="reserv-itm-time-0" class="time-text"> {{ reservations[0].time }} </span><br>
-                        <span id="reserv-itm-status-0" class="text-md"> {{  reservations[0].status }} </span></br></br>
+                <div id="reserv-itm-cont-0"
+                     class="reserv-item-cont text-center reserv-item-left
+                    {% if reservations[0].status == "Reserved" %}
+                        bg-color-reserved
+                        {% else %}
+                        bg-color-not-reserved
+                    {% endif %}">
+
+                    <span class="text-md"> Now </span></br>
+                    <span id="reserv-itm-time-0" class="time-text"> {{ reservations[0].time }} </span><br>
+                    <span id="reserv-itm-status-0" class="text-md"> {{  reservations[0].status }} </span></br></br>
                         <span style="height: 100px">
                             <img id="reserv-itm-img-0" src="#" class="img-circle icon-sm border-wide icon-narrow" hidden="">
                         </span>
-                    </div>
+
                 </div>
 
             </div>
 
             <div class="col-xs-4 col-sm-3 col-md-2" style="top: -40px">
 
-                <div class="stat-panel text-center b-color-selected" style="height: 200px;">
-                    <div id="reserv-itm-cont-1" class="stat-panel-item  {% if reservations[1].status == "Reserved" %} bg-color-reserved {% else %} bg-color-not-reserved {% endif %}">
-                        <span class="text-md"> Next </span></br>
-                        <span id="reserv-itm-time-1" class="time-text"> {{ reservations[1].time }} </span><br>
-                        <span id="reserv-itm-status-1" class="text-md"> {{  reservations[1].status }} </span></br></br>
-                        <span style="height: 100px">
-                            <img id="reserv-itm-img-1" src="#" class="img-circle icon-sm border-wide icon-narrow" hidden="">
-                        </span>
-                    </div>
+                <div id="reserv-itm-cont-1"
+                     class="reserv-item-cont text-center
+                     {% if reservations[1].status == "Reserved" %}
+                        bg-color-reserved
+                     {% else %}
+                        bg-color-not-reserved
+                     {% endif %}" >
+
+                    <span class="text-md"> Next </span></br>
+                    <span id="reserv-itm-time-1" class="time-text"> {{ reservations[1].time }} </span><br>
+                    <span id="reserv-itm-status-1" class="text-md"> {{  reservations[1].status }} </span></br></br>
+                    <span style="height: 100px">
+                        <img id="reserv-itm-img-1" src="#" class="img-circle icon-sm border-wide icon-narrow" hidden="">
+                    </span>
                 </div>
 
             </div>
 
-            <div class="col-xs-4 col-sm-3 col-md-2" style="top: -40px">
+            <div class="col-xs-4 col-sm-3 col-md-2" style="top: -40px;">
 
-                <div class="stat-panel text-center b-color-selected" style="height: 200px;">
-                    <div id="reserv-itm-cont-2" class="stat-panel-item  {% if reservations[2].status == "Reserved" %} bg-color-reserved {% else %} bg-color-not-reserved {% endif %}">
-                        <span class="text-md"> Later </span></br>
-                        <span id="reserv-itm-time-2" class="time-text"> {{ reservations[2].time }} </span><br>
-                        <span id="reserv-itm-status-2" class="text-md"> {{  reservations[2].status }} </span></br></br>
-                        <span style="height: 100px">
-                            <img id="reserv-itm-img-2" src="#" class="img-circle icon-sm border-wide icon-narrow" hidden="">
-                        </span>
-                    </div>
+                <div id="reserv-itm-cont-2"
+                     class="reserv-item-cont text-center reserv-item-right
+                    {% if reservations[2].status == "Reserved" %}
+                        bg-color-reserved
+                        {% else %}
+                        bg-color-not-reserved
+                    {% endif %}">
+
+                    <span class="text-md"> Later </span></br>
+                    <span id="reserv-itm-time-2" class="time-text"> {{ reservations[2].time }} </span><br>
+                    <span id="reserv-itm-status-2" class="text-md"> {{  reservations[2].status }} </span></br></br>
+                    <span style="height: 100px">
+                        <img id="reserv-itm-img-2" src="#" class="img-circle icon-sm border-wide icon-narrow" hidden="">
+                    </span>
                 </div>
 
             </div>

@@ -632,7 +632,7 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
      */
     public function uploadPicture()
     {
-        if (null === $this->getPicture()) {
+        if (null === $this->getPictureFile()) {
             return;
         }
 

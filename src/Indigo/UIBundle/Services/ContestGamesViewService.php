@@ -62,6 +62,7 @@ class ContestGamesViewService implements LoggerAwareInterface
             ->leftJoin('g.team1', 't1')
             ->where('g.contest = :contestId')
             ->andWhere('g.status = :gameStatus')
+            ->andWhere('(g.team0Score > 0 OR g.team1Score > 0)')
             ->orderBy('g.startedAt', 'DESC')
             ->setParameters(
                 [

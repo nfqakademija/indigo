@@ -122,12 +122,16 @@ hello: Hello
 error: Error!
 notice: Notice!
 warning: Warning!
+to_dashboard: dashboard
 
 web:
   error:
+    403:
+       title: Oooops, looks like you don't have permission to access the requested object!
+       message: If you think this is server error, let us know about this error.
     404:
       title: Oooops, looks like this page doesn't exist!
-      message: Please go back to dashboard.
+      message: Please go back to
     500:
       title: Oooops, it looks like something is not working!
       message: Please let us know about this error. We would like to fix this problem.
