@@ -6,6 +6,25 @@
     {#<link rel="stylesheet" href="{{ asset('bundles/indigomain/css/bootstrap.min.css') }}" />#}
     <link rel="stylesheet" href="{{ asset('bundles/indigoui/css/main.css') }}" />
 
+    <style>
+        html, body {
+            min-height: auto;
+            height: auto;
+            width: 179x;
+            font-family: Candara;
+            color: white;
+            background-color: #fff;
+        }
+
+        #widget-state {
+            line-height: 47px;
+        }
+
+        #widget-container {
+            margin-top: -50px;
+        }
+    </style>
+
     <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
     {#<script src="{{ asset('bundles/indigomain/js/bootstrap.min.js') }}"></script>#}
 
@@ -55,21 +74,21 @@
 </script>
 
 
-<body class="clear">
+<body>
 
 {#{% block content%}#}
 
-    <div  id="widget-container" style=" border: none;" >
-            <span id="widget-title" style="display: none; color: #fc8404;">  </span>
-            <div id="widget-left-bar" style=" border: solid #fc8404 1px;">
-                <span id="widget-score"> 0 : 0 </span>
-            </div>
-            <div id="widget-right-bar">
-                <span id="widget-preloader" style="position: absolute; width: 50%; height: 100%; background: url({{ asset('bundles/indigoui/images/preloader-rect.gif') }}) no-repeat center"> </span>
-
-                <span id="widget-state" class="text-xlg" style="display: none; line-height: 40px">  </span>
-            </div>
+<div  id="widget-container" style=" border: none;" >
+    <span id="widget-title" style="display: none; color: #fc8404;">  </span>
+    <div id="widget-left-bar" style=" border: solid #fc8404 1px;">
+        <span id="widget-score"> 0 : 0 </span>
     </div>
+    <div id="widget-right-bar" style="position:relative">
+        <span id="widget-preloader" style="position: absolute; width: 100%; height:100%; background: url({{ asset('bundles/indigoui/images/preloader-rect.gif') }}) no-repeat center"> </span>
+
+        <span id="widget-state" class="text-xlg" style="display: none;">  </span>
+    </div>
+</div>
 
 </body>
 
