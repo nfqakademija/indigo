@@ -8,7 +8,7 @@
 {% block script %}
 
     {{ parent() }}
-
+    <script src="http://code.highcharts.com/highcharts.js"></script>
     <script>
         $(document).ready(function()
         {
@@ -60,7 +60,7 @@
             }, null, document.getElementsByTagName('head')[0]);
 
             Highcharts.theme = {
-                colors: ["#2b908f", "#90ee7e", "#f45b5b", "#7798BF", "#aaeeee", "#ff0066", "#eeaaee",
+                colors: ["#006b8a", "#90ee7e", "#f45b5b", "#7798BF", "#aaeeee", "#ff0066", "#eeaaee",
                     "#55BF3B", "#DF5353", "#7798BF", "#aaeeee"],
                 chart: {
                     backgroundColor: {
@@ -266,23 +266,32 @@
                     type: 'column'
                 },
                 title: {
-                    text: 'Total game duration per day'
+                    text: 'Total games per last 24 hours'
                 },
                 xAxis: {
-                    categories: ['1', '2', '3', '4', '5']
+                    title: {
+                        text: 'Hour'
+                    },
+                    categories: [
+            {%  for row in contestStat.statsGamesPerHour %}
+               {{ row.game_hour }},
+            {%  endfor %}
+            ]
                 },
                 yAxis: {
                     title: {
-                        text: 'hours'
+                        text: 'games count'
                     }
                 },
                 credits: {
-
-                    enabled: false
+                    enabled: true
                 },
                 series: [{
-                    name: 'days',
-                    data: [5, 3, 4, 7, 2]
+                    name: '"{{ currentContest.title }}" games ',
+                    data: [
+                        {%  for row in contestStat.statsGamesPerHour %}
+                        {{ row.games }},
+                        {%  endfor %}]
                 }]
         });
 
@@ -295,7 +304,6 @@
 {% endblock %}
 
 {% block content %}
-
     <div class="container-fluid">
 
         <div class="row">
