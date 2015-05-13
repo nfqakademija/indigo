@@ -67,22 +67,22 @@ class GameTimeRepository extends EntityRepository
         if ($playerId = $player->getId()) {
             try {
 
-
                 $qb = $this->_em->createQuery("
                     SELECT gt
-                     FROM Indigo\GameBundle\Entity\GameTime gt
+                    FROM Indigo\GameBundle\Entity\GameTime gt
                     WHERE
-                    gt.timeOwner = :playerId
+                        gt.timeOwner = :playerId
                         AND gt.confirmed = :ack
+                        AND gt.action = :action
                         AND (gt.finishAt > CURRENT_TIMESTAMP())
                     ORDER BY gt.startAt ASC
-
-                    ")->setMaxResults(1)
+                    ")
+                    ->setMaxResults(1)
                     ->setParameters([
+                        'action' => 1,
                         'ack' => 0,
                         'playerId' => $playerId,
                     ]);
-
 
                 $reservation = $qb->getSingleResult();
 

@@ -42,7 +42,7 @@ class UserType extends AbstractType
                     'placeholder' => 'user.input_your_name'
                 ]
             ])
-            /*->add('email', 'email')*/
+            ->add('email', 'email')
             ->add('pictureFile', 'file', [
                 'label' => 'user.profile_picture',
                 'required' => false,
