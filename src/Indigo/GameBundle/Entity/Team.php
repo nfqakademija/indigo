@@ -8,7 +8,7 @@ use Indigo\ContestBundle\Entity\Contest;
 /**
  * Team
  *
- * @ORM\Table(name="teams")
+ * @ORM\Table(name="teams",indexes={@ORM\Index(name="isSingle", columns={"is_single"})})
  * @ORM\Entity(repositoryClass="Indigo\GameBundle\Entity\TeamRepository")
  */
 class Team
