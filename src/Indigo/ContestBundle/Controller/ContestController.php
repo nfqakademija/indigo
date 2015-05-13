@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Indigo\ContestBundle\Entity\Contest;
 use Indigo\ContestBundle\Form\ContestType;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @Route("/contest")
@@ -35,6 +36,7 @@ class ContestController extends Controller
 
         return array(
             'entities' => $entities,
+            'user_id' => $this->getUser()->getId()
         );
     }
 
@@ -140,6 +142,7 @@ class ContestController extends Controller
         return array(
             'entity' => $entity,
             'delete_form' => $deleteForm->createView(),
+            'user_id' => $this->getUser()->getId()
         );
     }
 
@@ -156,8 +159,10 @@ class ContestController extends Controller
 
         $entity = $em->getRepository('IndigoContestBundle:Contest')->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Contest entity.');
+        $userId = $this->getUser()->getId();
+
+        if (!$entity || $entity->getUser() != (string)$userId) {
+            throw new NotFoundHttpException();
         }
 
         $editForm = $this->createEditForm($entity);
@@ -169,7 +174,8 @@ class ContestController extends Controller
         return array(
             'entity' => $entity,
             'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView()
+            'delete_form' => $deleteForm->createView(),
+            'user_id' => $userId
         );
 
     }
@@ -210,8 +216,10 @@ class ContestController extends Controller
 
         $entity = $em->getRepository('IndigoContestBundle:Contest')->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Contest entity.');
+        $userId = $this->getUser()->getId();
+
+        if (!$entity || $entity->getUser() != (string)$userId) {
+            throw new NotFoundHttpException();
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -244,6 +252,16 @@ class ContestController extends Controller
      */
     public function deleteAction(Request $request, $id)
     {
+        $em = $this->getDoctrine()->getManager();
+
+        $userId = $this->getUser()->getId();
+
+        $entity = $em->getRepository('IndigoContestBundle:Contest')->find($id);
+
+        if (!$entity || $entity->getUser() != (string)$userId) {
+            throw new NotFoundHttpException();
+        }
+
         if (Contest::OPEN_CONTEST_ID != $id){
             if ($request->isMethod("DELETE")) {
                 $form = $this->createDeleteForm($id);
