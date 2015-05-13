@@ -17,7 +17,6 @@ use Indigo\UserBundle\Form\UserType;
  */
 class UserController extends Controller
 {
-
     /**
      * Lists all User entities.
      *
@@ -181,7 +180,7 @@ class UserController extends Controller
      * @Method({"PUT", "GET"})
      * @Template("IndigoUserBundle:User:edit.html.twig")
      */
-    public function updateAction(Request $request, $id)
+    public function updateAction(Request $request, EncoderFactoryInterface $ef, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -197,6 +196,7 @@ class UserController extends Controller
 
         if ($editForm->isValid()) {
             $entity->uploadPicture();
+
             $em->flush();
 
             return $this->redirect($this->generateUrl('user_edit', array('id' => $id)));
