@@ -9,7 +9,6 @@ html, body {
   //@include bg-grad();
 }
 
-
 #wrapper {
   position: relative;
   min-width: 100%;
@@ -34,6 +33,11 @@ html, body {
 .clear
 {
   background: white !important;
+}
+
+.bg-gradient
+{
+  @include bg-grad();
 }
 
 .title{
@@ -69,8 +73,6 @@ html, body {
   background-color: rgba(0,0,0,0.4);
   font-size: 5em;
   @include border-radius(2px);
-
-  box-shadow: 0 0 15px -2px white;
 }
 
 .score-font
@@ -207,6 +209,16 @@ html, body {
     font-size: large;
   }
 
+  #contest-title
+  {
+    font-size: xx-large;
+  }
+
+  #ajax-table-status
+  {
+    font-size: x-large;
+  }
+
 }
 
 @media screen  and (max-width: 600px) {
@@ -215,7 +227,7 @@ html, body {
   .field {
 
    .bg {
-      max-width: 400px;
+      max-width: 300px;
       margin: 0 auto;
     }
     .player {
@@ -233,6 +245,17 @@ html, body {
   {
     font-size: large;
   }
+
+  #contest-title
+  {
+    font-size: 2em;
+  }
+
+  #ajax-table-status
+  {
+    font-size: 1.6em;
+  }
+
 
 }
 
@@ -668,16 +691,27 @@ a:hover{
 /*  */
 
 .stat-panel {
-  background: transparent !important;
   margin-bottom: 4px !important;
+}
 
-  .stat-panel-item
-  {
-    height: 100%;
-    padding: 10px;
 
-  }
 
+
+.reserv-item-cont
+{
+  height: 180px;
+  padding: 15px;
+  overflow: hidden;
+}
+
+.reserv-item-left
+{
+  @include border-left-round(20px);
+}
+
+.reserv-item-right
+{
+  @include border-right-round(20px);
 }
 
 .contest-block {
@@ -903,6 +937,30 @@ a:hover{
     color: #363436;
     text-align: center;
   }
+}
 
+/* LiveView dashboard button */
+.dashboard-link {
+  display: block;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 120px;
+  height: 40px;
+  background-color: rgba(0, 0, 0, 0.21);
+  text-align: center;
+  line-height: 40px;
+  color: rgba(255, 255, 255, 0.35);
 
+  &:hover
+  {
+    background-color: rgba(71, 71, 71, 0.10);
+  }
+
+  &:visited,
+  &:link,
+  &:active
+  {
+    text-decoration: none;
+  }
 }

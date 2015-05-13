@@ -1,0 +1,18 @@
+{% extends 'IndigoUIBundle:Share:_base.html.twig' %}
+
+{% block profile %}{% endblock %}
+
+{% block content %}
+    <div class="error-page">
+        <div class="row">
+            <div class="large-12 columns">
+                <div class="alert-box atention-message col-sm-8 col-sm-offset-2">
+                    <span class="sprite sprite-status-atention"></span>
+                    <img src="{{ asset('bundles/indigomain/images/error_500.png') }}" class="col-xs-12"/>
+                    <h1 class='text-center'>{{ 'web.error.500.title'|trans }}</h1>
+                    <p class='text-center'>{{ 'web.error.500.message'|trans }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

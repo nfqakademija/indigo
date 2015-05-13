@@ -18,9 +18,9 @@ user:
   email: E-mail address
   reg_date: Registration date
   no_picture: No picture uploaded
-  no_name: Name not available
-  no_username: Username not available
-  no_cardid: Card ID not available
+  no_name: Name was not specified
+  no_username: Username was not specified
+  no_cardid: Card ID was not specified
   support: Support
 
   #Login
@@ -34,7 +34,7 @@ user:
   title:
     change_password: Change your password
     login: Login to account
-    create_acc: Create an account
+    create_acc: Create new account
   form:
     enter_username_or_email: Your username or email adress
     password_recovery.success: You successfully changed password
@@ -59,7 +59,7 @@ create_contest:
     contest_creation: Contest creation
     contest_title: Title
     contest_logo: Logo
-    contest_privacy: Privacy contest (only with invitation)
+    contest_privacy: Private contest (only with invitation)
     contest_type: Type
     contest_type.team: Team contest
     contest_type.single: Single player contest
@@ -83,13 +83,12 @@ time_reservation:
   reserving_this_moment: Another player reserving this date. At the moment you can't choose it
   time_passed: You can't reserve this date anymore
   same_time: In the same time in other contest you already have reserved time.
-  your_time: You had booked this time
+  your_time: Your reserved time
   choose_time: Select your preferred time
   doesnt_exist: Contest doesn't exist!
   success: You have reserved time!
   deleted: Time reservation was deleted
   not_deleted: Time reservation wasn't deleted
-
 
 #Global
 yes: Yes
@@ -99,10 +98,10 @@ delete: Delete
 edit: Edit
 back_to_the_list: Back to the list
 update: Update
-create_new_contest: Create a new entry
+create_new_contest: Create new match
 creator: Creator
 actions: Actions
-contest_privacy: Contest privacy
+contest_privacy: Privacy
 contest_list: Contest list
 show: Show
 period: Period
@@ -113,13 +112,26 @@ prize: Prize
 prize_photo: Prize photo
 optiona: optional
 add_prize: Add prize
-no_prize_photo: No uploaded photo for this prize
+no_prize_photo: No photo uploaded for this prize
 no_prize: Prize not specified
 confirm: Confirm
 smart_table: Smart table
 ask_for_delete: Are you sure want to delete it?
 change: Change
-hello: hello
+hello: Hello
 error: Error!
 notice: Notice!
 warning: Warning!
+to_dashboard: dashboard
+
+web:
+  error:
+    403:
+       title: Oooops, looks like you don't have permission to access the requested object!
+       message: If you think this is server error, let us know about this error.
+    404:
+      title: Oooops, looks like this page doesn't exist!
+      message: Please go back to
+    500:
+      title: Oooops, it looks like something is not working!
+      message: Please let us know about this error. We would like to fix this problem.

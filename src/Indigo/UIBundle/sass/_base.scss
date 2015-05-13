@@ -35,8 +35,8 @@ $color-blue-m   : #006b8a;
 $color-blue-d   : #005067;
 $color-blue-l   : #007ea2;
 $color-orange-l : #f16c00;
-$color-reserved : rgba(114, 0, 10, 0.40);
-$color-not-reserved : rgba(44, 44, 47, 0.40);
+$color-reserved : rgba(255, 0, 0, 0.24);
+$color-not-reserved : rgba(0, 0, 0, 0.24);
 
 /* Font size */
 
@@ -86,6 +86,18 @@ $color-not-reserved : rgba(44, 44, 47, 0.40);
   background-image: url($url);
   background-repeat: no-repeat;
   background-size: contain;
+}
+
+@mixin border-left-round($radius)
+{
+  border-top-left-radius: $radius;
+  border-bottom-left-radius: $radius;
+}
+
+@mixin border-right-round($radius)
+{
+  border-top-right-radius: $radius;
+  border-bottom-right-radius: $radius;
 }
 
 

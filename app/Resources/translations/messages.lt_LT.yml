@@ -32,8 +32,8 @@ user:
   sign_up_now: Padaryk tai dabar
   not_member: Dar neužsiregistravęs ?
   title:
-    change_password: Pakeisti slaptažodį
-    login: Prisijungti
+    change_password: Pakeiskite slaptažodį
+    login: Prisijungti prie paskyros
     create_acc: Sukurti naują paskyrą
   form:
     enter_username_or_email: Jūsų slapyvardis arba el.pašto adresas
@@ -76,7 +76,7 @@ create_contest:
     created: Turnyras sukurtas sėkmingai!
 
 #TimeReservation
-time_reservation: Laiko rezervacija
+time_reservation:
   time_reservation: Laiko rezervacija
   not_selected: Nepasirinkote rezervacijos laiko
   table_reserved: Stalas jau užrezervuotas
@@ -122,3 +122,16 @@ hello: Sveiki
 error: Klaida!
 notice: Pranešimas!
 warning: Įspėjimas!
+to_dashboard: pagrindinį puslapį
+
+web:
+  error:
+    403:
+       title: Oooops, atrodo jog jūs neturite teisės įeiti į šį puslapį!
+       message: Jei manote, kad tai serverio klaida, prašome informuoti mus apie šią klaidą.
+    404:
+      title: Oooops, atrodo jog šis puslapis neegzistuoja!
+      message: Prašome grįžti į
+    500:
+      title: Oooops, atrodo, jog kažkas neveikia!
+      message: Prašome informuoti mus apie šią klaidą. Mes norime ją ištaisyti.
