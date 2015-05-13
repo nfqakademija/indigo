@@ -138,17 +138,15 @@ class UserController extends Controller
         $entity = $em->getRepository('IndigoUserBundle:User')->find($id);
 
         if (!$entity || $id != $this->getUser()->getId()) {
+
             throw $this->createNotFoundException('Unable to find User entity.');
         }
-
         $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
 
-        return array(
+        return [
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        );
+            'edit_form'   => $editForm->createView()
+        ];
     }
 
     /**
@@ -180,7 +178,7 @@ class UserController extends Controller
      * @Method({"PUT", "GET"})
      * @Template("IndigoUserBundle:User:edit.html.twig")
      */
-    public function updateAction(Request $request, EncoderFactoryInterface $ef, $id)
+    public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -190,12 +188,17 @@ class UserController extends Controller
             throw $this->createNotFoundException('Unable to find User entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+
             $entity->uploadPicture();
+
+            /** @var User $entity */
+            $encoder = $this->get('security.encoder_factory')->getEncoder($entity);
+            $encoded = $encoder->encodePassword($entity->getPassword(), $entity->getSalt());
+            $entity->setPassword($encoded);
 
             $em->flush();
 
@@ -204,8 +207,8 @@ class UserController extends Controller
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'edit_form'   => $editForm->createView()
+
         );
     }
     /**
