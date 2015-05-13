@@ -222,10 +222,6 @@
                 var dateNow = (new Date().getTime()) / 1000; //timestamp
                 var fieldDate = $(this).data('time') + {{ time_interval }} * 60; //timestamp
 
-                /*Disable button if time now are bigger than past time.*/
-                if(dateNow > fieldDate)
-                 $(this).addClass('bg-danger').attr({'title' : '{{ 'time_reservation.time_passed'|trans }}'});
-
                 for (var i = 0; i < dataArray.length; i++) {
                     var finishAtStringFromArraySplit = dataArray[i]['finishAt']['date'].split('.');
                     var finishAtStringToNumberFromArray = (new Date(finishAtStringFromArraySplit[0].replace(/-/g, '/')).getTime() / 1000);
@@ -238,6 +234,8 @@
                                     $(this).addClass('bg-success').attr({'title': '{{ 'time_reservation.your_time'|trans }}'});
                                 else
                                     $(this).addClass('bg-success').attr({'title': '{{ 'time_reservation.same_time'|trans }}'});
+                            }else{
+                                $(this).addClass('bg-danger').attr({'title': '{{ 'time_reservation.table_reserved'|trans }}'});
                             }
                         } else if (fieldDate == finishAtStringToNumberFromArray && action == 0) {
                             $(this).removeClass('bg-success bg-danger').attr({'title': ''});
