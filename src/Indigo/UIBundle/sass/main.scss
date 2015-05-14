@@ -64,6 +64,13 @@ html, body {
   color: $color-orange-l;
 }
 
+.score-container
+{
+  width: 80%;
+  height: 100px;
+  display: inline-block;
+}
+
 .score
 {
   position: relative;
@@ -72,7 +79,21 @@ html, body {
   width: 12%;
   background-color: rgba(0,0,0,0.4);
   font-size: 5em;
-  @include border-radius(2px);
+  @include border-radius(5px);
+}
+
+.score-limit
+{
+  left: 50%;
+  margin-left: -20px;
+  margin-top: -35px;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background-color: rgba(213, 128, 32, 0.97);
+  display: block;
+  line-height: 40px;
+  border-radius: 5px;
 }
 
 .score-font
@@ -96,8 +117,6 @@ html, body {
 
 .field {
   position: relative;
-  top: -20px;
-
     .player {
       width: 120px;
       height: 155px;
