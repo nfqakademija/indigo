@@ -146,7 +146,7 @@ class AuthController extends Controller
 
                  $newHash = $this->generatePasswordResetHash($remindTo);
                  $currentResetPassword = $em->getRepository('IndigoUserBundle:ResetPassword')->findOneByUser($user->getId());
-
+                 /** @var ResetPassword  $currentResetPassword*/
                  if (is_null($currentResetPassword)) {
 
                      $resetPassword = new ResetPassword();
@@ -158,6 +158,7 @@ class AuthController extends Controller
                  } else {
 
                      $currentResetPassword->setHash($newHash);
+                     $currentResetPassword->setActive(1);
                      $em->flush();
                  }
 
@@ -174,16 +175,17 @@ class AuthController extends Controller
                  $mail_text = $template->renderBlock('mail_text', ['link' => $link]);
                  $body_html = $template->renderBlock('body_html', ['link' => $link]);
 
+
                  $mailer = $this->get('mailer');
                  $message = $mailer->createMessage()
                      ->setSubject($subject)
-                     ->setFrom('info@indigo.dev')
+                     ->setFrom($this->container->getParameter('mailer_email'))
                      ->setTo($remindTo)
                      ->setBody($body_html, 'text/html')
                      ->addPart($mail_text, 'text/plain');
                  $mailer->send($message);
 
-                 $this->get('session')->getFlashBag()->add('notice', $this->get('translator')->trans('user.notice.reset_password_sent'));
+                 $this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('user.notice.reset_password_sent'));
              }
          }
 
@@ -193,7 +195,7 @@ class AuthController extends Controller
     /**
      * @Route("/password_recovery/{hash}", name="password_recovery_action")
      */
-    public function passwordRecoveryAction($hash, Request $request)
+    public function passwordRecoveryAction(Request $request, $hash)
     {
 
         $em = $this->get('doctrine.orm.entity_manager');
@@ -203,6 +205,7 @@ class AuthController extends Controller
         ]);
 
         if (is_null($resetPasswordEntity)) {
+
             $this->get('session')->getFlashBag()->add('notice', $this->get('translator')->trans('user.error.password_recovery.invalid_hash'));
             return $this->redirectToRoute('login_action');
         }
