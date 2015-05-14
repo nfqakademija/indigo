@@ -127,6 +127,10 @@ class ContestStatService implements LoggerAwareInterface
             }
 
         }
+        if ($stats = $this->getGamesPerDay($contestId)) {
+
+            $contestStatModel->setStatsGamesPerHour($stats);
+        }
 
         return $contestStatModel;
     }
@@ -174,5 +178,31 @@ class ContestStatService implements LoggerAwareInterface
         }
 
         return ($gd > $ts ? $gd : $ts);
+    }
+
+    private function getGamesPerDay($contestId)
+    {
+        $result = new \ArrayIterator();
+        $qb = $this->em->createQuery("
+          SELECT count(g.id) games, HOUR(g.startedAt) game_hour, DATE_FORMAT(g.startedAt, '%d%H') groupHour
+            FROM Indigo\GameBundle\Entity\Game g
+            WHERE (g.contestId = :contestId AND g.startedAt >  :s)
+            GROUP BY groupHour
+            ORDER BY groupHour ASC")
+            ->setParameters([
+                'contestId' => (int)$contestId,
+                's' => date('Y-m-d',time() - 3600 * 24).'%'
+            ]);
+
+        $stats = $qb->getResult();
+        if ($stats !== null) {
+
+            foreach ($stats as $rowStat) {
+
+                $result->offsetSet($rowStat['game_hour'], $rowStat);
+            }
+        }
+        return $result;
+
     }
 }

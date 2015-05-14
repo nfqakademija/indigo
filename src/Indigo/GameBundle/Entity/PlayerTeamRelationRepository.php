@@ -5,7 +5,6 @@ namespace Indigo\GameBundle\Entity;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 use Indigo\UserBundle\Entity\User;
-use Indigo\GameBundle\Entity\Team;
 
 /**
  * PlayerTeamRelationRepository

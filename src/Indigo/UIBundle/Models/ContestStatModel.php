@@ -36,13 +36,17 @@ class ContestStatModel implements \JsonSerializable
      */
     private $topTeams;
 
-
+    /**
+     * @var ArrayIterator
+     */
+    private $statsGamesPerHour;
 
 
 
     public function __construct()
     {
         $this->topTeams = new \ArrayIterator();
+        $this->statsGamesPerHour = new \ArrayIterator();
     }
 
     /**
@@ -213,5 +217,24 @@ class ContestStatModel implements \JsonSerializable
         return $this;
     }
 
+    /**
+     * @return ArrayIterator
+     */
+    public function getStatsGamesPerHour()
+    {
+        return $this->statsGamesPerHour;
+    }
 
+    /**
+     * @param ArrayIterator $statsGamesPerHour
+     */
+    public function setStatsGamesPerHour($statsGamesPerHour)
+    {
+        $this->statsGamesPerHour = $statsGamesPerHour;
+    }
+
+    public function addStatsGamesPerHour($index, $statGamePerHour)
+    {
+        $this->statsGamesPerHour->offsetSet($index, $statGamePerHour);
+    }
 }

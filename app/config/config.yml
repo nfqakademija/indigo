@@ -78,6 +78,8 @@ doctrine:
             string_functions:
                 TIMEDIFF: Indigo\GameBundle\DBAL\TimeDiff
                 TIME_TO_SEC: Indigo\GameBundle\DBAL\TimeToSec
+                DATE_FORMAT: Indigo\GameBundle\DBAL\DateFormat
+                HOUR: Indigo\GameBundle\DBAL\Hour
 # Swiftmailer Configuration
 swiftmailer:
     delivery_address: info@indigo.dev
