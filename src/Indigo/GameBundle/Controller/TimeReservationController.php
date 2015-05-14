@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Indigo\GameBundle\Entity\GameTime;
 use Indigo\ContestBundle\Entity\Contest;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TimeReservationController extends Controller
 {
@@ -19,12 +20,6 @@ class TimeReservationController extends Controller
      */
     public function indexAction($contest_id, $timestamp)
     {
-        $errorMsg = false;
-        if(!$this->checkingIfContestExist($contest_id)) {
-            $this->addFlash('danger', 'time_reservation.doesnt_exist');
-            $errorMsg = true;
-        }
-
         $entity = new GameTime();
 
         $form = $this->createFormBuilder($entity)
@@ -59,19 +54,23 @@ class TimeReservationController extends Controller
             ])
             ->getForm();
 
-        if (!$timestamp || $timestamp < strtotime(date('Y-m-d H:i:s')))
-            $timestamp = strtotime(date('Y-m-d H:i:s'));
-
         $contest = $this->getDoctrine()->getManager()->getRepository('IndigoContestBundle:Contest')->findById($contest_id);
         $contest_title = $contest[0]->getContestTitle();
+        $contest_finish_time = (array)$contest[0]->getContestEndDate();
+        $contest_finish_time = $contest_finish_time['date'];
+        $contest_start_time = (array)$contest[0]->getContestStartingDate();
+        $contest_start_time = $contest_start_time['date'];
+        if(!$contest || strtotime($contest_finish_time) < $timestamp || strtotime($contest_start_time) > $timestamp) {
+            throw new NotFoundHttpException();
+        }
 
         return array(
-            'errorMsg' => $errorMsg,
             'contest_id' => $contest_id,
             'timestampPagination' => $timestamp,
             'user_id' => $this->getUser()->getId(),
             'form' => $form->createView(),
             'contest_title' => $contest_title,
+            'contest_finish_time' => $contest_finish_time,
             'datePickerForm' => $datePickerForm->createView()
         );
     }
@@ -239,11 +238,8 @@ class TimeReservationController extends Controller
         $em->flush();
     }
 
-    /**
-     * @param $contestId
-     * @return Contest
-     */
-    private function checkingIfContestExist($contestId){
+    private function checkingIfContestExist($contestId)
+    {
         $em = $this->getDoctrine()->getManager();
         $contest = $em->getRepository('IndigoContestBundle:Contest')->findOneBy(['id' => $contestId]);
 
