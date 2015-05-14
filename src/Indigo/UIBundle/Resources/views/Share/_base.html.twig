@@ -10,7 +10,6 @@
     {% endblock %}
 
     <title>{% block title %}{% endblock %} Indigo </title>
-
 </head>
 <body>
 
@@ -21,43 +20,67 @@
 
     <div class="container-fluid">
         <div class="row padding-sm valign-middle">
+            <div class="col-xs-12 col-sm-8 col-sm-offset-2">
 
-            <div class=" col-sm-12 col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2" style="min-width: 500px">
-
-                <div class="nav-left">
+                <div class="nav-left hidden-xs hidden-sm col-md-8">
 
                     <div class="btn-group btn-group-lg" style="top: 5px;">
                         <a class="btn btn-contest-select" href="{{ url('indigo_ui_dashboard', {id : 1})  }}">Open contest</a>
 
-                        <div class="btn-group">
+                        {% if app.user and is_granted('ROLE_ADMIN') %}
+                        <div class="btn-group btn-group-lg">
+                            <a class="btn btn-default" href="{{ url("contest") }}" title="Create new match">Create new match</a>
+                        {% endif %}
+                            <div class="btn-group btn-group-lg">
                             <button type="button" class="btn btn-contest-select dropdown-toggle" data-toggle="dropdown">
                                 <img id="preloader" src="{{ asset('bundles/indigoui/images/preloader.gif') }}" style="width: 15px; height: 15px; margin-left: -5px; margin-right: 5px;">
                                 Select other contest &nbsp;<i class="fa fa-caret-down"></i></button>
                             <ul class="dropdown-menu">
-
                             </ul>
+                        {% if app.user and is_granted('ROLE_ADMIN') %}
+                            </div>
+                        {% endif %}
                         </div>
                     </div>
+                </div>
 
+                <div class="col-xs-6 col-sm-5 hidden-md hidden-lg">
+                    <div class="btn-group btn-group-lg">
+                        <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></button>
+
+                        {% if app.user and is_granted('ROLE_ADMIN') %}
+                            <div class="btn-group btn-group-lg">
+                                <a class="btn btn-default hidden-xs" href="{{ url("contest") }}" title="Create new match"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+                        {% endif %}
+                        <div class="btn-group btn-group-lg">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span></button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ url('indigo_ui_dashboard', {id : 1})  }}">Open contest</a></li>
+                                <li class="divider"></li>
+                            </ul>
+                        </div>
+                        {% if app.user and is_granted('ROLE_ADMIN') %}
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
 
                 {% block profile %}
-                    <div class="nav-right">
+                    <div class="nav-right col-xs-6 col-sm-7 col-md-4">
 
                         <span class="nav-user-icon">
-                            <a href="{{ url('user_edit',{id: app.security.getToken().getUser().getId() }) }}" >
+                            <a href="{{ url('user_edit',{id: app.security.getToken().getUser().getId() }) }}" title="{{ app.security.getToken().getUser().getUsername() }}" >
                                 <img src="{{ asset(app.security.getToken().getUser().getPicture()) }}" class="img-circle icon-xs border-thin icon-narrow">
                             </a>
                         </span>
 
                         <span class="nav-user-info">
-                            <span class="text-sm">{{ app.security.getToken().getUser().getUsername() }} </span></br>
+                            <span class="text-sm user-name">{{ app.security.getToken().getUser().getUsername() }} </span></br>
                             <a class="text-sm nav-logout" href="{{ url('logout_action') }}"> Logout </a>  </span>
                         </span>
 
                     </div>
                 {% endblock %}
-
             </div>
         </div>
     </div>
@@ -82,6 +105,10 @@
 
 
     <script type="text/javascript">
+
+        $(document).ready(function() {
+            $('[date-toggle="dropdown"]').dropdown();
+        });
 
         $(document).ready(function()
         {

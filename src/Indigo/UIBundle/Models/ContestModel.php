@@ -47,10 +47,15 @@ class ContestModel implements \JsonSerializable{
      */
     private  $dateTo;
 
+    /**
+     * @var int
+     */
+    private $limit;
 
     public function __construct()
     {
         $this->description = " ";
+        $this->limit = 10;
     }
 
     /**
@@ -63,7 +68,8 @@ class ContestModel implements \JsonSerializable{
             "description" => $this->description,
             "startDate" => $this->startDate,
             "endData" => $this->endData,
-            "imageUrl" => $this->imageUrl
+            "imageUrl" => $this->imageUrl,
+            "limit" => $this->limit
         ];
     }
 
@@ -193,6 +199,22 @@ class ContestModel implements \JsonSerializable{
     public function setDateTo($dateTo)
     {
         $this->dateTo = $dateTo;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLimit()
+    {
+        return $this->limit;
+    }
+
+    /**
+     * @param int $limit
+     */
+    public function setLimit($limit)
+    {
+        $this->limit = $limit;
     }
 
 

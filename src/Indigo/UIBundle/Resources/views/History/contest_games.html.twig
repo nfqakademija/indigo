@@ -28,7 +28,7 @@
                         {% for game in pagination %}
 
 
-                                <tr {% if game.isStat == false %} style="background-color: rgba(255, 103, 95, 0.60);" {%  endif %} >
+                                <tr {% if game.isStat == false %} class="not-stat" {%  endif %} >
                                     <td>
                                         <div style="display: inline-block" >
                                             {% for picture in game.team0playersPictures %}
@@ -52,8 +52,9 @@
 
                                     </td>
 
-                                    <td class="text-xl text-dark-gray" style="text-align: center">
-                                        {{ game.startedAt|date("m.d. H : i ")}}
+                                    <td class="text-bg text-dark-gray" style="text-align: center">
+                                        {{ game.startedAt|date("Y-m-d")}} <br />
+                                        {{ game.startedAt|date("H : i ")}}
                                     </td>
 
                                     <td>

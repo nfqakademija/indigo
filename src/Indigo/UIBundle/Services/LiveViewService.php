@@ -106,8 +106,10 @@ class LiveViewService
 
                     if($contestEntity)
                     {
+                        $contest->setLimit(0);
                         $contest->setId($contestEntity->getId());
                         $contest->setTitle($contestEntity->getContestTitle());
+                        $contest->setLimit($contestEntity->getScoreLimit());
                         //$contest->setDescription($contestEntity->getContestDescription());
                         $contest->getStartDate($contestEntity->getContestStartingDate());
                         $contest->getEndData($contestEntity->getContestEndDate());
@@ -239,7 +241,9 @@ class LiveViewService
         $qb = $this->em->getRepository('IndigoGameBundle:GameTime')->createQueryBuilder('p');
         $qb->where('p.startAt = :time')
             ->andWhere('p.finishAt >  :time')
+            ->andWhere('p.action =  :action')
             ->setParameter('time', $time)
+            ->setParameter('action', 1)
             ->orderBy('p.finishAt', 'DESC');
 
         return $qb->getQuery()->getArrayResult();

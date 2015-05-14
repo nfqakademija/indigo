@@ -34,16 +34,6 @@
                     <h3 class="panel-title"><strong>{{ 'time_reservation.choose_time'|trans }}</strong></h3>
                 </div>
                 <div class="panel-body">
-                    <div class="form-group col-xs-12">
-                        {% for flashMessage in app.session.flashbag.get('danger') %}
-                            <div class="flash-danger alert alert-danger" role="alert">
-                                <strong>{{ flashMessage }}</strong>
-                            </div>
-                        {% endfor %}
-                    </div>
-
-                    {% if not errorMsg %}
-
                     <div class="col-xs-12">
 
                         <div class="form-group">
@@ -85,7 +75,12 @@
                                             {% set i_second = i+1 %}
                                         {% endif %}
 
-                                        <td id="{{ i }}" data-time="{{ date(timestampPagination|date("Y-m-d") ~ i ~ ':' ~ first_interval_number).timestamp }}">
+                                        {% set cell_class = '' %}
+
+                                        {% if date(timestampPagination|date("Y-m-d") ~ i ~ ':' ~ first_interval_number).timestamp < date().timestamp %}
+                                            {% set cell_class = 'bg-danger' %}
+                                        {% endif %}
+                                        <td id="{{ i }}" data-time="{{ date(timestampPagination|date("Y-m-d") ~ i ~ ':' ~ first_interval_number).timestamp }}" class='{{ cell_class }}'>
                                             {{ i }}:{{ first_interval_number }} - {{ i_second }}:{{ second_interval_numberCorrected }}
                                         </td>
                                     {% endfor %}
@@ -93,7 +88,6 @@
                             {% endfor %}
                         </table>
                     </div>
-                    {% endif %}
                 </div>
             </div>
         </div>
@@ -111,16 +105,19 @@
     <script src="{{ asset('bundles/indigomain/bower_components/eternicode-bootstrap-datepicker/js/locales/bootstrap-datepicker.') }}{{ app.request.getLocale() }}.js"></script>
 
     <script>
-        $('#form_reservationDate').datepicker({
-         todayHighlight: true,
-         autoclose: false,
-         language: '{{ app.request.getLocale() }}',
-         startDate: new Date()
-         }).on('changeDate', function(ev){
-            //alert(JSON.stringify(ev));
-            //alert(new Date(ev.date).getTime()/1000);
-            var timestampPagination = new Date(ev.date).getTime()/1000+39600; //+11 hour
-            location.href = '{{ url('indigo_time_reservation', {'contest_id' : contest_id}) }}/'+timestampPagination;
+        $(document).ready(function() {
+            $('#form_reservationDate').datepicker({
+                todayHighlight: true,
+                autoclose: false,
+                language: '{{ app.request.getLocale() }}',
+                startDate: new Date(),
+                endDate: new Date('{{ contest_finish_time }}')
+            }).on('changeDate', function (ev) {
+                //alert(JSON.stringify(ev));
+                //alert(new Date(ev.date).getTime()/1000);
+                var timestampPagination = new Date(ev.date).getTime() / 1000 + 39600; //+11 hour
+                location.href = '{{ url('indigo_time_reservation', {'contest_id' : contest_id}) }}/' + timestampPagination;
+            });
         });
 
         var lastClickedTime;

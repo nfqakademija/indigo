@@ -39,6 +39,10 @@ class TeamViewModel
      */
     private $playersPictures;
 
+    /**
+     * @var integer
+     */
+    private $teamId;
 
     public function __construct()
     {
@@ -216,4 +220,22 @@ class TeamViewModel
 
         return $this;
     }
+
+    /**
+     * @return int
+     */
+    public function getTeamId()
+    {
+        return $this->teamId;
+    }
+
+    /**
+     * @param int $teamId
+     */
+    public function setTeamId($teamId)
+    {
+        $this->teamId = $teamId;
+    }
+
+
 }

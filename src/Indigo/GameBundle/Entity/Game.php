@@ -12,7 +12,7 @@ use Indigo\UserBundle\Entity\User;
 /**
  * Game
  *
- * @ORM\Table(name="games")
+ * @ORM\Table(name="games",indexes={@ORM\Index(name="status", columns={"status"}), @ORM\Index(name="isStat", columns={"is_stat"})})
  * @ORM\Entity(repositoryClass="Indigo\GameBundle\Entity\GameRepository")
  * @ORM\EntityListeners({"Indigo\GameBundle\EventListener\GamePrePersistListener"})
  */

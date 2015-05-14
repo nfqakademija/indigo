@@ -64,6 +64,13 @@ html, body {
   color: $color-orange-l;
 }
 
+.score-container
+{
+  width: 80%;
+  height: 100px;
+  display: inline-block;
+}
+
 .score
 {
   position: relative;
@@ -72,7 +79,34 @@ html, body {
   width: 12%;
   background-color: rgba(0,0,0,0.4);
   font-size: 5em;
-  @include border-radius(2px);
+  @include border-radius(5px);
+}
+
+.score-limit-title, .score-limit-valu
+{
+  display: block;
+  font-size: 0.6em;
+  line-height: 15px;
+}
+
+.score-limit-value
+{
+  font-size: 1em;
+}
+
+.score-limit
+{
+  left: 50%;
+  margin-left: -30px;
+  margin-top: -65px;
+  position: absolute;
+  width: 60px;
+  //height: 40px;
+  background-color: rgba(213, 128, 32, 0.89);
+  display: block;
+  line-height: 40px;
+  border-radius: 5px;
+  padding: 3px;
 }
 
 .score-font
@@ -96,8 +130,6 @@ html, body {
 
 .field {
   position: relative;
-  top: -20px;
-
     .player {
       width: 120px;
       height: 155px;
@@ -256,6 +288,26 @@ html, body {
     font-size: 1.6em;
   }
 
+  #not-end-msg {
+    position: relative;
+    margin: auto;
+  }
+
+  #info-message
+  {
+    font-size: small;
+  }
+
+  .win-player-img {
+    width: 100px !important;
+    height: 100px !important;
+  }
+
+  #not-end-msg
+  {
+    font-size: 2em;
+  }
+
 
 }
 
@@ -274,7 +326,7 @@ html, body {
 
   .table-status
   {
-    font-size: 2em;
+    font-size: 1.8em;
   }
 
   .status-message
@@ -644,9 +696,9 @@ html, body {
 
 .title
 {
-  font-size: 5em;
+  font-size: 3em;
   margin: 10px 0;
-
+  height: 50px;
 }
 
 .b-color-selected
@@ -793,6 +845,11 @@ a:hover{
   margin-right: -2px;
 }
 
+.top-margin
+{
+  margin-top: 4%;
+}
+
 /* Notifications */
 #not-wrapper {
   display: none;
@@ -840,6 +897,12 @@ a:hover{
 
 #player-images {
   position: relative;
+}
+
+.win-player-img
+{
+  width: 150px;
+  height: 150px;
 }
 
 
@@ -962,5 +1025,39 @@ a:hover{
   &:active
   {
     text-decoration: none;
+  }
+}
+
+
+.not-stat
+{
+  opacity: 0.4;
+  background-color: #efefef;
+}
+
+@media (max-width: 440px) {
+  .user-name{font-size: 8px !important;}
+}
+
+@media (max-width: 367px) {
+  .user-name{display: none;}
+}
+
+@media (max-width: 1110px) {
+  /* line 1004, ../../../sass/main.scss */
+  .btn-group-lg .btn {
+    font-size:14px !important;
+  }
+}
+@media (max-width: 1060px) {
+  /* line 1004, ../../../sass/main.scss */
+  .btn-group-lg .btn {
+    font-size:13px !important;
+  }
+}
+@media (max-width: 1050px) {
+  /* line 1004, ../../../sass/main.scss */
+  .btn-group-lg .btn {
+    font-size:12px !important;
   }
 }

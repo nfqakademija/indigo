@@ -26,6 +26,9 @@
     {
         setInterval(function () {
 
+            $('.teamA').transition({rotateY: '360deg'});
+            $('.teamB').transition({rotateY: '360deg'});
+
             var status = $.get( "/live/status/1", function(data) {
 
                 var json = $.parseJSON(data);
@@ -92,6 +95,16 @@
 
                 $("#scoreA").html(json.teamA.goals);
                 $("#scoreB").html(json.teamB.goals);
+
+                if(json.contest)
+                {
+                    $("#scoreLimit").text(json.contest.limit);
+                }
+                else
+                {
+                    $("#scoreLimit").text("-");
+                }
+
                 $("#player1-img").attr("src", json.teamA.player1.imageUrl + "?" + new Date().getTime());
                 $("#player2-img").attr("src", json.teamA.player2.imageUrl + "?" + new Date().getTime());
                 $("#player3-img").attr("src", json.teamB.player1.imageUrl + "?" + new Date().getTime());
@@ -156,8 +169,8 @@
             <span id="not-congrats">
                     <span id="not-end-msg" class="text-uxl font-orange-l"> CONGRATULATIONS! </span></br>
                     <span id="player-images">
-                        <img id="win-player-1" class="img-round bg-semi-we padding-md" width="150" src="#"/>
-                        <img id="win-player-2" class="img-round bg-semi-we padding-md" width="150" src="#"/>
+                        <img id="win-player-1" class="win-player-img img-round bg-semi-we padding-md" src="#"/>
+                        <img id="win-player-2" class="win-player-img img-round bg-semi-we padding-md" src="#"/>
                     </span></br>
                 <span class="text-xl"> Won the fight </span></br>
                 <span id="win-score" class="text-uxxl score-font font-orange-l">  </span></br>
@@ -171,26 +184,32 @@
             <a href={{ url('indigo_ui_dashboard', {id : 1}) }} class="dashboard-link"> My dashboard </a>
         {% endif %}
 
-    <div class="container-fluid bg-gradient">
+    <div class="container-fluid bg-gradient full-height">
         <div class="row padding-sm">
 
             <div class=" col-xs-12 col-sm-12 col-md-10 col-lg-10 col-md-offset-1 col-lg-offset-1 content">
 
-                <div>
-                    <h1 id="contest-title" class="title"> {{ contest.title}} </h1>
+                <div class="row top-margin">
+                    <span id="contest-title" class="title"> {{ contest.title}} </span><br />
+                    <span id="ajax-table-status" class="table-status"> Checking  table status... </span>
                 </div>
 
+                <div class="score-container">
+                    <div id="scoreA"  class="score score-font" > {{ teamA.goals }}  </div>
+                    <div id="scoreB" class="score score-font" >  {{ teamB.goals }} </div>
 
-                <div class="row" >
-                    <div class="col-xs-12">
-                       <span id="ajax-table-status" class="table-status"> Checking  table status... </span>
+                    <div class="score-limit score-font text-xl" >
+                        <span class="score-limit-title" > Score limit </span>
+                        <span class="score-limit-value" id="scoreLimit" >
+                        {% if (contest != null) and (contest.limit != null)  %}
+                            {{ contest.limit  }}
+                        {%  else %}
+                            -
+                        {%  endif %}
+                            </span>
                     </div>
+
                 </div>
-
-                <div id="scoreA"  class="score score-font" > {{ teamA.goals }}  </div>
-
-                <div id="scoreB" class="score score-font" >  {{ teamB.goals }} </div>
-
 
                 <div class="field">
 
@@ -223,7 +242,7 @@
 
         <div class="row">
 
-            <div class=" col-xs-4 col-sm-3 col-md-2 col-sm-offset-2 col-md-offset-3 " style="top: -40px">
+            <div class=" col-xs-4 col-sm-3 col-md-2 col-sm-offset-2 col-md-offset-3 ">
 
                 <div id="reserv-itm-cont-0"
                      class="reserv-item-cont text-center reserv-item-left
@@ -244,7 +263,7 @@
 
             </div>
 
-            <div class="col-xs-4 col-sm-3 col-md-2" style="top: -40px">
+            <div class="col-xs-4 col-sm-3 col-md-2">
 
                 <div id="reserv-itm-cont-1"
                      class="reserv-item-cont text-center
@@ -264,7 +283,7 @@
 
             </div>
 
-            <div class="col-xs-4 col-sm-3 col-md-2" style="top: -40px;">
+            <div class="col-xs-4 col-sm-3 col-md-2">
 
                 <div id="reserv-itm-cont-2"
                      class="reserv-item-cont text-center reserv-item-right
