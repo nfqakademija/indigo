@@ -184,12 +184,11 @@ class UserController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $old_entity = $this->getDoctrine()->getManager()->getRepository('IndigoUserBundle:User')->findById($id);
-        $old_password = $old_entity[0]->getPassword();
-
+        /** @var User $entity */
         $entity = $em->getRepository('IndigoUserBundle:User')->find($id);
+        $oldPassword = $entity->getPassword();
 
-        if (!$entity) {
+        if (!$entity || $entity->getId() !== $this->getUser()->getId()) {
             throw $this->createNotFoundException('Unable to find User entity.');
         }
 
@@ -207,7 +206,7 @@ class UserController extends Controller
                 $encoded = $encoder->encodePassword($entity->getPassword(), $entity->getSalt());
                 $entity->setPassword($encoded);
             }else{
-                $entity->setPassword($old_password);
+                $entity->setPassword($oldPassword);
             }
 
             $em->flush();
