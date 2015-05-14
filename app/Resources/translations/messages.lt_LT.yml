@@ -135,3 +135,9 @@ web:
     500:
       title: Oooops, atrodo, jog kažkas neveikia!
       message: Prašome informuoti mus apie šią klaidą. Mes norime ją ištaisyti.
+
+generic:
+  first: Pirmas
+  previous: Ankstesnis
+  next: Sekantis
+  last: Paskutinis

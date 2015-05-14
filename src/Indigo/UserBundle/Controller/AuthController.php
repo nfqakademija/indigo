@@ -124,7 +124,7 @@ class AuthController extends Controller
             }
         }
 
-        return [ 'form' => $form->createView() ];
+        return [ 'form' => $form->createView(), 'error_message' => '' ];
     }
 
     /**

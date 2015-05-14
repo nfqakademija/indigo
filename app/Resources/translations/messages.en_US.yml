@@ -135,3 +135,9 @@ web:
     500:
       title: Oooops, it looks like something is not working!
       message: Please let us know about this error. We would like to fix this problem.
+
+generic:
+  first: First
+  previous: Previous
+  next: Next
+  last: Last
