@@ -68,7 +68,7 @@ class EventCaptureCommand extends ContainerAwareCommand
             $eventList = $manager->getEvents(
                 $tableKey,
                 $query,
-                ($query['from-id'] == 0 ? true : false)
+                false
             );
 
             if ($eventList) {

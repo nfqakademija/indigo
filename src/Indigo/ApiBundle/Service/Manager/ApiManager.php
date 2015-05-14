@@ -57,13 +57,13 @@ class ApiManager implements LoggerAwareInterface
     /**
      * @param $tableKey
      * @param array $query
-     * @param bool $tryTestOnFailure
+     * @param bool $provideDemoEvents
      * @return \ArrayIterator|bool|TableEventList
      * @throws \Exception
      */
     public function getEvents($tableKey, array $query, $provideDemoEvents = false)
     {
-
+       
         if ($provideDemoEvents === true) {
 
             if ($eventsJSON = $this->getDemoData()) {
@@ -109,7 +109,7 @@ class ApiManager implements LoggerAwareInterface
             throw new \Exception('API seems went down...');
 
         } catch (GuzzleHttp\Exception\ConnectException $e) {
-            if ($tryTestOnFailure) {
+            if ($provideDemoEvents == true) {
                 if ($eventsJSON = $this->getDemoData()) {
 
                     $eventList = $this->parseResponseData($eventsJSON);
