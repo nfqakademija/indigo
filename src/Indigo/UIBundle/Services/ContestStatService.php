@@ -64,7 +64,7 @@ class ContestStatService implements LoggerAwareInterface
             if (!empty($playerTeamRelation)) {
 
                 foreach ($playerTeamRelation as $team) {
-
+                    /** @var PlayerTeamRelation $team */
                     if (!$teamsStats->offsetExists($position)) {
 
 
@@ -73,6 +73,10 @@ class ContestStatService implements LoggerAwareInterface
                             ->addPicture($team->getPlayer()->getPicture())
                             ->setWins($row['wins'])
                             ->setTeamRating($team->getTeam()->getTeamRatings($contestId));
+                        if ($team->getTeamId()) {
+
+                            $teamViewModel->setTeamId($team->getTeamId());
+                        }
                         $teamsStats->offsetSet($position, $teamViewModel);
                     } else {
 
