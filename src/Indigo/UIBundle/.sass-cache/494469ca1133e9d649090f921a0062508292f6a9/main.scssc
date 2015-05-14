@@ -1,6 +1,6 @@
 3.4.13 (Selective Steve)
-49ec4d3624ce377cb113cc7d839a6e41b0ced403
-o:Sass::Tree::RootNode:@template"Ü2
+811b119da849ab39bec3bccdc98fafef4c4cc56b
+o:Sass::Tree::RootNode:@template"4
 @import "base";
 
 html, body {
@@ -1043,11 +1043,30 @@ a:hover{
 
 @media (max-width: 367px) {
   .user-name{display: none;}
+}
+
+@media (max-width: 1110px) {
+  /* line 1004, ../../../sass/main.scss */
+  .btn-group-lg .btn {
+    font-size:14px !important;
+  }
+}
+@media (max-width: 1060px) {
+  /* line 1004, ../../../sass/main.scss */
+  .btn-group-lg .btn {
+    font-size:13px !important;
+  }
+}
+@media (max-width: 1050px) {
+  /* line 1004, ../../../sass/main.scss */
+  .btn-group-lg .btn {
+    font-size:12px !important;
+  }
 }:@source_rangeo:Sass::Source::Range	:@importere:"Compass::ImportOnce::Importero: Sass::Importers::Filesystem:@same_name_warningso:Set:
 @hash{ :@real_root"%/var/project/src/Indigo/UIBundle:
 @root"%/var/project/src/Indigo/UIBundle:
 @file"4/var/project/src/Indigo/UIBundle/sass/main.scss:@end_poso:Sass::Source::Position:
-@linei:@offseti:@start_poso;;i;i:@options{ :@has_childrenT;i:@children[äo:Sass::Tree::ImportNode;0;o;	;	@;@;o;;i;i;o;;i;i;@:@imported_file0;i;[ :@imported_filename"	baseo:Sass::Tree::RuleNode:
+@linei:@offseti:@start_poso;;i;i:@options{ :@has_childrenT;i:@children[ço:Sass::Tree::ImportNode;0;o;	;	@;@;o;;i;i;o;;i;i;@:@imported_file0;i;[ :@imported_filename"	baseo:Sass::Tree::RuleNode:
 @tabsi ;o;	;	@;@;o;;i	;i;o;;i	;i:@parsed_ruleso:"Sass::Selector::CommaSequence:@members[o:Sass::Selector::Sequence;![o:#Sass::Selector::SimpleSequence:@sourceso;;{ ;o;	;	0;0;o;;i;i
 ;o;;i;i:@subject0;![o:Sass::Selector::Element	:@namespace0:
 @name"	html:@filename0;i	;)0;i	o;";![o;#;$o;;{ ;o;	;	0;0;o;;i;i;o;;i;i;%0;![o;&	;'0;("	body;)0;i	;)0;i	;)0;i	;@:@selector_source_rangeo;	;	@;@;o;;i	;i;@;T:
@@ -1492,4 +1511,16 @@ o;#;$o;;{ ;o;	;	0;0;o;;i;i;o;;i;i;%0;![o;Q;R0;)0;iˇo;S
 440px;J[ ;o;	;	@;@;o;;i;i;o;;i;i;)@;i")o;O;i ;-" ;o;	;	@;@;o;;i;i ;o;;i;i;@;T;i;[o;;i ;o;	;	@;@;o;;i;i;o;;i;i;o; ;![o;";![o;#;$o;;{ ;o;	;	0;0;o;;i;i;o;;i;i;%0;![o;F;("user-name;)0;i;)0;i;)0;i;@;*o;	;	@;@;o;;i;i;@@-;T;+[".user-name;i;[o;,;i ;-o;.;-o;/;-"	none;@;0;1;o;	;	@;@;o;;i;i ;o;;i;i;i;o;	;	@;@;o;;i;i ;o;;i;i;(["display;@;2;3;4o;	;	@;@;@[-;o;;i;i;i;[ ;5o;	;	@;@;o;;i;i;@\-;P[
 "(o;.	;-o;/;-"max-width;@;0;1;o;	;	@;@;o;;i;i;o;;i;i;)@;i": o;.	;-o;G
 ;-io;H["px;@;I"
-367px;J[ ;o;	;	@;@;o;;i;i;o;;i;i;)@;i")
+367px;J[ ;o;	;	@;@;o;;i;i;o;;i;i;)@;i")o;O;i ;-" ;o;	;	@;@;o;;i;i!;o;;i;i;@;T;i;[o;@
+;-["-/* line 1004, ../../../sass/main.scss */;@;0;X;i;[ o;;i ;o;	;	@;@;o;;i;i;o;;i;i;o; ;![o;";![o;#;$o;;{ ;o;	;	0;0;o;;i;i;o;;i;i;%0;![o;F;("btn-group-lg;)0;i;)0;io;#;$o;;{ ;o;	;	0;0;o;;i;i;o;;i;i;%0;![o;F;("btn;)0;i;)0;i;)0;i;@;*o;	;	@;@;o;;i;i;@Ñ-;T;+[".btn-group-lg .btn;i;[o;,;i ;-o;.;-o;/;-"14px !important;@;0;1;o;	;	@;@;o;;i;i#;o;;i;i;i;o;	;	@;@;o;;i;i#;o;;i;i
+;(["font-size;@;2;3;4o;	;	@;@;@®-;o;;i;i;i;[ ;5o;	;	@;@;o;;i;i;@©-;P[
+"(o;.	;-o;/;-"max-width;@;0;1;o;	;	@;@;o;;i;i;o;;i;i;)@;i": o;.	;-o;G
+;-iV;H["px;@;I"1110px;J[ ;o;	;	@;@;o;;i;i;o;;i;i;)@;i")o;O;i ;-" ;o;	;	@;@;o;;i;i!;o;;i;i;@;T;i;[o;@
+;-["-/* line 1004, ../../../sass/main.scss */;@;0;X;i;[ o;;i ;o;	;	@;@;o;;i;i;o;;i;i;o; ;![o;";![o;#;$o;;{ ;o;	;	0;0;o;;i;i;o;;i;i;%0;![o;F;("btn-group-lg;)0;i;)0;io;#;$o;;{ ;o;	;	0;0;o;;i;i;o;;i;i;%0;![o;F;("btn;)0;i;)0;i;)0;i;@;*o;	;	@;@;o;;i;i;@—-;T;+[".btn-group-lg .btn;i;[o;,;i ;-o;.;-o;/;-"13px !important;@;0;1;o;	;	@;@;o;;i;i#;o;;i;i;i;o;	;	@;@;o;;i;i#;o;;i;i
+;(["font-size;@;2;3;4o;	;	@;@;@ı-;o;;i;i;i;[ ;5o;	;	@;@;o;;i;i;@ˆ-;P[
+"(o;.	;-o;/;-"max-width;@;0;1;o;	;	@;@;o;;i;i;o;;i;i;)@;i": o;.	;-o;G
+;-i$;H["px;@;I"1060px;J[ ;o;	;	@;@;o;;i;i;o;;i;i;)@;i")o;O;i ;-" ;o;	;	@;@;o;;i";i!;o;;i";i;@;T;i";[o;@
+;-["-/* line 1004, ../../../sass/main.scss */;@;0;X;i#;[ o;;i ;o;	;	@;@;o;;i$;i;o;;i$;i;o; ;![o;";![o;#;$o;;{ ;o;	;	0;0;o;;i;i;o;;i;i;%0;![o;F;("btn-group-lg;)0;i$;)0;i$o;#;$o;;{ ;o;	;	0;0;o;;i;i;o;;i;i;%0;![o;F;("btn;)0;i$;)0;i$;)0;i$;@;*o;	;	@;@;o;;i$;i;@.;T;+[".btn-group-lg .btn;i$;[o;,;i ;-o;.;-o;/;-"12px !important;@;0;1;o;	;	@;@;o;;i%;i#;o;;i%;i;i%;o;	;	@;@;o;;i%;i#;o;;i%;i
+;(["font-size;@;2;3;4o;	;	@;@;@B.;o;;i%;i;i%;[ ;5o;	;	@;@;o;;i%;i;@C.;P[
+"(o;.	;-o;/;-"max-width;@;0;1;o;	;	@;@;o;;i";i;o;;i";i;)@;i"": o;.	;-o;G
+;-i;H["px;@;I"1050px;J[ ;o;	;	@;@;o;;i";i;o;;i";i;)@;i"")

@@ -24,10 +24,10 @@
 
     $(document).ready(function()
     {
-        setInterval(function () {
+        $('.teamA').transition({rotateY: '360deg'});
+        $('.teamB').transition({rotateY: '360deg'});
 
-            $('.teamA').transition({rotateY: '360deg'});
-            $('.teamB').transition({rotateY: '360deg'});
+        setInterval(function () {
 
             var status = $.get( "/live/status/1", function(data) {
 
