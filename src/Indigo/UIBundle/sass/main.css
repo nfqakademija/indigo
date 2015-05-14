@@ -29,6 +29,7 @@ html, body {
   background: white !important; }
 
 .bg-gradient {
+  height: 100%;
   background: #b2b2b2;
   /* Old browsers */
   background: -moz-radial-gradient(center, ellipse cover, #b2b2b2 0%, #474747 39%, #131313 100%);
@@ -203,7 +204,7 @@ html, body {
     height: 100px; }
 
   .table-status {
-    font-size: 2em; }
+    font-size: 1.8em; }
 
   .status-message {
     font-size: 2.5em; } }
@@ -436,8 +437,9 @@ html, body {
   font-size: 10em; }
 
 .title {
-  font-size: 5em;
-  margin: 10px 0; }
+  font-size: 3em;
+  margin: 10px 0;
+  height: 50px; }
 
 .b-color-selected {
   border-color: rgba(255, 252, 249, 0.4) !important; }
@@ -548,6 +550,9 @@ a:hover {
 .row {
   margin-left: -2px;
   margin-right: -2px; }
+
+.top-margin {
+  margin-top: 4%; }
 
 /* Notifications */
 #not-wrapper {
@@ -669,5 +674,9 @@ a:hover {
     background-color: rgba(71, 71, 71, 0.1); }
   .dashboard-link:visited, .dashboard-link:link, .dashboard-link:active {
     text-decoration: none; }
+
+.not-stat {
+  opacity: 0.4;
+  background-color: #efefef; }
 
 /*# sourceMappingURL=main.css.map */

@@ -171,20 +171,14 @@
             <a href={{ url('indigo_ui_dashboard', {id : 1}) }} class="dashboard-link"> My dashboard </a>
         {% endif %}
 
-    <div class="container-fluid bg-gradient">
+    <div class="container-fluid bg-gradient full-height">
         <div class="row padding-sm">
 
             <div class=" col-xs-12 col-sm-12 col-md-10 col-lg-10 col-md-offset-1 col-lg-offset-1 content">
 
-                <div>
-                    <h1 id="contest-title" class="title"> {{ contest.title}} </h1>
-                </div>
-
-
-                <div class="row" >
-                    <div class="col-xs-12">
-                       <span id="ajax-table-status" class="table-status"> Checking  table status... </span>
-                    </div>
+                <div class="row top-margin">
+                    <span id="contest-title" class="title"> {{ contest.title}} </span><br />
+                    <span id="ajax-table-status" class="table-status"> Checking  table status... </span>
                 </div>
 
                 <div id="scoreA"  class="score score-font" > {{ teamA.goals }}  </div>

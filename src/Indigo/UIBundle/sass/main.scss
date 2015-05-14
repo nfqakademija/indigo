@@ -274,7 +274,7 @@ html, body {
 
   .table-status
   {
-    font-size: 2em;
+    font-size: 1.8em;
   }
 
   .status-message
@@ -644,9 +644,9 @@ html, body {
 
 .title
 {
-  font-size: 5em;
+  font-size: 3em;
   margin: 10px 0;
-
+  height: 50px;
 }
 
 .b-color-selected
@@ -791,6 +791,11 @@ a:hover{
 .row {
   margin-left: -2px;
   margin-right: -2px;
+}
+
+.top-margin
+{
+  margin-top: 4%;
 }
 
 /* Notifications */
@@ -963,4 +968,11 @@ a:hover{
   {
     text-decoration: none;
   }
+}
+
+
+.not-stat
+{
+  opacity: 0.4;
+  background-color: #efefef;
 }

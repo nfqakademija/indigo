@@ -239,7 +239,9 @@ class LiveViewService
         $qb = $this->em->getRepository('IndigoGameBundle:GameTime')->createQueryBuilder('p');
         $qb->where('p.startAt = :time')
             ->andWhere('p.finishAt >  :time')
+            ->andWhere('p.action =  :action')
             ->setParameter('time', $time)
+            ->setParameter('action', 1)
             ->orderBy('p.finishAt', 'DESC');
 
         return $qb->getQuery()->getArrayResult();
