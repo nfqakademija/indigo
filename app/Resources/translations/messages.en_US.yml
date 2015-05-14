@@ -83,7 +83,7 @@ time_reservation:
   not_selected: You haven't selected reservation time
   table_reserved: Table already reserved
   reserving_this_moment: Another player reserving this date. At the moment you can't choose it
-  time_passed: You can't reserve this date anymore
+  time_passed: You can not reserve this date anymore
   same_time: In the same time in other contest you already have reserved time.
   your_time: Your reserved time
   choose_time: Select your preferred time
