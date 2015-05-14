@@ -1059,3 +1059,19 @@ a:hover {
     display: none;
   }
 }
+
+@media (max-width: 1110px) {
+    .btn-group-lg .btn {
+        font-size:14px !important;
+    }
+}
+@media (max-width: 1060px) {
+    .btn-group-lg .btn {
+        font-size:13px !important;
+    }
+}
+@media (max-width: 1050px) {
+    .btn-group-lg .btn {
+        font-size:12px !important;
+    }
+}

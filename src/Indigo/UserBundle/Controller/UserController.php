@@ -180,6 +180,8 @@ class UserController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
+        $this->addFlash('success', $this->get('translator')->trans('user.success'));
+
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('IndigoUserBundle:User')->find($id);

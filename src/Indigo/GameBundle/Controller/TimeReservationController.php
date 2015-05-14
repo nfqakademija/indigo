@@ -20,6 +20,9 @@ class TimeReservationController extends Controller
      */
     public function indexAction($contest_id, $timestamp)
     {
+        if (!$timestamp)
+            $timestamp = strtotime(date('Y-m-d H:i:s'));
+
         $entity = new GameTime();
 
         $form = $this->createFormBuilder($entity)
@@ -140,19 +143,6 @@ class TimeReservationController extends Controller
         return $return;
     }
 
-/*    public function doesGameTimeExist($startAt, $playerId)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $query = $em->createQuery(
-            "SELECT COUNT(gt.id) FROM Indigo\GameBundle\Entity\GameTime gt WHERE gt.startAt = :startAt AND gt.timeOwner = :playerId"
-        );
-
-        $query->setParameter('startAt', $startAt);
-        $query->setParameter('playerId', $playerId);
-
-        return $query->getSingleScalarResult();
-    }*/
-
     public function doesAnotherPlayerDoesntClickTime($startAt, $playerId)
     {
         $em = $this->getDoctrine()->getManager();
@@ -171,36 +161,18 @@ class TimeReservationController extends Controller
     {
         $fullDate = date('Y-m-d H:i:s', $request->get('time'));
         $playerId = $this->getUser()->getId();
-        //$clickCount = $this->doesGameTimeExist($fullDate, $playerId);
         $countAnotherPlayerClicks = $this->doesAnotherPlayerDoesntClickTime($fullDate, $playerId);
 
         $success = false;
 
-        if(!$countAnotherPlayerClicks) {//$this->deletePrevGameTime($playerId);
+        if(!$countAnotherPlayerClicks) {
             $this->deletePrevGameTime($playerId, $fullDate);
             $this->createGameTime($fullDate, $contest_id, $playerId);
             $success = true;
-        }/*else if(!$countAnotherPlayerClicks){
-            $this->updateCreationGameTime($fullDate, $playerId, $contest_id);
-            $success = true;
-        }*/
+        }
 
         return new JsonResponse(['success' => $success]);
     }
-
-   /* private function updateCreationGameTime($fullDate, $playerId, $contest_id){
-        $em = $this->getDoctrine()->getManager();
-        $query = $em->createQuery(
-            "UPDATE Indigo\GameBundle\Entity\GameTime gt SET gt.insertionTime = :insertionTime, gt.id = :contestId WHERE gt.startAt = :startAt AND gt.timeOwner = :playerId"
-        );
-
-        $query->setParameter('playerId', $playerId);
-        $query->setParameter('contestId', $contest_id);
-        $query->setParameter('insertionTime', new \Date());
-        $query->setParameter('startAt', $fullDate);
-
-        return $query->getResult();
-    }*/
 
     private function deletePrevGameTime($playerId, $fullDate){
         $date = date("Y-m-d H:i:s");

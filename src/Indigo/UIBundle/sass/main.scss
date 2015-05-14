@@ -1042,3 +1042,22 @@ a:hover{
 @media (max-width: 367px) {
   .user-name{display: none;}
 }
+
+@media (max-width: 1110px) {
+  /* line 1004, ../../../sass/main.scss */
+  .btn-group-lg .btn {
+    font-size:14px !important;
+  }
+}
+@media (max-width: 1060px) {
+  /* line 1004, ../../../sass/main.scss */
+  .btn-group-lg .btn {
+    font-size:13px !important;
+  }
+}
+@media (max-width: 1050px) {
+  /* line 1004, ../../../sass/main.scss */
+  .btn-group-lg .btn {
+    font-size:12px !important;
+  }
+}

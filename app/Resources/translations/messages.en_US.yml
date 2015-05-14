@@ -22,6 +22,7 @@ user:
   no_username: Username was not specified
   no_cardid: Card ID was not specified
   support: Support
+  success: User profile updated successfully!
 
   #Login
   your_mail: Your email adress
