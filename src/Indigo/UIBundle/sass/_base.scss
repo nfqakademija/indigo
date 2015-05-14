@@ -17,7 +17,7 @@ $color-red-l    : #fa4c4e;
 $color-gold     : #cfb53b;
 $color-silver   : #c0c0c0;
 $color-bronze   : #cd7f32;
-$color-busy     : #d56a04;
+$color-busy     : #D07D20;
 $color-free     : #6eb133;
 $color-green-xsl : #b5df00;
 $color-green-sl : #92b600;
@@ -50,7 +50,7 @@ $color-not-reserved : rgba(0, 0, 0, 0.24);
 
 @mixin bg-grad()
 {
-  height: 100%;
+  min-height: 100%;
   background: rgb(178,178,178); /* Old browsers */
   background: -moz-radial-gradient(center, ellipse cover, rgba(178,178,178,1) 0%, rgba(71,71,71,1) 39%, rgba(19,19,19,1) 100%); /* FF3.6+ */
   background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(178,178,178,1)), color-stop(39%,rgba(71,71,71,1)), color-stop(100%,rgba(19,19,19,1))); /* Chrome,Safari4+ */

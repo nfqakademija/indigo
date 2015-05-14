@@ -92,6 +92,7 @@
 
                 $("#scoreA").html(json.teamA.goals);
                 $("#scoreB").html(json.teamB.goals);
+                $("#scoreLimit").text(json.contest.limit);
                 $("#player1-img").attr("src", json.teamA.player1.imageUrl + "?" + new Date().getTime());
                 $("#player2-img").attr("src", json.teamA.player2.imageUrl + "?" + new Date().getTime());
                 $("#player3-img").attr("src", json.teamB.player1.imageUrl + "?" + new Date().getTime());
@@ -181,9 +182,12 @@
                     <span id="ajax-table-status" class="table-status"> Checking  table status... </span>
                 </div>
 
-                <div id="scoreA"  class="score score-font" > {{ teamA.goals }}  </div>
+                <div class="score-container">
+                    <div id="scoreA"  class="score score-font" > {{ teamA.goals }}  </div>
+                    <div id="scoreB" class="score score-font" >  {{ teamB.goals }} </div>
+                    <div id="scoreLimit"  class="score-limit score-font" > {{ contest.limit }}  </div>
+                </div>
 
-                <div id="scoreB" class="score score-font" >  {{ teamB.goals }} </div>
 
 
                 <div class="field">
@@ -217,7 +221,7 @@
 
         <div class="row">
 
-            <div class=" col-xs-4 col-sm-3 col-md-2 col-sm-offset-2 col-md-offset-3 " style="top: -40px">
+            <div class=" col-xs-4 col-sm-3 col-md-2 col-sm-offset-2 col-md-offset-3 ">
 
                 <div id="reserv-itm-cont-0"
                      class="reserv-item-cont text-center reserv-item-left
@@ -238,7 +242,7 @@
 
             </div>
 
-            <div class="col-xs-4 col-sm-3 col-md-2" style="top: -40px">
+            <div class="col-xs-4 col-sm-3 col-md-2">
 
                 <div id="reserv-itm-cont-1"
                      class="reserv-item-cont text-center
@@ -258,7 +262,7 @@
 
             </div>
 
-            <div class="col-xs-4 col-sm-3 col-md-2" style="top: -40px;">
+            <div class="col-xs-4 col-sm-3 col-md-2">
 
                 <div id="reserv-itm-cont-2"
                      class="reserv-item-cont text-center reserv-item-right

@@ -108,6 +108,7 @@ class LiveViewService
                     {
                         $contest->setId($contestEntity->getId());
                         $contest->setTitle($contestEntity->getContestTitle());
+                        $contest->setLimit($contestEntity->getScoreLimit());
                         //$contest->setDescription($contestEntity->getContestDescription());
                         $contest->getStartDate($contestEntity->getContestStartingDate());
                         $contest->getEndData($contestEntity->getContestEndDate());
