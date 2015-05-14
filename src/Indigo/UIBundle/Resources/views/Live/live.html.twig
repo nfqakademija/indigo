@@ -26,6 +26,9 @@
     {
         setInterval(function () {
 
+            $('.teamA').transition({rotateY: '360deg'});
+            $('.teamB').transition({rotateY: '360deg'});
+
             var status = $.get( "/live/status/1", function(data) {
 
                 var json = $.parseJSON(data);
