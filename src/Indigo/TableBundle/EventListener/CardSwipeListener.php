@@ -147,7 +147,11 @@ class CardSwipeListener
                         if ($gameEntity->isGameStatusStarted()) {
 
                             $gameEntity->addTeamScores($tableEventModel->getTeam(), -1);
+                            if ($gameEntity->getTeam0Score() == 0 && $gameEntity->getTeam1Score() == 0) {
 
+                                $gameEntity->setStatus(GameStatusRepository::STATUS_GAME_WAITING);
+                                print("Game status changed to waiting\n");
+                            }
                             printf("CardSwipe SCORE CHANGED to team:%u, position: %u, cardid: %u\n",
                                 $tableEventModel->getTeam(), $tableEventModel->getPlayer(),
                                 $tableEventModel->getCardId());

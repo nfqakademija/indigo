@@ -16,7 +16,7 @@ use Doctrine\Common\Collections\Criteria;
 
 /**
  * User
- * @ORM\Table(name="users")
+ * @ORM\Table(name="users",indexes={@ORM\Index(name="cardId", columns={"card_id"})})
  * @UniqueEntity(fields={"username"})
  * @UniqueEntity(fields={"email"})
  * @ORM\Entity(repositoryClass="Indigo\UserBundle\Entity\UserRepository")
@@ -61,7 +61,7 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=32, unique=true)
+     * @ORM\Column(type="string", length=64, unique=true)
      * @Assert\Email(groups={"Default", "Profile"}, checkMX="true", message="user.error.username_must_be_email")
      */
     private $email;
@@ -632,7 +632,7 @@ class User extends MessageDigestPasswordEncoder implements AdvancedUserInterface
      */
     public function uploadPicture()
     {
-        if (null === $this->getPicture()) {
+        if (null === $this->getPictureFile()) {
             return;
         }
 

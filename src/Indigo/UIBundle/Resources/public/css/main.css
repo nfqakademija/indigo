@@ -986,3 +986,16 @@ a:hover {
   opacity: 0.4;
   background-color: #efefef;
 }
+
+@media (max-width: 440px) {
+  /* line 981, ../../../sass/main.scss */
+  .user-name {
+    font-size: 8px !important;
+  }
+}
+@media (max-width: 367px) {
+  /* line 985, ../../../sass/main.scss */
+  .user-name {
+    display: none;
+  }
+}

@@ -64,6 +64,7 @@ class GameHistoryViewService implements LoggerAwareInterface
             ->where('(g.team0 = :team OR g.team1 = :team)')
             ->andWhere('g.contestId = :contestId')
             ->andWhere('g.status = :status')
+            ->andWhere('(g.team0Score > 0 OR g.team1Score > 0)')
             ->orderBy('g.startedAt', 'DESC')
             ->setParameters(
                 [
