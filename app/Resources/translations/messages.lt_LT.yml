@@ -22,6 +22,7 @@ user:
   no_username: Slapyvardis nenurodytas
   no_cardid: Koretelės ID nenurodytas
   support: Pagalba
+  success: Profilio informacija atnaujinta sėkmingai!
 
 #Login
   your_mail: Jūsų el.pašto adresas
