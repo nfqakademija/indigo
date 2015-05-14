@@ -95,7 +95,16 @@
 
                 $("#scoreA").html(json.teamA.goals);
                 $("#scoreB").html(json.teamB.goals);
-                $("#scoreLimit").text(json.contest.limit);
+
+                if(json.contest)
+                {
+                    $("#scoreLimit").text(json.contest.limit);
+                }
+                else
+                {
+                    $("#scoreLimit").text("-");
+                }
+
                 $("#player1-img").attr("src", json.teamA.player1.imageUrl + "?" + new Date().getTime());
                 $("#player2-img").attr("src", json.teamA.player2.imageUrl + "?" + new Date().getTime());
                 $("#player3-img").attr("src", json.teamB.player1.imageUrl + "?" + new Date().getTime());
@@ -160,8 +169,8 @@
             <span id="not-congrats">
                     <span id="not-end-msg" class="text-uxl font-orange-l"> CONGRATULATIONS! </span></br>
                     <span id="player-images">
-                        <img id="win-player-1" class="img-round bg-semi-we padding-md" width="150" src="#"/>
-                        <img id="win-player-2" class="img-round bg-semi-we padding-md" width="150" src="#"/>
+                        <img id="win-player-1" class="win-player-img img-round bg-semi-we padding-md" src="#"/>
+                        <img id="win-player-2" class="win-player-img img-round bg-semi-we padding-md" src="#"/>
                     </span></br>
                 <span class="text-xl"> Won the fight </span></br>
                 <span id="win-score" class="text-uxxl score-font font-orange-l">  </span></br>
@@ -188,10 +197,19 @@
                 <div class="score-container">
                     <div id="scoreA"  class="score score-font" > {{ teamA.goals }}  </div>
                     <div id="scoreB" class="score score-font" >  {{ teamB.goals }} </div>
-                    <div id="scoreLimit"  class="score-limit score-font" > {{ contest.limit }}  </div>
+
+                    <div class="score-limit score-font text-xl" >
+                        <span class="score-limit-title" > Score limit </span>
+                        <span class="score-limit-value" id="scoreLimit" >
+                        {% if (contest != null) and (contest.limit != null)  %}
+                            {{ contest.limit  }}
+                        {%  else %}
+                            -
+                        {%  endif %}
+                            </span>
+                    </div>
+
                 </div>
-
-
 
                 <div class="field">
 

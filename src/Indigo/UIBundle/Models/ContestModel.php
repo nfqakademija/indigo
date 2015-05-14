@@ -55,6 +55,7 @@ class ContestModel implements \JsonSerializable{
     public function __construct()
     {
         $this->description = " ";
+        $this->limit = 10;
     }
 
     /**

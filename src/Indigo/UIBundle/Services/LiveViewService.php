@@ -106,6 +106,7 @@ class LiveViewService
 
                     if($contestEntity)
                     {
+                        $contest->setLimit(0);
                         $contest->setId($contestEntity->getId());
                         $contest->setTitle($contestEntity->getContestTitle());
                         $contest->setLimit($contestEntity->getScoreLimit());

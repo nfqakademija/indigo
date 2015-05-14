@@ -82,18 +82,31 @@ html, body {
   @include border-radius(5px);
 }
 
+.score-limit-title, .score-limit-valu
+{
+  display: block;
+  font-size: 0.6em;
+  line-height: 15px;
+}
+
+.score-limit-value
+{
+  font-size: 1em;
+}
+
 .score-limit
 {
   left: 50%;
-  margin-left: -20px;
-  margin-top: -35px;
+  margin-left: -30px;
+  margin-top: -65px;
   position: absolute;
-  width: 40px;
-  height: 40px;
-  background-color: rgba(213, 128, 32, 0.97);
+  width: 60px;
+  //height: 40px;
+  background-color: rgba(213, 128, 32, 0.89);
   display: block;
   line-height: 40px;
   border-radius: 5px;
+  padding: 3px;
 }
 
 .score-font
@@ -273,6 +286,26 @@ html, body {
   #ajax-table-status
   {
     font-size: 1.6em;
+  }
+
+  #not-end-msg {
+    position: relative;
+    margin: auto;
+  }
+
+  #info-message
+  {
+    font-size: small;
+  }
+
+  .win-player-img {
+    width: 100px !important;
+    height: 100px !important;
+  }
+
+  #not-end-msg
+  {
+    font-size: 2em;
   }
 
 
@@ -864,6 +897,12 @@ a:hover{
 
 #player-images {
   position: relative;
+}
+
+.win-player-img
+{
+  width: 150px;
+  height: 150px;
 }
 
 
