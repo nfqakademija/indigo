@@ -2,7 +2,6 @@
 
 namespace Indigo\TableBundle\Service\Manager;
 
-
 use Doctrine\ORM\EntityManagerInterface;
 use Indigo\GameBundle\Entity\TableStatus;
 use Indigo\GameBundle\Entity\TableStatusRepository;
@@ -22,40 +21,59 @@ class TimeoutManager
      */
     private $ed;
 
-
+    /**
+     * @param EntityManagerInterface $em
+     * @param EventDispatcherInterface $ed
+     */
     public function __construct(EntityManagerInterface $em, EventDispatcherInterface $ed)
     {
         $this->em = $em;
         $this->ed = $ed;
     }
 
+    /**
+     * @param integer $tableKey
+     */
+    public function checkBetweenResponses($tableKey)
+    {
+        if ($tableStatusEntity = $this->getTableStatus($tableKey)) {
+
+            if ($tableStatusEntity->hasTimeout()) {
+
+                $this->handleTimeout($tableStatusEntity);
+            }
+        }
+    }
 
     /**
-     * @param TableStatus $tableStatusEntity
+     * @param $tableStatusEntity
      */
-    public function check(TableStatus $tableStatusEntity)
+    public function handleTimeout(TableStatus $tableStatusEntity)
     {
-            /** @var TableStatus $tableStatusEntity */
-            if ($tableStatusEntity->hasTimeout())  {
+        if ($tableStatusEntity->getBusy() != TableStatusRepository::STATUS_IDLE) {
 
-                if ($tableStatusEntity->getBusy() != TableStatusRepository::STATUS_IDLE) {
+            printf ("Timeout has occured! table_id: %d\n", $tableStatusEntity->getTableId());
+            $tableStatusEntity->setBusy(TableStatusRepository::STATUS_IDLE);
+        }
+        if ($gameEntity = $tableStatusEntity->getGame()) {
 
-                    printf ("Timeout has occured! table_id: %d ", $tableStatusEntity->getTableId());
-                    $tableStatusEntity->setBusy(TableStatusRepository::STATUS_IDLE);
-                }
-                if ($gameEntity = $tableStatusEntity->getGame()) {
+            $event = new GameFinishEvent();
+            $event->setGame($gameEntity);
+            $event->setTableStatus($tableStatusEntity);
+            $this->ed->dispatch(GameEvents::GAME_FINISH_TIMEOUT, $event);
+        } else {
 
-                    $event = new GameFinishEvent();
-                    $event->setGame($gameEntity);
-                    $event->setTableStatus($tableStatusEntity);
-                    $this->ed->dispatch(GameEvents::GAME_FINISH_TIMEOUT, $event);
-                } else {
+            $this->em->persist($tableStatusEntity);
+            $this->em->flush();
+        }
+    }
 
-                    $this->em->persist($tableStatusEntity);
-                    $this->em->flush();
-                }
-
-
-            }
+    private function getTableStatus($tableKey)
+    {
+        return  $this->em->getRepository('IndigoGameBundle:TableStatus')->findOneBy(
+            [
+                'tableId' => $tableKey
+            ]
+        );
     }
 }

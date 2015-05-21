@@ -75,9 +75,12 @@ class GameFinishListener {
     private function closeGame(GameFinishEvent $event)
     {
         printf("-------------------- GAME FINISH ----------------- \n");
+        $dateTime = new \DateTime();
+        $dateTime->setTimestamp($event->getFinishTs());
+
         $gameEntity = $event->getGame();
         $gameEntity->setStatus(GameStatusRepository::STATUS_GAME_FINISHED);
-        $gameEntity->setFinishedAt( new \DateTime());
+        $gameEntity->setFinishedAt($dateTime);
         $gameEntity->getTableStatus()->setGame(null);
         return $gameEntity;
     }

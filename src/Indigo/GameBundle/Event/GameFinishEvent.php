@@ -2,10 +2,10 @@
 
 namespace Indigo\GameBundle\Event;
 
-
 use Symfony\Component\EventDispatcher\Event;
 use Indigo\GameBundle\Entity\Game;
 use Indigo\GameBundle\Entity\TableStatus;
+
 class GameFinishEvent extends Event
 {
     /**
@@ -17,6 +17,12 @@ class GameFinishEvent extends Event
      * @var TableStatus
      */
     private $tableStatus;
+
+
+    /**
+     * @var integet
+     */
+    private $finishTs;
 
     /**
      * @param Game $game
@@ -51,4 +57,22 @@ class GameFinishEvent extends Event
         $this->tableStatus = $tableStatus;
         return $this;
     }
+
+    /**
+     * @return integet
+     */
+    public function getFinishTs()
+    {
+        return $this->finishTs;
+    }
+
+    /**
+     * @param integet $finishTs
+     */
+    public function setFinishTs($finishTs)
+    {
+        $this->finishTs = $finishTs;
+    }
+
+
 }
