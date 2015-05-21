@@ -430,7 +430,7 @@ class Game
      */
     public function isGameStatusWaiting()
     {
-        return (bool)($this->getStatus() == GameStatusRepository::STATUS_GAME_READY);
+        return (bool)($this->getStatus() == GameStatusRepository::STATUS_GAME_WAITING);
     }
 
     /**
@@ -452,14 +452,6 @@ class Game
         $this->ratings->add($rating);
     }
 
-
-
-
-
-
-
-
-
     /**
      * @return ArrayCollection
      */
@@ -475,8 +467,6 @@ class Game
     {
         $this->ratings = $ratings;
     }
-
-
 
     /**
      * Get id
