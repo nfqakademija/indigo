@@ -5,7 +5,7 @@ parameters:
 services:
     indigo_api.connection_manager:
         class: %indigo_api.connection_manager.class%
-        arguments: ["@event_dispatcher"]
+        arguments: ["@event_dispatcher", "@doctrine.orm.entity_manager", "@indigo_table.logic_manager"]
         calls:
             - [setOptions, ["%api_config%"]]
             - [setLogger, ["@?logger"]]

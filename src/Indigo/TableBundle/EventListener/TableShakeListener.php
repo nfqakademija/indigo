@@ -4,7 +4,6 @@
 namespace Indigo\TableBundle\EventListener;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Indigo\GameBundle\Entity\TableStatus;
 use Indigo\GameBundle\Entity\TableStatusRepository;
 use Indigo\TableBundle\Event\TableEvent;
 use Indigo\TableBundle\Model\TableShakeModel;
@@ -44,7 +43,14 @@ class TableShakeListener
         if (!$this->accepts($tableEventModel)) {
             return;
         }
-        
+        $this->analyzeTableShake($tableEventModel);
+    }
+
+    /**
+     * @param TableShakeModel $tableEventModel
+     */
+    public function analyzeTableShake(TableShakeModel $tableEventModel)
+    {
         printf (" - TableShake!! table: %u [id: %d, ts:%d]\n",
             $tableEventModel->getTableId(),
             $tableEventModel->getId(),
@@ -60,7 +66,8 @@ class TableShakeListener
             $this->em->flush();
         } else {
 
-            printf("nerastas stalas!\n");
+            printf("Table not found!\n");
         }
     }
+
 }

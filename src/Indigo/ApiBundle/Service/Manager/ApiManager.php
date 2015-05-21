@@ -1,16 +1,16 @@
 <?php
 namespace Indigo\ApiBundle\Service\Manager;
 
-use Indigo\TableBundle\Model\TableShakeModel;
-use Indigo\TableBundle\Repository\TableEventList;
+use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp;
 use Indigo\ApiBundle\Event\ApiEvent;
 use Indigo\ApiBundle\Event\ApiEvents;
 use Indigo\ApiBundle\Factory\EventFactory;
-
+use Indigo\TableBundle\Repository\TableEventList;
+use Indigo\TableBundle\Service\Manager\LogicManager;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ApiManager implements LoggerAwareInterface
@@ -47,40 +47,52 @@ class ApiManager implements LoggerAwareInterface
     private $ed;
 
     /**
-     * @param EventDispatcherInterface $ed
+     * @var EntityManagerInterface
      */
-    public function __construct(EventDispatcherInterface $ed)
+    private $em;
+
+    /**
+     * @var LogicManager
+     */
+    private $lm;
+
+    /**
+     * @param EventDispatcherInterface $ed
+     * @param EntityManagerInterface $em
+     */
+    public function __construct(EventDispatcherInterface $ed, EntityManagerInterface $em, LogicManager $lm)
     {
         $this->ed = $ed;
+        $this->em = $em;
+        $this->lm = $lm;
     }
 
     /**
+     * @param InputInterface $input
      * @param $tableKey
-     * @param array $query
      * @param bool $provideDemoEvents
-     * @return \ArrayIterator|bool|TableEventList
+     * @return bool|TableEventList
      * @throws \Exception
      */
-    public function getEvents($tableKey, array $query, $provideDemoEvents = false)
+    public function getEvents(InputInterface $input, $tableKey, $provideDemoEvents = false)
     {
-       
         if ($provideDemoEvents === true) {
 
             if ($eventsJSON = $this->getDemoData()) {
 
                 $eventList = $this->parseResponseData($eventsJSON);
-                $eventList->setTableId(-1); // virtual table
+                $eventList->setTableId(0); // virtual table
+                $this->analyzeEvents($eventList);
 
-                return $eventList;
+                return true;
             }
         }
 
         try {
 
             $table = $this->getTable($tableKey);
-
             $query = [
-                'query' => $query,
+                'query' => $this->prepareQuery($input, $tableKey),
                 'auth' => $table['auth'],
                 'timeout' => 5
             ];
@@ -95,46 +107,51 @@ class ApiManager implements LoggerAwareInterface
 
                         $eventList = $this->parseResponseData($data);
                         $eventList->setTableId($table['table_id']);
-                        //TODO: or not TODO  - sortint ? :)
-                        //$eventList->uasort(array($this, 'orderByTs'));
 
                         $successEvent = new ApiEvent();
                         $successEvent->setData($eventList);
                         $this->ed->dispatch(ApiEvents::API_SUCCESS_EVENT, $successEvent);
 
-                        return $eventList;
+                        $this->analyzeEvents($eventList);
+
+                        return true;
                     }
                 }
             }
             throw new \Exception('API seems went down...');
 
         } catch (GuzzleHttp\Exception\ConnectException $e) {
-            if ($provideDemoEvents == true) {
-                if ($eventsJSON = $this->getDemoData()) {
 
-                    $eventList = $this->parseResponseData($eventsJSON);
-                    $eventList->setTableId(-1); // virtual table
-
-                    return $eventList;
-                }
-
-                return new \ArrayIterator();
-            }
+            $this->logger && $this->logger->error('Cant connect to table API provider'. $e);
         }
 
-        return false;
+        return;
     }
 
+    /**
+     * @param $eventList
+     */
+    private function analyzeEvents($eventList)
+    {
+        if ($eventList) {
+
+            $this->lm->analyzeEventFlow($eventList);
+        } elseif ($eventList !== false) {
+
+            $this->logger && $this->logger->info('No events from API');
+        }
+    }
+    
+    
     /**
      * @param \stdClass $data
      * @return TableEventList
      */
     public function parseResponseData(\stdClass $data)
     {
-        $lastTableShakeIndex = -1;
+        //$lastTableShakeIndex = -1;
         $eventList = new TableEventList();
-        $i = 0;
-
+        //$i = 0;
         foreach ($data->records as $d) {
 
             if (strlen($d->data) > 2) {
@@ -146,21 +163,22 @@ class ApiManager implements LoggerAwareInterface
             }
 
             $event = EventFactory::factory($d);
+
             if ($event) {
 
                 $eventList->append($event);
                 $this->logger && $this->logger->debug('added events', ['event' => $event]);
-                if ($event instanceof TableShakeModel) {
+/*                if ($event instanceof TableShakeModel) {
 
                     ($lastTableShakeIndex > -1)  && $eventList->offsetUnset($lastTableShakeIndex);
                     $lastTableShakeIndex = $i;
-                }
+                }*/
             } else {
 
                 $this->logger && $this->logger->warning('unknown event', ['data' => $d]);
             }
 
-            $i++;
+            //$i++;
         }
 
         return $eventList;
@@ -218,22 +236,36 @@ class ApiManager implements LoggerAwareInterface
     }
 
     /**
-     * @param \stdClass
-     * @return int
+     * @param InputInterface $input
+     * @param $tableKey
+     * @return array
      */
-    public function orderByTs ($a, $b) {
-        if  ($a->getTimeWithUsec() ==  $b->getTimeWithUsec()) {
-            return 0;
+    public function prepareQuery(InputInterface $input, $tableKey)
+    {
+        $query = ['rows' => $input->getArgument('rows')];
+        if ($input->getArgument('from-id') == 'last') {
+
+            $er = $this->em->getRepository('IndigoGameBundle:TableStatus');
+            $tableStatus = $er->findOneBy(['tableId' => $tableKey]);
+
+            /** @var TableStatus $tableStatus */
+            if ($tableStatus !== null) {
+
+                $query['from-id'] = $tableStatus->getLastApiRecordId();
+            } else {
+
+                $query['from-id'] = 1;
+            }
         }
-        return ($a->getTimeWithUsec() > $b->getTimeWithUsec()) ? 1 : -1;
+        
+        return $query;
     }
-
-
 
     /**
      * @return string
      */
-    private function getDemoData() {
+    private function getDemoData()
+    {
       return  json_decode('{"status":"ok","records":[
       {"id":"96115","timeSec":"1425520557","usec":"485733","type":"CardSwipe","data":"{\u0022team\u0022:1,\u0022player\u0022:1,\u0022card_id\u0022:8462951}"},
       {"id":"96115","timeSec":"1425520558","usec":"485733","type":"CardSwipe","data":"{\u0022team\u0022:1,\u0022player\u0022:1,\u0022card_id\u0022:8462951}"},

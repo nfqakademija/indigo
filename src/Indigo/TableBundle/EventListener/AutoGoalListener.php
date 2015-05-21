@@ -10,15 +10,12 @@ use Indigo\GameBundle\Event\GameEvents;
 use Indigo\GameBundle\Event\GameFinishEvent;
 use Indigo\GameBundle\Repository\GameStatusRepository;
 use Indigo\TableBundle\Event\TableEvent;
-use Indigo\TableBundle\Model\TableActionInterface;
+use Indigo\TableBundle\Model\AutoGoalModel;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Indigo\TableBundle\Model\AutoGoalModel;
 
 class AutoGoalListener
 {
-    const MAX_SCORES = 10;
-
     /**
      * @var EntityManagerInterface
      */
@@ -48,6 +45,9 @@ class AutoGoalListener
         return ($eventModel instanceof AutoGoalModel);
     }
 
+    /**
+     * @param TableEvent $event
+     */
     public function onEvent(TableEvent $event)
     {
         $tableEventModel = $event->getTableEventModel();
@@ -66,90 +66,111 @@ class AutoGoalListener
     }
 
     /**
-     * @param TableActionInterface $tableEventModel
-     * @param $tableId
+     * @param AutoGoalModel $tableEventModel
+     * @param int $tableId
      */
-    private function analyzeAutoGoal(TableActionInterface $tableEventModel, $tableId)
+    private function analyzeAutoGoal(AutoGoalModel $tableEventModel, $tableId)
     {
         /** @var AutoGoalModel $tableEventModel */
         /** @var Game $gameEntity */
-        /** @var TableStatus $tableStatusEntity */
+        $tableStatusEntity = $this->getTableStatus($tableId);
+        if ($gameEntity = $this->getGame($tableStatusEntity)) {
 
-        $tableStatusEntity = $this->em
-            ->getRepository('IndigoGameBundle:TableStatus')
-            ->findOneByTableId((int)$tableId);
-        if ($tableStatusEntity) {
+            $teamPosition = $tableEventModel->getTeam();
 
-            $gameEntity = $tableStatusEntity->getGame();
+            /**
+             * Game turim, vadinas turim ir playeriu
+             */
+            if (!$gameEntity->isGameStatusFinished()) {
 
-            if ($gameEntity) {
+                if (!$gameEntity->isGameStatusStarted()) {
 
-                $teamPosition = $tableEventModel->getTeam();
+                    $gameEntity->setStatus(GameStatusRepository::STATUS_GAME_STARTED);
+                }
 
-                /**
-                 * Game turim, vadinas turim ir playeriu
-                 */
-                if (!$gameEntity->isGameStatusFinished()) {
+                $gameEntity->addTeamScore($teamPosition);
+                if ($gameEntity->getTeamScore($teamPosition) >= $gameEntity->getContest()->getScoreLimit()) {
 
-                    if (!$gameEntity->isGameStatusStarted()) {
+                    if ($teamWon = $gameEntity->getTeam($teamPosition)) {
 
-                        $gameEntity->setStatus(GameStatusRepository::STATUS_GAME_STARTED);
+                        $gameEntity->setTeamWon($teamWon);
                     }
 
-                    $gameEntity->addTeamScore($teamPosition);
-                    // TODO: pakeist i 10
-                    if ($gameEntity->getTeamScore($teamPosition) >= $gameEntity->getContest()->getScoreLimit()) {
+                    $event = new GameFinishEvent();
+                    $event->setGame($gameEntity);
+                    $event->setTableStatus($tableStatusEntity);
+                    $event->setFinishTs($tableEventModel->getTimeSec());
 
-                        if ($teamWon = $gameEntity->getTeam($teamPosition)) {
+                    $this->ed->dispatch(GameEvents::GAME_FINISH_ON_SCORE, $event);
 
-                            $gameEntity->setTeamWon($teamWon);
-                        }
-                        $event = new GameFinishEvent();
-                        $event->setGame($gameEntity);
-                        $event->setTableStatus($tableStatusEntity);
-                        $this->ed->dispatch(GameEvents::GAME_FINISH_ON_SCORE, $event);
-                        printf("-------------------- dublicate GAME(on scoreFINISH: %u) ----------------- \n", $gameEntity->getContest()->getScoreLimit());
+                    $tableStatusEntity->addNewGame($this->dublicateGame($gameEntity));
+                    $this->em->persist($tableStatusEntity);
 
-                        $newGameEntity = new Game();
-
-                        if ($gameEntity->getTeam0Player0Id()) {
-                            $newGameEntity->setTeam0Player0Id($gameEntity->getTeam0Player0Id());
-                        }
-                        if ($gameEntity->getTeam0Player1Id()) {
-                            $newGameEntity->setTeam0Player1Id($gameEntity->getTeam0Player1Id());
-                        }
-                        if ($gameEntity->getTeam1Player0Id()) {
-                            $newGameEntity->setTeam1Player0Id($gameEntity->getTeam1Player0Id());
-                        }
-                        if ($gameEntity->getTeam1Player1Id()) {
-                            $newGameEntity->setTeam1Player1Id($gameEntity->getTeam1Player1Id());
-                        }
-                        if ($gameEntity->getTeam0()) {
-                            $newGameEntity->setTeam0($gameEntity->getTeam0());
-                        }
-                        if ($gameEntity->getTeam1()) {
-                            $newGameEntity->setTeam1($gameEntity->getTeam1());
-                        }
-
-                        $newGameEntity->setTableStatus($gameEntity->getTableStatus());
-                        $newGameEntity->setContest($gameEntity->getContest());
-
-                        $newGameEntity->setMatchType($gameEntity->getMatchType());
-
-                        $newGameEntity->setGameTime($gameEntity->getGameTime());
-
-                        // darom STARTED, nes ant READY jei kas noretu double swipintis - is kart prijungines ji i komanda su kitu pries tai zaidziusiu.
-                        $newGameEntity->setStatus(GameStatusRepository::STATUS_GAME_STARTED);
-                        $tableStatusEntity->addNewGame($newGameEntity);
-
-                        $this->em->persist($newGameEntity);
-                        $this->em->persist($tableStatusEntity);
-
-                    }
                 }
                 $this->em->flush();
             }
+
         }
+
     }
 
+    /**
+     * @param $tableId
+     * @return mixed
+     */
+    private function getTableStatus($tableId)
+    {
+        $tableStatusEntity = $this->em
+            ->getRepository('IndigoGameBundle:TableStatus')
+            ->findOneByTableId((int)$tableId);
+
+        return $tableStatusEntity;
+    }
+
+    /**
+     * @param $tableStatusEntity
+     * @return mixed|void
+     */
+    private function getGame($tableStatusEntity)
+    {
+        if ($tableStatusEntity instanceof TableStatus) {
+
+            return $tableStatusEntity->getGame();
+        }
+
+        return;
+    }
+
+    /**
+     * @param $gameEntity
+     * @return Game
+     */
+    private function dublicateGame(Game $gameEntity)
+    {
+        printf("-------------------- dublicate GAME(on scoreFINISH: %u) ----------------- \n", $gameEntity->getContest()->getScoreLimit());
+
+        $newGameEntity = new Game();
+        if ($gameEntity->getTeam0()) {
+
+            $gameEntity->getTeam0Player0Id() && $newGameEntity->setTeam0Player0Id($gameEntity->getTeam0Player0Id());
+            $gameEntity->getTeam0Player1Id() && $newGameEntity->setTeam0Player1Id($gameEntity->getTeam0Player1Id());
+            $newGameEntity->setTeam0($gameEntity->getTeam0());
+        }
+        if ($gameEntity->getTeam1()) {
+
+            $gameEntity->getTeam1Player0Id() && $newGameEntity->setTeam1Player0Id($gameEntity->getTeam1Player0Id());
+            $gameEntity->getTeam1Player1Id() && $newGameEntity->setTeam1Player1Id($gameEntity->getTeam1Player1Id());
+            $newGameEntity->setTeam1($gameEntity->getTeam1());
+        }
+
+        $newGameEntity->setTableStatus($gameEntity->getTableStatus());
+        $newGameEntity->setContest($gameEntity->getContest());
+        $newGameEntity->setMatchType($gameEntity->getMatchType());
+        $newGameEntity->setGameTime($gameEntity->getGameTime());
+        $newGameEntity->setStatus(GameStatusRepository::STATUS_GAME_STARTED);
+        $newGameEntity->setStartedAt($gameEntity->getFinishedAt());
+        $this->em->persist($newGameEntity);
+
+        return $newGameEntity;
+    }
 }

@@ -26,7 +26,7 @@ services:
 
     indigo_table.logic_manager:
         class: %indigo_table.logic_manager.class%
-        arguments: ["@event_dispatcher"]
+        arguments: ["@event_dispatcher","@doctrine.orm.entity_manager", "@?indigo_table.timeout_manager"]
 
 
     indigo_table.timeout_manager:
