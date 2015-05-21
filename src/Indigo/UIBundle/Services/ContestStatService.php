@@ -30,7 +30,6 @@ class ContestStatService implements LoggerAwareInterface
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
-
     }
 
     public function getStats($contestId)
@@ -132,7 +131,7 @@ class ContestStatService implements LoggerAwareInterface
 
         }
         if ($stats = $this->getGamesPerDay($contestId)) {
-
+            $stats->ksort();
             $contestStatModel->setStatsGamesPerHour($stats);
         }
 
@@ -203,7 +202,7 @@ class ContestStatService implements LoggerAwareInterface
 
             foreach ($stats as $rowStat) {
 
-                $result->offsetSet($rowStat['game_hour'], $rowStat);
+                $result->offsetSet($rowStat['groupHour'], $rowStat);
             }
         }
         return $result;
